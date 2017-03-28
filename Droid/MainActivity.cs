@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Mapbox.Sdk.Maps;
+using Android.Support.V7.App;
 
 [assembly:Xamarin.Forms.ExportRenderer(typeof(MapBoxQs.MapView), typeof(MapBoxQs.Droid.MapViewRenderer))]
 namespace MapBoxQs.Droid
@@ -32,12 +33,15 @@ namespace MapBoxQs.Droid
 
     public class MapViewRenderer : Xamarin.Forms.Platform.Android.ViewRenderer<MapBoxQs.MapView, View>
     {
+        MapViewFragment fragment;
+
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
 
-            if (e.OldElement != null) { 
+            if (e.OldElement != null) {
                 //Remove event handlers
+                fragment.MapReady -= MapReady;
             }
 
             if (e.NewElement == null) return;
@@ -46,13 +50,29 @@ namespace MapBoxQs.Droid
                 var view = LayoutInflater.FromContext(Context)
                                          .Inflate(Resource.Layout.map_view_container, ViewGroup, false);
 
+                var activity = (AppCompatActivity)Context;
+                fragment = (MapViewFragment) activity.SupportFragmentManager.FindFragmentById(Resource.Id.map);
+                fragment.MapReady += MapReady;
+
                 SetNativeControl(view);
             }
+        }
+
+        void MapReady(object sender, MapboxMapReadyEventArgs e)
+        {
+            
+        }
+
+        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
         }
     }
 
     public class MapViewFragment : Android.Support.V4.App.Fragment, Mapbox.Sdk.Maps.IOnMapReadyCallback
     {
+		public event EventHandler<MapboxMapReadyEventArgs> MapReady;
+
         public MapViewFragment(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
         {
@@ -65,7 +85,6 @@ namespace MapBoxQs.Droid
         }
 
         Mapbox.Sdk.Maps.MapView mapView;
-        MapboxMap map;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -112,8 +131,18 @@ namespace MapBoxQs.Droid
 
         public void OnMapReady(MapboxMap p0)
         {
-            map = p0;
+			MapReady?.Invoke(this, new MapboxMapReadyEventArgs(p0));
+
             //throw new NotImplementedException();
+        }
+    }
+
+	public class MapboxMapReadyEventArgs : EventArgs { 
+        public MapboxMap Map { get; private set; }
+
+		public MapboxMapReadyEventArgs(MapboxMap map)
+        {
+            Map = map;
         }
     }
 }

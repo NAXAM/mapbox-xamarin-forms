@@ -81,6 +81,33 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\packages\Xamarin.Forms.2.3.3.193\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleGson">
+      <HintPath>..\packages\GoogleGson.2.6.2.0\lib\MonoAndroid\GoogleGson.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkIO">
+      <HintPath>..\packages\Square.OkIO.1.11.0\lib\MonoAndroid\Square.OkIO.dll</HintPath>
+    </Reference>
+    <Reference Include="Square.OkHttp3">
+      <HintPath>..\packages\Square.OkHttp3.3.5.0\lib\MonoAndroid\Square.OkHttp3.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Services.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapbox.Services.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapzen.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapzen.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapzen.Lost.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Retrofit2.ConvertGson.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Retrofit2.ConvertGson.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Retrofit2.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Retrofit2.Droid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MapBoxQs\MapBoxQs.csproj">
@@ -107,6 +134,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\layout\map_view_container.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
