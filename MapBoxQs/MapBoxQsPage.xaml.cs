@@ -9,4 +9,6 @@ namespace MapBoxQs
             InitializeComponent();
         }
     }
+
+    public class MapView : View { }
 }
