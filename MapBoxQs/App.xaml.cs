@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 
+[assembly:Xamarin.Forms.Xaml.XamlCompilation(Xamarin.Forms.Xaml.XamlCompilationOptions.Compile)]
 namespace MapBoxQs
 {
     public partial class App : Application

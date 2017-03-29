@@ -2,7 +2,19 @@
 <ContentPage 
 	xmlns="http://xamarin.com/schemas/2014/forms" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-	xmlns:local="clr-namespace:MapBoxQs" 
+	xmlns:local="clr-namespace:Naxam.Mapbox.Forms;assembly=Naxam.Mapbox.Forms" 
 	x:Class="MapBoxQs.MapBoxQsPage">
-    <local:MapView />
+    <StackLayout Orientation="Vertical">
+		<Button 
+			Margin="40"
+            x:Name="btnChangeLocation"
+			Text="Change location"
+			VerticalOptions="Start"
+		    />
+        <local:MapView ZoomLevel="16" x:Name="map" VerticalOptions="FillAndExpand">
+            <local:MapView.Center>
+                <local:Position Lat="21.0333" Long="105.8500"/>
+            </local:MapView.Center>
+        </local:MapView>
+	</StackLayout>
 </ContentPage>
