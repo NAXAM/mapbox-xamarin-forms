@@ -92,11 +92,7 @@ namespace Naxam.Mapbox.Platform.iOS
 			//  }
 			//};
 
-			//Element.MapCenterChanged = (sender, e) =>
-			//{
-			//  MBPosition pos = (e as PositionChangedEventArgs).Position;
-			//  MapView.SetCenterCoordinate(new CLLocationCoordinate2D(pos.Latitude, pos.Longitude), true);
-			//};
+
 		}
 
 		[Export("mapViewDidFinishRenderingMap:fullyRendered:"),]
@@ -130,6 +126,12 @@ namespace Naxam.Mapbox.Platform.iOS
 			//  }).ToArray()
 			//};
 			//Element.DidFinishLoadingStyleCommand?.Execute(s);
+		}
+
+		[Export("mapViewRegionIsChanging:"),]
+		void RegionIsChanging(MGLMapView mapView)
+		{
+			Element.Center = new Position(mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
 		}
 	}
 }

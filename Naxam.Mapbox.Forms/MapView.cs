@@ -8,6 +8,12 @@ namespace Naxam.Mapbox.Forms
         public double Lat { get; set; }
 
         public double Long { get; set; }
+
+		public Position(double lat, double lon)
+		{
+			Lat = lat;
+			Long = lon;
+		}
     }
 
     public class MapView : View
