@@ -104,14 +104,13 @@ namespace Naxam.Mapbox.Platform.iOS
 		[Export("mapView:didUpdateUserLocation:"),]
 		void DidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
 		{
-			//if (userLocation != null)
-			//{
-			//  Element.UserLocation = new MBPosition()
-			//  {
-			//      Latitude = userLocation.Coordinate.Latitude,
-			//      Longitude = userLocation.Coordinate.Longitude
-			//  };
-			//}
+			if (userLocation != null)
+			{
+				Element.UserLocation = new Position(
+					userLocation.Coordinate.Latitude,
+					userLocation.Coordinate.Longitude
+				);
+			}
 		}
 
 		[Export("mapView:didFinishLoadingStyle:"),]

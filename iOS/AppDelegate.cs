@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Foundation;
-using Mapbox;
-using Naxam.Mapbox.Platform.iOS;
+﻿using Foundation;
 using UIKit;
-using Xamarin.Forms.Platform.iOS;
 
 namespace MapBoxQs.iOS
 {
@@ -17,7 +10,7 @@ namespace MapBoxQs.iOS
 		{
 			Mapbox.MGLAccountManager.SetAccessToken(new NSString("sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw"));
 
-            new MapViewRenderer();
+			new Naxam.Mapbox.Platform.iOS.MapViewRenderer();
 
             global::Xamarin.Forms.Forms.Init();
 

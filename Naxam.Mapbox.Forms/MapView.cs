@@ -9,6 +9,11 @@ namespace Naxam.Mapbox.Forms
 
         public double Long { get; set; }
 
+		public Position()
+		{
+			
+		}
+
 		public Position(double lat, double lon)
 		{
 			Lat = lat;
@@ -34,6 +39,25 @@ namespace Naxam.Mapbox.Forms
             set { SetValue(CenterProperty, value); }
         }
 
-        public double ZoomLevel { get; set; }
+		public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
+			nameof(UserLocation), 
+			typeof(Position), 
+			typeof(MapView), 
+			default(Position), 
+			BindingMode.OneWayToSource);
+
+		public Position UserLocation
+		{
+			get
+			{
+				return (Position)GetValue(UserLocationProperty);
+			}
+			set
+			{
+				SetValue(UserLocationProperty, (Position)value);
+			}
+		}
+
+		public double ZoomLevel { get; set; }
     }
 }
