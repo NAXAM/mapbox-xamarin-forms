@@ -80,15 +80,15 @@ namespace Naxam.Mapbox.Platform.Droid
 
 	    private void setUpEventHandlers()
 	    {
-	        Element.MapCenterHandler = (sender, e) =>
-	        {
-	            var positionChangeEventArgs = e as PositionChangeEventArgs;
-	            if (positionChangeEventArgs != null)
-	            {
-	                Position position = positionChangeEventArgs.NewPosition;
-	                FocustoLocation(new LatLng(position.Lat,position.Long));
-	            }
-	        };
+	        //Element.MapCenterHandler = (sender, e) =>
+	        //{
+	        //    var positionChangeEventArgs = e as PositionChangeEventArgs;
+	        //    if (positionChangeEventArgs != null)
+	        //    {
+	        //        Position position = positionChangeEventArgs.NewPosition;
+	        //        FocustoLocation(new LatLng(position.Lat,position.Long));
+	        //    }
+	        //};
 	    }
 
 	    #endregion

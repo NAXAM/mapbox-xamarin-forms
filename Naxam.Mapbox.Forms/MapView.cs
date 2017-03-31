@@ -71,40 +71,24 @@ namespace Naxam.Mapbox.Forms
             set { SetValue(FocusPositionProperty, value); }
         }
 
+		public static readonly BindableProperty CenterProperty = BindableProperty.Create(
+			nameof(Center), 
+			typeof(Position), 
+			typeof(MapView),
+			default(Position), 
+			BindingMode.TwoWay);
 
-        public static BindableProperty CenterProperty = BindableProperty.Create(
-            nameof(Center),
-            typeof(Position),
-            typeof(MapView),
-            default(Position),
-         BindingMode.TwoWay
-//          null,
-//          ((bindable, newValue, oldValue) =>
-//          {
-//              ((MapView)bindable).OnMapCenterChange(bindable,(Position)newValue, (Position)oldValue);
-//          })
-
-        );
-
-
-        public Position Center
-        {
-            get
-            {
-                return (Position)GetValue(CenterProperty);
-            }
-            set { SetValue(CenterProperty, value); }
-        }
-      public  void OnMapCenterChange(BindableObject bindable, Position nePosition,Position olPosition)
-        {
-            if (ReferenceEquals(nePosition, olPosition))
-            {
-                MapCenterHandler.Invoke(this,new PositionChangeEventArgs(nePosition));
-            }
-        }
-
-        public EventHandler MapCenterHandler { get; set; }
-
+		public Position Center
+		{
+			get
+			{
+				return (Position)GetValue(CenterProperty);
+			}
+			set
+			{
+				SetValue(CenterProperty, (Position)value);
+			}
+		}
 
 		public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
 			nameof(UserLocation), 

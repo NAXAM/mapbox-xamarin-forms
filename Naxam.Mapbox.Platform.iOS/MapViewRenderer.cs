@@ -66,7 +66,9 @@ namespace Naxam.Mapbox.Platform.iOS
 
         void UpdateCenter()
         {
-			if (Element.Center != null)
+			if (Element.Center != null 
+			    && (!Element.Center.Lat.Equals(MapView.CenterCoordinate.Latitude) 
+			        || !Element.Center.Long.Equals(MapView.CenterCoordinate.Longitude)))
 			{
 				MapView.SetCenterCoordinate(new CoreLocation.CLLocationCoordinate2D(Element.Center.Lat, Element.Center.Long), true);
 			}
