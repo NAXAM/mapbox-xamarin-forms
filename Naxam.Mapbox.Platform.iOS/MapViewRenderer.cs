@@ -48,6 +48,7 @@ namespace Naxam.Mapbox.Platform.iOS
                 UpdateCenter();
             }
 			else if (e.PropertyName == FormsMap.ZoomLevelProperty.PropertyName && MapView.ZoomLevel != Element.ZoomLevel) {
+				//MapView.SetZoomLevel(Element.ZoomLevel, true);
 				MapView.ZoomLevel = Element.ZoomLevel;
 			}
 			else if (e.PropertyName == FormsMap.PitchEnabledProperty.PropertyName && MapView.PitchEnabled != Element.PitchEnabled) {

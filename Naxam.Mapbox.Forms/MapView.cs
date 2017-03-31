@@ -113,7 +113,7 @@ namespace Naxam.Mapbox.Forms
 			nameof(ZoomLevel),
 		    typeof(double),
 			typeof(MapView),
-			16);
+			10.0);
 
 		public double ZoomLevel
 		{
