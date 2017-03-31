@@ -1,0 +1,3 @@
+[submodule "xam_mapbox_sdk_ios"]
+	path = xam_mapbox_sdk_ios
+	url = https://github.com/NAXAM/xam-mapbox-ios.git
