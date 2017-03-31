@@ -162,5 +162,23 @@ namespace Naxam.Mapbox.Forms
 				SetValue(RotateEnabledProperty, (bool)value);
 			}
 		}
+
+		public static readonly BindableProperty StyleUrlProperty = BindableProperty.Create(
+			nameof(StyleUrl),
+			typeof(string),
+			typeof(MapView),
+			default(string));
+
+		public string StyleUrl
+		{
+			get
+			{
+				return (string)GetValue(StyleUrlProperty);
+			}
+			set
+			{
+				SetValue(StyleUrlProperty, (string)value);
+			}
+		}
     }
 }

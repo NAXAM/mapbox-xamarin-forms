@@ -56,6 +56,13 @@ namespace Naxam.Mapbox.Platform.iOS
 			else if (e.PropertyName == FormsMap.RotateEnabledProperty.PropertyName && MapView.RotateEnabled != Element.RotateEnabled) {
 				MapView.RotateEnabled = Element.RotateEnabled;
 			}
+			else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName 
+			         && !string.IsNullOrEmpty(Element.StyleUrl)
+			           && (MapView.StyleURL == null 
+			               || MapView.StyleURL.AbsoluteString != Element.StyleUrl))
+			{
+				MapView.StyleURL = new NSUrl(Element.StyleUrl);
+			}
         }
 
 		void SetupUserInterface()
