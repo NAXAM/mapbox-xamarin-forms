@@ -109,6 +109,58 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
-		public double ZoomLevel { get; set; }
+		public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(
+			nameof(ZoomLevel),
+		    typeof(double),
+			typeof(MapView),
+			16);
+
+		public double ZoomLevel
+		{
+			get
+			{
+				return (double)GetValue(ZoomLevelProperty);
+			}
+			set
+			{
+				SetValue(ZoomLevelProperty, (double)value);
+			}
+		}
+
+		public static readonly BindableProperty PitchEnabledProperty = BindableProperty.Create(
+			nameof(PitchEnabled),
+			typeof(bool),
+			typeof(MapView),
+			default(bool));
+
+		public bool PitchEnabled
+		{
+			get
+			{
+				return (bool)GetValue(PitchEnabledProperty);
+			}
+			set
+			{
+				SetValue(PitchEnabledProperty, (bool)value);
+			}
+		}
+
+		public static readonly BindableProperty RotateEnabledProperty = BindableProperty.Create(
+			nameof(RotateEnabled),
+			typeof(bool),
+			typeof(MapView),
+			default(bool));
+
+		public bool RotateEnabled
+		{
+			get
+			{
+				return (bool)GetValue(RotateEnabledProperty);
+			}
+			set
+			{
+				SetValue(RotateEnabledProperty, (bool)value);
+			}
+		}
     }
 }
