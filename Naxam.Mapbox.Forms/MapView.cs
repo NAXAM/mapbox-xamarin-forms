@@ -46,7 +46,22 @@ namespace Naxam.Mapbox.Forms
     
     public class MapView : View
     {
+        public static readonly BindableProperty IsMarkerClickedProperty = BindableProperty.Create(
+          nameof(IsMarkerClicked),
+          typeof(bool),
+          typeof(MapView),
+          default(bool),
+       BindingMode.TwoWay
+      );
 
+        public bool IsMarkerClicked
+        {
+            get
+            {
+                return (bool)GetValue(IsMarkerClickedProperty);
+            }
+            set { SetValue(IsMarkerClickedProperty, value); }
+        }
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
            nameof(IsTouchInMap),
            typeof(bool),
