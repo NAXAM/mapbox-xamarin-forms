@@ -377,7 +377,7 @@ namespace Naxam.Mapbox.Platform.iOS
 		[Export("mapView:annotationCanShowCallout:"),]
 		bool AnnotationCanShowCallout(MGLMapView mapView, NSObject annotation)
 		{
-			if (annotation is MGLShape)
+			if (annotation is MGLShape && Element.CanShowCalloutChecker != null)
 			{
 				return Element.CanShowCalloutChecker.Invoke(((MGLShape)annotation).Id());
 			}
