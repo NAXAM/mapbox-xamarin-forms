@@ -121,6 +121,11 @@ namespace Naxam.Mapbox.Platform.Droid
                 }
 
             }
+           else if (e.PropertyName == MapView.StyleMapProperty.PropertyName)
+            {
+                map.StyleUrl = Element.StyleMap.UrlString;
+                FocustoLocation(new LatLng(Element.StyleMap.Center[1], Element.StyleMap.Center[0]));
+            }
 
         }
 

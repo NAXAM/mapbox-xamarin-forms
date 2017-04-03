@@ -31,8 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="MapStyle.cs" />
     <Compile Include="MapView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MapViewDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

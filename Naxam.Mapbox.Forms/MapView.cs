@@ -43,8 +43,10 @@ namespace Naxam.Mapbox.Forms
         }
     }
 
-    
-    public class MapView : View
+
+
+
+	public class MapView : View
     {
         public static readonly BindableProperty IsMarkerClickedProperty = BindableProperty.Create(
           nameof(IsMarkerClicked),
@@ -62,6 +64,24 @@ namespace Naxam.Mapbox.Forms
             }
             set { SetValue(IsMarkerClickedProperty, value); }
         }
+		public static readonly BindableProperty DelegateProperty = BindableProperty.Create(
+		nameof(Delegate),
+		typeof(MapViewDelegate),
+		typeof(MapView),
+		default(MapViewDelegate));
+
+		public MapViewDelegate Delegate
+		{
+			get
+			{
+				return (MapViewDelegate)GetValue(DelegateProperty);
+			}
+			set
+			{
+				SetValue(DelegateProperty, (MapViewDelegate)value);
+			}
+		}
+
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
            nameof(IsTouchInMap),
            typeof(bool),
@@ -124,6 +144,94 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
-		public double ZoomLevel { get; set; }
+		public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(
+			nameof(ZoomLevel),
+		    typeof(double),
+			typeof(MapView),
+			10.0);
+
+		public double ZoomLevel
+		{
+			get
+			{
+				return (double)GetValue(ZoomLevelProperty);
+			}
+			set
+			{
+				SetValue(ZoomLevelProperty, (double)value);
+			}
+		}
+
+		public static readonly BindableProperty PitchEnabledProperty = BindableProperty.Create(
+			nameof(PitchEnabled),
+			typeof(bool),
+			typeof(MapView),
+			default(bool));
+
+		public bool PitchEnabled
+		{
+			get
+			{
+				return (bool)GetValue(PitchEnabledProperty);
+			}
+			set
+			{
+				SetValue(PitchEnabledProperty, (bool)value);
+			}
+		}
+
+		public static readonly BindableProperty RotateEnabledProperty = BindableProperty.Create(
+			nameof(RotateEnabled),
+			typeof(bool),
+			typeof(MapView),
+			default(bool));
+
+		public bool RotateEnabled
+		{
+			get
+			{
+				return (bool)GetValue(RotateEnabledProperty);
+			}
+			set
+			{
+				SetValue(RotateEnabledProperty, (bool)value);
+			}
+		}
+
+		public static readonly BindableProperty StyleUrlProperty = BindableProperty.Create(
+			nameof(StyleUrl),
+			typeof(string),
+			typeof(MapView),
+			default(string));
+
+		public string StyleUrl
+		{
+			get
+			{
+				return (string)GetValue(StyleUrlProperty);
+			}
+			set
+			{
+				SetValue(StyleUrlProperty, (string)value);
+			}
+		}
+
+        public static readonly BindableProperty StyleMapProperty = BindableProperty.Create(
+        nameof(StyleMap),
+        typeof(MapStyle),
+        typeof(MapView),
+        default(MapStyle));
+
+        public MapStyle StyleMap
+        {
+            get
+            {
+                return (MapStyle)GetValue(StyleMapProperty);
+            }
+            set
+            {
+                SetValue(StyleMapProperty, (MapStyle)value);
+            }
+        }
     }
 }

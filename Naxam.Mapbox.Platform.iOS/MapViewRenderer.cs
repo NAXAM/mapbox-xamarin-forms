@@ -4,6 +4,7 @@ using Foundation;
 using Mapbox;
 using Naxam.Mapbox.Forms;
 using Xamarin.Forms.Platform.iOS;
+using FormsMap = Naxam.Mapbox.Forms.MapView;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Mapbox.Forms.MapView), typeof(Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Mapbox.Platform.iOS
@@ -39,9 +40,30 @@ namespace Naxam.Mapbox.Platform.iOS
         {
             base.OnElementPropertyChanged(sender, e);
 
-            if (e.PropertyName == Naxam.Mapbox.Forms.MapView.CenterProperty.PropertyName) {
+			if (MapView == null)
+			{
+				return;
+			}
+			if (e.PropertyName == FormsMap.CenterProperty.PropertyName) {
                 UpdateCenter();
-            } 
+            }
+			else if (e.PropertyName == FormsMap.ZoomLevelProperty.PropertyName && MapView.ZoomLevel != Element.ZoomLevel) {
+				//MapView.SetZoomLevel(Element.ZoomLevel, true);
+				MapView.ZoomLevel = Element.ZoomLevel;
+			}
+			else if (e.PropertyName == FormsMap.PitchEnabledProperty.PropertyName && MapView.PitchEnabled != Element.PitchEnabled) {
+				MapView.PitchEnabled = Element.PitchEnabled;
+			}
+			else if (e.PropertyName == FormsMap.RotateEnabledProperty.PropertyName && MapView.RotateEnabled != Element.RotateEnabled) {
+				MapView.RotateEnabled = Element.RotateEnabled;
+			}
+			else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName 
+			         && !string.IsNullOrEmpty(Element.StyleUrl)
+			           && (MapView.StyleURL == null 
+			               || MapView.StyleURL.AbsoluteString != Element.StyleUrl))
+			{
+				MapView.StyleURL = new NSUrl(Element.StyleUrl);
+			}
         }
 
 		void SetupUserInterface()
@@ -55,7 +77,10 @@ namespace Naxam.Mapbox.Platform.iOS
 				};
 
                 MapView.ZoomLevel = Element.ZoomLevel;
-
+				if (!string.IsNullOrEmpty(Element.StyleUrl))
+				{
+					MapView.StyleURL = new NSUrl(Element.StyleUrl);
+				}
                 UpdateCenter();
 			}
 			catch (Exception ex)
@@ -100,7 +125,8 @@ namespace Naxam.Mapbox.Platform.iOS
 		[Export("mapViewDidFinishRenderingMap:fullyRendered:"),]
 		void DidFinishRenderingMap(MGLMapView mapView, bool fullyRendered)
 		{
-			//Element.DidFinishRenderingCommand?.Execute(fullyRendered);
+			Element.Delegate?.DidFinishRenderingCommand.Execute(
+				new Tuple<FormsMap, bool>(Element, fullyRendered));
 		}
 
 		[Export("mapView:didUpdateUserLocation:"),]
@@ -133,6 +159,12 @@ namespace Naxam.Mapbox.Platform.iOS
 		void RegionIsChanging(MGLMapView mapView)
 		{
 			Element.Center = new Position(mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
+		}
+
+		[Export("mapView:regionDidChangeAnimated:"),]
+		void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
+		{
+			Element.ZoomLevel = mapView.ZoomLevel;
 		}
 	}
 }
