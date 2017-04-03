@@ -35,6 +35,12 @@
     <Compile Include="MapView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapViewDelegate.cs" />
+    <Compile Include="AnnotationsAndFeatures\PointAnnotation.cs" />
+    <Compile Include="AnnotationsAndFeatures\PolylineAnnotation.cs" />
+    <Compile Include="AnnotationsAndFeatures\MultiPolylineAnnotation.cs" />
+    <Compile Include="AnnotationsAndFeatures\Annotation.cs" />
+    <Compile Include="AnnotationsAndFeatures\Feature.cs" />
+    <Compile Include="AnnotationsAndFeatures\PointFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -49,6 +55,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AnnotationsAndFeatures\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

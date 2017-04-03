@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -7,15 +9,15 @@ using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Forms
 {
-    public class Position
-    {
-        public double Lat { get; set; }
+	public class Position
+	{
+		public double Lat { get; set; }
 
-        public double Long { get; set; }
+		public double Long { get; set; }
 
 		public Position()
 		{
-			
+
 		}
 
 		public Position(double lat, double lon)
@@ -23,28 +25,25 @@ namespace Naxam.Mapbox.Forms
 			Lat = lat;
 			Long = lon;
 		}
-    }
+	}
 
-    public class PositionChangeEventArgs : EventArgs
-    {
-        private Position _newPosition;
+	public class PositionChangeEventArgs : EventArgs
+	{
+		private Position _newPosition;
 
-        public PositionChangeEventArgs(Position newPosition)
-        {
-            NewPosition = newPosition;
-        }
+		public PositionChangeEventArgs(Position newPosition)
+		{
+			NewPosition = newPosition;
+		}
 
-        public Position NewPosition
-        {
-            [CompilerGenerated]
-            get;
-            [CompilerGenerated]
-            private set;
-        }
-    }
-
-
-
+		public Position NewPosition
+		{
+			[CompilerGenerated]
+			get;
+			[CompilerGenerated]
+			private set;
+		}
+	}
 
 	public class MapView : View
     {
@@ -64,6 +63,7 @@ namespace Naxam.Mapbox.Forms
             }
             set { SetValue(IsMarkerClickedProperty, value); }
         }
+
 		public static readonly BindableProperty DelegateProperty = BindableProperty.Create(
 		nameof(Delegate),
 		typeof(MapViewDelegate),
@@ -82,35 +82,35 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
-        public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
-           nameof(IsTouchInMap),
-           typeof(bool),
-           typeof(MapView),
-           default(bool),
-        BindingMode.TwoWay
-       //          null,
-       //          ((bindable, newValue, oldValue) =>
-       //          {
-       //              ((MapView)bindable).OnMapCenterChange(bindable,(Position)newValue, (Position)oldValue);
-       //          })
+		public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
+		   nameof(IsTouchInMap),
+		   typeof(bool),
+		   typeof(MapView),
+		   default(bool),
+		BindingMode.TwoWay
+	   //          null,
+	   //          ((bindable, newValue, oldValue) =>
+	   //          {
+	   //              ((MapView)bindable).OnMapCenterChange(bindable,(Position)newValue, (Position)oldValue);
+	   //          })
 
-       );
+	   );
 
 
-        public bool IsTouchInMap
-        {
-            get
-            {
-                return (bool)GetValue(FocusPositionProperty);
-            }
-            set { SetValue(FocusPositionProperty, value); }
-        }
+		public bool IsTouchInMap
+		{
+			get
+			{
+				return (bool)GetValue(FocusPositionProperty);
+			}
+			set { SetValue(FocusPositionProperty, value); }
+		}
 
 		public static readonly BindableProperty CenterProperty = BindableProperty.Create(
-			nameof(Center), 
-			typeof(Position), 
+			nameof(Center),
+			typeof(Position),
 			typeof(MapView),
-			default(Position), 
+			default(Position),
 			BindingMode.TwoWay);
 
 		public Position Center
@@ -126,10 +126,10 @@ namespace Naxam.Mapbox.Forms
 		}
 
 		public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
-			nameof(UserLocation), 
-			typeof(Position), 
-			typeof(MapView), 
-			default(Position), 
+			nameof(UserLocation),
+			typeof(Position),
+			typeof(MapView),
+			default(Position),
 			BindingMode.OneWayToSource);
 
 		public Position UserLocation
@@ -146,7 +146,7 @@ namespace Naxam.Mapbox.Forms
 
 		public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(
 			nameof(ZoomLevel),
-		    typeof(double),
+			typeof(double),
 			typeof(MapView),
 			10.0);
 
@@ -233,5 +233,62 @@ namespace Naxam.Mapbox.Forms
                 SetValue(StyleMapProperty, (MapStyle)value);
             }
         }
-    }
+
+		public static readonly BindableProperty AnnotationsProperty = BindableProperty.Create(							   
+			nameof(Annotations),
+			typeof(IEnumerable<Annotation>),
+			typeof(MapView),								   
+			default(IEnumerable<Annotation>),								   
+			BindingMode.TwoWay);
+
+		public IEnumerable<Annotation> Annotations
+		{
+			get
+			{
+				return (IEnumerable<Annotation>)GetValue(AnnotationsProperty);
+			}
+			set
+			{
+				SetValue(AnnotationsProperty, (IEnumerable<Annotation>)value);
+			}
+		}
+
+		static Func<string, bool> DefaultCanShowCalloutChecker = x => true;
+		public static readonly BindableProperty CanShowCalloutCheckerProperty = BindableProperty.Create(                                                                
+			nameof(CanShowCalloutChecker),
+			typeof(Func<string, bool>),
+			typeof(MapView),
+			default(Func<string, bool>));
+
+		public Func<string, bool> CanShowCalloutChecker
+		{
+			get
+			{
+				return (Func<string, bool>)GetValue(CanShowCalloutCheckerProperty) ?? DefaultCanShowCalloutChecker;
+			}
+			set
+			{
+				SetValue(CanShowCalloutCheckerProperty, value);
+			}
+		}	
+
+		public static readonly BindableProperty TakeSnapshotProperty = BindableProperty.Create(
+			nameof(TakeSnapshot),
+			typeof(Func<byte[]>),
+			typeof(MapView),
+			default(Func<byte[]>),
+			defaultBindingMode:BindingMode.OneWayToSource);
+
+		public Func<byte[]> TakeSnapshot
+		{
+			get
+			{
+				return (Func<byte[]>)GetValue(TakeSnapshotProperty);
+			}
+			set
+			{
+				SetValue(TakeSnapshotProperty, value);
+			}
+		}
+	}
 }
