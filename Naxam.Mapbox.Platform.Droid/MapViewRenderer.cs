@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
@@ -58,7 +58,7 @@ namespace Naxam.Mapbox.Platform.Droid
 		    {
                 if(Element.UserLocation==null) Element.UserLocation = new Position();
 	            Element.UserLocation.Lat = args.P0.Latitude;
-	            Element.UserLocation.Long = args.P0.Longitude;
+	            Element.UserLocation.Lon = args.P0.Longitude;
 		    };
 
             
@@ -66,7 +66,7 @@ namespace Naxam.Mapbox.Platform.Droid
             {
             
             _currentCamera.Lat = args.P0.Target.Latitude;
-               _currentCamera.Long = args.P0.Target.Longitude;
+               _currentCamera.Lon = args.P0.Target.Longitude;
                 Element.Center = _currentCamera;
             };
             map.MapClick += delegate(object o, MapboxMap.MapClickEventArgs args)
@@ -107,7 +107,7 @@ namespace Naxam.Mapbox.Platform.Droid
 		    {
                 if (Element.Center!= _currentCamera)
                 {
-                    FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
+                    FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Lon));
                     return;
                 }
 

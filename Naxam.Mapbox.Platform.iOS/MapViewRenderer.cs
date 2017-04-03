@@ -77,7 +77,10 @@ namespace Naxam.Mapbox.Platform.iOS
 				};
 
                 MapView.ZoomLevel = Element.ZoomLevel;
-
+				if (!string.IsNullOrEmpty(Element.StyleUrl))
+				{
+					MapView.StyleURL = new NSUrl(Element.StyleUrl);
+				}
                 UpdateCenter();
 			}
 			catch (Exception ex)
@@ -122,7 +125,8 @@ namespace Naxam.Mapbox.Platform.iOS
 		[Export("mapViewDidFinishRenderingMap:fullyRendered:"),]
 		void DidFinishRenderingMap(MGLMapView mapView, bool fullyRendered)
 		{
-			//Element.DidFinishRenderingCommand?.Execute(fullyRendered);
+			Element.Delegate?.DidFinishRenderingCommand.Execute(
+				new Tuple<FormsMap, bool>(Element, fullyRendered));
 		}
 
 		[Export("mapView:didUpdateUserLocation:"),]

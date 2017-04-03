@@ -43,9 +43,28 @@ namespace Naxam.Mapbox.Forms
         }
     }
 
-    
-    public class MapView : View
+
+
+
+	public class MapView : View
     {
+		public static readonly BindableProperty DelegateProperty = BindableProperty.Create(
+		nameof(Delegate),
+		typeof(MapViewDelegate),
+		typeof(MapView),
+		default(MapViewDelegate));
+
+		public MapViewDelegate Delegate
+		{
+			get
+			{
+				return (MapViewDelegate)GetValue(DelegateProperty);
+			}
+			set
+			{
+				SetValue(DelegateProperty, (MapViewDelegate)value);
+			}
+		}
 
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
            nameof(IsTouchInMap),
