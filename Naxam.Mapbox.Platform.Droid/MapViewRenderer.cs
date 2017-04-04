@@ -116,7 +116,7 @@ namespace Naxam.Mapbox.Platform.Droid
 
                         // User search location , need to focus and add marker
                         FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
-                        _markerAddress = AddMarkerAddress(new LatLng(Element.Center.Lat, Element.Center.Long));
+//                        _markerAddress = AddMarkerAddress(new LatLng(Element.Center.Lat, Element.Center.Long));
                     }
                 }
 
