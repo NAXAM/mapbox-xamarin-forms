@@ -130,7 +130,7 @@ namespace Naxam.Mapbox.Forms
 			typeof(Position),
 			typeof(MapView),
 			default(Position),
-			BindingMode.OneWayToSource);
+			BindingMode.TwoWay);
 
 		public Position UserLocation
 		{
