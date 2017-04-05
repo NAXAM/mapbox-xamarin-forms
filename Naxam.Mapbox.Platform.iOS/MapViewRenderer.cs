@@ -479,7 +479,7 @@ namespace Naxam.Mapbox.Platform.iOS
 				newStyle = Element.MapStyle;
 			}
 
-			Element.Delegate?.DidFinishLoadingStyle?.Execute(new Tuple<FormsMap, MapStyle>(Element, newStyle));
+			Element.Delegate?.DidFinishLoadingStyleCommand?.Execute(new Tuple<FormsMap, MapStyle>(Element, newStyle));
 			//var s = new MapStyle()
 			//{
 			//  Name = style.Name,
