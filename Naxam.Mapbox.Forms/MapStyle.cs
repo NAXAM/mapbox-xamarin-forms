@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Naxam.Mapbox.Forms
 { 
@@ -12,21 +11,6 @@ namespace Naxam.Mapbox.Forms
 	[Preserve(AllMembers = true)]
 	public class MapStyle
 	{
-		//"version": 8,
-  //  "name": "Dark",
-  //  "center": [
-  //    0,
-  //    -1.1368683772161603e-13
-  //  ],
-  //  "zoom": 0.8233671266790495,
-  //  "bearing": 0,
-  //  "pitch": 0,
-  //  "created": "2017-02-21T07:28:33.252Z",
-  //  "id": "cizf7m12200ik2spm99ack2pz",
-  //  "modified": "2017-02-21T07:30:09.337Z",
-  //  "owner": "hongha",
-  //  "visibility": "private"
-
 			public string Id
 		{
 			get;
@@ -53,27 +37,51 @@ namespace Naxam.Mapbox.Forms
 
 		public string UrlString
 		{
-        get;
-        set;
-    }
-
-//		public MapLayer[] Layers
-//		{
-//			get;
-//			set;
-//		}
+			get {
+				if (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(Owner))
+				{
+					return "mapbox://styles/" + Owner + "/" + Id;
+				}
+				return null;
+			}
+		}
 
 		public MapStyle()
 		{
 		}
 
-		public MapStyle(string id, string name,double[] center, string urlString, string owner)
+		public MapStyle(string id, string name,double[] center = null, string owner = null)
 		{
 			Id = id;
 			Name = name;
 		    Center = center;
-		    UrlString = urlString;
-		    Owner = owner;
+			Owner = owner;
+		}
+
+		public MapStyle(string urlString)
+		{
+			UpdateIdAndOwner(urlString);
+		}
+
+		public void SetUrl(string urlString)
+		{
+			UpdateIdAndOwner(urlString);
+		}
+
+		void UpdateIdAndOwner(string urlString)
+		{
+			if (!string.IsNullOrEmpty(urlString))
+			{
+				var segments = (new Uri(urlString)).Segments;
+				if (string.IsNullOrEmpty(Id) && segments.Length != 0)
+				{
+					Id = segments[segments.Length - 1];
+				}
+				if (string.IsNullOrEmpty(Owner) && segments.Length > 1)
+				{
+					Owner = segments[segments.Length - 2];
+				}
+			}
 		}
 	}
 }

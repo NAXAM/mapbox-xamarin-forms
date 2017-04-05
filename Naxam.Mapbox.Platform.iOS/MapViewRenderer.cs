@@ -102,12 +102,20 @@ namespace Naxam.Mapbox.Platform.iOS
 					}
 				}
 			}
-			else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName
-					 && !string.IsNullOrEmpty(Element.StyleUrl)
-					   && (MapView.StyleURL == null
-						   || MapView.StyleURL.AbsoluteString != Element.StyleUrl))
+			//else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName
+			//		 && !string.IsNullOrEmpty(Element.StyleUrl)
+			//		   && (MapView.StyleURL == null
+			//			   || MapView.StyleURL.AbsoluteString != Element.StyleUrl))
+			//{
+			//	MapView.StyleURL = new NSUrl(Element.StyleUrl);
+			//}
+			else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
+			         && Element.MapStyle != null
+			         && !string.IsNullOrEmpty(Element.MapStyle.UrlString)
+					&& (MapView.StyleURL == null
+			            || MapView.StyleURL.AbsoluteString != Element.MapStyle.UrlString))
 			{
-				MapView.StyleURL = new NSUrl(Element.StyleUrl);
+				MapView.StyleURL = new NSUrl(Element.MapStyle.UrlString);
 			}
 		}
 
@@ -122,9 +130,9 @@ namespace Naxam.Mapbox.Platform.iOS
 				};
 
 				MapView.ZoomLevel = Element.ZoomLevel;
-				if (!string.IsNullOrEmpty(Element.StyleUrl))
+				if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
 				{
-					MapView.StyleURL = new NSUrl(Element.StyleUrl);
+					MapView.StyleURL = new NSUrl(Element.MapStyle.UrlString);
 				}
 				UpdateCenter();
 			}
@@ -351,6 +359,17 @@ namespace Naxam.Mapbox.Platform.iOS
 		[Export("mapView:didFinishLoadingStyle:"),]
 		void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
 		{
+			if (Element.MapStyle == null)
+			{
+				Element.MapStyle = new MapStyle(mapView.StyleURL.AbsoluteString);
+				Element.MapStyle.Name = style.Name;
+			}
+			else if (Element.MapStyle.UrlString == null
+				|| Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
+			{
+				Element.MapStyle.SetUrl(mapView.StyleURL.AbsoluteString);
+				Element.MapStyle.Name = style.Name;
+			}
 			//var s = new MapStyle()
 			//{
 			//  Name = style.Name,

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -138,10 +138,10 @@ namespace Naxam.Mapbox.Platform.Droid
                     }
                 }
             }
-            else if (e.PropertyName == MapView.StyleMapProperty.PropertyName && map != null)
+            else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
             {
-                map.StyleUrl = Element.StyleMap.UrlString;
-                FocustoLocation(new LatLng(Element.StyleMap.Center[1], Element.StyleMap.Center[0]));
+                map.StyleUrl = Element.MapStyle.UrlString;
+                FocustoLocation(new LatLng(Element.MapStyle.Center[1], Element.MapStyle.Center[0]));
             }
             else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName)
             {

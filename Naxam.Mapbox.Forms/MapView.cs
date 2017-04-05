@@ -198,39 +198,38 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
-		public static readonly BindableProperty StyleUrlProperty = BindableProperty.Create(
-			nameof(StyleUrl),
-			typeof(string),
-			typeof(MapView),
-			default(string));
+		//public static readonly BindableProperty StyleUrlProperty = BindableProperty.Create(
+		//	nameof(StyleUrl),
+		//	typeof(string),
+		//	typeof(MapView),
+		//	default(string));
 
-		public string StyleUrl
-		{
-			get
-			{
-				return (string)GetValue(StyleUrlProperty);
-			}
-			set
-			{
-				SetValue(StyleUrlProperty, (string)value);
-			}
-		}
+		//public string StyleUrl
+		//{
+		//	get
+		//	{
+		//		return (string)GetValue(StyleUrlProperty);
+		//	}
+		//	set
+		//	{
+		//		SetValue(StyleUrlProperty, (string)value);
+		//	}
+		//}
 
-        public static readonly BindableProperty StyleMapProperty = BindableProperty.Create(
-        nameof(StyleMap),
+        public static readonly BindableProperty MapStyleProperty = BindableProperty.Create(
+        nameof(MapStyle),
         typeof(MapStyle),
         typeof(MapView),
         default(MapStyle));
-
-        public MapStyle StyleMap
+        public MapStyle MapStyle
         {
             get
             {
-                return (MapStyle)GetValue(StyleMapProperty);
+                return (MapStyle)GetValue(MapStyleProperty);
             }
             set
             {
-                SetValue(StyleMapProperty, (MapStyle)value);
+                SetValue(MapStyleProperty, (MapStyle)value);
             }
         }
 
