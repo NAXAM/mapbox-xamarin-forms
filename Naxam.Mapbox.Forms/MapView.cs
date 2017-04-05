@@ -289,5 +289,23 @@ namespace Naxam.Mapbox.Forms
 				SetValue(TakeSnapshotProperty, value);
 			}
 		}
+
+		public static readonly BindableProperty DidTapOnMapCommandProperty = BindableProperty.Create(
+			nameof(DidTapOnMapCommand),
+			typeof(ICommand),
+			typeof(MapView),
+			default(ICommand));
+
+		public ICommand DidTapOnMapCommand
+		{
+			get
+			{
+				return (ICommand)GetValue(DidTapOnMapCommandProperty);
+			}
+			set
+			{
+				SetValue(DidTapOnMapCommandProperty, (ICommand)value);
+			}
+		}
 	}
 }

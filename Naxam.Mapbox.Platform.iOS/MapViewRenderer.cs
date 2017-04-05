@@ -10,11 +10,12 @@ using CoreLocation;
 using FormsMap = Naxam.Mapbox.Forms.MapView;
 using FormsMB = Naxam.Mapbox.Forms;
 using System.Collections.Specialized;
+using UIKit;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Mapbox.Forms.MapView), typeof(Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Mapbox.Platform.iOS
 {
-	public class MapViewRenderer : ViewRenderer<Naxam.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate
+	public class MapViewRenderer : ViewRenderer<Naxam.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
 	{
 		//private Func<byte[]> captureMapview = () =>
 		//{
@@ -126,7 +127,9 @@ namespace Naxam.Mapbox.Platform.iOS
 				MapView = new MGLMapView(Bounds)
 				{
 					ShowsUserLocation = true,
-					Delegate = this
+					Delegate = this,
+					PitchEnabled = Element.PitchEnabled,
+					RotateEnabled = Element.RotateEnabled
 				};
 
 				MapView.ZoomLevel = Element.ZoomLevel;
@@ -154,25 +157,22 @@ namespace Naxam.Mapbox.Platform.iOS
 
 		void SetupEventHandlers()
 		{
-			//Element.CurrentMapStyleChanged += (sender, e) =>
-			//{
-			//  MapStyle style = (e as MapStyleChangedEventArgs).Style;
-			//  if (style != null)
-			//  {
-			//      if (MapView.Annotations != null)
-			//      {
-			//          MapView.RemoveAnnotations(MapView.Annotations);
-			//      }
-			//      MapView.StyleURL = new NSUrl(style.UrlString);
-			//      MapView.ReloadStyle(this);
-			//      if (style.Center != null && style.Center.Length == 2)
-			//      {
-			//          MapView.SetCenterCoordinate(new CLLocationCoordinate2D(style.Center[1], style.Center[0]), true);
-			//      }
-			//  }
-			//};
-
-
+			var tapGest = new UITapGestureRecognizer();
+			tapGest.NumberOfTapsRequired = 1;
+			tapGest.CancelsTouchesInView = false;
+			tapGest.Delegate = this;
+			MapView.AddGestureRecognizer(tapGest);
+			tapGest.AddTarget((NSObject obj) =>
+			{
+				var gesture = obj as UITapGestureRecognizer;
+				if (gesture.State == UIGestureRecognizerState.Ended)
+				{
+					var point = gesture.LocationInView(MapView);
+					var touchedCooridinate = MapView.ConvertPoint(point, MapView);
+					var position = new Position(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
+					Element.DidTapOnMapCommand?.Execute(position);
+				}
+			});
 		}
 
 		void AddAnnotation(Annotation annotation)
@@ -402,6 +402,15 @@ namespace Naxam.Mapbox.Platform.iOS
 			}
 			return true;
 		}
+		#endregion
+
+		#region UIGestureRecognizerDelegate
+		[Export("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")]
+		public bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
+		{
+			return true;
+		}
+
 		#endregion
 	} 
 }
