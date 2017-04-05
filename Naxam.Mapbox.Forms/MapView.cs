@@ -148,7 +148,8 @@ namespace Naxam.Mapbox.Forms
 			nameof(ZoomLevel),
 			typeof(double),
 			typeof(MapView),
-			10.0);
+			10.0,
+			BindingMode.TwoWay);
 
 		public double ZoomLevel
 		{
@@ -166,7 +167,8 @@ namespace Naxam.Mapbox.Forms
 			nameof(PitchEnabled),
 			typeof(bool),
 			typeof(MapView),
-			default(bool));
+			default(bool), 
+			BindingMode.TwoWay);
 
 		public bool PitchEnabled
 		{
@@ -176,7 +178,7 @@ namespace Naxam.Mapbox.Forms
 			}
 			set
 			{
-				SetValue(PitchEnabledProperty, (bool)value);
+				SetValue(PitchEnabledProperty, value);
 			}
 		}
 
@@ -184,7 +186,8 @@ namespace Naxam.Mapbox.Forms
 			nameof(RotateEnabled),
 			typeof(bool),
 			typeof(MapView),
-			default(bool));
+			default(bool), 
+			BindingMode.TwoWay);
 
 		public bool RotateEnabled
 		{
@@ -257,7 +260,8 @@ namespace Naxam.Mapbox.Forms
 			nameof(CanShowCalloutChecker),
 			typeof(Func<string, bool>),
 			typeof(MapView),
-			default(Func<string, bool>));
+            default(Func<string, bool>),
+            BindingMode.OneWay);
 
 		public Func<string, bool> CanShowCalloutChecker
 		{
@@ -295,7 +299,7 @@ namespace Naxam.Mapbox.Forms
 			typeof(Func<Point, double, string[], IFeature[]>),
 			typeof(MapView),
 			default(Func<Point, double, string[], IFeature[]>),
-			defaultBindingMode: BindingMode.OneWayToSource);
+		    BindingMode.OneWayToSource);
 
 		public Func<Point, double, string[], IFeature[]> GetFeaturesAroundPoint
 		{
@@ -309,11 +313,31 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
+		public static readonly BindableProperty ResetPositionCommandProperty = BindableProperty.Create(
+			nameof(ResetPositionCommand),
+			typeof(ICommand),
+			typeof(MapView),
+			default(ICommand),
+			BindingMode.OneWayToSource);
+
+		public ICommand ResetPositionCommand
+		{
+			get
+			{
+				return (ICommand)GetValue(ResetPositionCommandProperty);
+			}
+			set
+			{
+				SetValue(ResetPositionCommandProperty, value);
+			}
+		}
+
 		public static readonly BindableProperty DidTapOnMapCommandProperty = BindableProperty.Create(
 			nameof(DidTapOnMapCommand),
 			typeof(ICommand),
 			typeof(MapView),
-			default(ICommand));
+			default(ICommand), 
+			BindingMode.OneWay);
 
 		public ICommand DidTapOnMapCommand
 		{
@@ -326,5 +350,7 @@ namespace Naxam.Mapbox.Forms
 				SetValue(DidTapOnMapCommandProperty, (ICommand)value);
 			}
 		}
+
+
 	}
 }

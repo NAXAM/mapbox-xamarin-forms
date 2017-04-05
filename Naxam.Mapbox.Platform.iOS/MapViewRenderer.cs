@@ -255,6 +255,10 @@ namespace Naxam.Mapbox.Platform.iOS
 				return output.ToArray();
 			};
 
+			Element.ResetPositionCommand = new Command((arg) =>
+			{
+				MapView.ResetPosition();
+			});
 		}
 
 		NSSet SelectableLayersFromSources(string[] layersId)
@@ -457,17 +461,25 @@ namespace Naxam.Mapbox.Platform.iOS
 		[Export("mapView:didFinishLoadingStyle:"),]
 		void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
 		{
+			MapStyle newStyle;
 			if (Element.MapStyle == null)
 			{
-				Element.MapStyle = new MapStyle(mapView.StyleURL.AbsoluteString);
-				Element.MapStyle.Name = style.Name;
+				newStyle = new MapStyle(mapView.StyleURL.AbsoluteString);
+				newStyle.Name = style.Name;
+				Element.MapStyle = newStyle;
 			}
-			else if (Element.MapStyle.UrlString == null
-				|| Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
+			else
 			{
-				Element.MapStyle.SetUrl(mapView.StyleURL.AbsoluteString);
-				Element.MapStyle.Name = style.Name;
+				if (Element.MapStyle.UrlString == null
+				|| Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
+				{
+					Element.MapStyle.SetUrl(mapView.StyleURL.AbsoluteString);
+					Element.MapStyle.Name = style.Name;
+				}
+				newStyle = Element.MapStyle;
 			}
+
+			Element.Delegate?.DidFinishLoadingStyle?.Execute(new Tuple<FormsMap, MapStyle>(Element, newStyle));
 			//var s = new MapStyle()
 			//{
 			//  Name = style.Name,

@@ -11,5 +11,6 @@ namespace Naxam.Mapbox.Forms
 		}
 
 		public ICommand DidFinishRenderingCommand { get; set; }
+		public ICommand DidFinishLoadingStyleCommand { get; set; }
 	}
 }
