@@ -11,6 +11,7 @@ using FormsMap = Naxam.Mapbox.Forms.MapView;
 using FormsMB = Naxam.Mapbox.Forms;
 using System.Collections.Specialized;
 using UIKit;
+using Xamarin.Forms;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Mapbox.Forms.MapView), typeof(Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Mapbox.Platform.iOS
@@ -45,18 +46,8 @@ namespace Naxam.Mapbox.Platform.iOS
 				{
 					SetupUserInterface();
 					SetupEventHandlers();
+					SetupFunctions();
 					SetNativeControl(MapView);
-
-					Element.TakeSnapshot = () => {
-						var image = MapView.Capture(true);
-						var imageData = image.AsJPEG();
-						Byte[] imgByteArray = new Byte[imageData.Length];
-						System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
-																	imgByteArray,
-																	0,
-																	Convert.ToInt32(imageData.Length));
-						return imgByteArray;
-					};
 				}
 			}
 			catch (Exception ex)
@@ -170,9 +161,116 @@ namespace Naxam.Mapbox.Platform.iOS
 					var point = gesture.LocationInView(MapView);
 					var touchedCooridinate = MapView.ConvertPoint(point, MapView);
 					var position = new Position(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
-					Element.DidTapOnMapCommand?.Execute(position);
+					Element.DidTapOnMapCommand?.Execute(new Tuple<Position, Point>(position, 
+					                                                               new Point( (double) point.X, (double) point.Y)));
 				}
 			});
+		}
+
+		void SetupFunctions()
+		{
+			Element.TakeSnapshot = () =>
+			{
+				var image = MapView.Capture(true);
+				var imageData = image.AsJPEG();
+				Byte[] imgByteArray = new Byte[imageData.Length];
+				System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
+															imgByteArray,
+															0,
+															Convert.ToInt32(imageData.Length));
+				return imgByteArray;
+			};
+
+			Element.GetFeaturesAroundPoint = (Point point, double radius, string[] layers) => {
+				var selectableLayers = SelectableLayersFromSources(layers);
+				NSObject[] features;
+				var cgPoint = new CGPoint((nfloat)point.X, (nfloat)point.Y);
+				if (radius <= 0)
+				{
+					features = MapView.VisibleFeaturesAtPoint(cgPoint, selectableLayers);
+				}
+				else {
+					var rect = new CGRect(cgPoint.X - (nfloat) radius, cgPoint.Y - (nfloat) radius, (nfloat) radius * 2, (nfloat) radius * 2);
+					features = MapView.VisibleFeaturesInRect(rect, selectableLayers);
+				}
+
+				var output = new List<IFeature>();
+
+				foreach (NSObject obj in features)
+				{
+					var feature = obj as IMGLFeature;
+					if (feature == null || feature.Attributes == null)
+					{
+						continue;
+					}
+					string id = null;
+					if (feature.Identifier != null)
+					{
+						if (feature.Identifier is NSNumber)
+						{
+							id = ((NSNumber)feature.Identifier).StringValue;
+						}
+						else
+						{
+							id = feature.Identifier.ToString();
+						}
+					}
+					if (id == null || output.Any( (arg) => (arg as Annotation).Id == id))
+					{
+						continue;
+					}
+
+
+					var geoData = feature.GeoJSONDictionary();
+					if (geoData == null) continue;
+
+					IFeature ifeat = null;
+
+					if (feature is MGLPointFeature)
+					{
+						ifeat = new PointFeature();
+						(ifeat as PointFeature).Title = ((MGLPointFeature)feature).Title;
+						(ifeat as PointFeature).SubTitle = ((MGLPointFeature)feature).Subtitle;
+					}
+					else if (feature is MGLPolylineFeature)
+					{
+						ifeat = new PolylineFeature();
+						(ifeat as PolylineFeature).Title = ((MGLPolylineFeature)feature).Title;
+						(ifeat as PolylineFeature).SubTitle = ((MGLPolylineFeature)feature).Subtitle;
+					}
+					else if (feature is MGLMultiPolylineFeature)
+					{
+						ifeat = new MultiPolylineFeature();
+						(ifeat as MultiPolylineFeature).Title = ((MGLMultiPolylineFeature)feature).Title;
+						(ifeat as MultiPolylineFeature).SubTitle = ((MGLMultiPolylineFeature)feature).Subtitle;
+					}
+					if (ifeat != null)
+					{
+						(ifeat as Annotation).Id = id;
+						ifeat.Attributes = ConvertDictionary(feature.Attributes);
+						output.Add(ifeat);
+					}
+				}
+
+				return output.ToArray();
+			};
+
+		}
+
+		NSSet SelectableLayersFromSources(string[] layersId)
+		{
+			if (layersId == null)
+			{
+				return null;
+			}
+			NSMutableSet output = new NSMutableSet();
+			foreach (string layerId in layersId)
+			{
+				var acceptedId = layerId.Replace("_", "-");
+				output.Add((NSString)acceptedId);
+				output.Add((NSString)(acceptedId + " (1)"));
+			}
+			return output;
 		}
 
 		void AddAnnotation(Annotation annotation)
@@ -412,5 +510,45 @@ namespace Naxam.Mapbox.Platform.iOS
 		}
 
 		#endregion
+
+		Dictionary<string, object> ConvertDictionary(NSDictionary fromDict)
+		{
+			var output = new Dictionary<string, object>();
+			foreach (NSString key in fromDict.Keys)
+			{
+				if (fromDict[key] is NSString)
+				{
+					var str = fromDict[key] as NSString;
+					if (str == "<NULL>")
+					{
+						continue;
+					}
+					output[key] = str;
+				}
+				else if (fromDict[key] is NSNumber)
+				{
+					output[key] = (fromDict[key] as NSNumber).DoubleValue;
+				}
+				else if (fromDict[key] is NSDate)
+				{
+					output[key] = (fromDict[key] as NSDate).ToDateTimeOffset();
+				}
+				else {
+					output[key] = fromDict[key].ToString();
+				}
+			}
+			return output;
+		}
 	} 
+
+	public static class NSDateExtensions
+	{
+		private static DateTime _nsRef = new DateTime(2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Local); // last zero is millisecond
+
+		public static DateTimeOffset ToDateTimeOffset(this NSDate date)
+		{
+			var interval = date.SecondsSinceReferenceDate;
+			return _nsRef.AddSeconds(interval);
+		}
+	}
 }

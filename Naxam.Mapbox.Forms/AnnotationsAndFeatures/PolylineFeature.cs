@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace Naxam.Mapbox.Forms
 {
-	public class PointFeature: PointAnnotation, IFeature
+	public class PolylineFeature: PolylineAnnotation, IFeature
 	{
-		public PointFeature()
+		public PolylineFeature()
 		{
 		}
 
-		public PointFeature(PointAnnotation annotation)
+		public PolylineFeature(PolylineAnnotation annotation)
 		{
 			Id = annotation.Id;
 			Title = annotation.Title;
 			SubTitle = annotation.SubTitle;
-			Coordinate = annotation.Coordinate;
+			Coordinates = annotation.Coordinates;
 		}
 
 		public Dictionary<string, object> Attributes

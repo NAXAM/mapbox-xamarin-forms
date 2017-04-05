@@ -40,6 +40,7 @@ namespace Naxam.Mapbox.Forms
 			get {
 				if (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(Owner))
 				{
+					
 					return "mapbox://styles/" + Owner + "/" + Id;
 				}
 				return null;
@@ -75,11 +76,11 @@ namespace Naxam.Mapbox.Forms
 				var segments = (new Uri(urlString)).Segments;
 				if (string.IsNullOrEmpty(Id) && segments.Length != 0)
 				{
-					Id = segments[segments.Length - 1];
+					Id = segments[segments.Length - 1].Trim('/');
 				}
 				if (string.IsNullOrEmpty(Owner) && segments.Length > 1)
 				{
-					Owner = segments[segments.Length - 2];
+					Owner = segments[segments.Length - 2].Trim('/');
 				}
 			}
 		}

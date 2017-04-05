@@ -290,6 +290,25 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
+		public static readonly BindableProperty GetFeaturesAroundPointProperty = BindableProperty.Create(
+			nameof(GetFeaturesAroundPoint),
+			typeof(Func<Point, double, string[], IFeature[]>),
+			typeof(MapView),
+			default(Func<Point, double, string[], IFeature[]>),
+			defaultBindingMode: BindingMode.OneWayToSource);
+
+		public Func<Point, double, string[], IFeature[]> GetFeaturesAroundPoint
+		{
+			get
+			{
+				return ((Func<Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointProperty));
+			}
+			set
+			{
+				SetValue(GetFeaturesAroundPointProperty, value);
+			}
+		}
+
 		public static readonly BindableProperty DidTapOnMapCommandProperty = BindableProperty.Create(
 			nameof(DidTapOnMapCommand),
 			typeof(ICommand),

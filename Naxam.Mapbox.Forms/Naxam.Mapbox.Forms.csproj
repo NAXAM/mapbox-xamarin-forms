@@ -39,8 +39,10 @@
     <Compile Include="AnnotationsAndFeatures\PolylineAnnotation.cs" />
     <Compile Include="AnnotationsAndFeatures\MultiPolylineAnnotation.cs" />
     <Compile Include="AnnotationsAndFeatures\Annotation.cs" />
-    <Compile Include="AnnotationsAndFeatures\Feature.cs" />
+    <Compile Include="AnnotationsAndFeatures\IFeature.cs" />
     <Compile Include="AnnotationsAndFeatures\PointFeature.cs" />
+    <Compile Include="AnnotationsAndFeatures\PolylineFeature.cs" />
+    <Compile Include="AnnotationsAndFeatures\MultiPolylineFeature.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

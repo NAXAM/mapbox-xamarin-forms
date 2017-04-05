@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Naxam.Mapbox.Forms
 {
-	public interface Feature
+	public interface IFeature
 	{
 		Dictionary<string, object> Attributes
 		{
