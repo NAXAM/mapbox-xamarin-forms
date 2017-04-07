@@ -114,7 +114,7 @@ namespace Naxam.Mapbox.Platform.Droid
                 Element.IsMarkerClicked = true;
             };
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
-            map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
+           map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
             SetupFunctions();
         }
@@ -125,7 +125,7 @@ namespace Naxam.Mapbox.Platform.Droid
             {
                 var output = new List<IFeature>();
                 RectF rect = new RectF((float)(point.X - radius/2), (float)(point.Y - radius / 2),(float)radius,(float)radius);
-                var listFeatures = map.QueryRenderedFeatures(rect, null);
+                var listFeatures = map.QueryRenderedFeatures(rect, layers);
                 if (listFeatures.Count != 0)
                 {
                     IFeature ifeat = null;
@@ -133,14 +133,21 @@ namespace Naxam.Mapbox.Platform.Droid
                     {
                         System.Diagnostics.Debug.WriteLine(feature.ToJson());
                         string id = feature.Id;
-                        if (id == null || output.Any((arg) => (arg as Annotation).Id == id))
+                        if (id == null || output.Any((arg) =>
+                        {
+                            var annotation = arg as Annotation;
+                            return annotation != null && annotation.Id == id;
+                        }))
                         {
                             continue;
                         }
                         if (feature.Geometry is global::Mapbox.Services.Commons.GeoJson.Point)
                         {
                             ifeat = new PointFeature();
-
+                            var pointFeature = feature.Geometry.Coordinates as global::Mapbox.Services.Commons.Models.Position;
+                            if(pointFeature ==null) continue;
+                            ((PointAnnotation)ifeat).Coordinate = new Position(pointFeature.Latitude, pointFeature.Longitude);
+                            AddAnnotation((PointAnnotation)ifeat);
                         }
                         else if (feature.Geometry is LineString)
                         {
@@ -153,11 +160,11 @@ namespace Naxam.Mapbox.Platform.Droid
                         }
                         if (ifeat != null)
                         {
-                            (ifeat as Annotation).Id = feature.Id;
+                          (ifeat as Annotation).Id = feature.Id;
                           ifeat.Attributes = ConvertToDictionary(feature.ToJson());
-
+                            
                         }
-
+                       
                         output.Add(ifeat);
                     }
                 }
@@ -165,6 +172,7 @@ namespace Naxam.Mapbox.Platform.Droid
             };
         }
 
+    
         private Dictionary<string,object> ConvertToDictionary(string featureProperties)
         {
             Dictionary<string, object> objectFeature =
@@ -251,7 +259,7 @@ namespace Naxam.Mapbox.Platform.Droid
                 var annots = new List<PolylineOptions>();
                 foreach (Annotation annot in e.NewItems)
                 {
-                    var shape = ShapeFromAnnotation(annot);
+                    var shape = AddAnnotation(annot);
                     if (shape != null)
                     {
                         // annots.Add(shape);
@@ -296,11 +304,11 @@ namespace Naxam.Mapbox.Platform.Droid
         {
             foreach (Annotation at in annotations)
             {
-                var shape = ShapeFromAnnotation(at);
+                var shape = AddAnnotation(at);
             }
         }
 
-        private Sdk.Annotations.Annotation ShapeFromAnnotation(Annotation at)
+        private Sdk.Annotations.Annotation AddAnnotation(Annotation at)
         {
             Sdk.Annotations.Annotation options = null;
             if (at is PointAnnotation)
@@ -371,13 +379,11 @@ namespace Naxam.Mapbox.Platform.Droid
             }
         }
 
-        private Marker AddMarkerAddress(LatLng latLng)
-        {
-            var options = new MarkerOptions();
-            options.SetPosition(latLng);
-            return map.AddMarker(options);
-        }
     }
+
+    #region Map Fragment
+
+    
 
     //Fragment MapView
     public class MapViewFragment : Android.Support.V4.App.Fragment, Sdk.Maps.IOnMapReadyCallback,View.IOnTouchListener
@@ -452,11 +458,6 @@ namespace Naxam.Mapbox.Platform.Droid
             return false;
         }
     }
-
-    public class MapboxMaoTouchEvenArgs : EventArgs
-    {
-        
-    }
     public class MapboxMapReadyEventArgs : EventArgs
     {
         public Sdk.Maps.MapboxMap Map { get; private set; }
@@ -466,4 +467,6 @@ namespace Naxam.Mapbox.Platform.Droid
             Map = map;
         }
     }
+
+    #endregion
 }
