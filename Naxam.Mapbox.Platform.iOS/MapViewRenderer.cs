@@ -18,18 +18,6 @@ namespace Naxam.Mapbox.Platform.iOS
 {
 	public class MapViewRenderer : ViewRenderer<Naxam.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
 	{
-		//private Func<byte[]> captureMapview = () =>
-		//{
-		//	var image = MapView.Capture(true);
-		//	var imageData = image.AsJPEG();
-		//	Byte[] imgByteArray = new Byte[imageData.Length];
-		//	System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
-		//												imgByteArray,
-		//												0,
-		//	                                            Convert.ToInt32(imageData.Length));
-		//	return imgByteArray;
-		//};
-
 		MGLMapView MapView { get; set; }
 
 		protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
@@ -231,23 +219,74 @@ namespace Naxam.Mapbox.Platform.iOS
 						ifeat = new PointFeature();
 						(ifeat as PointFeature).Title = ((MGLPointFeature)feature).Title;
 						(ifeat as PointFeature).SubTitle = ((MGLPointFeature)feature).Subtitle;
+						(ifeat as PointFeature).Coordinate = TypeConverter.FromCoordinateToPosition(((MGLPointFeature)feature).Coordinate);
 					}
-					else if (feature is MGLPolylineFeature)
+					else
 					{
-						ifeat = new PolylineFeature();
-						(ifeat as PolylineFeature).Title = ((MGLPolylineFeature)feature).Title;
-						(ifeat as PolylineFeature).SubTitle = ((MGLPolylineFeature)feature).Subtitle;
+						var geometry = geoData["geometry"];
+						NSArray coorArr = null;
+						var coordinates = (geometry as NSDictionary)["coordinates"];
+						if (coordinates != null && coordinates is NSArray)
+						{
+							coorArr = coordinates as NSArray;
+						}
+						if (feature is MGLPolylineFeature)
+						{
+							ifeat = new PolylineFeature();
+							(ifeat as PolylineFeature).Title = ((MGLPolylineFeature)feature).Title;
+							(ifeat as PolylineFeature).SubTitle = ((MGLPolylineFeature)feature).Subtitle;
+
+							if (coorArr != null)
+							{
+								(ifeat as PolylineFeature).Coordinates = new Position[coorArr.Count];
+								for (nuint i = 0; i < coorArr.Count; i++)
+								{
+									var childArr = coorArr.GetItem<NSArray>(i);
+									if (childArr != null && childArr.Count == 2)
+									{
+										var coord = new Position(childArr.GetItem<NSNumber>(1).DoubleValue, //lat
+																childArr.GetItem<NSNumber>(0).DoubleValue); //long
+										(ifeat as PolylineFeature).Coordinates[i] = coord;
+									}
+								}
+							}
+
+						}
+						else if (feature is MGLMultiPolylineFeature)
+						{
+							ifeat = new MultiPolylineFeature();
+							(ifeat as MultiPolylineFeature).Title = ((MGLMultiPolylineFeature)feature).Title;
+							(ifeat as MultiPolylineFeature).SubTitle = ((MGLMultiPolylineFeature)feature).Subtitle;
+							if (coorArr != null)
+							{
+								(ifeat as MultiPolylineFeature).Coordinates = new Position[coorArr.Count][];
+								for (nuint i = 0; i < coorArr.Count; i++)
+								{
+									var childArr = coorArr.GetItem<NSArray>(i);
+									if (childArr != null)
+									{
+										(ifeat as MultiPolylineFeature).Coordinates[i] = new Position[childArr.Count];
+										for (nuint j = 0; j < childArr.Count; j++)
+										{
+											var anscArr = childArr.GetItem<NSArray>(j);
+											if (anscArr != null && anscArr.Count == 2)
+											{
+												(ifeat as MultiPolylineFeature).Coordinates[i][j] = new Position(anscArr.GetItem<NSNumber>(1).DoubleValue, //lat
+																												anscArr.GetItem<NSNumber>(0).DoubleValue);
+											}
+										}
+									}
+								}
+							}
+						}
 					}
-					else if (feature is MGLMultiPolylineFeature)
-					{
-						ifeat = new MultiPolylineFeature();
-						(ifeat as MultiPolylineFeature).Title = ((MGLMultiPolylineFeature)feature).Title;
-						(ifeat as MultiPolylineFeature).SubTitle = ((MGLMultiPolylineFeature)feature).Subtitle;
-					}
+
 					if (ifeat != null)
 					{
 						(ifeat as Annotation).Id = id;
 						ifeat.Attributes = ConvertDictionary(feature.Attributes);
+
+
 						output.Add(ifeat);
 					}
 				}
@@ -535,7 +574,7 @@ namespace Naxam.Mapbox.Platform.iOS
 					{
 						continue;
 					}
-					output[key] = str;
+					output[key] = (string)str;
 				}
 				else if (fromDict[key] is NSNumber)
 				{
