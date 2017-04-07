@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
@@ -15,13 +16,20 @@ using Mapbox.Sdk.Annotations;
 using Mapbox.Sdk.Camera;
 using Mapbox.Sdk.Geometry;
 using Mapbox.Sdk.Maps;
+using Mapbox.Services.Commons.GeoJson;
 
 using Naxam.Mapbox.Forms;
 using Naxam.Mapbox.Platform.Droid;
 
+using Newtonsoft.Json;
+
 using Annotation = Naxam.Mapbox.Forms.Annotation;
 using MapView = Naxam.Mapbox.Forms.MapView;
-using Sdk = Mapbox.Sdk; //alias
+using Point = Xamarin.Forms.Point;
+using Sdk = Mapbox.Sdk;
+using View = Android.Views.View;
+
+//alias
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Mapbox.Forms.MapView), typeof(MapViewRenderer))]
 
@@ -46,6 +54,7 @@ namespace Naxam.Mapbox.Platform.Droid
             {
                 //Remove event handlers
                 fragment.MapReady -= MapReady;
+                fragment.MapTouch -= MapTouch;
             }
 
             if (e.NewElement == null)
@@ -59,13 +68,18 @@ namespace Naxam.Mapbox.Platform.Droid
                 var activity = (AppCompatActivity)Context;
                 fragment = (MapViewFragment)activity.SupportFragmentManager.FindFragmentById(Resource.Id.map);
                 fragment.MapReady += MapReady;
+                fragment.MapTouch += MapTouch;
                 _currentCamera = new Position();
                 SetNativeControl(view);
             }
         }
 
         Sdk.Maps.MapboxMap map;
-
+        private Point _point;
+        void MapTouch(object sender, MotionEvent e)
+        {
+            _point = new Point(e.GetX(), e.GetY());
+        }
         void MapReady(object sender, MapboxMapReadyEventArgs e)
         {
             map = e.Map;
@@ -89,6 +103,8 @@ namespace Naxam.Mapbox.Platform.Droid
             {
                 // Need to be false to hide searchbar in view
                 Element.IsTouchInMap = false;
+                Element.DidTapOnMapCommand?.Execute(new Tuple<Position, Point>(new Position(args.P0.Latitude,args.P0.Longitude), 
+                                                                                   new Point(_point.X, _point.Y)));
             };
 
             map.MarkerClick += delegate(object o, MapboxMap.MarkerClickEventArgs args)
@@ -99,6 +115,62 @@ namespace Naxam.Mapbox.Platform.Droid
             };
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
+
+            SetupFunctions();
+        }
+
+        private void SetupFunctions()
+        {
+            Element.GetFeaturesAroundPoint += delegate(Point point, double radius, string[] layers)
+            {
+                var output = new List<IFeature>();
+                RectF rect = new RectF((float)(point.X - radius/2), (float)(point.Y - radius / 2),(float)radius,(float)radius);
+                var listFeatures = map.QueryRenderedFeatures(rect, null);
+                if (listFeatures.Count != 0)
+                {
+                    IFeature ifeat = null;
+                    foreach (Feature feature in listFeatures)
+                    {
+                        System.Diagnostics.Debug.WriteLine(feature.ToJson());
+                        string id = feature.Id;
+                        if (id == null || output.Any((arg) => (arg as Annotation).Id == id))
+                        {
+                            continue;
+                        }
+                        if (feature.Geometry is global::Mapbox.Services.Commons.GeoJson.Point)
+                        {
+                            ifeat = new PointFeature();
+
+                        }
+                        else if (feature.Geometry is LineString)
+                        {
+                            ifeat = new PolylineFeature();
+                        }
+                        else if (feature.Geometry is MultiLineString)
+                        {
+                            ifeat = new MultiPolylineFeature();
+
+                        }
+                        if (ifeat != null)
+                        {
+                            (ifeat as Annotation).Id = feature.Id;
+                          ifeat.Attributes = ConvertToDictionary(feature.ToJson());
+
+                        }
+
+                        output.Add(ifeat);
+                    }
+                }
+                return output.ToArray();
+            };
+        }
+
+        private Dictionary<string,object> ConvertToDictionary(string featureProperties)
+        {
+            Dictionary<string, object> objectFeature =
+                    JsonConvert.DeserializeObject<Dictionary<string, object>>(featureProperties);
+            var result = JsonConvert.DeserializeObject<Dictionary<string, object>>(objectFeature["properties"].ToString());
+            return result;
         }
 
         #region SetupEnvent
@@ -308,9 +380,10 @@ namespace Naxam.Mapbox.Platform.Droid
     }
 
     //Fragment MapView
-    public class MapViewFragment : Android.Support.V4.App.Fragment, Sdk.Maps.IOnMapReadyCallback
+    public class MapViewFragment : Android.Support.V4.App.Fragment, Sdk.Maps.IOnMapReadyCallback,View.IOnTouchListener
     {
         public event EventHandler<MapboxMapReadyEventArgs> MapReady;
+        public event EventHandler<MotionEvent> MapTouch;
 
         public MapViewFragment(IntPtr javaReference, JniHandleOwnership transfer)
             : base(javaReference, transfer)
@@ -332,7 +405,7 @@ namespace Naxam.Mapbox.Platform.Droid
                 ViewGroup.LayoutParams.MatchParent);
 
             mapView.GetMapAsync(this);
-
+           
             return mapView;
         }
 
@@ -372,8 +445,18 @@ namespace Naxam.Mapbox.Platform.Droid
 
             //throw new NotImplementedException();
         }
+
+        public bool OnTouch(View v, MotionEvent e)
+        {
+            MapTouch?.Invoke(this,e);
+            return false;
+        }
     }
 
+    public class MapboxMaoTouchEvenArgs : EventArgs
+    {
+        
+    }
     public class MapboxMapReadyEventArgs : EventArgs
     {
         public Sdk.Maps.MapboxMap Map { get; private set; }
