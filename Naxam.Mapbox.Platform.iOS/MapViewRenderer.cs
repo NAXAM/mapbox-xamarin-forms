@@ -574,7 +574,7 @@ namespace Naxam.Mapbox.Platform.iOS
 					{
 						continue;
 					}
-					output[key] = str;
+					output[key] = (string)str;
 				}
 				else if (fromDict[key] is NSNumber)
 				{
