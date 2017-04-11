@@ -52,51 +52,56 @@ namespace Naxam.Mapbox.Platform.iOS
 			{
 				return;
 			}
-			if (e.PropertyName == FormsMap.CenterProperty.PropertyName)
-			{
-				UpdateCenter();
-			}
-			else if (e.PropertyName == FormsMap.ZoomLevelProperty.PropertyName && MapView.ZoomLevel != Element.ZoomLevel)
-			{
-				//MapView.SetZoomLevel(Element.ZoomLevel, true);
-				MapView.ZoomLevel = Element.ZoomLevel;
-			}
-			else if (e.PropertyName == FormsMap.PitchEnabledProperty.PropertyName && MapView.PitchEnabled != Element.PitchEnabled)
-			{
-				MapView.PitchEnabled = Element.PitchEnabled;
-			}
-			else if (e.PropertyName == FormsMap.RotateEnabledProperty.PropertyName && MapView.RotateEnabled != Element.RotateEnabled)
-			{
-				MapView.RotateEnabled = Element.RotateEnabled;
-			}
-			else if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName)
-			{
-				RemoveAllAnnotations();
-				if (Element.Annotations != null)
-				{
-					AddAnnotations(Element.Annotations.ToArray());
-					var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-					if (notifyCollection != null)
-					{
-						notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-					}
-				}
-			}
-			//else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName
-			//		 && !string.IsNullOrEmpty(Element.StyleUrl)
-			//		   && (MapView.StyleURL == null
-			//			   || MapView.StyleURL.AbsoluteString != Element.StyleUrl))
-			//{
-			//	MapView.StyleURL = new NSUrl(Element.StyleUrl);
-			//}
-			else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
-			         && Element.MapStyle != null
-			         && !string.IsNullOrEmpty(Element.MapStyle.UrlString)
-					&& (MapView.StyleURL == null
-			            || MapView.StyleURL.AbsoluteString != Element.MapStyle.UrlString))
-			{
-				MapView.StyleURL = new NSUrl(Element.MapStyle.UrlString);
-			}
+            if (e.PropertyName == FormsMap.CenterProperty.PropertyName) {
+                UpdateCenter ();
+            } else if (e.PropertyName == FormsMap.ZoomLevelProperty.PropertyName
+                       && !Element.ZoomLevel.Equals (MapView.ZoomLevel)) {
+                //MapView.SetZoomLevel(Element.ZoomLevel, true);
+                MapView.ZoomLevel = Element.ZoomLevel;
+            } else if (e.PropertyName == FormsMap.PitchEnabledProperty.PropertyName && MapView.PitchEnabled != Element.PitchEnabled) {
+                MapView.PitchEnabled = Element.PitchEnabled;
+            } else if (e.PropertyName == FormsMap.RotateEnabledProperty.PropertyName && MapView.RotateEnabled != Element.RotateEnabled) {
+                MapView.RotateEnabled = Element.RotateEnabled;
+            } else if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName) {
+                RemoveAllAnnotations ();
+                if (Element.Annotations != null) {
+                    AddAnnotations (Element.Annotations.ToArray ());
+                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
+                    if (notifyCollection != null) {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
+                }
+            }
+              //else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName
+              //		 && !string.IsNullOrEmpty(Element.StyleUrl)
+              //		   && (MapView.StyleURL == null
+              //			   || MapView.StyleURL.AbsoluteString != Element.StyleUrl))
+              //{
+              //	MapView.StyleURL = new NSUrl(Element.StyleUrl);
+              //}
+              else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
+                       && Element.MapStyle != null
+                       && !string.IsNullOrEmpty (Element.MapStyle.UrlString)
+                      && (MapView.StyleURL == null
+                          || MapView.StyleURL.AbsoluteString != Element.MapStyle.UrlString)) {
+                MapView.StyleURL = new NSUrl (Element.MapStyle.UrlString);
+            } else if (e.PropertyName == FormsMap.PitchProperty.PropertyName
+                       && !Element.Pitch.Equals (MapView.Camera.Pitch)) {
+                var currentCamera = MapView.Camera;
+                var newCamera = MGLMapCamera.CameraLookingAtCenterCoordinate (currentCamera.CenterCoordinate,
+                                                                             currentCamera.Altitude,
+                                                                              (nfloat)Element.Pitch,
+                                                                             currentCamera.Heading);
+                MapView.SetCamera (newCamera, true);
+            } else if (e.PropertyName == FormsMap.RotatedDegreeProperty.PropertyName
+                       && !Element.RotatedDegree.Equals(MapView.Camera.Heading)) {
+                var currentCamera = MapView.Camera;
+                var newCamera = MGLMapCamera.CameraLookingAtCenterCoordinate (currentCamera.CenterCoordinate,
+    												                          currentCamera.Altitude,
+                                                                              currentCamera.Pitch,
+                                                                              (nfloat)Element.RotatedDegree);
+                MapView.SetCamera (newCamera, true);
+            }
 		}
 
 		void SetupUserInterface()
@@ -540,6 +545,8 @@ namespace Naxam.Mapbox.Platform.iOS
 		void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
 		{
 			Element.ZoomLevel = mapView.ZoomLevel;
+            Element.Pitch = (double)mapView.Camera.Pitch;
+            Element.RotatedDegree = (double)mapView.Camera.Heading;
 		}
 
 		[Export("mapView:annotationCanShowCallout:"),]
