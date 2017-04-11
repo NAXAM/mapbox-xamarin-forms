@@ -163,6 +163,22 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
+        public static readonly BindableProperty PitchProperty = BindableProperty.Create (
+        	nameof (Pitch),
+        	typeof (double),
+        	typeof (MapView),
+        	0.0,
+        	BindingMode.TwoWay);
+
+        public double Pitch {
+        	get {
+        		return (double)GetValue (PitchProperty);
+        	}
+        	set {
+                SetValue (PitchProperty, (double)value);
+            }
+         }
+
 		public static readonly BindableProperty PitchEnabledProperty = BindableProperty.Create(
 			nameof(PitchEnabled),
 			typeof(bool),
@@ -200,6 +216,22 @@ namespace Naxam.Mapbox.Forms
 				SetValue(RotateEnabledProperty, (bool)value);
 			}
 		}
+
+        public static readonly BindableProperty RotatedDegreeProperty = BindableProperty.Create (
+        	nameof (RotatedDegree),
+        	typeof (double),
+        	typeof (MapView),
+        	0.0,
+        	BindingMode.TwoWay);
+
+        public double RotatedDegree {
+        	get {
+        		return (double)GetValue (RotatedDegreeProperty);
+        	}
+        	set {
+                SetValue (RotatedDegreeProperty, (double)value);
+            }
+        }
 
 		//public static readonly BindableProperty StyleUrlProperty = BindableProperty.Create(
 		//	nameof(StyleUrl),
