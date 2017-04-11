@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 
 using Android.Graphics;
@@ -9,7 +11,9 @@ using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 
+using Java.IO;
 using Java.Lang;
+using Java.Security;
 using Java.Util;
 
 using Mapbox.Sdk.Annotations;
@@ -24,6 +28,8 @@ using Naxam.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 
 using Annotation = Naxam.Mapbox.Forms.Annotation;
+using Bitmap = Android.Graphics.Bitmap;
+using Byte = System.Byte;
 using MapView = Naxam.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Mapbox.Sdk;
@@ -35,7 +41,7 @@ using View = Android.Views.View;
 
 namespace Naxam.Mapbox.Platform.Droid
 {
-    public class MapViewRenderer : Xamarin.Forms.Platform.Android.ViewRenderer<Naxam.Mapbox.Forms.MapView, View>
+    public class MapViewRenderer : Xamarin.Forms.Platform.Android.ViewRenderer<Naxam.Mapbox.Forms.MapView, View>,MapboxMap.ISnapshotReadyCallback
     {
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
@@ -75,6 +81,7 @@ namespace Naxam.Mapbox.Platform.Droid
         }
 
         Sdk.Maps.MapboxMap map;
+        private Sdk.Maps.MapView _mapview;
         private Point _point;
         void MapTouch(object sender, MotionEvent e)
         {
@@ -83,6 +90,7 @@ namespace Naxam.Mapbox.Platform.Droid
         void MapReady(object sender, MapboxMapReadyEventArgs e)
         {
             map = e.Map;
+            _mapview = e.MapView;
             map.MyLocationEnabled = true;
             // Element.Center = new Position();
             map.MyLocationChange += delegate(object o, MapboxMap.MyLocationChangeEventArgs args)
@@ -106,21 +114,35 @@ namespace Naxam.Mapbox.Platform.Droid
                 Element.DidTapOnMapCommand?.Execute(new Tuple<Position, Point>(new Position(args.P0.Latitude,args.P0.Longitude), 
                                                                                    new Point(_point.X, _point.Y)));
             };
-
             map.MarkerClick += delegate(object o, MapboxMap.MarkerClickEventArgs args)
             {
                 Element.Center.Lat = args.P0.Position.Latitude;
                 Element.Center.Long = args.P0.Position.Longitude;
                 Element.IsMarkerClicked = true;
+                if (
+                Element.CanShowCalloutChecker.Invoke(
+                    _annotationDictionaries.FirstOrDefault(x => x.Value == args.P0 as Sdk.Annotations.Annotation).Key))
+                {
+                    args.P0.ShowInfoWindow(map, _mapview);
+                }
+
             };
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
            map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
             SetupFunctions();
         }
-
-        private void SetupFunctions()
+       
+        public void SetupFunctions()
         {
+
+            Element.TakeSnapshot = () =>
+            {
+                map.Snapshot(this);
+                return result;
+            };
+
+
             Element.GetFeaturesAroundPoint += delegate(Point point, double radius, string[] layers)
             {
                 var output = new List<IFeature>();
@@ -314,6 +336,8 @@ namespace Naxam.Mapbox.Platform.Droid
             if (at is PointAnnotation)
             {
                 var marker = new MarkerOptions();
+                marker.SetTitle(at.Title) ;
+                marker.SetSnippet(at.Title) ;
                 marker.SetPosition(new LatLng(((PointAnnotation)at).Coordinate.Lat,
                     ((PointAnnotation)at).Coordinate.Long));
                 options = map.AddMarker(marker);
@@ -379,6 +403,17 @@ namespace Naxam.Mapbox.Platform.Droid
             }
         }
 
+        private byte[] result;
+        public void OnSnapshotReady(Bitmap bmp)
+        {
+            MemoryStream stream = new MemoryStream();
+            bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
+            result = stream.ToArray();
+            //            var converter = new ImageConverter();
+            //           result =  (byte[])converter.ConvertTo(bmp, typeof(byte[]));
+        }
+
+       
     }
 
     #region Map Fragment
@@ -447,7 +482,7 @@ namespace Naxam.Mapbox.Platform.Droid
 
         public void OnMapReady(Sdk.Maps.MapboxMap p0)
         {
-            MapReady?.Invoke(this, new MapboxMapReadyEventArgs(p0));
+            MapReady?.Invoke(this, new MapboxMapReadyEventArgs(p0,mapView));
 
             //throw new NotImplementedException();
         }
@@ -461,9 +496,10 @@ namespace Naxam.Mapbox.Platform.Droid
     public class MapboxMapReadyEventArgs : EventArgs
     {
         public Sdk.Maps.MapboxMap Map { get; private set; }
-
-        public MapboxMapReadyEventArgs(Sdk.Maps.MapboxMap map)
+        public Sdk.Maps.MapView MapView { get; private set; }
+        public MapboxMapReadyEventArgs(Sdk.Maps.MapboxMap map,Sdk.Maps.MapView mapview)
         {
+            MapView = mapview;
             Map = map;
         }
     }
