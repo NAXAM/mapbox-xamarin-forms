@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Forms
 { 
@@ -9,7 +11,7 @@ namespace Naxam.Mapbox.Forms
 	}
 
 	[Preserve(AllMembers = true)]
-	public class MapStyle
+	public class MapStyle: BindableObject
 	{
 			public string Id
 		{
@@ -84,5 +86,21 @@ namespace Naxam.Mapbox.Forms
 				}
 			}
 		}
+
+        public static readonly BindableProperty CustomSourcesProperty = BindableProperty.Create (
+        		   nameof (CustomSources),
+           typeof (IEnumerable<ShapeSource>),
+           typeof (MapView),
+           default (IEnumerable<ShapeSource>),
+        		   BindingMode.TwoWay);
+
+        public IEnumerable<ShapeSource> CustomSources {
+        	get {
+        		return (IEnumerable<ShapeSource>)GetValue (CustomSourcesProperty);
+        	}
+        	set {
+        		SetValue (CustomSourcesProperty, (IList<ShapeSource>)value);
+            }
+        }
 	}
 }

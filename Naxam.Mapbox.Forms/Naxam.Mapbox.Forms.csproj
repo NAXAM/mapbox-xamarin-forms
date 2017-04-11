@@ -43,6 +43,7 @@
     <Compile Include="AnnotationsAndFeatures\PointFeature.cs" />
     <Compile Include="AnnotationsAndFeatures\PolylineFeature.cs" />
     <Compile Include="AnnotationsAndFeatures\MultiPolylineFeature.cs" />
+    <Compile Include="ShapeSource.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

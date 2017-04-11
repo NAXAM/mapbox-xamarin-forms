@@ -12,6 +12,7 @@ using FormsMB = Naxam.Mapbox.Forms;
 using System.Collections.Specialized;
 using UIKit;
 using Xamarin.Forms;
+using System.ComponentModel;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Mapbox.Forms.MapView), typeof(Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Mapbox.Platform.iOS
@@ -44,7 +45,7 @@ namespace Naxam.Mapbox.Platform.iOS
 			}
 		}
 
-		protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			base.OnElementPropertyChanged(sender, e);
 
@@ -63,7 +64,6 @@ namespace Naxam.Mapbox.Platform.iOS
             } else if (e.PropertyName == FormsMap.RotateEnabledProperty.PropertyName && MapView.RotateEnabled != Element.RotateEnabled) {
                 MapView.RotateEnabled = Element.RotateEnabled;
             } else if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName) {
-                RemoveAllAnnotations ();
                 if (Element.Annotations != null) {
                     AddAnnotations (Element.Annotations.ToArray ());
                     var notifyCollection = Element.Annotations as INotifyCollectionChanged;
@@ -84,7 +84,7 @@ namespace Naxam.Mapbox.Platform.iOS
                        && !string.IsNullOrEmpty (Element.MapStyle.UrlString)
                       && (MapView.StyleURL == null
                           || MapView.StyleURL.AbsoluteString != Element.MapStyle.UrlString)) {
-                MapView.StyleURL = new NSUrl (Element.MapStyle.UrlString);
+                UpdateMapStyle ();
             } else if (e.PropertyName == FormsMap.PitchProperty.PropertyName
                        && !Element.Pitch.Equals (MapView.Camera.Pitch)) {
                 var currentCamera = MapView.Camera;
@@ -104,7 +104,23 @@ namespace Naxam.Mapbox.Platform.iOS
             }
 		}
 
-		void SetupUserInterface()
+        void OnElementPropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        {
+            if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName
+                && Element.Annotations != null) {
+                RemoveAllAnnotations ();
+                var notifyCollection = Element.Annotations as INotifyCollectionChanged;
+                if (notifyCollection != null) {
+                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                }
+            } else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
+                       && Element.MapStyle != null) {
+                Element.MapStyle.PropertyChanging -= OnMapStylePropertyChanging;
+                Element.MapStyle.PropertyChanged -= OnMapStylePropertyChanged;
+            }
+        }
+
+        void SetupUserInterface()
 		{
 			try
 			{
@@ -117,10 +133,7 @@ namespace Naxam.Mapbox.Platform.iOS
 				};
 
 				MapView.ZoomLevel = Element.ZoomLevel;
-				if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
-				{
-					MapView.StyleURL = new NSUrl(Element.MapStyle.UrlString);
-				}
+                UpdateMapStyle ();
 				UpdateCenter();
 			}
 			catch (Exception ex)
@@ -139,7 +152,49 @@ namespace Naxam.Mapbox.Platform.iOS
 			}
 		}
 
-		void SetupEventHandlers()
+        void UpdateMapStyle ()
+        {
+            if (Element.MapStyle != null && !string.IsNullOrEmpty (Element.MapStyle.UrlString)) {
+                MapView.StyleURL = new NSUrl (Element.MapStyle.UrlString);
+                Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
+                 Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
+                if (Element.MapStyle.CustomSources != null) {
+                    var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+                    if (notifiyCollection != null) {
+                        notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+                    }
+                    AddSources (Element.MapStyle.CustomSources.ToList());
+                }
+            }
+
+        }
+
+        void OnMapStylePropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        {
+            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName 
+                && (sender as MapStyle).CustomSources != null) {
+                var notifiyCollection = (sender as MapStyle).CustomSources as INotifyCollectionChanged;
+                if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
+                }
+                RemoveSources (Element.MapStyle.CustomSources.ToList());
+            }
+        }
+
+        void OnMapStylePropertyChanged (object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName 
+                && (sender as MapStyle).CustomSources != null) {
+                    var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+                    if (notifiyCollection != null) {
+                        notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+                    }
+
+					AddSources (Element.MapStyle.CustomSources.ToList());
+            }
+        }
+
+        void SetupEventHandlers()
 		{
 			var tapGest = new UITapGestureRecognizer();
 			tapGest.NumberOfTapsRequired = 1;
@@ -158,9 +213,10 @@ namespace Naxam.Mapbox.Platform.iOS
 					                                                               new Point( (double) point.X, (double) point.Y)));
 				}
 			});
+            Element.PropertyChanging += OnElementPropertyChanging;
 		}
 
-		void SetupFunctions()
+        void SetupFunctions()
 		{
 			Element.TakeSnapshot = () =>
 			{
@@ -303,6 +359,16 @@ namespace Naxam.Mapbox.Platform.iOS
 			{
 				MapView.ResetPosition();
 			});
+
+            Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) => {
+                if (annotation != null && !string.IsNullOrEmpty (sourceId)) {
+                    var mglSource = MapView.Style.SourceWithIdentifier ((NSString)("NXCustom_" + sourceId));
+                    if (mglSource != null && mglSource is MGLShapeSource) {
+                        (mglSource as MGLShapeSource).Shape = ShapeFromAnnotation(annotation);
+                    }
+                }
+                return false;
+            };
 		}
 
 		NSSet SelectableLayersFromSources(string[] layersId)
@@ -385,33 +451,98 @@ namespace Naxam.Mapbox.Platform.iOS
 
 		private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			if (e.Action == NotifyCollectionChangedAction.Add)
-			{
-				var annots = new List<MGLShape>();
-				foreach (Annotation annot in e.NewItems)
-				{
-					var shape = ShapeFromAnnotation(annot);
-					if (shape != null)
-					{
-						annots.Add(shape);
-					}
-				}
-				MapView.AddAnnotations(annots.ToArray());
-			}
-			else if (e.Action == NotifyCollectionChangedAction.Remove)
-			{
-				var items = new List<Annotation>();
-				foreach (Annotation annot in e.OldItems)
-				{
-					items.Add(annot);
-				}
-				RemoveAnnotations(items.ToArray());
-			}
-			else if (e.Action == NotifyCollectionChangedAction.Reset)
-			{
-				//TODO Update pins
-			}
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                var annots = new List<MGLShape> ();
+                foreach (Annotation annot in e.NewItems) {
+                    var shape = ShapeFromAnnotation (annot);
+                    if (shape != null) {
+                        annots.Add (shape);
+                    }
+                }
+                MapView.AddAnnotations (annots.ToArray ());
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                var items = new List<Annotation> ();
+                foreach (Annotation annot in e.OldItems) {
+                    items.Add (annot);
+                }
+                RemoveAnnotations (items.ToArray ());
+            } else if (e.Action == NotifyCollectionChangedAction.Reset) //The content of the collection was cleared.
+              {
+                RemoveAllAnnotations ();
+            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+                var itemsToRemove = new List<Annotation> ();
+                foreach (Annotation annot in e.OldItems) {
+                    itemsToRemove.Add (annot);
+                }
+				RemoveAnnotations (itemsToRemove.ToArray ());
+                var annots = new List<MGLShape> ();
+                foreach (Annotation annot in e.NewItems) {
+                    var shape = ShapeFromAnnotation (annot);
+                    if (shape != null) {
+                        annots.Add (shape);
+                    }
+                }
+                MapView.AddAnnotations (annots.ToArray ());
+            }
 		}
+
+        void OnShapeSourcesCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                AddSources (e.NewItems);
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                RemoveSources (e.OldItems);
+            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
+                var sourcesToRemove = new List<MGLSource> ();
+                foreach (MGLSource source in MapView.Style.Sources) {
+                    if (source.Identifier.HasPrefix ((NSString)"NXCustom_")) {
+                        sourcesToRemove.Add (source);
+                    }
+                }
+                foreach (MGLSource source in sourcesToRemove) {
+                    MapView.Style.RemoveSource (source);
+
+                }
+                sourcesToRemove.Clear ();
+            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+                RemoveSources (e.OldItems);
+                AddSources (e.NewItems);
+            }
+        }
+
+        void AddSources (System.Collections.IList sources)
+        {
+            if (sources == null) {
+                return;
+            }
+            foreach (ShapeSource source in sources) {
+                if (source.Id != null && source.Shape != null) {
+                    var shape = ShapeFromAnnotation (source.Shape);
+                    var oldSource = MapView.Style.SourceWithIdentifier ((NSString)source.Id);
+                    if (oldSource != null && oldSource is MGLShapeSource) {
+                        (oldSource as MGLShapeSource).Shape = shape;
+                    } else {
+                        var mglSource = new MGLShapeSource ((NSString)("NXCustom_" + source.Id), shape, null);
+                        MapView.Style.AddSource (mglSource);
+                    }
+                }
+            }
+        }
+
+        void RemoveSources (System.Collections.IList sources)
+        {
+            if (sources == null) {
+                return;
+            }
+            foreach (ShapeSource source in sources) {
+                if (source.Id != null) {
+                    var oldSource = MapView.Style.SourceWithIdentifier ((NSString)("NXCustom_" + source.Id)) as MGLShapeSource;
+                    if (oldSource != null) {
+                        MapView.Style.RemoveSource (oldSource);
+                    } 
+                }
+            }
+        }
 
 		MGLShape ShapeFromAnnotation(FormsMB.Annotation annotation)
 		{

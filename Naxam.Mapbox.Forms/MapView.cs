@@ -383,6 +383,21 @@ namespace Naxam.Mapbox.Forms
 			}
 		}
 
+       
+        public static readonly BindableProperty UpdateShapeOfSourceFuncProperty = BindableProperty.Create (
+    nameof (UpdateShapeOfSourceFunc),
+            typeof (Func<Annotation, string, bool>),
+	typeof (MapView),
+	default (Func<Annotation, string, bool>),
+	BindingMode.OneWayToSource);
 
+public Func<Annotation, string, bool> UpdateShapeOfSourceFunc {
+	get {
+		return ((Func<Annotation, string, bool>)GetValue (UpdateShapeOfSourceFuncProperty));
+	}
+	set {
+                SetValue (UpdateShapeOfSourceFuncProperty, value);
+            }
+        }
 	}
 }
