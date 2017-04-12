@@ -161,7 +161,7 @@ namespace Naxam.Mapbox.Platform.iOS
                         notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
                     }
 
-                    AddLayers (Element.MapStyle.CustomSources.ToList ());
+                    AddLayers (Element.MapStyle.CustomLayers.ToList ());
                 }
             }
 
@@ -196,7 +196,7 @@ namespace Naxam.Mapbox.Platform.iOS
                     notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
                 }
 
-                AddLayers (Element.MapStyle.CustomSources.ToList ());
+                AddLayers (Element.MapStyle.CustomLayers.ToList ());
             }
         }
 
@@ -641,15 +641,7 @@ namespace Naxam.Mapbox.Platform.iOS
                 };
             } else if (annotation is PolylineAnnotation) {
                 var polyline = annotation as PolylineAnnotation;
-                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
-                    return null;
-                }
-                var coords = new CLLocationCoordinate2D [polyline.Coordinates.Length];
-                for (var i = 0; i < polyline.Coordinates.Length; i++) {
-                    coords [i] = new CLLocationCoordinate2D (polyline.Coordinates [i].Lat, polyline.Coordinates [i].Long);
-                }
-                var first = coords [0];
-                shape = MGLPolyline.PolylineWithCoordinates (ref first, (uint)coords.Length);
+                shape = PolyLineWithCoordinates (polyline.Coordinates);
             } else if (annotation is MultiPolylineAnnotation) {
                 var polyline = annotation as MultiPolylineAnnotation;
                 if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
@@ -660,12 +652,7 @@ namespace Naxam.Mapbox.Platform.iOS
                     if (polyline.Coordinates [i].Length == 0) {
                         continue;
                     }
-                    var coords = new CLLocationCoordinate2D [polyline.Coordinates [i].Length];
-                    for (var j = 0; j < polyline.Coordinates [i].Length; j++) {
-                        coords [i] = new CLLocationCoordinate2D (polyline.Coordinates [i] [j].Lat, polyline.Coordinates [i] [j].Long);
-                    }
-                    var first = coords [0];
-                    lines [i] = MGLPolyline.PolylineWithCoordinates (ref first, (uint)polyline.Coordinates [i].Length);
+                    lines [i] = PolyLineWithCoordinates(polyline.Coordinates[i]);
                 }
                 shape = MGLMultiPolyline.MultiPolylineWithPolylines (lines);
             }
@@ -682,6 +669,28 @@ namespace Naxam.Mapbox.Platform.iOS
             }
 
             return shape;
+        }
+
+        MGLPolyline PolyLineWithCoordinates (Position[] positions)
+        {
+            if (positions == null || positions.Length == 0) {
+                return null;
+            }
+            var first = new CLLocationCoordinate2D (positions [0].Lat, positions [0].Long);
+            var output = MGLPolyline.PolylineWithCoordinates (ref first, 1);
+            var i = 1;
+            while (i < positions.Length) {
+                var coord = new CLLocationCoordinate2D (positions [i].Lat, positions [i].Long);
+                output.AppendCoordinates (ref coord, 1);
+                i++;
+            }
+            return output;
+            //var coords = new CLLocationCoordinate2D [positions.Length];
+            //for (var i = 0; i<positions.Length; i++) {
+            //    coords [i] = new CLLocationCoordinate2D (positions [i].Lat, positions [i].Long);
+            //}
+            //var first = coords [0];
+            //return MGLPolyline.PolylineWithCoordinates (ref first, (uint)coords.Length);
         }
 
         #region MGLMapViewDelegate
