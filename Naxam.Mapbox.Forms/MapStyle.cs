@@ -102,5 +102,21 @@ namespace Naxam.Mapbox.Forms
         		SetValue (CustomSourcesProperty, (IList<ShapeSource>)value);
             }
         }
+
+        public static readonly BindableProperty CustomLayersProperty = BindableProperty.Create (
+                    nameof (CustomLayers),
+                    typeof (IEnumerable<Layer>),
+                    typeof (MapStyle),
+                    default (IEnumerable<Layer>),
+                    BindingMode.TwoWay);
+
+        public IEnumerable<Layer> CustomLayers {
+            get {
+                return (IEnumerable<Layer>)GetValue (CustomLayersProperty);
+            }
+            set {
+                SetValue (CustomLayersProperty, (IEnumerable<Layer>)value);
+            }
+        }
 	}
 }

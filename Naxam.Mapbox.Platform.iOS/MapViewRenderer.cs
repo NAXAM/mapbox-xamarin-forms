@@ -13,46 +13,41 @@ using System.Collections.Specialized;
 using UIKit;
 using Xamarin.Forms;
 using System.ComponentModel;
+using System.Collections;
 
-[assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Mapbox.Forms.MapView), typeof(Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
+[assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Mapbox.Forms.MapView), typeof (Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Mapbox.Platform.iOS
 {
-	public class MapViewRenderer : ViewRenderer<Naxam.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
-	{
-		MGLMapView MapView { get; set; }
+    public class MapViewRenderer : ViewRenderer<Naxam.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
+    {
+        MGLMapView MapView { get; set; }
 
-		protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
-		{
-			base.OnElementChanged(e);
-			if (e.OldElement != null || Element == null)
-			{
-				return;
-			}
+        protected override void OnElementChanged (ElementChangedEventArgs<MapView> e)
+        {
+            base.OnElementChanged (e);
+            if (e.OldElement != null || Element == null) {
+                return;
+            }
 
-			try
-			{
-				if (Control == null)
-				{
-					SetupUserInterface();
-					SetupEventHandlers();
-					SetupFunctions();
-					SetNativeControl(MapView);
-				}
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"          ERROR: ", ex.Message);
-			}
-		}
+            try {
+                if (Control == null) {
+                    SetupUserInterface ();
+                    SetupEventHandlers ();
+                    SetupFunctions ();
+                    SetNativeControl (MapView);
+                }
+            } catch (Exception ex) {
+                System.Diagnostics.Debug.WriteLine (@"          ERROR: ", ex.Message);
+            }
+        }
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			base.OnElementPropertyChanged(sender, e);
+        protected override void OnElementPropertyChanged (object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged (sender, e);
 
-			if (MapView == null)
-			{
-				return;
-			}
+            if (MapView == null) {
+                return;
+            }
             if (e.PropertyName == FormsMap.CenterProperty.PropertyName) {
                 UpdateCenter ();
             } else if (e.PropertyName == FormsMap.ZoomLevelProperty.PropertyName
@@ -94,15 +89,15 @@ namespace Naxam.Mapbox.Platform.iOS
                                                                              currentCamera.Heading);
                 MapView.SetCamera (newCamera, true);
             } else if (e.PropertyName == FormsMap.RotatedDegreeProperty.PropertyName
-                       && !Element.RotatedDegree.Equals(MapView.Camera.Heading)) {
+                       && !Element.RotatedDegree.Equals (MapView.Camera.Heading)) {
                 var currentCamera = MapView.Camera;
                 var newCamera = MGLMapCamera.CameraLookingAtCenterCoordinate (currentCamera.CenterCoordinate,
-    												                          currentCamera.Altitude,
+                                                                              currentCamera.Altitude,
                                                                               currentCamera.Pitch,
                                                                               (nfloat)Element.RotatedDegree);
                 MapView.SetCamera (newCamera, true);
             }
-		}
+        }
 
         void OnElementPropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
@@ -120,50 +115,53 @@ namespace Naxam.Mapbox.Platform.iOS
             }
         }
 
-        void SetupUserInterface()
-		{
-			try
-			{
-				MapView = new MGLMapView(Bounds)
-				{
-					ShowsUserLocation = true,
-					Delegate = this,
-					PitchEnabled = Element.PitchEnabled,
-					RotateEnabled = Element.RotateEnabled
-				};
+        void SetupUserInterface ()
+        {
+            try {
+                MapView = new MGLMapView (Bounds) {
+                    ShowsUserLocation = true,
+                    Delegate = this,
+                    PitchEnabled = Element.PitchEnabled,
+                    RotateEnabled = Element.RotateEnabled
+                };
 
-				MapView.ZoomLevel = Element.ZoomLevel;
+                MapView.ZoomLevel = Element.ZoomLevel;
                 UpdateMapStyle ();
-				UpdateCenter();
-			}
-			catch (Exception ex)
-			{
-				System.Diagnostics.Debug.WriteLine(@"          ERROR: ", ex.Message);
-			}
-		}
+                UpdateCenter ();
+            } catch (Exception ex) {
+                System.Diagnostics.Debug.WriteLine (@"          ERROR: ", ex.Message);
+            }
+        }
 
-		void UpdateCenter()
-		{
-			if (Element.Center != null
-				&& (!Element.Center.Lat.Equals(MapView.CenterCoordinate.Latitude)
-					|| !Element.Center.Long.Equals(MapView.CenterCoordinate.Longitude)))
-			{
-				MapView.SetCenterCoordinate(new CoreLocation.CLLocationCoordinate2D(Element.Center.Lat, Element.Center.Long), true);
-			}
-		}
+        void UpdateCenter ()
+        {
+            if (Element.Center != null
+                && (!Element.Center.Lat.Equals (MapView.CenterCoordinate.Latitude)
+                    || !Element.Center.Long.Equals (MapView.CenterCoordinate.Longitude))) {
+                MapView.SetCenterCoordinate (new CoreLocation.CLLocationCoordinate2D (Element.Center.Lat, Element.Center.Long), true);
+            }
+        }
 
         void UpdateMapStyle ()
         {
             if (Element.MapStyle != null && !string.IsNullOrEmpty (Element.MapStyle.UrlString)) {
                 MapView.StyleURL = new NSUrl (Element.MapStyle.UrlString);
                 Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
-                 Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
+                Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
                 if (Element.MapStyle.CustomSources != null) {
                     var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
                     if (notifiyCollection != null) {
                         notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
                     }
-                    AddSources (Element.MapStyle.CustomSources.ToList());
+                    AddSources (Element.MapStyle.CustomSources.ToList ());
+                }
+                if (Element.MapStyle.CustomLayers != null) {
+                    var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+                    if (notifiyCollection != null) {
+                        notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+                    }
+
+                    AddLayers (Element.MapStyle.CustomSources.ToList ());
                 }
             }
 
@@ -171,286 +169,284 @@ namespace Naxam.Mapbox.Platform.iOS
 
         void OnMapStylePropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
-            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName 
+            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
                 && (sender as MapStyle).CustomSources != null) {
                 var notifiyCollection = (sender as MapStyle).CustomSources as INotifyCollectionChanged;
                 if (notifiyCollection != null) {
                     notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
                 }
-                RemoveSources (Element.MapStyle.CustomSources.ToList());
+                RemoveSources (Element.MapStyle.CustomSources.ToList ());
             }
         }
 
         void OnMapStylePropertyChanged (object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName 
+            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
                 && (sender as MapStyle).CustomSources != null) {
-                    var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
-                    if (notifiyCollection != null) {
-                        notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
-                    }
+                var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+                if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+                }
 
-					AddSources (Element.MapStyle.CustomSources.ToList());
+                AddSources (Element.MapStyle.CustomSources.ToList ());
+            } else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
+                       && (sender as MapStyle).CustomLayers != null) {
+                var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+                if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+                }
+
+                AddLayers (Element.MapStyle.CustomSources.ToList ());
             }
         }
 
-        void SetupEventHandlers()
-		{
-			var tapGest = new UITapGestureRecognizer();
-			tapGest.NumberOfTapsRequired = 1;
-			tapGest.CancelsTouchesInView = false;
-			tapGest.Delegate = this;
-			MapView.AddGestureRecognizer(tapGest);
-			tapGest.AddTarget((NSObject obj) =>
-			{
-				var gesture = obj as UITapGestureRecognizer;
-				if (gesture.State == UIGestureRecognizerState.Ended)
-				{
-					var point = gesture.LocationInView(MapView);
-					var touchedCooridinate = MapView.ConvertPoint(point, MapView);
-					var position = new Position(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
-					Element.DidTapOnMapCommand?.Execute(new Tuple<Position, Point>(position, 
-					                                                               new Point( (double) point.X, (double) point.Y)));
-				}
-			});
+        void SetupEventHandlers ()
+        {
+            var tapGest = new UITapGestureRecognizer ();
+            tapGest.NumberOfTapsRequired = 1;
+            tapGest.CancelsTouchesInView = false;
+            tapGest.Delegate = this;
+            MapView.AddGestureRecognizer (tapGest);
+            tapGest.AddTarget ((NSObject obj) => {
+                var gesture = obj as UITapGestureRecognizer;
+                if (gesture.State == UIGestureRecognizerState.Ended) {
+                    var point = gesture.LocationInView (MapView);
+                    var touchedCooridinate = MapView.ConvertPoint (point, MapView);
+                    var position = new Position (touchedCooridinate.Latitude, touchedCooridinate.Longitude);
+                    Element.DidTapOnMapCommand?.Execute (new Tuple<Position, Point> (position,
+                                                                                   new Point ((double)point.X, (double)point.Y)));
+                }
+            });
             Element.PropertyChanging += OnElementPropertyChanging;
-		}
+        }
 
-        void SetupFunctions()
-		{
-			Element.TakeSnapshot = () =>
-			{
-				var image = MapView.Capture(true);
-				var imageData = image.AsJPEG();
-				Byte[] imgByteArray = new Byte[imageData.Length];
-				System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
-															imgByteArray,
-															0,
-															Convert.ToInt32(imageData.Length));
-				return imgByteArray;
-			};
+        void SetupFunctions ()
+        {
+            Element.TakeSnapshot = () => {
+                var image = MapView.Capture (true);
+                var imageData = image.AsJPEG ();
+                Byte [] imgByteArray = new Byte [imageData.Length];
+                System.Runtime.InteropServices.Marshal.Copy (imageData.Bytes,
+                                                            imgByteArray,
+                                                            0,
+                                                            Convert.ToInt32 (imageData.Length));
+                return imgByteArray;
+            };
 
-			Element.GetFeaturesAroundPoint = (Point point, double radius, string[] layers) => {
-				var selectableLayers = SelectableLayersFromSources(layers);
-				NSObject[] features;
-				var cgPoint = new CGPoint((nfloat)point.X, (nfloat)point.Y);
-				if (radius <= 0)
-				{
-					features = MapView.VisibleFeaturesAtPoint(cgPoint, selectableLayers);
-				}
-				else {
-					var rect = new CGRect(cgPoint.X - (nfloat) radius, cgPoint.Y - (nfloat) radius, (nfloat) radius * 2, (nfloat) radius * 2);
-					features = MapView.VisibleFeaturesInRect(rect, selectableLayers);
-				}
+            Element.GetFeaturesAroundPoint = (Point point, double radius, string [] layers) => {
+                var selectableLayers = SelectableLayersFromSources (layers);
+                NSObject [] features;
+                var cgPoint = new CGPoint ((nfloat)point.X, (nfloat)point.Y);
+                if (radius <= 0) {
+                    features = MapView.VisibleFeaturesAtPoint (cgPoint, selectableLayers);
+                } else {
+                    var rect = new CGRect (cgPoint.X - (nfloat)radius, cgPoint.Y - (nfloat)radius, (nfloat)radius * 2, (nfloat)radius * 2);
+                    features = MapView.VisibleFeaturesInRect (rect, selectableLayers);
+                }
 
-				var output = new List<IFeature>();
+                var output = new List<IFeature> ();
 
-				foreach (NSObject obj in features)
-				{
-					var feature = obj as IMGLFeature;
-					if (feature == null || feature.Attributes == null)
-					{
-						continue;
-					}
-					string id = null;
-					if (feature.Identifier != null)
-					{
-						if (feature.Identifier is NSNumber)
-						{
-							id = ((NSNumber)feature.Identifier).StringValue;
-						}
-						else
-						{
-							id = feature.Identifier.ToString();
-						}
-					}
-					if (id == null || output.Any( (arg) => (arg as Annotation).Id == id))
-					{
-						continue;
-					}
+                foreach (NSObject obj in features) {
+                    var feature = obj as IMGLFeature;
+                    if (feature == null || feature.Attributes == null) {
+                        continue;
+                    }
+                    string id = null;
+                    if (feature.Identifier != null) {
+                        if (feature.Identifier is NSNumber) {
+                            id = ((NSNumber)feature.Identifier).StringValue;
+                        } else {
+                            id = feature.Identifier.ToString ();
+                        }
+                    }
+                    if (id == null || output.Any ((arg) => (arg as Annotation).Id == id)) {
+                        continue;
+                    }
 
 
-					var geoData = feature.GeoJSONDictionary();
-					if (geoData == null) continue;
+                    var geoData = feature.GeoJSONDictionary ();
+                    if (geoData == null) continue;
 
-					IFeature ifeat = null;
+                    IFeature ifeat = null;
 
-					if (feature is MGLPointFeature)
-					{
-						ifeat = new PointFeature();
-						(ifeat as PointFeature).Title = ((MGLPointFeature)feature).Title;
-						(ifeat as PointFeature).SubTitle = ((MGLPointFeature)feature).Subtitle;
-						(ifeat as PointFeature).Coordinate = TypeConverter.FromCoordinateToPosition(((MGLPointFeature)feature).Coordinate);
-					}
-					else
-					{
-						var geometry = geoData["geometry"];
-						NSArray coorArr = null;
-						var coordinates = (geometry as NSDictionary)["coordinates"];
-						if (coordinates != null && coordinates is NSArray)
-						{
-							coorArr = coordinates as NSArray;
-						}
-						if (feature is MGLPolylineFeature)
-						{
-							ifeat = new PolylineFeature();
-							(ifeat as PolylineFeature).Title = ((MGLPolylineFeature)feature).Title;
-							(ifeat as PolylineFeature).SubTitle = ((MGLPolylineFeature)feature).Subtitle;
+                    if (feature is MGLPointFeature) {
+                        ifeat = new PointFeature ();
+                        (ifeat as PointFeature).Title = ((MGLPointFeature)feature).Title;
+                        (ifeat as PointFeature).SubTitle = ((MGLPointFeature)feature).Subtitle;
+                        (ifeat as PointFeature).Coordinate = TypeConverter.FromCoordinateToPosition (((MGLPointFeature)feature).Coordinate);
+                    } else {
+                        var geometry = geoData ["geometry"];
+                        NSArray coorArr = null;
+                        var coordinates = (geometry as NSDictionary) ["coordinates"];
+                        if (coordinates != null && coordinates is NSArray) {
+                            coorArr = coordinates as NSArray;
+                        }
+                        if (feature is MGLPolylineFeature) {
+                            ifeat = new PolylineFeature ();
+                            (ifeat as PolylineFeature).Title = ((MGLPolylineFeature)feature).Title;
+                            (ifeat as PolylineFeature).SubTitle = ((MGLPolylineFeature)feature).Subtitle;
 
-							if (coorArr != null)
-							{
-								(ifeat as PolylineFeature).Coordinates = new Position[coorArr.Count];
-								for (nuint i = 0; i < coorArr.Count; i++)
-								{
-									var childArr = coorArr.GetItem<NSArray>(i);
-									if (childArr != null && childArr.Count == 2)
-									{
-										var coord = new Position(childArr.GetItem<NSNumber>(1).DoubleValue, //lat
-																childArr.GetItem<NSNumber>(0).DoubleValue); //long
-										(ifeat as PolylineFeature).Coordinates[i] = coord;
-									}
-								}
-							}
+                            if (coorArr != null) {
+                                (ifeat as PolylineFeature).Coordinates = new Position [coorArr.Count];
+                                for (nuint i = 0; i < coorArr.Count; i++) {
+                                    var childArr = coorArr.GetItem<NSArray> (i);
+                                    if (childArr != null && childArr.Count == 2) {
+                                        var coord = new Position (childArr.GetItem<NSNumber> (1).DoubleValue, //lat
+                                                                childArr.GetItem<NSNumber> (0).DoubleValue); //long
+                                        (ifeat as PolylineFeature).Coordinates [i] = coord;
+                                    }
+                                }
+                            }
 
-						}
-						else if (feature is MGLMultiPolylineFeature)
-						{
-							ifeat = new MultiPolylineFeature();
-							(ifeat as MultiPolylineFeature).Title = ((MGLMultiPolylineFeature)feature).Title;
-							(ifeat as MultiPolylineFeature).SubTitle = ((MGLMultiPolylineFeature)feature).Subtitle;
-							if (coorArr != null)
-							{
-								(ifeat as MultiPolylineFeature).Coordinates = new Position[coorArr.Count][];
-								for (nuint i = 0; i < coorArr.Count; i++)
-								{
-									var childArr = coorArr.GetItem<NSArray>(i);
-									if (childArr != null)
-									{
-										(ifeat as MultiPolylineFeature).Coordinates[i] = new Position[childArr.Count];
-										for (nuint j = 0; j < childArr.Count; j++)
-										{
-											var anscArr = childArr.GetItem<NSArray>(j);
-											if (anscArr != null && anscArr.Count == 2)
-											{
-												(ifeat as MultiPolylineFeature).Coordinates[i][j] = new Position(anscArr.GetItem<NSNumber>(1).DoubleValue, //lat
-																												anscArr.GetItem<NSNumber>(0).DoubleValue);
-											}
-										}
-									}
-								}
-							}
-						}
-					}
+                        } else if (feature is MGLMultiPolylineFeature) {
+                            ifeat = new MultiPolylineFeature ();
+                            (ifeat as MultiPolylineFeature).Title = ((MGLMultiPolylineFeature)feature).Title;
+                            (ifeat as MultiPolylineFeature).SubTitle = ((MGLMultiPolylineFeature)feature).Subtitle;
+                            if (coorArr != null) {
+                                (ifeat as MultiPolylineFeature).Coordinates = new Position [coorArr.Count] [];
+                                for (nuint i = 0; i < coorArr.Count; i++) {
+                                    var childArr = coorArr.GetItem<NSArray> (i);
+                                    if (childArr != null) {
+                                        (ifeat as MultiPolylineFeature).Coordinates [i] = new Position [childArr.Count];
+                                        for (nuint j = 0; j < childArr.Count; j++) {
+                                            var anscArr = childArr.GetItem<NSArray> (j);
+                                            if (anscArr != null && anscArr.Count == 2) {
+                                                (ifeat as MultiPolylineFeature).Coordinates [i] [j] = new Position (anscArr.GetItem<NSNumber> (1).DoubleValue, //lat
+                                                                                                                anscArr.GetItem<NSNumber> (0).DoubleValue);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-					if (ifeat != null)
-					{
-						(ifeat as Annotation).Id = id;
-						ifeat.Attributes = ConvertDictionary(feature.Attributes);
+                    if (ifeat != null) {
+                        (ifeat as Annotation).Id = id;
+                        ifeat.Attributes = ConvertDictionary (feature.Attributes);
 
 
-						output.Add(ifeat);
-					}
-				}
+                        output.Add (ifeat);
+                    }
+                }
 
-				return output.ToArray();
-			};
+                return output.ToArray ();
+            };
 
-			Element.ResetPositionCommand = new Command((arg) =>
-			{
-				MapView.ResetPosition();
-			});
+            Element.ResetPositionCommand = new Command ((arg) => {
+                MapView.ResetPosition ();
+            });
 
             Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) => {
                 if (annotation != null && !string.IsNullOrEmpty (sourceId)) {
                     var mglSource = MapView.Style.SourceWithIdentifier ((NSString)("NXCustom_" + sourceId));
                     if (mglSource != null && mglSource is MGLShapeSource) {
-                        (mglSource as MGLShapeSource).Shape = ShapeFromAnnotation(annotation);
+                        (mglSource as MGLShapeSource).Shape = ShapeFromAnnotation (annotation);
+                        if (Element.MapStyle.CustomSources != null) {
+                            var count = Element.MapStyle.CustomSources.Count ();
+                            for (var i = 0; i < count; i++) {
+                                if (Element.MapStyle.CustomSources.ElementAt (i).Id == sourceId) {
+                                    Element.MapStyle.CustomSources.ElementAt (i).Shape = annotation;
+                                    break;
+                                }
+                            }
+                        }
+                        return true;
                     }
                 }
                 return false;
             };
-		}
 
-		NSSet SelectableLayersFromSources(string[] layersId)
-		{
-			if (layersId == null)
-			{
-				return null;
-			}
-			NSMutableSet output = new NSMutableSet();
-			foreach (string layerId in layersId)
-			{
-				var acceptedId = layerId.Replace("_", "-");
-				output.Add((NSString)acceptedId);
-				output.Add((NSString)(acceptedId + " (1)"));
-			}
-			return output;
-		}
+            Element.UpdateLayerFunc = (string layerId, bool isVisible) => {
+                if (!string.IsNullOrEmpty (layerId)) {
+                        NSString layerIdStr = (NSString)("NXCustom_" + layerId);
+                        var layer = MapView.Style.LayerWithIdentifier (layerIdStr);
+                    if (layer != null) {
+                        layer.Visible = isVisible;
+                        if (Element.MapStyle.CustomLayers != null) {
+                            var count = Element.MapStyle.CustomLayers.Count ();
+                            for (var i = 0; i<count; i++) {
+                                    if (Element.MapStyle.CustomLayers.ElementAt (i).Id == layerId) {
+                                        Element.MapStyle.CustomLayers.ElementAt (i).IsVisible = isVisible;
+                                    break;
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                }
+                return false;
+                };
+        }
 
-		void AddAnnotation(Annotation annotation)
-		{
-			var shape = ShapeFromAnnotation(annotation);
-			if (shape != null)
-			{
-				MapView.AddAnnotation(shape);
-			}
-		}
+        NSSet SelectableLayersFromSources (string [] layersId)
+        {
+            if (layersId == null) {
+                return null;
+            }
+            NSMutableSet output = new NSMutableSet ();
+            foreach (string layerId in layersId) {
+                var acceptedId = layerId.Replace ("_", "-");
+                output.Add ((NSString)acceptedId);
+                output.Add ((NSString)(acceptedId + " (1)"));
+            }
+            return output;
+        }
 
-		void AddAnnotations(Annotation[] annotations)
-		{
-			
-			var annots = new List<IMGLAnnotation>();
-			foreach (Annotation at in annotations)
-			{
-				var shape = ShapeFromAnnotation(at);
-				if (shape == null)
-				{
-					continue;
-				}
-				annots.Add(shape);
-			}
-			MapView.AddAnnotations(annots.ToArray());
-		}
+        void AddAnnotation (Annotation annotation)
+        {
+            var shape = ShapeFromAnnotation (annotation);
+            if (shape != null) {
+                MapView.AddAnnotation (shape);
+            }
+        }
 
-		void RemoveAnnotations(Annotation[] annotations)
-		{
-			var currentAnnotations = MapView.Annotations;
-			if (currentAnnotations == null)
-			{
-				return;
-			}
-			var annots = new List<MGLShape>();
-			foreach (Annotation at in annotations)
-			{
-				foreach (NSObject curAnnot in currentAnnotations)
-				{
-					if (curAnnot is MGLShape)
-					{
-						var shape = curAnnot as MGLShape;
-						if (string.IsNullOrEmpty(shape.Id()))
-						{
-							continue;
-						}
-						if (shape.Id() == at.Id)
-						{
-							annots.Add(shape);
-						}
-					}
-				}
-			}
-			MapView.RemoveAnnotations(annots.ToArray());
-		}
+        void AddAnnotations (Annotation [] annotations)
+        {
 
-		void RemoveAllAnnotations()
-		{
-			if (MapView.Annotations != null)
-			{
-				MapView.RemoveAnnotations(MapView.Annotations);
-			}
-		}
+            var annots = new List<IMGLAnnotation> ();
+            foreach (Annotation at in annotations) {
+                var shape = ShapeFromAnnotation (at);
+                if (shape == null) {
+                    continue;
+                }
+                annots.Add (shape);
+            }
+            MapView.AddAnnotations (annots.ToArray ());
+        }
 
-		private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
+        void RemoveAnnotations (Annotation [] annotations)
+        {
+            var currentAnnotations = MapView.Annotations;
+            if (currentAnnotations == null) {
+                return;
+            }
+            var annots = new List<MGLShape> ();
+            foreach (Annotation at in annotations) {
+                foreach (NSObject curAnnot in currentAnnotations) {
+                    if (curAnnot is MGLShape) {
+                        var shape = curAnnot as MGLShape;
+                        if (string.IsNullOrEmpty (shape.Id ())) {
+                            continue;
+                        }
+                        if (shape.Id () == at.Id) {
+                            annots.Add (shape);
+                        }
+                    }
+                }
+            }
+            MapView.RemoveAnnotations (annots.ToArray ());
+        }
+
+        void RemoveAllAnnotations ()
+        {
+            if (MapView.Annotations != null) {
+                MapView.RemoveAnnotations (MapView.Annotations);
+            }
+        }
+
+        private void OnAnnotationsCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
             if (e.Action == NotifyCollectionChangedAction.Add) {
                 var annots = new List<MGLShape> ();
                 foreach (Annotation annot in e.NewItems) {
@@ -474,7 +470,7 @@ namespace Naxam.Mapbox.Platform.iOS
                 foreach (Annotation annot in e.OldItems) {
                     itemsToRemove.Add (annot);
                 }
-				RemoveAnnotations (itemsToRemove.ToArray ());
+                RemoveAnnotations (itemsToRemove.ToArray ());
                 var annots = new List<MGLShape> ();
                 foreach (Annotation annot in e.NewItems) {
                     var shape = ShapeFromAnnotation (annot);
@@ -484,7 +480,98 @@ namespace Naxam.Mapbox.Platform.iOS
                 }
                 MapView.AddAnnotations (annots.ToArray ());
             }
-		}
+        }
+        void OnLayersCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                AddLayers (e.NewItems);
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+
+                RemoveLayers (e.OldItems);
+            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
+                var layersToRemove = new List<MGLStyleLayer> ();
+                foreach (MGLStyleLayer layer in MapView.Style.Sources) {
+                    if (layer.Identifier.HasPrefix ((NSString)"NXCustom_")) {
+                        layersToRemove.Add (layer);
+                    }
+                }
+                foreach (MGLStyleLayer layer in layersToRemove) {
+                    MapView.Style.RemoveLayer (layer);
+
+                }
+                layersToRemove.Clear ();
+            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+                RemoveLayers (e.OldItems);
+
+                AddLayers (e.NewItems);
+            }
+        }
+
+        void AddLayers (System.Collections.IList layers)
+        {
+            if (layers == null) {
+                return;
+            }
+            foreach (Layer layer in layers) {
+                if (string.IsNullOrEmpty (layer.Id)) {
+                    continue;
+                }
+                NSString id = (NSString)("NXCustom_" + layer.Id);
+                var oldLayer = MapView.Style.LayerWithIdentifier (id);
+                if (oldLayer != null) {
+                    MapView.Style.RemoveLayer (oldLayer);
+                }
+                if (layer is CircleLayer) {
+                    var circleLayer = layer as CircleLayer;
+                    if (string.IsNullOrEmpty (circleLayer.SourceId)) {
+                        continue;
+                    }
+                    var sourceId = (NSString)("NXCustom_" + circleLayer.SourceId);
+
+                    var source = MapView.Style.SourceWithIdentifier (sourceId);
+                    if (source == null) {
+                        continue;
+                    }
+                    var newLayer = new MGLCircleStyleLayer (id, source);
+                    newLayer.CircleColor = MGLStyleValue.ValueWithRawValue (circleLayer.CircleColor.ToUIColor ());
+                    newLayer.CircleOpacity = MGLStyleValue.ValueWithRawValue (NSNumber.FromDouble (circleLayer.CircleOpacity));
+                    newLayer.CircleRadius = MGLStyleValue.ValueWithRawValue (NSNumber.FromDouble (circleLayer.CircleRadius));
+                    MapView.Style.AddLayer (newLayer);
+                } else if (layer is LineLayer) {
+                    var lineLayer = layer as LineLayer;
+                        if (string.IsNullOrEmpty (lineLayer.SourceId)) {
+                        continue;
+                    }
+                    var sourceId = (NSString)("NXCustom_" + lineLayer.SourceId);
+                    var source = MapView.Style.SourceWithIdentifier (sourceId);
+                    if (source == null) {
+                        continue;
+                    }
+                    var newLayer = new MGLLineStyleLayer (id, source);
+                        newLayer.LineWidth = MGLStyleValue.ValueWithRawValue (NSNumber.FromDouble (lineLayer.LineWidth));
+                        newLayer.LineColor = MGLStyleValue.ValueWithRawValue (lineLayer.LineColor.ToUIColor());
+                        //TODO lineCap
+                        MapView.Style.AddLayer (newLayer);
+                    }
+            }
+        }
+
+        void RemoveLayers (System.Collections.IList layers)
+        {
+            if (layers == null) {
+                return;
+            }
+            foreach (Layer layer in layers) {
+                if (string.IsNullOrEmpty (layer.Id)) {
+                    continue;
+                }
+                NSString id = (NSString)("NXCustom_" + layer.Id);
+                var oldLayer = MapView.Style.LayerWithIdentifier (id);
+                if (oldLayer != null) {
+                    MapView.Style.RemoveLayer (oldLayer);
+                }
+            }
+        }
 
         void OnShapeSourcesCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -539,205 +626,166 @@ namespace Naxam.Mapbox.Platform.iOS
                     var oldSource = MapView.Style.SourceWithIdentifier ((NSString)("NXCustom_" + source.Id)) as MGLShapeSource;
                     if (oldSource != null) {
                         MapView.Style.RemoveSource (oldSource);
-                    } 
+                    }
                 }
             }
         }
 
-		MGLShape ShapeFromAnnotation(FormsMB.Annotation annotation)
-		{
-			MGLShape shape = null;
-			if (annotation is PointAnnotation)
-			{
-				shape = new MGLPointAnnotation()
-				{
-					Coordinate = new CLLocationCoordinate2D(((PointAnnotation)annotation).Coordinate.Lat,
-																 ((PointAnnotation)annotation).Coordinate.Long),
-				};
-			}
-			else if (annotation is PolylineAnnotation)
-			{
-				var polyline = annotation as PolylineAnnotation;
-				if (polyline.Coordinates == null || polyline.Coordinates.Length == 0)
-				{
-					return null;
-				}
-				var coords = new CLLocationCoordinate2D[polyline.Coordinates.Length];
-				for (var i = 0; i < polyline.Coordinates.Length; i++)
-				{
-					coords[i] = new CLLocationCoordinate2D(polyline.Coordinates[i].Lat, polyline.Coordinates[i].Long);
-				}
-				var first = coords[0];
-				shape = MGLPolyline.PolylineWithCoordinates(ref first, (uint)coords.Length);
-			}
-			else if (annotation is MultiPolylineAnnotation)
-			{
-				var polyline = annotation as MultiPolylineAnnotation;
-				if (polyline.Coordinates == null || polyline.Coordinates.Length == 0)
-				{
-					return null;
-				}
-				var lines = new MGLPolyline[polyline.Coordinates.Length];
-				for (var i = 0; i < polyline.Coordinates.Length; i++)
-				{
-					if (polyline.Coordinates[i].Length == 0)
-					{
-						continue;
-					}
-					var coords = new CLLocationCoordinate2D[polyline.Coordinates[i].Length];
-					for (var j = 0; j < polyline.Coordinates[i].Length; j++)
-					{
-						coords[i] = new CLLocationCoordinate2D(polyline.Coordinates[i][j].Lat, polyline.Coordinates[i][j].Long);
-					}
-					var first = coords[0];
-					lines[i] = MGLPolyline.PolylineWithCoordinates(ref first, (uint)polyline.Coordinates[i].Length);
-				}
-				shape = MGLMultiPolyline.MultiPolylineWithPolylines(lines);
-			}
-			if (shape != null)
-			{
-				if (annotation.Title != null)
-				{
-					shape.Title = annotation.Title;
-				}
-				if (annotation.SubTitle != null)
-				{
-					shape.Subtitle = annotation.SubTitle;
-				}
-				if (!string.IsNullOrEmpty(annotation.Id))
-				{
-					shape.SetId(annotation.Id);
-				}
-			}
+        MGLShape ShapeFromAnnotation (FormsMB.Annotation annotation)
+        {
+            MGLShape shape = null;
+            if (annotation is PointAnnotation) {
+                shape = new MGLPointAnnotation () {
+                    Coordinate = new CLLocationCoordinate2D (((PointAnnotation)annotation).Coordinate.Lat,
+                                                                 ((PointAnnotation)annotation).Coordinate.Long),
+                };
+            } else if (annotation is PolylineAnnotation) {
+                var polyline = annotation as PolylineAnnotation;
+                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
+                    return null;
+                }
+                var coords = new CLLocationCoordinate2D [polyline.Coordinates.Length];
+                for (var i = 0; i < polyline.Coordinates.Length; i++) {
+                    coords [i] = new CLLocationCoordinate2D (polyline.Coordinates [i].Lat, polyline.Coordinates [i].Long);
+                }
+                var first = coords [0];
+                shape = MGLPolyline.PolylineWithCoordinates (ref first, (uint)coords.Length);
+            } else if (annotation is MultiPolylineAnnotation) {
+                var polyline = annotation as MultiPolylineAnnotation;
+                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
+                    return null;
+                }
+                var lines = new MGLPolyline [polyline.Coordinates.Length];
+                for (var i = 0; i < polyline.Coordinates.Length; i++) {
+                    if (polyline.Coordinates [i].Length == 0) {
+                        continue;
+                    }
+                    var coords = new CLLocationCoordinate2D [polyline.Coordinates [i].Length];
+                    for (var j = 0; j < polyline.Coordinates [i].Length; j++) {
+                        coords [i] = new CLLocationCoordinate2D (polyline.Coordinates [i] [j].Lat, polyline.Coordinates [i] [j].Long);
+                    }
+                    var first = coords [0];
+                    lines [i] = MGLPolyline.PolylineWithCoordinates (ref first, (uint)polyline.Coordinates [i].Length);
+                }
+                shape = MGLMultiPolyline.MultiPolylineWithPolylines (lines);
+            }
+            if (shape != null) {
+                if (annotation.Title != null) {
+                    shape.Title = annotation.Title;
+                }
+                if (annotation.SubTitle != null) {
+                    shape.Subtitle = annotation.SubTitle;
+                }
+                if (!string.IsNullOrEmpty (annotation.Id)) {
+                    shape.SetId (annotation.Id);
+                }
+            }
 
-			return shape;
-		}
+            return shape;
+        }
 
-		#region MGLMapViewDelegate
-		[Export("mapViewDidFinishRenderingMap:fullyRendered:"),]
-		void DidFinishRenderingMap(MGLMapView mapView, bool fullyRendered)
-		{
-			Element.Delegate?.DidFinishRenderingCommand?.Execute(
-				new Tuple<FormsMap, bool>(Element, fullyRendered));
-		}
+        #region MGLMapViewDelegate
+        [Export ("mapViewDidFinishRenderingMap:fullyRendered:"),]
+        void DidFinishRenderingMap (MGLMapView mapView, bool fullyRendered)
+        {
+            Element.Delegate?.DidFinishRenderingCommand?.Execute (
+                new Tuple<FormsMap, bool> (Element, fullyRendered));
+        }
 
-		[Export("mapView:didUpdateUserLocation:"),]
-		void DidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
-		{
-			if (userLocation != null)
-			{
-				Element.UserLocation = new Position(
-					userLocation.Coordinate.Latitude,
-					userLocation.Coordinate.Longitude
-				);
-			}
-		}
+        [Export ("mapView:didUpdateUserLocation:"),]
+        void DidUpdateUserLocation (MGLMapView mapView, MGLUserLocation userLocation)
+        {
+            if (userLocation != null) {
+                Element.UserLocation = new Position (
+                    userLocation.Coordinate.Latitude,
+                    userLocation.Coordinate.Longitude
+                );
+            }
+        }
 
-		[Export("mapView:didFinishLoadingStyle:"),]
-		void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
-		{
-			MapStyle newStyle;
-			if (Element.MapStyle == null)
-			{
-				newStyle = new MapStyle(mapView.StyleURL.AbsoluteString);
-				newStyle.Name = style.Name;
-				Element.MapStyle = newStyle;
-			}
-			else
-			{
-				if (Element.MapStyle.UrlString == null
-				|| Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
-				{
-					Element.MapStyle.SetUrl(mapView.StyleURL.AbsoluteString);
-					Element.MapStyle.Name = style.Name;
-				}
-				newStyle = Element.MapStyle;
-			}
+        [Export ("mapView:didFinishLoadingStyle:"),]
+        void DidFinishLoadingStyle (MGLMapView mapView, MGLStyle style)
+        {
+            MapStyle newStyle;
+            if (Element.MapStyle == null) {
+                newStyle = new MapStyle (mapView.StyleURL.AbsoluteString);
+                newStyle.Name = style.Name;
+                Element.MapStyle = newStyle;
+            } else {
+                if (Element.MapStyle.UrlString == null
+                || Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString) {
+                    Element.MapStyle.SetUrl (mapView.StyleURL.AbsoluteString);
+                    Element.MapStyle.Name = style.Name;
+                }
+                newStyle = Element.MapStyle;
+            }
 
-			Element.Delegate?.DidFinishLoadingStyleCommand?.Execute(new Tuple<FormsMap, MapStyle>(Element, newStyle));
-			//var s = new MapStyle()
-			//{
-			//  Name = style.Name,
-			//  Layers = style.Layers.Select(layer => new MapLayer()
-			//  {
-			//      Identifier = layer.Identifier
-			//  }).ToArray()
-			//};
-			//Element.DidFinishLoadingStyleCommand?.Execute(s);
-		}
+            Element.Delegate?.DidFinishLoadingStyleCommand?.Execute (new Tuple<FormsMap, MapStyle> (Element, newStyle));
+        }
 
-		[Export("mapViewRegionIsChanging:"),]
-		void RegionIsChanging(MGLMapView mapView)
-		{
-			Element.Center = new Position(mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
-		}
+        [Export ("mapViewRegionIsChanging:"),]
+        void RegionIsChanging (MGLMapView mapView)
+        {
+            Element.Center = new Position (mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
+        }
 
-		[Export("mapView:regionDidChangeAnimated:"),]
-		void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
-		{
-			Element.ZoomLevel = mapView.ZoomLevel;
+        [Export ("mapView:regionDidChangeAnimated:"),]
+        void RegionDidChangeAnimated (MGLMapView mapView, bool animated)
+        {
+            Element.ZoomLevel = mapView.ZoomLevel;
             Element.Pitch = (double)mapView.Camera.Pitch;
             Element.RotatedDegree = (double)mapView.Camera.Heading;
-		}
+        }
 
-		[Export("mapView:annotationCanShowCallout:"),]
-		bool AnnotationCanShowCallout(MGLMapView mapView, NSObject annotation)
-		{
-			if (annotation is MGLShape && Element.CanShowCalloutChecker != null)
-			{
-				return Element.CanShowCalloutChecker.Invoke(((MGLShape)annotation).Id());
-			}
-			return true;
-		}
-		#endregion
+        [Export ("mapView:annotationCanShowCallout:"),]
+        bool AnnotationCanShowCallout (MGLMapView mapView, NSObject annotation)
+        {
+            if (annotation is MGLShape && Element.CanShowCalloutChecker != null) {
+                return Element.CanShowCalloutChecker.Invoke (((MGLShape)annotation).Id ());
+            }
+            return true;
+        }
+        #endregion
 
-		#region UIGestureRecognizerDelegate
-		[Export("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")]
-		public bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-		{
-			return true;
-		}
+        #region UIGestureRecognizerDelegate
+        [Export ("gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")]
+        public bool ShouldRecognizeSimultaneously (UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
+        {
+            return true;
+        }
 
-		#endregion
+        #endregion
 
-		Dictionary<string, object> ConvertDictionary(NSDictionary fromDict)
-		{
-			var output = new Dictionary<string, object>();
-			foreach (NSString key in fromDict.Keys)
-			{
-				if (fromDict[key] is NSString)
-				{
-					var str = fromDict[key] as NSString;
-					if (str == "<NULL>")
-					{
-						continue;
-					}
-					output[key] = (string)str;
-				}
-				else if (fromDict[key] is NSNumber)
-				{
-					output[key] = (fromDict[key] as NSNumber).DoubleValue;
-				}
-				else if (fromDict[key] is NSDate)
-				{
-					output[key] = (fromDict[key] as NSDate).ToDateTimeOffset();
-				}
-				else {
-					output[key] = fromDict[key].ToString();
-				}
-			}
-			return output;
-		}
-	} 
+        Dictionary<string, object> ConvertDictionary (NSDictionary fromDict)
+        {
+            var output = new Dictionary<string, object> ();
+            foreach (NSString key in fromDict.Keys) {
+                if (fromDict [key] is NSString) {
+                    var str = fromDict [key] as NSString;
+                    if (str == "<NULL>") {
+                        continue;
+                    }
+                    output [key] = (string)str;
+                } else if (fromDict [key] is NSNumber) {
+                    output [key] = (fromDict [key] as NSNumber).DoubleValue;
+                } else if (fromDict [key] is NSDate) {
+                    output [key] = (fromDict [key] as NSDate).ToDateTimeOffset ();
+                } else {
+                    output [key] = fromDict [key].ToString ();
+                }
+            }
+            return output;
+        }
+    }
 
-	public static class NSDateExtensions
-	{
-		private static DateTime _nsRef = new DateTime(2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Local); // last zero is millisecond
+    public static class NSDateExtensions
+    {
+        private static DateTime _nsRef = new DateTime (2001, 1, 1, 0, 0, 0, 0, DateTimeKind.Local); // last zero is millisecond
 
-		public static DateTimeOffset ToDateTimeOffset(this NSDate date)
-		{
-			var interval = date.SecondsSinceReferenceDate;
-			return _nsRef.AddSeconds(interval);
-		}
-	}
+        public static DateTimeOffset ToDateTimeOffset (this NSDate date)
+        {
+            var interval = date.SecondsSinceReferenceDate;
+            return _nsRef.AddSeconds (interval);
+        }
+    }
 }
