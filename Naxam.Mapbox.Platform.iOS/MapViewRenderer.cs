@@ -14,6 +14,7 @@ using UIKit;
 using Xamarin.Forms;
 using System.ComponentModel;
 using System.Collections;
+using System.Collections.ObjectModel;
 
 [assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Mapbox.Forms.MapView), typeof (Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Mapbox.Platform.iOS
@@ -287,15 +288,17 @@ namespace Naxam.Mapbox.Platform.iOS
                             (ifeat as PolylineFeature).SubTitle = ((MGLPolylineFeature)feature).Subtitle;
 
                             if (coorArr != null) {
+                                var coorsList = new List<Position>();
                                 (ifeat as PolylineFeature).Coordinates = new Position [coorArr.Count];
                                 for (nuint i = 0; i < coorArr.Count; i++) {
                                     var childArr = coorArr.GetItem<NSArray> (i);
                                     if (childArr != null && childArr.Count == 2) {
                                         var coord = new Position (childArr.GetItem<NSNumber> (1).DoubleValue, //lat
                                                                 childArr.GetItem<NSNumber> (0).DoubleValue); //long
-                                        (ifeat as PolylineFeature).Coordinates [i] = coord;
+                                        coorsList.Add (coord);
                                     }
                                 }
+                                (ifeat as PolylineFeature).Coordinates = new ObservableCollection<Position>(coorsList);
                             }
 
                         } else if (feature is MGLMultiPolylineFeature) {
@@ -641,7 +644,21 @@ namespace Naxam.Mapbox.Platform.iOS
                 };
             } else if (annotation is PolylineAnnotation) {
                 var polyline = annotation as PolylineAnnotation;
-                shape = PolyLineWithCoordinates (polyline.Coordinates);
+                shape = PolyLineWithCoordinates (polyline.Coordinates.ToArray());
+                var notifiyCollection = polyline.Coordinates as INotifyCollectionChanged;
+                if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += (sender, e) => {
+                        if (e.Action == NotifyCollectionChangedAction.Add) {
+                            foreach (Position pos in e.NewItems) {
+                                var coord = TypeConverter.FromPositionToCoordinate (pos);
+                                (shape as MGLPolyline).AppendCoordinates (ref coord, 1);
+                            }
+                        } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                            (shape as MGLPolyline).RemoveCoordinatesInRange (new NSRange (e.OldStartingIndex, e.OldItems.Count));
+                        }
+                    } ;
+                }
+
             } else if (annotation is MultiPolylineAnnotation) {
                 var polyline = annotation as MultiPolylineAnnotation;
                 if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
