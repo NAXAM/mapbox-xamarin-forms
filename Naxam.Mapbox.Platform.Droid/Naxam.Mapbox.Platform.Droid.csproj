@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Naxam.Mapbox.Platform.Droid</RootNamespace>
     <AssemblyName>Naxam.Mapbox.Platform.Droid</AssemblyName>
-    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
@@ -42,24 +42,6 @@
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.224\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Naxam.Mapbox.Droid, Version=4.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.Services.Droid, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapbox.Services.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapzen.Droid, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapzen.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapzen.Lost.Droid, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Retrofit2.ConvertGson.Droid, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Retrofit2.ConvertGson.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Retrofit2.Droid, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2\lib\MonoAndroid10\Naxam.Retrofit2.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.10.0.2\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -107,6 +89,24 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.224\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapzen.Lost.Droid">
+      <HintPath>..\..\packages\Naxam.Mapzen.Lost.Droid.1.1.1\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Retrofit2.Droid">
+      <HintPath>..\..\packages\Naxam.Retrofit2.Droid.2.1.0\lib\MonoAndroid10\Naxam.Retrofit2.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Retrofit2.ConvertGson.Droid">
+      <HintPath>..\..\packages\Naxam.Retrofit2.ConvertGson.Droid.2.1.0\lib\MonoAndroid10\Naxam.Retrofit2.ConvertGson.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Services.Droid">
+      <HintPath>..\..\packages\Naxam.Mapbox.Services.Droid.1.3.1\lib\MonoAndroid10\Naxam.Mapbox.Services.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapzen.Droid">
+      <HintPath>..\..\packages\Naxam.Mapzen.Droid.1.2.1\lib\MonoAndroid10\Naxam.Mapzen.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Droid">
+      <HintPath>..\..\packages\Naxam.Mapbox.Droid.4.2.2.1-beta\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
