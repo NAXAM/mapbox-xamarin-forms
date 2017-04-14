@@ -103,11 +103,14 @@ namespace Naxam.Mapbox.Platform.Droid
                 _currentCamera.Long = args.P0.Target.Longitude;
                 Element.Center = _currentCamera;
             };
+
             map.MapClick += delegate (object o, MapboxMap.MapClickEventArgs args) {
                 // Need to be false to hide searchbar in view
                 Element.IsTouchInMap = false;
+                var point = map.Projection.ToScreenLocation (args.P0);
+                var xfPoint = new Point (point.X, point.Y);
                 Element.DidTapOnMapCommand?.Execute (new Tuple<Position, Point> (new Position (args.P0.Latitude, args.P0.Longitude),
-                                                                                   new Point (_point.X, _point.Y)));
+                                                                                 xfPoint));
             };
             map.MarkerClick += delegate (object o, MapboxMap.MarkerClickEventArgs args) {
                 Element.Center.Lat = args.P0.Position.Latitude;
@@ -137,19 +140,12 @@ namespace Naxam.Mapbox.Platform.Droid
 
             Element.GetFeaturesAroundPoint += delegate (Point point, double radius, string [] layers) {
                 var output = new List<IFeature> ();
-                RectF rect = new RectF ((float)(point.X - radius / 2), (float)(point.Y - radius / 2), (float)radius, (float)radius);
+                RectF rect = new RectF ((float)(point.X - radius), (float)(point.Y - radius), (float)radius * 2, (float)radius * 2);
                 var listFeatures = map.QueryRenderedFeatures (rect, layers);
                 if (listFeatures.Count != 0) {
-                    IFeature ifeat = null;
                     foreach (Feature feature in listFeatures) {
+                        IFeature ifeat = null;
                         System.Diagnostics.Debug.WriteLine (feature.ToJson ());
-                        string id = feature.Id;
-                        if (id == null || output.Any ((arg) => {
-                            var annotation = arg as Annotation;
-                            return annotation != null && annotation.Id == id;
-                        })) {
-                            continue;
-                        }
                         if (feature.Geometry is global::Mapbox.Services.Commons.GeoJson.Point) {
                             ifeat = new PointFeature ();
                             var pointFeature = feature.Geometry.Coordinates as global::Mapbox.Services.Commons.Models.Position;
@@ -163,12 +159,16 @@ namespace Naxam.Mapbox.Platform.Droid
 
                         }
                         if (ifeat != null) {
-                            (ifeat as Annotation).Id = feature.Id;
+                            string id = feature.Id;
+                            if (string.IsNullOrEmpty(id)
+                                || output.Any((arg) => (arg as Annotation).Id == id)) {
+                                id = Guid.NewGuid ().ToString ();
+                            }
+                            (ifeat as Annotation).Id = id;
                             ifeat.Attributes = ConvertToDictionary (feature.ToJson ());
-
+                            output.Add (ifeat);
                         }
 
-                        output.Add (ifeat);
                     }
                 }
                 return output.ToArray ();
