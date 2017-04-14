@@ -761,6 +761,7 @@ namespace Naxam.Mapbox.Platform.iOS
             Element.ZoomLevel = mapView.ZoomLevel;
             Element.Pitch = (double)mapView.Camera.Pitch;
             Element.RotatedDegree = (double)mapView.Camera.Heading;
+            Element?.RegionDidChangeCommand?.Execute (animated);
         }
 
         [Export ("mapView:annotationCanShowCallout:"),]
