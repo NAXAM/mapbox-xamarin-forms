@@ -336,7 +336,7 @@ namespace Naxam.Mapbox.Platform.iOS
                 return output.ToArray ();
             };
 
-            Element.ResetPositionCommand = new Command ((arg) => {
+            Element.ResetPositionFunc = new Command ((arg) => {
                 MapView.ResetPosition ();
             });
 
@@ -714,8 +714,8 @@ namespace Naxam.Mapbox.Platform.iOS
         [Export ("mapViewDidFinishRenderingMap:fullyRendered:"),]
         void DidFinishRenderingMap (MGLMapView mapView, bool fullyRendered)
         {
-            Element.Delegate?.DidFinishRenderingCommand?.Execute (
-                new Tuple<FormsMap, bool> (Element, fullyRendered));
+            Element.DidFinishRenderingCommand?.Execute (
+                fullyRendered);
         }
 
         [Export ("mapView:didUpdateUserLocation:"),]
@@ -746,7 +746,7 @@ namespace Naxam.Mapbox.Platform.iOS
                 newStyle = Element.MapStyle;
             }
 
-            Element.Delegate?.DidFinishLoadingStyleCommand?.Execute (new Tuple<FormsMap, MapStyle> (Element, newStyle));
+            Element.DidFinishLoadingStyleCommand?.Execute (newStyle);
         }
 
         [Export ("mapViewRegionIsChanging:"),]

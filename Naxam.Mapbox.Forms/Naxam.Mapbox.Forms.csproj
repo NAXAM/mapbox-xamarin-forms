@@ -47,6 +47,7 @@
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Layers\CircleLayer.cs" />
     <Compile Include="Layers\LineLayer.cs" />
+    <Compile Include="Position.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">

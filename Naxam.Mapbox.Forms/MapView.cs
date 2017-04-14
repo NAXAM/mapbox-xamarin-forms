@@ -9,24 +9,6 @@ using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Forms
 {
-    public class Position
-    {
-        public double Lat { get; set; }
-
-        public double Long { get; set; }
-
-        public Position ()
-        {
-
-        }
-
-        public Position (double lat, double lon)
-        {
-            Lat = lat;
-            Long = lon;
-        }
-    }
-
     public class PositionChangeEventArgs : EventArgs
     {
         private Position _newPosition;
@@ -44,7 +26,7 @@ namespace Naxam.Mapbox.Forms
         }
     }
 
-    public class MapView : View
+    public partial class MapView : View
     {
         public static readonly BindableProperty IsMarkerClickedProperty = BindableProperty.Create (
           nameof (IsMarkerClicked),
@@ -61,34 +43,12 @@ namespace Naxam.Mapbox.Forms
             set { SetValue (IsMarkerClickedProperty, value); }
         }
 
-        public static readonly BindableProperty DelegateProperty = BindableProperty.Create (
-        nameof (Delegate),
-        typeof (MapViewDelegate),
-        typeof (MapView),
-        default (MapViewDelegate));
-
-        public MapViewDelegate Delegate {
-            get {
-                return (MapViewDelegate)GetValue (DelegateProperty);
-            }
-            set {
-                SetValue (DelegateProperty, (MapViewDelegate)value);
-            }
-        }
-
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create (
            nameof (IsTouchInMap),
            typeof (bool),
            typeof (MapView),
            default (bool),
-        BindingMode.TwoWay
-       //          null,
-       //          ((bindable, newValue, oldValue) =>
-       //          {
-       //              ((MapView)bindable).OnMapCenterChange(bindable,(Position)newValue, (Position)oldValue);
-       //          })
-
-       );
+            BindingMode.TwoWay);
 
 
         public bool IsTouchInMap {
@@ -307,35 +267,19 @@ namespace Naxam.Mapbox.Forms
             }
         }
 
-        public static readonly BindableProperty ResetPositionCommandProperty = BindableProperty.Create (
-            nameof (ResetPositionCommand),
+        public static readonly BindableProperty ResetPositionFuncProperty = BindableProperty.Create (
+            nameof (ResetPositionFunc),
             typeof (ICommand),
             typeof (MapView),
             default (ICommand),
             BindingMode.OneWayToSource);
 
-        public ICommand ResetPositionCommand {
+        public ICommand ResetPositionFunc {
             get {
-                return (ICommand)GetValue (ResetPositionCommandProperty);
+                return (ICommand)GetValue (ResetPositionFuncProperty);
             }
             set {
-                SetValue (ResetPositionCommandProperty, value);
-            }
-        }
-
-        public static readonly BindableProperty DidTapOnMapCommandProperty = BindableProperty.Create (
-            nameof (DidTapOnMapCommand),
-            typeof (ICommand),
-            typeof (MapView),
-            default (ICommand),
-            BindingMode.OneWay);
-
-        public ICommand DidTapOnMapCommand {
-            get {
-                return (ICommand)GetValue (DidTapOnMapCommandProperty);
-            }
-            set {
-                SetValue (DidTapOnMapCommandProperty, (ICommand)value);
+                SetValue (ResetPositionFuncProperty, value);
             }
         }
 
