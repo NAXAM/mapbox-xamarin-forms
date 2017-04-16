@@ -1,47 +1,35 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
 using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
-
-using Java.IO;
-using Java.Lang;
-using Java.Security;
 using Java.Util;
 
-using Mapbox.Sdk.Annotations;
-using Mapbox.Sdk.Camera;
-using Mapbox.Sdk.Geometry;
-using Mapbox.Sdk.Maps;
-using Mapbox.Services.Commons.GeoJson;
+using Mapbox.MapboxSdk.Annotations;
+using Mapbox.MapboxSdk.Camera;
+using Mapbox.MapboxSdk.Geometry;
+using Mapbox.MapboxSdk.Maps;
+using Mapbox.Services.Commons.Geojson;
 
 using Naxam.Mapbox.Forms;
-using Naxam.Mapbox.Platform.Droid;
 
 using Newtonsoft.Json;
 
 using Annotation = Naxam.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
-using Byte = System.Byte;
 using MapView = Naxam.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
-using Sdk = Mapbox.Sdk;
+using Sdk = Mapbox.MapboxSdk;
 using View = Android.Views.View;
-
-//alias
-
-[assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Mapbox.Forms.MapView), typeof (MapViewRenderer))]
 
 namespace Naxam.Mapbox.Platform.Droid
 {
-    public class MapViewRenderer : Xamarin.Forms.Platform.Android.ViewRenderer<Naxam.Mapbox.Forms.MapView, View>, MapboxMap.ISnapshotReadyCallback
+    public class MapViewRenderer
+        : Xamarin.Forms.Platform.Android.ViewRenderer<MapView, View>, MapboxMap.ISnapshotReadyCallback
     {
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
@@ -52,14 +40,13 @@ namespace Naxam.Mapbox.Platform.Droid
             new Dictionary<string, Sdk.Annotations.Annotation> ();
 
         protected override void OnElementChanged (
-            Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Naxam.Mapbox.Forms.MapView> e)
+            Xamarin.Forms.Platform.Android.ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged (e);
 
             if (e.OldElement != null) {
-                //Remove event handlers
                 fragment.MapReady -= MapReady;
-                fragment.MapTouch -= MapTouch;
+                fragment.MapTouched -= MapTouch;
             }
 
             if (e.NewElement == null)
@@ -72,25 +59,22 @@ namespace Naxam.Mapbox.Platform.Droid
                 var activity = (AppCompatActivity)Context;
                 fragment = (MapViewFragment)activity.SupportFragmentManager.FindFragmentById (Resource.Id.map);
                 fragment.MapReady += MapReady;
-                fragment.MapTouch += MapTouch;
+                fragment.MapTouched += MapTouch;
                 _currentCamera = new Position ();
                 SetNativeControl (view);
             }
         }
 
-        Sdk.Maps.MapboxMap map;
-        private Sdk.Maps.MapView _mapview;
-        private Point _point;
+        MapboxMap map;
+        Sdk.Maps.MapView _mapview;
         void MapTouch (object sender, MotionEvent e)
         {
-            _point = new Point (e.GetX (), e.GetY ());
         }
         void MapReady (object sender, MapboxMapReadyEventArgs e)
         {
             map = e.Map;
             _mapview = e.MapView;
             map.MyLocationEnabled = true;
-            // Element.Center = new Position();
             map.MyLocationChange += delegate (object o, MapboxMap.MyLocationChangeEventArgs args) {
                 if (Element.UserLocation == null)
                     Element.UserLocation = new Position ();
@@ -105,7 +89,6 @@ namespace Naxam.Mapbox.Platform.Droid
             };
 
             map.MapClick += delegate (object o, MapboxMap.MapClickEventArgs args) {
-                // Need to be false to hide searchbar in view
                 Element.IsTouchInMap = false;
                 var point = map.Projection.ToScreenLocation (args.P0);
                 var xfPoint = new Point (point.X, point.Y);
@@ -131,12 +114,10 @@ namespace Naxam.Mapbox.Platform.Droid
 
         public void SetupFunctions ()
         {
-
             Element.TakeSnapshot = () => {
                 map.Snapshot (this);
                 return result;
             };
-
 
             Element.GetFeaturesAroundPoint += delegate (Point point, double radius, string [] layers) {
                 var output = new List<IFeature> ();
@@ -146,7 +127,7 @@ namespace Naxam.Mapbox.Platform.Droid
                     foreach (Feature feature in listFeatures) {
                         IFeature ifeat = null;
                         System.Diagnostics.Debug.WriteLine (feature.ToJson ());
-                        if (feature.Geometry is global::Mapbox.Services.Commons.GeoJson.Point) {
+                        if (feature.Geometry is global::Mapbox.Services.Commons.Geojson.Point) {
                             ifeat = new PointFeature ();
                             var pointFeature = feature.Geometry.Coordinates as global::Mapbox.Services.Commons.Models.Position;
                             if (pointFeature == null) continue;
@@ -160,8 +141,8 @@ namespace Naxam.Mapbox.Platform.Droid
                         }
                         if (ifeat != null) {
                             string id = feature.Id;
-                            if (string.IsNullOrEmpty(id)
-                                || output.Any((arg) => (arg as Annotation).Id == id)) {
+                            if (string.IsNullOrEmpty (id)
+                                || output.Any ((arg) => (arg as Annotation).Id == id)) {
                                 id = Guid.NewGuid ().ToString ();
                             }
                             (ifeat as Annotation).Id = id;
@@ -178,15 +159,9 @@ namespace Naxam.Mapbox.Platform.Droid
 
         private Dictionary<string, object> ConvertToDictionary (string featureProperties)
         {
-            Dictionary<string, object> objectFeature =
-                    JsonConvert.DeserializeObject<Dictionary<string, object>> (featureProperties);
-            var result = JsonConvert.DeserializeObject<Dictionary<string, object>> (objectFeature ["properties"].ToString ());
-            return result;
+            Dictionary<string, object> objectFeature = JsonConvert.DeserializeObject<Dictionary<string, object>> (featureProperties);
+            return JsonConvert.DeserializeObject<Dictionary<string, object>> (objectFeature ["properties"].ToString ()); ;
         }
-
-        #region SetupEnvent
-
-        #endregion
 
         private void FocustoLocation (LatLng latLng)
         {
@@ -200,20 +175,8 @@ namespace Naxam.Mapbox.Platform.Droid
             base.OnElementPropertyChanged (sender, e);
             if (e.PropertyName == MapView.CenterProperty.PropertyName) {
                 if (!ReferenceEquals (Element.Center, _currentCamera)) {
-                    if (Element.Center == null)
-                        return;
+                    if (Element.Center == null) return;
                     FocustoLocation (new LatLng (Element.Center.Lat, Element.Center.Long));
-                    return;
-                    if (ReferenceEquals (Element.Center, Element.UserLocation)) {
-                        //Users go back their location
-                        if (Element.Center == null)
-                            return;
-                        FocustoLocation (new LatLng (Element.Center.Lat, Element.Center.Long));
-                    } else {
-                        // User search location , need to focus and add marker
-                        FocustoLocation (new LatLng (Element.Center.Lat, Element.Center.Long));
-                        //                        _markerAddress = AddMarkerAddress(new LatLng(Element.Center.Lat, Element.Center.Long));
-                    }
                 }
             } else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null) {
                 map.StyleUrl = Element.MapStyle.UrlString;
@@ -245,10 +208,9 @@ namespace Naxam.Mapbox.Platform.Droid
                 foreach (Annotation annot in e.NewItems) {
                     var shape = AddAnnotation (annot);
                     if (shape != null) {
-                        // annots.Add(shape);
+                        //TODO
                     }
                 }
-                //  map.AddPolylines(annots.ToArray());
             } else if (e.Action == NotifyCollectionChangedAction.Remove) {
                 var items = new List<Annotation> ();
                 foreach (Annotation annot in e.OldItems) {
@@ -322,7 +284,7 @@ namespace Naxam.Mapbox.Platform.Droid
                     lines.Add (coords);
                 }
                 IList<Polyline> listPolylines = map.AddPolylines (lines);
-                //todo  handle add listPolyline . Need to identify to remove after that
+                //TODO  handle add listPolyline . Need to identify to remove after that
 
             }
             if (options != null) {
@@ -347,100 +309,6 @@ namespace Naxam.Mapbox.Platform.Droid
             MemoryStream stream = new MemoryStream ();
             bmp.Compress (Bitmap.CompressFormat.Png, 0, stream);
             result = stream.ToArray ();
-            //            var converter = new ImageConverter();
-            //           result =  (byte[])converter.ConvertTo(bmp, typeof(byte[]));
-        }
-
-
-    }
-
-    #region Map Fragment
-
-
-
-    //Fragment MapView
-    public class MapViewFragment : Android.Support.V4.App.Fragment, Sdk.Maps.IOnMapReadyCallback, View.IOnTouchListener
-    {
-        public event EventHandler<MapboxMapReadyEventArgs> MapReady;
-        public event EventHandler<MotionEvent> MapTouch;
-
-        public MapViewFragment (IntPtr javaReference, JniHandleOwnership transfer)
-            : base (javaReference, transfer)
-        {
-        }
-
-        public MapViewFragment () : base ()
-        {
-        }
-
-        Sdk.Maps.MapView mapView;
-
-        public override View OnCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        {
-            mapView = new Sdk.Maps.MapView (Context);
-            mapView.OnCreate (savedInstanceState);
-            mapView.LayoutParameters = new ViewGroup.LayoutParams (
-                ViewGroup.LayoutParams.MatchParent,
-                ViewGroup.LayoutParams.MatchParent);
-
-            mapView.GetMapAsync (this);
-
-            return mapView;
-        }
-
-        public override void OnResume ()
-        {
-            base.OnResume ();
-            mapView.OnResume ();
-        }
-
-        public override void OnSaveInstanceState (Bundle outState)
-        {
-            base.OnSaveInstanceState (outState);
-            mapView.OnSaveInstanceState (outState);
-        }
-
-        public override void OnPause ()
-        {
-            mapView.OnPause ();
-            base.OnPause ();
-        }
-
-        public override void OnDestroy ()
-        {
-            mapView.OnDestroy ();
-            base.OnDestroy ();
-        }
-
-        public override void OnLowMemory ()
-        {
-            mapView.OnLowMemory ();
-            base.OnLowMemory ();
-        }
-
-        public void OnMapReady (Sdk.Maps.MapboxMap p0)
-        {
-            MapReady?.Invoke (this, new MapboxMapReadyEventArgs (p0, mapView));
-
-            //throw new NotImplementedException();
-        }
-
-        public bool OnTouch (View v, MotionEvent e)
-        {
-            MapTouch?.Invoke (this, e);
-            return false;
         }
     }
-    public class MapboxMapReadyEventArgs : EventArgs
-    {
-        public Sdk.Maps.MapboxMap Map { get; private set; }
-        public Sdk.Maps.MapView MapView { get; private set; }
-        public MapboxMapReadyEventArgs (Sdk.Maps.MapboxMap map, Sdk.Maps.MapView mapview)
-        {
-            MapView = mapview;
-            Map = map;
-        }
-    }
-
-    #endregion
 }
