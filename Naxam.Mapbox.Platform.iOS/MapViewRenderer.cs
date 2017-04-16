@@ -121,7 +121,7 @@ namespace Naxam.Mapbox.Platform.iOS
             try {
                 MapView = new MGLMapView (Bounds) {
                     ShowsUserLocation = true,
-                    Delegate = this,
+                    WeakDelegate = this,
                     PitchEnabled = Element.PitchEnabled,
                     RotateEnabled = Element.RotateEnabled
                 };
@@ -265,7 +265,7 @@ namespace Naxam.Mapbox.Platform.iOS
                     }
 
 
-                    var geoData = feature.GeoJSONDictionary ();
+                    var geoData = feature.GeoJSONDictionary ;
                     if (geoData == null) continue;
 
                     IFeature ifeat = null;
@@ -387,7 +387,7 @@ namespace Naxam.Mapbox.Platform.iOS
             if (layersId == null) {
                 return null;
             }
-            NSMutableSet output = new NSMutableSet ();
+            NSMutableSet output = new NSMutableSet();
             foreach (string layerId in layersId) {
                 var acceptedId = layerId.Replace ("_", "-");
                 output.Add ((NSString)acceptedId);
@@ -494,7 +494,7 @@ namespace Naxam.Mapbox.Platform.iOS
             } else if (e.Action == NotifyCollectionChangedAction.Reset) {
                 var layersToRemove = new List<MGLStyleLayer> ();
                 foreach (MGLStyleLayer layer in MapView.Style.Sources) {
-                    if (layer.Identifier.HasPrefix ((NSString)"NXCustom_")) {
+                    if (layer.Identifier.StartsWith ("NXCustom_", StringComparison.OrdinalIgnoreCase)) {
                         layersToRemove.Add (layer);
                     }
                 }
@@ -585,7 +585,7 @@ namespace Naxam.Mapbox.Platform.iOS
             } else if (e.Action == NotifyCollectionChangedAction.Reset) {
                 var sourcesToRemove = new List<MGLSource> ();
                 foreach (MGLSource source in MapView.Style.Sources) {
-                    if (source.Identifier.HasPrefix ((NSString)"NXCustom_")) {
+                    if (source.Identifier.StartsWith ("NXCustom_", StringComparison.OrdinalIgnoreCase)) {
                         sourcesToRemove.Add (source);
                     }
                 }
@@ -608,7 +608,7 @@ namespace Naxam.Mapbox.Platform.iOS
             foreach (ShapeSource source in sources) {
                 if (source.Id != null && source.Shape != null) {
                     var shape = ShapeFromAnnotation (source.Shape);
-                    var oldSource = MapView.Style.SourceWithIdentifier ((NSString)source.Id);
+                    var oldSource = MapView.Style?.SourceWithIdentifier ((NSString)source.Id);
                     if (oldSource != null && oldSource is MGLShapeSource) {
                         (oldSource as MGLShapeSource).Shape = shape;
                     } else {
