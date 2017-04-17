@@ -149,21 +149,6 @@ namespace Naxam.Mapbox.Platform.iOS
                 MapView.StyleURL = new NSUrl (Element.MapStyle.UrlString);
                 Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
                 Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
-                if (Element.MapStyle.CustomSources != null) {
-                    var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
-                    if (notifiyCollection != null) {
-                        notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
-                    }
-                    AddSources (Element.MapStyle.CustomSources.ToList ());
-                }
-                if (Element.MapStyle.CustomLayers != null) {
-                    var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
-                    if (notifiyCollection != null) {
-                        notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
-                    }
-
-                    AddLayers (Element.MapStyle.CustomLayers.ToList ());
-                }
             }
 
         }
@@ -602,7 +587,7 @@ namespace Naxam.Mapbox.Platform.iOS
 
         void AddSources (System.Collections.IList sources)
         {
-            if (sources == null) {
+            if (sources == null || MapView == null || MapView.Style == null) {
                 return;
             }
             foreach (ShapeSource source in sources) {
@@ -744,6 +729,22 @@ namespace Naxam.Mapbox.Platform.iOS
                     Element.MapStyle.Name = style.Name;
                 }
                 newStyle = Element.MapStyle;
+            }
+            if (Element.MapStyle.CustomSources != null) {
+                var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+                if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+                }
+
+				AddSources (Element.MapStyle.CustomSources.ToList ());
+            }
+            if (Element.MapStyle.CustomLayers != null) {
+                var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+                if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+                }
+
+				AddLayers (Element.MapStyle.CustomLayers.ToList ());
             }
 
             Element.DidFinishLoadingStyleCommand?.Execute (newStyle);
