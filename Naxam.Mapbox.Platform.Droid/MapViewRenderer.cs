@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 
@@ -18,7 +19,7 @@ using Mapbox.Services.Commons.Geojson;
 using Naxam.Mapbox.Forms;
 
 using Newtonsoft.Json;
-
+using Xamarin.Forms;
 using Annotation = Naxam.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Mapbox.Forms.MapView;
@@ -109,7 +110,37 @@ namespace Naxam.Mapbox.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
+            _mapview.MapChanged += (object sender, Sdk.Maps.MapView.MapChangedEventArgs e) => {
+                switch (e.P0) { 
+                    case Sdk.Maps.MapView.DidFinishLoadingStyle:
+                        var mapStyle = Element.MapStyle;
+                                            if (mapStyle == null 
+                                                || (!string.IsNullOrEmpty (map.StyleUrl) && mapStyle.UrlString != map.StyleUrl)) {
+                                                mapStyle = new MapStyle (map.StyleUrl);
+                        Element.MapStyle = mapStyle;
+                                            }
+                                            Element.DidFinishLoadingStyleCommand?.Execute (mapStyle);
+                    break;
+                case Sdk.Maps.MapView.DidFinishRenderingMap:
+                    Element.DidFinishRenderingCommand?.Execute (false);
+                    break;
+                case Sdk.Maps.MapView.DidFinishRenderingMapFullyRendered:
+                    Element.DidFinishRenderingCommand?.Execute (true);
+                    break;
+                case Sdk.Maps.MapView.RegionDidChange:
+                    Element.RegionDidChangeCommand?.Execute (false);
+                    break;
+                case Sdk.Maps.MapView.RegionDidChangeAnimated:
+                    Element.RegionDidChangeCommand?.Execute (true);
+                    break;
+                    default:
+                    break;
+                }
+                
+            };
+
             SetupFunctions ();
+            UpdateMapStyle ();
         }
 
         public void SetupFunctions ()
@@ -178,8 +209,7 @@ namespace Naxam.Mapbox.Platform.Droid
                     FocustoLocation (new LatLng (Element.Center.Lat, Element.Center.Long));
                 }
             } else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null) {
-                map.StyleUrl = Element.MapStyle.UrlString;
-                FocustoLocation (new LatLng (Element.MapStyle.Center [1], Element.MapStyle.Center [0]));
+                UpdateMapStyle ();
             } else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName) {
                 if (map != null) {
                     map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
@@ -198,6 +228,74 @@ namespace Naxam.Mapbox.Platform.Droid
                     }
                 }
             }
+        }
+
+        void UpdateMapStyle ()
+        {
+            if (Element.MapStyle != null && !string.IsNullOrEmpty (Element.MapStyle.UrlString)) {
+                            map.StyleUrl = Element.MapStyle.UrlString;
+                            Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
+                            Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
+            }
+
+        }
+
+void OnMapStylePropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+{
+	if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
+		&& (sender as MapStyle).CustomSources != null) {
+		var notifiyCollection = (sender as MapStyle).CustomSources as INotifyCollectionChanged;
+		if (notifiyCollection != null) {
+			notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
+		}
+                RemoveSources (Element.MapStyle.CustomSources.ToList ());
+            }
+        }
+
+        void OnMapStylePropertyChanged (object sender, PropertyChangedEventArgs e)
+{
+	if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
+		&& (sender as MapStyle).CustomSources != null) {
+		var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+		if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+		}
+
+                AddSources (Element.MapStyle.CustomSources.ToList ());
+	} else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
+			   && (sender as MapStyle).CustomLayers != null) {
+		var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+		if (notifiyCollection != null) {
+                    notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+		}
+
+                AddLayers (Element.MapStyle.CustomLayers.ToList ());
+            }
+        }
+
+        void OnShapeSourcesCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
+           //TODO
+        }
+
+        void AddSources (List<ShapeSource> list)
+        {
+            //TODO
+        }
+
+        void RemoveSources (List<ShapeSource> list)
+        {
+            //TODO
+        }
+
+        void OnLayersCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
+            //TODO
+        }
+
+        void AddLayers (List<Layer> list)
+        {
+            //TODO
         }
 
         private void OnAnnotationsCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
