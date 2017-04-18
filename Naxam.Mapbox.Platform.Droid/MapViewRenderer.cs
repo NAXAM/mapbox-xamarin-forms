@@ -121,7 +121,7 @@ namespace Naxam.Mapbox.Platform.Droid
 
             Element.GetFeaturesAroundPoint += delegate (Point point, double radius, string [] layers) {
                 var output = new List<IFeature> ();
-                RectF rect = new RectF ((float)(point.X - radius), (float)(point.Y - radius), (float)radius * 2, (float)radius * 2);
+                RectF rect = new RectF ((float)(point.X - radius), (float)(point.Y - radius), (float)(point.X + radius), (float)(point.Y + radius));
                 var listFeatures = map.QueryRenderedFeatures (rect, layers);
                 if (listFeatures.Count != 0) {
                     foreach (Feature feature in listFeatures) {
@@ -155,7 +155,6 @@ namespace Naxam.Mapbox.Platform.Droid
                 return output.ToArray ();
             };
         }
-
 
         private Dictionary<string, object> ConvertToDictionary (string featureProperties)
         {
