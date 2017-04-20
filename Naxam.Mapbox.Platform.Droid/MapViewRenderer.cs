@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -110,8 +110,8 @@ namespace Naxam.Mapbox.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
-            _mapview.MapChanged += (object sender, Sdk.Maps.MapView.MapChangedEventArgs e) => {
-                switch (e.P0) { 
+            _mapview.MapChanged += (object xsender, Sdk.Maps.MapView.MapChangedEventArgs xe) => {
+                switch (xe.P0) { 
                     case Sdk.Maps.MapView.DidFinishLoadingStyle:
                         var mapStyle = Element.MapStyle;
                                             if (mapStyle == null 
