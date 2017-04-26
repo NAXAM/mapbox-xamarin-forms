@@ -25,12 +25,15 @@ using MapView = Naxam.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Mapbox.MapboxSdk;
 using View = Android.Views.View;
+using Android.Widget;
 
 namespace Naxam.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
         : Xamarin.Forms.Platform.Android.ViewRenderer<MapView, View>, MapboxMap.ISnapshotReadyCallback, Sdk.Maps.IOnMapReadyCallback
     {
+        MapboxMap map;
+
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
@@ -53,20 +56,25 @@ namespace Naxam.Mapbox.Platform.Droid
 
             if (Control == null)
             {
-                var view = LayoutInflater.FromContext(Context)
-                                         .Inflate(Resource.Layout.map_view_container, ViewGroup, false);
-
                 var activity = (AppCompatActivity)Context;
-                fragment = (MapViewFragment)activity.SupportFragmentManager.FindFragmentById(Resource.Id.map);
-                fragment.GetMapAsync(this);
-                mapView = fragment.View as Sdk.Maps.MapView;
-                currentCamera = new Position();
+
+                var view = new FrameLayout(activity)
+                {
+                    Id = GenerateViewId()
+                };
                 SetNativeControl(view);
+                
+                fragment = new MapViewFragment();
+
+                activity.SupportFragmentManager.BeginTransaction()
+                    .Replace(view.Id, fragment)
+                    .Commit();
+
+                fragment.GetMapAsync(this);
+
+                currentCamera = new Position();
             }
         }
-
-        MapboxMap map;
-        Sdk.Maps.MapView mapView;
 
         public void SetupFunctions()
         {
@@ -129,17 +137,14 @@ namespace Naxam.Mapbox.Platform.Droid
             {
                 RemoveMapEvents();
 
-                if (fragment != null)
-                {
-                    var activity = (AppCompatActivity)Context;
-                    var fm = activity.SupportFragmentManager;
+                var activity = (AppCompatActivity)Context;
+                var fm = activity.SupportFragmentManager;
 
-                    fm.BeginTransaction()
-                        .Remove(fragment)
-                        .Commit();
+                fm.BeginTransaction()
+                    .Remove(fragment)
+                    .Commit();
 
-                    fragment.Dispose();
-                }
+                fragment.Dispose();
                 fragment = null;
             }
 
