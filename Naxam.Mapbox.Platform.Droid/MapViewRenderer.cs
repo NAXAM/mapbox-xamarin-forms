@@ -98,37 +98,12 @@ namespace Naxam.Controls.Platform.Droid
         IFeature [] GetFeaturesAroundPoint (Point point, double radius, string [] layers)
         {
             var output = new List<IFeature> ();
-            RectF rect = new RectF ((float)(point.X - radius), (float)(point.Y - radius), (float)(point.X + radius), (float)(point.Y + radius));
+            RectF rect = point.ToRect(radius);
+            
             var listFeatures = map.QueryRenderedFeatures (rect, layers);
-            if (listFeatures.Count != 0) {
-                foreach (Feature feature in listFeatures) {
-                    IFeature ifeat = null;
-                    System.Diagnostics.Debug.WriteLine (feature.ToJson ());
-                    if (feature.Geometry is global::Mapbox.Services.Commons.Geojson.Point) {
-                        ifeat = new PointFeature ();
-                        var pointFeature = feature.Geometry.Coordinates as global::Mapbox.Services.Commons.Models.Position;
-                        if (pointFeature == null) continue;
-                        ((PointAnnotation)ifeat).Coordinate = new Position (pointFeature.Latitude, pointFeature.Longitude);
-                    } else if (feature.Geometry is LineString) {
-                        ifeat = new PolylineFeature ();
-                    } else if (feature.Geometry is MultiLineString) {
-                        ifeat = new MultiPolylineFeature ();
-
-                    }
-                    if (ifeat != null) {
-                        string id = feature.Id;
-                        if (string.IsNullOrEmpty (id)
-                            || output.Any ((arg) => (arg as Annotation).Id == id)) {
-                            id = Guid.NewGuid ().ToString ();
-                        }
-                        (ifeat as Annotation).Id = id;
-                        ifeat.Attributes = ConvertToDictionary (feature.ToJson ());
-                        output.Add (ifeat);
-                    }
-
-                }
-            }
-            return output.ToArray ();
+            return listFeatures.Select(x => x.ToFeature())
+                               .Where(x => x != null)
+                               .ToArray ();
         }
 
         protected override void Dispose (bool disposing)

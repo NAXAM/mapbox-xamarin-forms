@@ -146,6 +146,7 @@
     <Compile Include="MapboxMapReadyEventArgs.cs" />
     <Compile Include="Extensions\LayerExtensions.cs" />
     <Compile Include="Extensions\AnnotationExtensions.cs" />
+    <Compile Include="Extensions\FeatureExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
