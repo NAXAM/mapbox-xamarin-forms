@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -301,17 +300,17 @@ namespace Naxam.Mapbox.Forms
         }
 
         public static readonly BindableProperty UpdateLayerFuncProperty = BindableProperty.Create (
-        	nameof (UpdateLayerFunc),
+            nameof (UpdateLayerFunc),
             typeof (Func<string, bool, bool>),
-        	typeof (MapView),
-        	default (Func<string, bool, bool>),
-        	 BindingMode.OneWayToSource);
+            typeof (MapView),
+            default (Func<string, bool, bool>),
+             BindingMode.OneWayToSource);
 
         public Func<string, bool, bool> UpdateLayerFunc {
-        	get {
-        		return ((Func<string, bool, bool>)GetValue (UpdateLayerFuncProperty));
-        	}
-        	set {
+            get {
+                return ((Func<string, bool, bool>)GetValue (UpdateLayerFuncProperty));
+            }
+            set {
                 SetValue (UpdateLayerFuncProperty, value);
             }
         }

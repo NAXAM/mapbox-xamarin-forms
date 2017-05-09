@@ -15,11 +15,12 @@ using Mapbox.MapboxSdk.Camera;
 using Mapbox.MapboxSdk.Geometry;
 using Mapbox.MapboxSdk.Maps;
 using Mapbox.Services.Commons.Geojson;
-
+using Naxam.Controls.Platform.Droid;
 using Naxam.Mapbox.Forms;
 
 using Newtonsoft.Json;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 using Annotation = Naxam.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Mapbox.Forms.MapView;
@@ -27,10 +28,10 @@ using Point = Xamarin.Forms.Point;
 using Sdk = Mapbox.MapboxSdk;
 using View = Android.Views.View;
 
-namespace Naxam.Mapbox.Platform.Droid
+namespace Naxam.Controls.Platform.Droid
 {
     public partial class MapViewRenderer
-        : Xamarin.Forms.Platform.Android.ViewRenderer<MapView, View>, MapboxMap.ISnapshotReadyCallback, Sdk.Maps.IOnMapReadyCallback
+        : ViewRenderer<MapView, View>, MapboxMap.ISnapshotReadyCallback, IOnMapReadyCallback
     {
         MapboxMap map;
 
@@ -39,18 +40,16 @@ namespace Naxam.Mapbox.Platform.Droid
         private Position currentCamera;
 
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
-            new Dictionary<string, Sdk.Annotations.Annotation>();
+            new Dictionary<string, Sdk.Annotations.Annotation> ();
 
-        protected override void OnElementChanged(
-            Xamarin.Forms.Platform.Android.ElementChangedEventArgs<MapView> e)
+        protected override void OnElementChanged (
+            ElementChangedEventArgs<MapView> e)
         {
-            base.OnElementChanged(e);
+            base.OnElementChanged (e);
 
+            fragment?.Dispose ();
 
-            fragment?.Dispose();
-
-            if (e.OldElement != null)
-            {
+            if (e.OldElement != null) {
                 e.OldElement.TakeSnapshot -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPoint -= GetFeaturesAroundPoint;
             }
@@ -58,171 +57,147 @@ namespace Naxam.Mapbox.Platform.Droid
             if (e.NewElement == null)
                 return;
 
-            if (Control == null)
-            {
+            if (Control == null) {
                 var activity = (AppCompatActivity)Context;
 
-                var view = new Android.Widget.FrameLayout(activity)
-                {
-                    Id = GenerateViewId()
+                var view = new Android.Widget.FrameLayout (activity) {
+                    Id = GenerateViewId ()
                 };
-                SetNativeControl(view);
+                SetNativeControl (view);
 
-                fragment = new MapViewFragment();
+                fragment = new MapViewFragment ();
 
-                activity.SupportFragmentManager.BeginTransaction()
-                    .Replace(view.Id, fragment)
-                    .Commit();
+                activity.SupportFragmentManager.BeginTransaction ()
+                    .Replace (view.Id, fragment)
+                    .Commit ();
 
-                fragment.GetMapAsync(this);
+                fragment.GetMapAsync (this);
 
-                currentCamera = new Position();
+                currentCamera = new Position ();
             }
         }
 
-        public void SetupFunctions()
+        public void SetupFunctions ()
         {
 
             Element.TakeSnapshot += TakeMapSnapshot;
-
             Element.GetFeaturesAroundPoint += GetFeaturesAroundPoint;
+
+            Element.ResetPositionFunc = new Command (x => {
+                map.ResetNorth ();
+            });
         }
 
-        byte[] TakeMapSnapshot()
+        byte [] TakeMapSnapshot ()
         {
             //TODO
-            map.Snapshot(this);
+            map.Snapshot (this);
             return result;
         }
 
-        IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
+        IFeature [] GetFeaturesAroundPoint (Point point, double radius, string [] layers)
         {
-            var output = new List<IFeature>();
-            RectF rect = new RectF((float)(point.X - radius), (float)(point.Y - radius), (float)(point.X + radius), (float)(point.Y + radius));
-            var listFeatures = map.QueryRenderedFeatures(rect, layers);
-            if (listFeatures.Count != 0)
-            {
-                foreach (Feature feature in listFeatures)
-                {
+            var output = new List<IFeature> ();
+            RectF rect = new RectF ((float)(point.X - radius), (float)(point.Y - radius), (float)(point.X + radius), (float)(point.Y + radius));
+            var listFeatures = map.QueryRenderedFeatures (rect, layers);
+            if (listFeatures.Count != 0) {
+                foreach (Feature feature in listFeatures) {
                     IFeature ifeat = null;
-                    System.Diagnostics.Debug.WriteLine(feature.ToJson());
-                    if (feature.Geometry is global::Mapbox.Services.Commons.Geojson.Point)
-                    {
-                        ifeat = new PointFeature();
+                    System.Diagnostics.Debug.WriteLine (feature.ToJson ());
+                    if (feature.Geometry is global::Mapbox.Services.Commons.Geojson.Point) {
+                        ifeat = new PointFeature ();
                         var pointFeature = feature.Geometry.Coordinates as global::Mapbox.Services.Commons.Models.Position;
                         if (pointFeature == null) continue;
-                        ((PointAnnotation)ifeat).Coordinate = new Position(pointFeature.Latitude, pointFeature.Longitude);
-                    }
-                    else if (feature.Geometry is LineString)
-                    {
-                        ifeat = new PolylineFeature();
-                    }
-                    else if (feature.Geometry is MultiLineString)
-                    {
-                        ifeat = new MultiPolylineFeature();
+                        ((PointAnnotation)ifeat).Coordinate = new Position (pointFeature.Latitude, pointFeature.Longitude);
+                    } else if (feature.Geometry is LineString) {
+                        ifeat = new PolylineFeature ();
+                    } else if (feature.Geometry is MultiLineString) {
+                        ifeat = new MultiPolylineFeature ();
 
                     }
-                    if (ifeat != null)
-                    {
+                    if (ifeat != null) {
                         string id = feature.Id;
-                        if (string.IsNullOrEmpty(id)
-                            || output.Any((arg) => (arg as Annotation).Id == id))
-                        {
-                            id = Guid.NewGuid().ToString();
+                        if (string.IsNullOrEmpty (id)
+                            || output.Any ((arg) => (arg as Annotation).Id == id)) {
+                            id = Guid.NewGuid ().ToString ();
                         }
                         (ifeat as Annotation).Id = id;
-                        ifeat.Attributes = ConvertToDictionary(feature.ToJson());
-                        output.Add(ifeat);
+                        ifeat.Attributes = ConvertToDictionary (feature.ToJson ());
+                        output.Add (ifeat);
                     }
 
                 }
             }
-            return output.ToArray();
+            return output.ToArray ();
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose (bool disposing)
         {
-            if (fragment != null)
-            {
-                RemoveMapEvents();
+            if (fragment != null) {
+                RemoveMapEvents ();
 
                 var activity = (AppCompatActivity)Context;
                 var fm = activity.SupportFragmentManager;
 
-                fm.BeginTransaction()
-                    .Remove(fragment)
-                    .Commit();
+                fm.BeginTransaction ()
+                    .Remove (fragment)
+                    .Commit ();
 
-                fragment.Dispose();
+                fragment.Dispose ();
                 fragment = null;
             }
 
-            base.Dispose(disposing);
+            base.Dispose (disposing);
         }
 
-        private Dictionary<string, object> ConvertToDictionary(string featureProperties)
+        private Dictionary<string, object> ConvertToDictionary (string featureProperties)
         {
-            Dictionary<string, object> objectFeature = JsonConvert.DeserializeObject<Dictionary<string, object>>(featureProperties);
-            return JsonConvert.DeserializeObject<Dictionary<string, object>>(objectFeature["properties"].ToString()); ;
+            Dictionary<string, object> objectFeature = JsonConvert.DeserializeObject<Dictionary<string, object>> (featureProperties);
+            return JsonConvert.DeserializeObject<Dictionary<string, object>> (objectFeature ["properties"].ToString ()); ;
         }
 
-        private void FocustoLocation(LatLng latLng)
+        private void FocustoLocation (LatLng latLng)
         {
             if (map == null) { return; }
 
-            CameraPosition position = new CameraPosition.Builder().Target(latLng).Zoom(SIZE_ZOOM).Build();
-            ICameraUpdate camera = CameraUpdateFactory.NewCameraPosition(position);
-            map.AnimateCamera(camera);
+            CameraPosition position = new CameraPosition.Builder ().Target (latLng).Zoom (SIZE_ZOOM).Build ();
+            ICameraUpdate camera = CameraUpdateFactory.NewCameraPosition (position);
+            map.AnimateCamera (camera);
         }
 
-        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void OnElementPropertyChanged (object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            base.OnElementPropertyChanged(sender, e);
-            if (e.PropertyName == MapView.CenterProperty.PropertyName)
-            {
-                if (!ReferenceEquals(Element.Center, currentCamera))
-                {
+            base.OnElementPropertyChanged (sender, e);
+            if (e.PropertyName == MapView.CenterProperty.PropertyName) {
+                if (!ReferenceEquals (Element.Center, currentCamera)) {
                     if (Element.Center == null) return;
-                    FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
+                    FocustoLocation (new LatLng (Element.Center.Lat, Element.Center.Long));
                 }
-            }
-            else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
-            {
-                UpdateMapStyle();
-            }
-            else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName)
-            {
-                if (map != null)
-                {
+            } else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null) {
+                UpdateMapStyle ();
+            } else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName) {
+                if (map != null) {
                     map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
                 }
-            }
-            else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
-            {
-                if (map != null)
-                {
+            } else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName) {
+                if (map != null) {
                     map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
                 }
-            }
-            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
-            {
-                RemoveAllAnnotations();
-                if (Element.Annotations != null)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
+            } else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName) {
+                RemoveAllAnnotations ();
+                if (Element.Annotations != null) {
+                    AddAnnotations (Element.Annotations.ToArray ());
                     var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-                    if (notifyCollection != null)
-                    {
+                    if (notifyCollection != null) {
                         notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                     }
                 }
             }
         }
 
-        void UpdateMapStyle()
+        void UpdateMapStyle ()
         {
-            if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
-            {
+            if (Element.MapStyle != null && !string.IsNullOrEmpty (Element.MapStyle.UrlString)) {
                 map.StyleUrl = Element.MapStyle.UrlString;
                 Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
                 Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
@@ -230,207 +205,277 @@ namespace Naxam.Mapbox.Platform.Droid
 
         }
 
-        void OnMapStylePropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        void OnMapStylePropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
-                && (sender as MapStyle).CustomSources != null)
-            {
+                && (sender as MapStyle).CustomSources != null) {
                 var notifiyCollection = (sender as MapStyle).CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
+                if (notifiyCollection != null) {
                     notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
                 }
-                RemoveSources(Element.MapStyle.CustomSources.ToList());
+                RemoveSources (Element.MapStyle.CustomSources.ToList ());
             }
         }
 
-        void OnMapStylePropertyChanged(object sender, PropertyChangedEventArgs e)
+        void OnMapStylePropertyChanged (object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
-                && (sender as MapStyle).CustomSources != null)
-            {
+                && (sender as MapStyle).CustomSources != null) {
                 var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
+                if (notifiyCollection != null) {
                     notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
                 }
 
-                AddSources(Element.MapStyle.CustomSources.ToList());
-            }
-            else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
-                     && (sender as MapStyle).CustomLayers != null)
-            {
+                AddSources (Element.MapStyle.CustomSources.ToList ());
+            } else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
+                       && (sender as MapStyle).CustomLayers != null) {
                 var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
+                if (notifiyCollection != null) {
                     notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
                 }
 
-                AddLayers(Element.MapStyle.CustomLayers.ToList());
+                AddLayers (Element.MapStyle.CustomLayers.ToList ());
             }
         }
 
-        void OnShapeSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void OnShapeSourcesCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
         {
-            //TODO
-        }
-
-        void AddSources(List<ShapeSource> list)
-        {
-            //TODO
-        }
-
-        void RemoveSources(List<ShapeSource> list)
-        {
-            //TODO
-        }
-
-        void OnLayersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            //TODO
-        }
-
-        void AddLayers(List<Layer> list)
-        {
-            //TODO
-        }
-
-        private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
-                var annots = new List<PolylineOptions>();
-                foreach (Annotation annot in e.NewItems)
-                {
-                    var shape = AddAnnotation(annot);
-                    if (shape != null)
-                    {
-                        //TODO
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                AddSources (e.NewItems.Cast<ShapeSource> ().ToList ());
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                RemoveSources (e.OldItems.Cast<ShapeSource> ().ToList ());
+            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
+                var layers = map.Layers;
+                foreach (var layer in layers) {
+                    if (layer.Id.HasPrefix ()) {
+                        map.RemoveLayer (layer);
                     }
                 }
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                var items = new List<Annotation>();
-                foreach (Annotation annot in e.OldItems)
-                {
-                    items.Add(annot);
-                }
-                RemoveAnnotations(items.ToArray());
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                //TODO Update pins
+            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+                RemoveSources (e.OldItems.Cast<ShapeSource> ().ToList ());
+                AddSources (e.NewItems.Cast<ShapeSource> ().ToList ());
             }
         }
 
-        void RemoveAnnotations(Annotation[] annotations)
+        void AddSources (List<ShapeSource> sources)
         {
-            var currentAnnotations = map.Annotations;
-            if (currentAnnotations == null)
-            {
+            if (sources == null || map == null) {
                 return;
             }
-            var annots = new List<Sdk.Annotations.Annotation>();
-            foreach (Annotation at in annotations)
-            {
-                if (_annotationDictionaries.ContainsKey(at.Id))
-                {
-                    annots.Add(_annotationDictionaries[at.Id]);
-                }
-            }
-            map.RemoveAnnotations(annots.ToArray());
-        }
 
-        void AddAnnotations(Annotation[] annotations)
-        {
-            foreach (Annotation at in annotations)
-            {
-                var shape = AddAnnotation(at);
+            foreach (ShapeSource ss in sources) {
+                if (ss.Id != null && ss.Shape != null) {
+                    var shape = ss.Shape.ToFeatureCollection ();
+
+                    var source = map.GetSource (ss.Id.Prefix ()) as Sdk.Style.Sources.GeoJsonSource;
+
+                    if (source == null) {
+                        map.AddSource (new Sdk.Style.Sources.GeoJsonSource (ss.Id.Prefix ()));
+                    } else {
+                        source.SetGeoJson (shape);
+                    }
+                }
             }
         }
 
-        private Sdk.Annotations.Annotation AddAnnotation(Annotation at)
+        void RemoveSources (List<ShapeSource> sources)
         {
-            Sdk.Annotations.Annotation options = null;
-            if (at is PointAnnotation)
-            {
-                var marker = new MarkerOptions();
-                marker.SetTitle(at.Title);
-                marker.SetSnippet(at.Title);
-                marker.SetPosition(new LatLng(((PointAnnotation)at).Coordinate.Lat,
-                    ((PointAnnotation)at).Coordinate.Long));
-                options = map.AddMarker(marker);
+            if (sources == null) {
+                return;
             }
-            else if (at is PolylineAnnotation)
-            {
-                var polyline = at as PolylineAnnotation;
-                if (polyline.Coordinates?.Count() == 0)
-                {
-                    return null;
+            foreach (ShapeSource source in sources) {
+                if (source.Id != null) {
+                    map.RemoveSource (source.Id.Prefix ());
                 }
-                var coords = new ArrayList();
-                for (var i = 0; i < polyline.Coordinates.Count(); i++)
-                {
-                    coords.Add(new LatLng(polyline.Coordinates.ElementAt(i).Lat, polyline.Coordinates.ElementAt(i).Long));
-                }
-                var polylineOpt = new PolylineOptions();
-                polylineOpt.AddAll(coords);
-                options = map.AddPolyline(polylineOpt);
             }
-            else if (at is MultiPolylineAnnotation)
-            {
-                var polyline = at as MultiPolylineAnnotation;
-                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0)
-                {
-                    return null;
+        }
+
+        void OnLayersCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                AddLayers (e.NewItems.Cast<Layer> ().ToList ());
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                RemoveLayers (e.OldItems);
+            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
+                var layers = map.Layers;
+                foreach (var layer in layers) {
+                    if (layer.Id.HasPrefix ()) {
+                        map.RemoveLayer (layer);
+                    }
+                }
+            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+                RemoveLayers (e.OldItems);
+
+                AddLayers (e.NewItems.Cast<Layer> ().ToList ());
+            }
+        }
+
+        void RemoveLayers (System.Collections.IList layers)
+        {
+            if (layers == null) {
+                return;
+            }
+            foreach (Layer layer in layers) {
+                var native = map.GetLayer (layer.Id.Prefix ());
+
+                if (native != null) {
+                    map.RemoveLayer (native);
+                }
+            }
+        }
+
+        void AddLayers (List<Layer> layers)
+        {
+            if (layers == null) {
+                return;
+            }
+            foreach (Layer layer in layers) {
+                if (string.IsNullOrEmpty (layer.Id)) {
+                    continue;
                 }
 
-                var lines = new List<PolylineOptions>();
-                for (var i = 0; i < polyline.Coordinates.Length; i++)
-                {
-                    if (polyline.Coordinates[i].Length == 0)
-                    {
+                map.RemoveLayer (layer.Id.Prefix ());
+
+                if (layer is CircleLayer) {
+                    var cross = (CircleLayer)layer;
+
+                    var source = map.GetSource (cross.SourceId.Prefix ());
+                    if (source == null) {
                         continue;
                     }
-                    var coords = new PolylineOptions();
-                    for (var j = 0; j < polyline.Coordinates[i].Length; j++)
-                    {
-                        coords.Add(new LatLng(polyline.Coordinates[i][j].Lat, polyline.Coordinates[i][j].Long));
+
+                    map.AddLayer (cross.ToNative ());
+                } else if (layer is LineLayer) {
+                    var cross = (LineLayer)layer;
+
+                    var source = map.GetSource (cross.SourceId.Prefix ());
+                    if (source == null) {
+                        continue;
                     }
-                    lines.Add(coords);
+
+                    map.AddLayer (cross.ToNative ());
                 }
-                IList<Polyline> listPolylines = map.AddPolylines(lines);
-                //TODO  handle add listPolyline . Need to identify to remove after that
             }
-            if (options != null)
-            {
-                if (at.Id != null)
-                {
-                    _annotationDictionaries.Add(at.Id, options);
+        }
+
+        private void OnAnnotationsCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add) {
+                foreach (Annotation annot in e.NewItems) {
+                    AddAnnotation (annot);
+                }
+            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+                var items = new List<Annotation> ();
+                foreach (Annotation annot in e.OldItems) {
+                    items.Add (annot);
+                }
+                RemoveAnnotations (items.ToArray ());
+            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
+                map.RemoveAnnotations ();
+            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+                var itemsToRemove = new List<Annotation> ();
+                foreach (Annotation annot in e.OldItems) {
+                    itemsToRemove.Add (annot);
+                }
+                RemoveAnnotations (itemsToRemove.ToArray ());
+
+
+                var itemsToAdd = new List<Annotation> ();
+                foreach (Annotation annot in e.NewItems) {
+                    itemsToRemove.Add (annot);
+                }
+                AddAnnotations (itemsToAdd.ToArray());
+            }
+        }
+
+        void RemoveAnnotations (Annotation [] annotations)
+        {
+            var currentAnnotations = map.Annotations;
+            if (currentAnnotations == null) {
+                return;
+            }
+            var annots = new List<Sdk.Annotations.Annotation> ();
+            foreach (Annotation at in annotations) {
+                if (_annotationDictionaries.ContainsKey (at.Id)) {
+                    annots.Add (_annotationDictionaries [at.Id]);
+                }
+            }
+            map.RemoveAnnotations (annots.ToArray ());
+        }
+
+        void AddAnnotations (Annotation [] annotations)
+        {
+            foreach (Annotation at in annotations) {
+                AddAnnotation (at);
+            }
+        }
+
+        private Sdk.Annotations.Annotation AddAnnotation (Annotation at)
+        {
+            Sdk.Annotations.Annotation options = null;
+            if (at is PointAnnotation) {
+                var marker = new MarkerOptions ();
+                marker.SetTitle (at.Title);
+                marker.SetSnippet (at.Title);
+                marker.SetPosition (new LatLng (((PointAnnotation)at).Coordinate.Lat,
+                    ((PointAnnotation)at).Coordinate.Long));
+                options = map.AddMarker (marker);
+            } else if (at is PolylineAnnotation) {
+                var polyline = at as PolylineAnnotation;
+                if (polyline.Coordinates?.Count () == 0) {
+                    return null;
+                }
+                var coords = new ArrayList ();
+                for (var i = 0; i < polyline.Coordinates.Count (); i++) {
+                    coords.Add (new LatLng (polyline.Coordinates.ElementAt (i).Lat, polyline.Coordinates.ElementAt (i).Long));
+                }
+                var polylineOpt = new PolylineOptions ();
+                polylineOpt.AddAll (coords);
+                options = map.AddPolyline (polylineOpt);
+            } else if (at is MultiPolylineAnnotation) {
+                var polyline = at as MultiPolylineAnnotation;
+                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
+                    return null;
+                }
+
+                var lines = new List<PolylineOptions> ();
+                for (var i = 0; i < polyline.Coordinates.Length; i++) {
+                    if (polyline.Coordinates [i].Length == 0) {
+                        continue;
+                    }
+                    var coords = new PolylineOptions ();
+                    for (var j = 0; j < polyline.Coordinates [i].Length; j++) {
+                        coords.Add (new LatLng (polyline.Coordinates [i] [j].Lat, polyline.Coordinates [i] [j].Long));
+                    }
+                    lines.Add (coords);
+                }
+                map.AddPolylines (lines);
+            }
+            if (options != null) {
+                if (at.Id != null) {
+                    _annotationDictionaries.Add (at.Id, options);
                 }
             }
 
             return options;
         }
 
-        void RemoveAllAnnotations()
+        void RemoveAllAnnotations ()
         {
-            if (map.Annotations != null)
-            {
-                map.RemoveAnnotations(map.Annotations);
+            if (map.Annotations != null) {
+                map.RemoveAnnotations (map.Annotations);
             }
         }
 
-        private byte[] result;
-        public void OnSnapshotReady(Bitmap bmp)
+        private byte [] result;
+        public void OnSnapshotReady (Bitmap bmp)
         {
-            MemoryStream stream = new MemoryStream();
-            bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
-            result = stream.ToArray();
+            MemoryStream stream = new MemoryStream ();
+            bmp.Compress (Bitmap.CompressFormat.Png, 0, stream);
+            result = stream.ToArray ();
         }
 
-        public void OnMapReady(MapboxMap p0)
+        public void OnMapReady (MapboxMap p0)
         {
             map = p0;
 
@@ -438,10 +483,10 @@ namespace Naxam.Mapbox.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
-            AddMapEvents();
+            AddMapEvents ();
 
-            SetupFunctions();
-            UpdateMapStyle();
+            SetupFunctions ();
+            UpdateMapStyle ();
         }
     }
 }

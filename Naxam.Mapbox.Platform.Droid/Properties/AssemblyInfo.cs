@@ -26,4 +26,4 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyKeyFile("")]
 [assembly: Xamarin.Forms.ExportRenderer (
     typeof (Naxam.Mapbox.Forms.MapView), 
-    typeof (Naxam.Mapbox.Platform.Droid.MapViewRenderer))]
+    typeof (Naxam.Controls.Platform.Droid.MapViewRenderer))]
