@@ -11,6 +11,8 @@ namespace Naxam.Controls.Platform.Droid
         private MapView mapView;
         public MapView.IOnMapChangedListener OnMapChangedListener { get; set; }
 
+        public bool StateSaved { get; private set; }
+
         public MapViewFragment (IntPtr javaReference, JniHandleOwnership transfer)
             : base (javaReference, transfer)
         {
@@ -37,6 +39,18 @@ namespace Naxam.Controls.Platform.Droid
         public void OnMapChanged(int p0)
         {
             OnMapChangedListener?.OnMapChanged(p0);
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+            StateSaved = false;
+        }
+
+        public override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            StateSaved = true;
         }
     }
 }
