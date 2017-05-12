@@ -154,8 +154,7 @@ namespace Naxam.Controls.Platform.Droid
         IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
         {
             var output = new List<IFeature>();
-            RectF rect = point.ToRect(radius);
-
+            RectF rect = point.ToRect(Context.ToPixels(radius));
             var listFeatures = map.QueryRenderedFeatures(rect, layers);
             return listFeatures.Select(x => x.ToFeature())
                                .Where(x => x != null)
