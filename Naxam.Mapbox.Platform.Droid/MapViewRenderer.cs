@@ -16,14 +16,14 @@ using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Com.Mapbox.Services.Commons.Geojson;
 using Naxam.Controls.Platform.Droid;
-using Naxam.Mapbox.Forms;
+using Naxam.Controls.Forms;
 
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using Annotation = Naxam.Mapbox.Forms.Annotation;
+using Annotation = Naxam.Controls.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
-using MapView = Naxam.Mapbox.Forms.MapView;
+using MapView = Naxam.Controls.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;

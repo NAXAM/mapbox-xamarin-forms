@@ -1,4 +1,4 @@
-﻿using Naxam.Mapbox.Forms;
+﻿using Naxam.Controls.Forms;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using Xamarin.Forms.Platform.Android;
 

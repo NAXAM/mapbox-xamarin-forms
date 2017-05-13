@@ -1,8 +1,8 @@
-﻿using Com.Mapbox.Mapboxsdk.Maps;
+﻿﻿using Com.Mapbox.Mapboxsdk.Maps;
 using System;
 using System.Linq;
 using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
-using Naxam.Mapbox.Forms;
+using Naxam.Controls.Forms;
 
 namespace Naxam.Controls.Platform.Droid
 {

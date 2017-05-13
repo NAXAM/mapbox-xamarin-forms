@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Naxam.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
 	public class PointFeature: PointAnnotation, IFeature
 	{

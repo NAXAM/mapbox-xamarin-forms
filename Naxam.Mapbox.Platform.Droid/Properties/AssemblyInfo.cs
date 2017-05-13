@@ -1,10 +1,10 @@
-﻿using System.Reflection;
+﻿﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Naxam.Mapbox.Platform.Droid")]
+[assembly: AssemblyTitle("Naxam.Controls.Platform.Droid")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NAXAM CO.,LTD")]
@@ -25,5 +25,5 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 [assembly: Xamarin.Forms.ExportRenderer (
-    typeof (Naxam.Mapbox.Forms.MapView), 
+    typeof (Naxam.Controls.Forms.MapView), 
     typeof (Naxam.Controls.Platform.Droid.MapViewRenderer))]

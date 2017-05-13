@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Foundation;
 using Mapbox;
 
-namespace Naxam.Mapbox.Platform.iOS
+namespace Naxam.Controls.Platform.iOS
 {
 	enum AssociationPolicy
 	{

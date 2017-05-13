@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace Naxam.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public partial class MapView
     {

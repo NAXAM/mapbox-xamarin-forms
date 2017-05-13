@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Naxam.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public class Layer
     {

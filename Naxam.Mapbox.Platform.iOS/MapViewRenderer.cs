@@ -4,11 +4,11 @@ using System.Linq;
 using CoreGraphics;
 using Foundation;
 using Mapbox;
-using Naxam.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Xamarin.Forms.Platform.iOS;
 using CoreLocation;
-using FormsMap = Naxam.Mapbox.Forms.MapView;
-using FormsMB = Naxam.Mapbox.Forms;
+using FormsMap = Naxam.Controls.Forms.MapView;
+using FormsMB = Naxam.Controls.Forms;
 using System.Collections.Specialized;
 using UIKit;
 using Xamarin.Forms;
@@ -16,10 +16,10 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
 
-[assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Mapbox.Forms.MapView), typeof (Naxam.Mapbox.Platform.iOS.MapViewRenderer))]
-namespace Naxam.Mapbox.Platform.iOS
+[assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Controls.Forms.MapView), typeof (Naxam.Controls.Platform.iOS.MapViewRenderer))]
+namespace Naxam.Controls.Platform.iOS
 {
-    public class MapViewRenderer : ViewRenderer<Naxam.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
+    public class MapViewRenderer : ViewRenderer<Naxam.Controls.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
     {
         MGLMapView MapView { get; set; }
 

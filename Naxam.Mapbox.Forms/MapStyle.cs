@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace Naxam.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public sealed class PreserveAttribute : System.Attribute
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace Naxam.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public enum MBLineCap : ulong
     {
