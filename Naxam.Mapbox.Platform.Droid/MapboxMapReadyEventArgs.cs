@@ -1,5 +1,5 @@
 using System;
-using Sdk = Mapbox.MapboxSdk;
+using Sdk = Com.Mapbox.Mapboxsdk;
 
 namespace Naxam.Controls.Platform.Droid
 {

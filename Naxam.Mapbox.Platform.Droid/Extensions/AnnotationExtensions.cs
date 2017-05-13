@@ -1,5 +1,5 @@
 using Naxam.Mapbox.Forms;
-using Geojson = Mapbox.Services.Commons.Geojson;
+using Geojson = Com.Mapbox.Services.Commons.Geojson;
 
 using System.Collections.Generic;
 using System.Linq;

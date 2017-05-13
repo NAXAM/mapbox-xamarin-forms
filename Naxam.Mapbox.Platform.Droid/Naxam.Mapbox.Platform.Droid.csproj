@@ -79,15 +79,6 @@
     <Reference Include="Naxam.Jakewharton.Timber">
       <HintPath>..\..\packages\Naxam.Jakewharton.Timber.4.5.1\lib\MonoAndroid10\Naxam.Jakewharton.Timber.dll</HintPath>
     </Reference>
-    <Reference Include="Naxam.Mapbox.MapboxJavaCore">
-      <HintPath>..\..\packages\Naxam.Mapbox.MapboxJavaCore.2.0.0.1\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.MapboxJavaGeojson">
-      <HintPath>..\..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.0.0\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapzen.Lost.Droid">
-      <HintPath>..\..\packages\Naxam.Mapzen.Lost.Droid.2.1.2\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="Naxam.SquareUp.OkHttp3">
       <HintPath>..\..\packages\Naxam.SquareUp.OkHttp3.3.6.0\lib\MonoAndroid10\Naxam.SquareUp.OkHttp3.dll</HintPath>
     </Reference>
@@ -127,14 +118,8 @@
     <Reference Include="Xamarin.Android.Support.v7.AppCompat">
       <HintPath>..\..\packages\Xamarin.Android.Support.v7.AppCompat.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.AppCompat.dll</HintPath>
     </Reference>
-    <Reference Include="Naxam.Mapbox.Services.Android.Telemetry">
-      <HintPath>..\..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.0.0.1\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.Design">
       <HintPath>..\..\packages\Xamarin.Android.Support.Design.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.Droid">
-      <HintPath>..\..\packages\Naxam.Mapbox.Droid.5.0.2-alpha\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v7.MediaRouter">
       <HintPath>..\..\packages\Xamarin.Android.Support.v7.MediaRouter.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.MediaRouter.dll</HintPath>
@@ -150,6 +135,21 @@
     </Reference>
     <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Xamarin.Forms.2.3.4.231\lib\MonoAndroid10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.MapboxJavaCore">
+      <HintPath>..\..\packages\Naxam.Mapbox.MapboxJavaCore.2.0.0.2\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Services.Android.Telemetry">
+      <HintPath>..\..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.0.0.2\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.MapboxJavaGeojson">
+      <HintPath>..\..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.0.0.2\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapzen.Lost.Droid">
+      <HintPath>..\..\packages\Naxam.Mapzen.Lost.Droid.2.1.2.1\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Droid">
+      <HintPath>..\..\packages\Naxam.Mapbox.Droid.5.0.2\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@ using System;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
-using Mapbox.MapboxSdk.Maps;
+using Com.Mapbox.Mapboxsdk.Maps;
 
 namespace Naxam.Controls.Platform.Droid
 {

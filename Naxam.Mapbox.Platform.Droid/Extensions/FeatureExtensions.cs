@@ -1,7 +1,7 @@
 ﻿using System;
-using Mapbox.Services.Commons.Geojson;
-using Point = Mapbox.Services.Commons.Geojson.Point;
-using Position = Mapbox.Services.Commons.Models.Position;
+using Com.Mapbox.Services.Commons.Geojson;
+using Point = Com.Mapbox.Services.Commons.Geojson.Point;
+using Position = Com.Mapbox.Services.Commons.Models.Position;
 using Naxam.Mapbox.Forms;
 using System.Linq;
 using Android.Graphics;
@@ -21,18 +21,16 @@ namespace Naxam.Controls.Platform.Droid
 
             if (feature.Geometry is Point) {
                 var point = (Point)feature.Geometry;
-                var position = (Position)point.Coordinates;
 
                 forms = new PointFeature (new PointAnnotation {
                     Id = feature.Id,
-                    Coordinate = position.ToForms ()
+                    Coordinate = point.Coordinates.ToForms ()
                 });
             } else if (feature.Geometry is LineString) {
                 var line = (LineString)feature.Geometry;
-                var positions = (Android.Runtime.JavaList)line.Coordinates;
-                var coords = positions.Cast<Position>()
-                                      .Select (ToForms)
-                                      .ToArray ();
+                var coords = line.Coordinates
+                                  .Select (ToForms)
+                                  .ToArray ();
 
                 forms = new PolylineFeature (new PolylineAnnotation {
                     Id = feature.Id,
@@ -40,10 +38,9 @@ namespace Naxam.Controls.Platform.Droid
                 });
             } else if (feature.Geometry is MultiLineString) {
                 var line = (MultiLineString)feature.Geometry;
-                var positions = (Android.Runtime.JavaList)line.Coordinates;
-                var coords = positions.Cast<Android.Runtime.JavaList>()
-                                      .Select (x => x.Cast<Position>().Select(ToForms).ToArray())
-                                      .ToArray ();
+                var coords = line.Coordinates
+                                  .Select (x => x.Select(ToForms).ToArray())
+                                  .ToArray ();
 
                 forms = new MultiPolylineFeature (new MultiPolylineAnnotation {
                     Id = feature.Id,

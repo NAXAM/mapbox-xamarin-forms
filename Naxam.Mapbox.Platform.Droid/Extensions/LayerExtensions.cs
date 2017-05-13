@@ -1,5 +1,5 @@
 ﻿using Naxam.Mapbox.Forms;
-using Sdk = Mapbox.MapboxSdk;
+using Sdk = Com.Mapbox.Mapboxsdk;
 using Xamarin.Forms.Platform.Android;
 
 namespace Naxam.Controls.Platform.Droid

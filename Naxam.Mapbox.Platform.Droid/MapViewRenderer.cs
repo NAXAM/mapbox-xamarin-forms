@@ -10,11 +10,11 @@ using Android.Support.V7.App;
 using Android.Views;
 using Java.Util;
 
-using Mapbox.MapboxSdk.Annotations;
-using Mapbox.MapboxSdk.Camera;
-using Mapbox.MapboxSdk.Geometry;
-using Mapbox.MapboxSdk.Maps;
-using Mapbox.Services.Commons.Geojson;
+using Com.Mapbox.Mapboxsdk.Annotations;
+using Com.Mapbox.Mapboxsdk.Camera;
+using Com.Mapbox.Mapboxsdk.Geometry;
+using Com.Mapbox.Mapboxsdk.Maps;
+using Com.Mapbox.Services.Commons.Geojson;
 using Naxam.Controls.Platform.Droid;
 using Naxam.Mapbox.Forms;
 
@@ -25,7 +25,7 @@ using Annotation = Naxam.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
-using Sdk = Mapbox.MapboxSdk;
+using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
 
 namespace Naxam.Controls.Platform.Droid
