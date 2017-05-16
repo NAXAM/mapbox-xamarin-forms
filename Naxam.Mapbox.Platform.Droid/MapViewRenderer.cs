@@ -46,7 +46,7 @@ namespace Naxam.Controls.Platform.Droid
             ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
-            
+
             if (e.OldElement != null)
             {
                 e.OldElement.TakeSnapshot -= TakeMapSnapshot;
@@ -167,7 +167,8 @@ namespace Naxam.Controls.Platform.Droid
             {
                 RemoveMapEvents();
 
-                if (fragment.StateSaved) {
+                if (fragment.StateSaved)
+                {
                     var activity = (AppCompatActivity)Context;
                     var fm = activity.SupportFragmentManager;
 
@@ -468,10 +469,15 @@ namespace Naxam.Controls.Platform.Droid
                     items.Add(annot);
                 }
                 RemoveAnnotations(items.ToArray());
+                foreach (var item in items)
+                {
+                    _annotationDictionaries.Remove(item.Id);
+                }
             }
             else if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 map.RemoveAnnotations();
+                _annotationDictionaries.Clear();
             }
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
@@ -537,14 +543,43 @@ namespace Naxam.Controls.Platform.Droid
                 {
                     return null;
                 }
-                var coords = new ArrayList();
-                for (var i = 0; i < polyline.Coordinates.Count(); i++)
+                var notifyCollection = polyline.Coordinates as INotifyCollectionChanged;
+                if (notifyCollection != null)
                 {
-                    coords.Add(new LatLng(polyline.Coordinates.ElementAt(i).Lat, polyline.Coordinates.ElementAt(i).Long));
+                    notifyCollection.CollectionChanged += (s, e) =>
+                    {
+                        if (e.Action == NotifyCollectionChangedAction.Add)
+                        {
+                            if (_annotationDictionaries.ContainsKey(at.Id))
+                            {
+                                var poly = _annotationDictionaries[at.Id] as Polyline;
+                                poly.AddPoint(new LatLng(polyline.Coordinates.ElementAt(e.NewStartingIndex).Lat, polyline.Coordinates.ElementAt(e.NewStartingIndex).Long));
+                            }
+                            else
+                            {
+                                var coords = new ArrayList();
+                                for (var i = 0; i < polyline.Coordinates.Count(); i++)
+                                {
+                                    coords.Add(new LatLng(polyline.Coordinates.ElementAt(i).Lat, polyline.Coordinates.ElementAt(i).Long));
+                                }
+                                var polylineOpt = new PolylineOptions();
+                                polylineOpt.Polyline.Width = Context.ToPixels(1);
+                                polylineOpt.Polyline.Color = Android.Graphics.Color.Blue;
+                                polylineOpt.AddAll(coords);
+                                options = map.AddPolyline(polylineOpt);
+                                _annotationDictionaries.Add(at.Id, options);
+                            }
+                        }
+                        else if (e.Action == NotifyCollectionChangedAction.Remove)
+                        {
+                            if (_annotationDictionaries.ContainsKey(at.Id))
+                            {
+                                var poly = _annotationDictionaries[at.Id] as Polyline;
+                                poly.Points.Remove(new LatLng(polyline.Coordinates.ElementAt(e.OldStartingIndex).Lat, polyline.Coordinates.ElementAt(e.OldStartingIndex).Long));
+                            }
+                        }
+                    };
                 }
-                var polylineOpt = new PolylineOptions();
-                polylineOpt.AddAll(coords);
-                options = map.AddPolyline(polylineOpt);
             }
             else if (at is MultiPolylineAnnotation)
             {
