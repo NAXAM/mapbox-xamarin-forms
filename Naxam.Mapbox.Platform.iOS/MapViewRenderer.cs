@@ -633,6 +633,7 @@ namespace Naxam.Controls.Platform.iOS
                 var notifiyCollection = polyline.Coordinates as INotifyCollectionChanged;
                 if (notifiyCollection != null) {
                     notifiyCollection.CollectionChanged += (sender, e) => {
+                        //TODO Move to a separated method
                         if (e.Action == NotifyCollectionChangedAction.Add) {
                             foreach (Position pos in e.NewItems) {
                                 var coord = TypeConverter.FromPositionToCoordinate (pos);
