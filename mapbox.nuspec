@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+        <id>Naxam.Mapbox.Forms</id>
+       <version>1.0.0-alpha</version>
+        <description>Xamarin Forms - Mapbox</description>
+        <authors>Vu Duc Tuyen, Do Hong Ha, Do Thanh Binh</authors>
+        <owners>NAXAM CO.,LTD</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+        <!-- Optional elements -->
+        <title>Naxam - Xamarin.Forms Mapbox</title>
+        <copyright>Copyright (c) 2017 NAXAM</copyright>
+        <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
+        <tags>Xamarin.Forms, Xamarin.Android, Xamarin.iOS, Mapbox</tags>
+        <dependencies>
+            <group>
+                <dependency id="Xamarin.Forms" version="2.3.4.231" />
+            </group>
+            <group targetFramework="MonoAndroid10">
+                <dependency id="Newtonsoft.Json" version="10.0.2" />
+                <dependency id="Naxam.Mapbox.Droid" version="5.0.2" />
+            </group>
+            <group targetFramework="Xamarin.iOS10">
+                <dependency id="Naxam.Mapbox.iOS" version="3.5.4" />
+            </group>
+        </dependencies>
+    </metadata>
+    <!-- Optional 'files' node -->
+    <files>
+        <!--PCL-->
+        <file src="Naxam.Mapbox.Forms/bin/Release/Naxam.Mapbox.Forms.dll" target="lib/portable-net45+wp80+win8+wpa81/Naxam.Mapbox.Forms.dll" />
+
+        <!--Android-->
+        <file src="Naxam.Mapbox.Forms/bin/Release/Naxam.Mapbox.Forms.dll" target="lib/MonoAndroid10/Naxam.Mapbox.Forms.dll" />
+        <file src="Naxam.Mapbox.Platform.Droid/bin/Release/Naxam.Mapbox.Platform.Droid.dll" target="lib/MonoAndroid10/Naxam.Mapbox.Platform.Droid.dll" />
+
+        <!--iOS-->
+        <file src="Naxam.Mapbox.Forms/bin/Release/Naxam.Mapbox.Forms.dll" target="lib/Xamarin.iOS10/Naxam.Mapbox.Forms.dll" />
+        <file src="Naxam.Mapbox.Platform.iOS/bin/Release/Naxam.Mapbox.Platform.iOS.dll" target="lib/Xamarin.iOS10/Naxam.Mapbox.Platform.iOS.dll" />
+    </files>
+</package>

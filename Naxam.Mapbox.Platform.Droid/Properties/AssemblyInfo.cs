@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Naxam.Controls.Platform.Droid")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Naxam.Mapbox.Platform.Droid")]
+[assembly: AssemblyDescription("Xamarin.Forms implementation for Mapbox")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NAXAM CO.,LTD")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("(c) 2017 NAXAM")]
+[assembly: AssemblyProduct("X Controls")]
+[assembly: AssemblyCopyright("Copyright (c) 2017 NAXAM")]
 [assembly: AssemblyTrademark("NAXAM")]
 [assembly: AssemblyCulture("")]
 
