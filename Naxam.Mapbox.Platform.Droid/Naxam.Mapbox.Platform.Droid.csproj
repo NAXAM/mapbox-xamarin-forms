@@ -146,10 +146,10 @@
       <HintPath>..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.0.0.2\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
     </Reference>
     <Reference Include="Naxam.Mapzen.Lost.Droid">
-      <HintPath>..\packages\Naxam.Mapzen.Lost.Droid.2.1.2.1\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapzen.Lost.Droid.2.1.2.2\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
     </Reference>
     <Reference Include="Naxam.Mapbox.Droid">
-      <HintPath>..\packages\Naxam.Mapbox.Droid.5.0.2\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.Droid.5.0.2.1\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

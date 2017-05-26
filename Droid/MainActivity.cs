@@ -15,7 +15,7 @@ namespace MapBoxQs.Droid
 
             base.OnCreate(bundle);
 
-            Mapbox.Sdk.MapboxAccountManager.Start(this, "sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw");
+            Com.Mapbox.Mapboxsdk.Mapbox.GetInstance(this, "sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw");
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
 

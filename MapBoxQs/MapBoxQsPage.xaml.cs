@@ -1,5 +1,5 @@
 ﻿using System;
-using Naxam.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Xamarin.Forms;
 
 namespace MapBoxQs
