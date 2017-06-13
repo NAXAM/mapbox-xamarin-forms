@@ -46,7 +46,7 @@ namespace Naxam.Controls.Platform.iOS
         {
             base.OnElementPropertyChanged (sender, e);
 
-            if (MapView == null) {
+            if (MapView == null || Element == null) {
                 return;
             }
             if (e.PropertyName == FormsMap.CenterProperty.PropertyName) {
@@ -102,6 +102,7 @@ namespace Naxam.Controls.Platform.iOS
 
         void OnElementPropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
+            if (Element == null) return;
             if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName
                 && Element.Annotations != null) {
                 RemoveAllAnnotations ();
@@ -136,7 +137,7 @@ namespace Naxam.Controls.Platform.iOS
 
         void UpdateCenter ()
         {
-            if (Element.Center != null
+            if (Element.Center != null && MapView != null
                 && (!Element.Center.Lat.Equals (MapView.CenterCoordinate.Latitude)
                     || !Element.Center.Long.Equals (MapView.CenterCoordinate.Longitude))) {
                 MapView.SetCenterCoordinate (new CoreLocation.CLLocationCoordinate2D (Element.Center.Lat, Element.Center.Long), true);
@@ -428,6 +429,7 @@ namespace Naxam.Controls.Platform.iOS
 
         void RemoveAllAnnotations ()
         {
+            if (MapView == null) return;
             if (MapView.Annotations != null) {
                 MapView.RemoveAnnotations (MapView.Annotations);
             }
