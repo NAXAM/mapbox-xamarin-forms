@@ -595,11 +595,12 @@ namespace Naxam.Controls.Platform.iOS
             foreach (ShapeSource source in sources) {
                 if (source.Id != null && source.Shape != null) {
                     var shape = ShapeFromAnnotation (source.Shape);
-                    var oldSource = MapView.Style?.SourceWithIdentifier ((NSString)source.Id);
+                    var sourceId = (NSString)("NXCustom_" + source.Id);
+                    var oldSource = MapView.Style?.SourceWithIdentifier (sourceId);
                     if (oldSource != null && oldSource is MGLShapeSource) {
                         (oldSource as MGLShapeSource).Shape = shape;
                     } else {
-                        var mglSource = new MGLShapeSource ((NSString)("NXCustom_" + source.Id), shape, null);
+                        var mglSource = new MGLShapeSource (sourceId, shape, null);
                         MapView.Style.AddSource (mglSource);
                     }
                 }
