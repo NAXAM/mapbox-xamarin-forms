@@ -2,6 +2,7 @@
 using Naxam.Controls.Forms;
 using Newtonsoft.Json;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace MapBoxQs
 {
@@ -33,19 +34,28 @@ namespace MapBoxQs
                 map.ResetPositionFunc.Execute(null);
            });
 
-            map.MapStyle = new MapStyle()
-            {
-                Id = "ciyxczsj9004b2rtoji7t5hkj",
-                Owner = "jesperdax"
-            };
             map.DidTapOnMapCommand = new Command<Tuple<Position, Point>>((Tuple<Position, Point> obj) =>
             {
                 var features = map.GetFeaturesAroundPoint.Invoke(obj.Item2, 6, null);
-                var str = JsonConvert.SerializeObject(features);
-                System.Diagnostics.Debug.WriteLine(str);
+                var filtered = features.Where((arg) => arg.Attributes != null);
+                foreach (IFeature feat in filtered) {
+                    var str = JsonConvert.SerializeObject(feat);
+        			System.Diagnostics.Debug.WriteLine(str);
+                }
+
+            });
+            map.DidFinishLoadingStyleCommand = new Command<MapStyle>((obj) =>
+            {
+                foreach (Layer layer in obj.OriginalLayers)
+				{
+                    System.Diagnostics.Debug.WriteLine(layer.Id);
+				}
             });
         }
+
+        void ReloadStyle(object sender, EventArgs args)
+        {
+            map.ReloadStyleFunc?.Execute(sender);
+        }
     }
-
-
 }

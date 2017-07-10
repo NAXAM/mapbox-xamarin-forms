@@ -374,18 +374,19 @@ namespace Naxam.Controls.Platform.iOS
                 };
         }
 
-        NSSet SelectableLayersFromSources (string [] layersId)
+        NSSet<NSString> SelectableLayersFromSources (string [] layersId)
         {
             if (layersId == null) {
                 return null;
             }
-            NSMutableSet output = new NSMutableSet();
+
+            NSMutableSet<NSString> output = new NSMutableSet<NSString>();
             foreach (string layerId in layersId) {
                 var acceptedId = layerId.Replace ("_", "-");
                 output.Add ((NSString)acceptedId);
                 output.Add ((NSString)(acceptedId + " (1)"));
             }
-            return output;
+            return output.Copy() as NSSet<NSString>;
         }
 
         void AddAnnotation (Annotation annotation)
@@ -697,12 +698,6 @@ namespace Naxam.Controls.Platform.iOS
                 i++;
             }
             return output;
-            //var coords = new CLLocationCoordinate2D [positions.Length];
-            //for (var i = 0; i<positions.Length; i++) {
-            //    coords [i] = new CLLocationCoordinate2D (positions [i].Lat, positions [i].Long);
-            //}
-            //var first = coords [0];
-            //return MGLPolyline.PolylineWithCoordinates (ref first, (uint)coords.Length);
         }
 
         #region MGLMapViewDelegate
@@ -718,8 +713,8 @@ namespace Naxam.Controls.Platform.iOS
         {
             if (userLocation != null) {
                 Element.UserLocation = new Position (
-                    userLocation.Coordinate.Latitude,
-                    userLocation.Coordinate.Longitude
+                    userLocation.Location.Coordinate.Latitude,
+                    userLocation.Location.Coordinate.Longitude
                 );
             }
         }
@@ -757,7 +752,7 @@ namespace Naxam.Controls.Platform.iOS
                 AddLayers (Element.MapStyle.CustomLayers.ToList ());
             }
 
-            newStyle.OriginaLayers = style.Layers.Select( (MGLStyleLayer arg) => new Layer(arg.Identifier)
+            newStyle.OriginalLayers = style.Layers.Select((MGLStyleLayer arg) => new Layer(arg.Identifier)
                 {
                     IsVisible = arg.Visible
                 }

@@ -40,7 +40,6 @@ Thumbs.db
 *.dotCover
 
 */Resources/Resource.designer.cs
-*.nupkg
 
 \.droidres/\.mapboxqs\.droidres\.db
 
