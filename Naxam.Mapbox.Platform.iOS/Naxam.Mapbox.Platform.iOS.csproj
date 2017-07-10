@@ -94,9 +94,6 @@
       <HintPath>..\packages\Xamarin.Forms.2.3.4.231\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\packages\Naxam.Mapbox.iOS.3.5.4\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -111,6 +108,10 @@
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
       <Project>{EBB04763-2E36-4D2C-94C9-351FBACE3C83}</Project>
       <Name>Naxam.Mapbox.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mapbox_iOS\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj">
+      <Project>{682AEE9E-B4F4-4BED-8D14-23582E4992FE}</Project>
+      <Name>Naxam.Mapbox.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

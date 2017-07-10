@@ -106,13 +106,13 @@
       <Project>{EBB04763-2E36-4D2C-94C9-351FBACE3C83}</Project>
       <Name>Naxam.Mapbox.Forms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\xam_mapbox_sdk_ios\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj">
-      <Project>{682AEE9E-B4F4-4BED-8D14-23582E4992FE}</Project>
-      <Name>Naxam.Mapbox.iOS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Naxam.Mapbox.Platform.iOS\Naxam.Mapbox.Platform.iOS.csproj">
       <Project>{DDB8E5F0-975B-4CFB-8A72-AE662C0D2E1B}</Project>
       <Name>Naxam.Mapbox.Platform.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mapbox_iOS\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj">
+      <Project>{682AEE9E-B4F4-4BED-8D14-23582E4992FE}</Project>
+      <Name>Naxam.Mapbox.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
