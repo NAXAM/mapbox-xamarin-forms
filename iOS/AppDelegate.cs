@@ -8,7 +8,8 @@ namespace MapBoxQs.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
-            Mapbox.MGLAccountManager.AccessToken = "sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw";
+            //Mapbox.MGLAccountManager.AccessToken = "sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw";
+            Mapbox.MGLAccountManager.AccessToken = "pk.eyJ1IjoiaG9uZ2hhIiwiYSI6ImNpemR6dzZ3ZDB4czQzMm9lbTExejA5d3EifQ.FhhVGMXscRld1KGaquiIGw";
             //Mapbox.MGLAccountManager.SetAccessToken(new NSString("sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw"));
             new Naxam.Controls.Platform.iOS.MapViewRenderer();
 

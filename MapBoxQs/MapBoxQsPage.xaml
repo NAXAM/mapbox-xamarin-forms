@@ -5,12 +5,16 @@
 	xmlns:local="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms" 
 	x:Class="MapBoxQs.MapBoxQsPage">
     <StackLayout Orientation="Vertical">
-		<Button 
-			Margin="40"
+        <Grid Margin="40" VerticalOptions="Start">
+        <Button 
             x:Name="btnChangeLocation"
-			Text="Change location"
-			VerticalOptions="Start"
-		    />
+            Text="Change location"
+            Grid.Column="0"
+            />
+            <Button Clicked="ReloadStyle" Text="Reload Style"
+                Grid.Column="1"/>
+        </Grid>
+		
         <local:MapView ZoomLevel="16" x:Name="map" VerticalOptions="FillAndExpand">
             <local:MapView.Center>
                 <local:Position Lat="21.0333" Long="105.8500"/>
