@@ -116,7 +116,7 @@ namespace Naxam.Controls.Forms
 					default(Layer[]),
             BindingMode.OneWayToSource);
 
-		public Layer[] OriginaLayers
+		public Layer[] OriginalLayers
 		{
 			get
 			{
