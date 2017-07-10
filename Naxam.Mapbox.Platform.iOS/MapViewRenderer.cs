@@ -49,10 +49,11 @@ namespace Naxam.Controls.Platform.iOS
             if (MapView == null || Element == null) {
                 return;
             }
+
             if (e.PropertyName == FormsMap.CenterProperty.PropertyName) {
                 UpdateCenter ();
             } else if (e.PropertyName == FormsMap.ZoomLevelProperty.PropertyName
-                       && !Element.ZoomLevel.Equals (MapView.ZoomLevel)) {
+                       && !Math.Round(Element.ZoomLevel * 100).Equals(Math.Round(MapView.ZoomLevel * 100))) {
                 //MapView.SetZoomLevel(Element.ZoomLevel, true);
                 MapView.ZoomLevel = Element.ZoomLevel;
             } else if (e.PropertyName == FormsMap.PitchEnabledProperty.PropertyName && MapView.PitchEnabled != Element.PitchEnabled) {
@@ -324,6 +325,11 @@ namespace Naxam.Controls.Platform.iOS
 
             Element.ResetPositionFunc = new Command ((arg) => {
                 MapView.ResetPosition ();
+            });
+
+            Element.ReloadStyleFunc = new Command((arg) =>
+            {
+                MapView.ReloadStyle(MapView);
             });
 
             Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) => {
@@ -743,13 +749,19 @@ namespace Naxam.Controls.Platform.iOS
 				AddSources (Element.MapStyle.CustomSources.ToList ());
             }
             if (Element.MapStyle.CustomLayers != null) {
-                var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
-                if (notifiyCollection != null) {
+                if (Element.MapStyle.CustomLayers is INotifyCollectionChanged notifiyCollection)
+                {
                     notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
                 }
 
-				AddLayers (Element.MapStyle.CustomLayers.ToList ());
+                AddLayers (Element.MapStyle.CustomLayers.ToList ());
             }
+
+            newStyle.OriginaLayers = style.Layers.Select( (MGLStyleLayer arg) => new Layer(arg.Identifier)
+                {
+                    IsVisible = arg.Visible
+                }
+                                                         ).ToArray();
 
             Element.DidFinishLoadingStyleCommand?.Execute (newStyle);
         }

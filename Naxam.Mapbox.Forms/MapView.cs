@@ -282,6 +282,25 @@ namespace Naxam.Controls.Forms
             }
         }
 
+		public static readonly BindableProperty ReloadStyleFuncProperty = BindableProperty.Create(
+			nameof(ReloadStyleFunc),
+			typeof(ICommand),
+			typeof(MapView),
+			default(ICommand),
+			BindingMode.OneWayToSource);
+
+		public ICommand ReloadStyleFunc
+		{
+			get
+			{
+				return (ICommand)GetValue(ReloadStyleFuncProperty);
+			}
+			set
+			{
+				SetValue(ReloadStyleFuncProperty, value);
+			}
+		}
+
 
         public static readonly BindableProperty UpdateShapeOfSourceFuncProperty = BindableProperty.Create (
             nameof (UpdateShapeOfSourceFunc),

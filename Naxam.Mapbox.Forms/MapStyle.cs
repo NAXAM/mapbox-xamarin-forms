@@ -108,5 +108,24 @@ namespace Naxam.Controls.Forms
                 SetValue (CustomLayersProperty, (IEnumerable<Layer>)value);
             }
         }
+
+        public static readonly BindableProperty OriginalLayersProperty = BindableProperty.Create(
+					nameof(CustomLayers),
+					typeof(Layer[]),
+					typeof(MapStyle),
+					default(Layer[]),
+            BindingMode.OneWayToSource);
+
+		public Layer[] OriginaLayers
+		{
+			get
+			{
+				return (Layer[])GetValue(OriginalLayersProperty);
+			}
+			set
+			{
+				SetValue(OriginalLayersProperty, (Layer[])value);
+			}
+		}
     }
 }
