@@ -757,7 +757,7 @@ namespace Naxam.Controls.Platform.iOS
                     IsVisible = arg.Visible
                 }
                                                          ).ToArray();
-
+            newStyle.Name = style.Name;
             Element.DidFinishLoadingStyleCommand?.Execute (newStyle);
         }
 

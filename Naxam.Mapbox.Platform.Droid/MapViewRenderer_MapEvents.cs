@@ -79,6 +79,9 @@ namespace Naxam.Controls.Platform.Droid
                     mapStyle = new MapStyle (map.StyleUrl);
                     Element.MapStyle = mapStyle;
                 }
+                    Element.MapStyle.OriginalLayers = map.Layers.Select((arg) =>
+                                                                        new Layer(arg.Id)
+                                                                       ).ToArray();
                 Element.DidFinishLoadingStyleCommand?.Execute (mapStyle);
                 break;
             case MapView.DidFinishRenderingMap:
