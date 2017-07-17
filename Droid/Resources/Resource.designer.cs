@@ -112,6 +112,12 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.buttonStyleSmall = global::MapBoxQs.Droid.Resource.Attribute.buttonStyleSmall;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.buttonTint = global::MapBoxQs.Droid.Resource.Attribute.buttonTint;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.buttonTintMode = global::MapBoxQs.Droid.Resource.Attribute.buttonTintMode;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.cardBackgroundColor = global::MapBoxQs.Droid.Resource.Attribute.cardBackgroundColor;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.cardCornerRadius = global::MapBoxQs.Droid.Resource.Attribute.cardCornerRadius;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.cardElevation = global::MapBoxQs.Droid.Resource.Attribute.cardElevation;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.cardMaxElevation = global::MapBoxQs.Droid.Resource.Attribute.cardMaxElevation;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.cardPreventCornerOverlap = global::MapBoxQs.Droid.Resource.Attribute.cardPreventCornerOverlap;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.cardUseCompatPadding = global::MapBoxQs.Droid.Resource.Attribute.cardUseCompatPadding;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.checkboxStyle = global::MapBoxQs.Droid.Resource.Attribute.checkboxStyle;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.checkedTextViewStyle = global::MapBoxQs.Droid.Resource.Attribute.checkedTextViewStyle;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.closeIcon = global::MapBoxQs.Droid.Resource.Attribute.closeIcon;
@@ -137,6 +143,11 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentInsetRight = global::MapBoxQs.Droid.Resource.Attribute.contentInsetRight;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentInsetStart = global::MapBoxQs.Droid.Resource.Attribute.contentInsetStart;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentInsetStartWithNavigation = global::MapBoxQs.Droid.Resource.Attribute.contentInsetStartWithNavigation;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentPadding = global::MapBoxQs.Droid.Resource.Attribute.contentPadding;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentPaddingBottom = global::MapBoxQs.Droid.Resource.Attribute.contentPaddingBottom;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentPaddingLeft = global::MapBoxQs.Droid.Resource.Attribute.contentPaddingLeft;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentPaddingRight = global::MapBoxQs.Droid.Resource.Attribute.contentPaddingRight;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentPaddingTop = global::MapBoxQs.Droid.Resource.Attribute.contentPaddingTop;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.contentScrim = global::MapBoxQs.Droid.Resource.Attribute.contentScrim;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.controlBackground = global::MapBoxQs.Droid.Resource.Attribute.controlBackground;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.counterEnabled = global::MapBoxQs.Droid.Resource.Attribute.counterEnabled;
@@ -291,6 +302,7 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mediaRoutePlayDrawable = global::MapBoxQs.Droid.Resource.Attribute.mediaRoutePlayDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mediaRouteSpeakerGroupIconDrawable = global::MapBoxQs.Droid.Resource.Attribute.mediaRouteSpeakerGroupIconDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mediaRouteSpeakerIconDrawable = global::MapBoxQs.Droid.Resource.Attribute.mediaRouteSpeakerIconDrawable;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mediaRouteStopDrawable = global::MapBoxQs.Droid.Resource.Attribute.mediaRouteStopDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mediaRouteTheme = global::MapBoxQs.Droid.Resource.Attribute.mediaRouteTheme;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mediaRouteTvIconDrawable = global::MapBoxQs.Droid.Resource.Attribute.mediaRouteTvIconDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.menu = global::MapBoxQs.Droid.Resource.Attribute.menu;
@@ -470,6 +482,10 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.bright_foreground_material_light = global::MapBoxQs.Droid.Resource.Color.bright_foreground_material_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.button_material_dark = global::MapBoxQs.Droid.Resource.Color.button_material_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.button_material_light = global::MapBoxQs.Droid.Resource.Color.button_material_light;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Color.cardview_dark_background = global::MapBoxQs.Droid.Resource.Color.cardview_dark_background;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Color.cardview_light_background = global::MapBoxQs.Droid.Resource.Color.cardview_light_background;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Color.cardview_shadow_end_color = global::MapBoxQs.Droid.Resource.Color.cardview_shadow_end_color;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Color.cardview_shadow_start_color = global::MapBoxQs.Droid.Resource.Color.cardview_shadow_start_color;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.design_bottom_navigation_shadow_color = global::MapBoxQs.Droid.Resource.Color.design_bottom_navigation_shadow_color;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.design_error = global::MapBoxQs.Droid.Resource.Color.design_error;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.design_fab_shadow_end_color = global::MapBoxQs.Droid.Resource.Color.design_fab_shadow_end_color;
@@ -605,6 +621,9 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.abc_text_size_subtitle_material_toolbar = global::MapBoxQs.Droid.Resource.Dimension.abc_text_size_subtitle_material_toolbar;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.abc_text_size_title_material = global::MapBoxQs.Droid.Resource.Dimension.abc_text_size_title_material;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.abc_text_size_title_material_toolbar = global::MapBoxQs.Droid.Resource.Dimension.abc_text_size_title_material_toolbar;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.cardview_compat_inset_shadow = global::MapBoxQs.Droid.Resource.Dimension.cardview_compat_inset_shadow;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.cardview_default_elevation = global::MapBoxQs.Droid.Resource.Dimension.cardview_default_elevation;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.cardview_default_radius = global::MapBoxQs.Droid.Resource.Dimension.cardview_default_radius;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.design_appbar_elevation = global::MapBoxQs.Droid.Resource.Dimension.design_appbar_elevation;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.design_bottom_navigation_active_item_max_width = global::MapBoxQs.Droid.Resource.Dimension.design_bottom_navigation_active_item_max_width;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.design_bottom_navigation_active_text_size = global::MapBoxQs.Droid.Resource.Dimension.design_bottom_navigation_active_text_size;
@@ -828,6 +847,8 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_media_pause_light = global::MapBoxQs.Droid.Resource.Drawable.ic_media_pause_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_media_play_dark = global::MapBoxQs.Droid.Resource.Drawable.ic_media_play_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_media_play_light = global::MapBoxQs.Droid.Resource.Drawable.ic_media_play_light;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_media_stop_dark = global::MapBoxQs.Droid.Resource.Drawable.ic_media_stop_dark;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_media_stop_light = global::MapBoxQs.Droid.Resource.Drawable.ic_media_stop_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_mr_button_connected_00_dark = global::MapBoxQs.Droid.Resource.Drawable.ic_mr_button_connected_00_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_mr_button_connected_00_light = global::MapBoxQs.Droid.Resource.Drawable.ic_mr_button_connected_00_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.ic_mr_button_connected_01_dark = global::MapBoxQs.Droid.Resource.Drawable.ic_mr_button_connected_01_dark;
@@ -961,6 +982,8 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_media_pause_light = global::MapBoxQs.Droid.Resource.Drawable.mr_media_pause_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_media_play_dark = global::MapBoxQs.Droid.Resource.Drawable.mr_media_play_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_media_play_light = global::MapBoxQs.Droid.Resource.Drawable.mr_media_play_light;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_media_stop_dark = global::MapBoxQs.Droid.Resource.Drawable.mr_media_stop_dark;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_media_stop_light = global::MapBoxQs.Droid.Resource.Drawable.mr_media_stop_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_vol_type_audiotrack_dark = global::MapBoxQs.Droid.Resource.Drawable.mr_vol_type_audiotrack_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_vol_type_audiotrack_light = global::MapBoxQs.Droid.Resource.Drawable.mr_vol_type_audiotrack_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.navigation_empty_icon = global::MapBoxQs.Droid.Resource.Drawable.navigation_empty_icon;
@@ -1069,6 +1092,7 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_chooser_title = global::MapBoxQs.Droid.Resource.Id.mr_chooser_title;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_close = global::MapBoxQs.Droid.Resource.Id.mr_close;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_control_divider = global::MapBoxQs.Droid.Resource.Id.mr_control_divider;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_control_playback_ctrl = global::MapBoxQs.Droid.Resource.Id.mr_control_playback_ctrl;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_control_subtitle = global::MapBoxQs.Droid.Resource.Id.mr_control_subtitle;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_control_title = global::MapBoxQs.Droid.Resource.Id.mr_control_title;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_control_title_container = global::MapBoxQs.Droid.Resource.Id.mr_control_title_container;
@@ -1322,6 +1346,7 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_controller_pause = global::MapBoxQs.Droid.Resource.String.mr_controller_pause;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_controller_play = global::MapBoxQs.Droid.Resource.String.mr_controller_play;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_controller_stop = global::MapBoxQs.Droid.Resource.String.mr_controller_stop;
+			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_controller_stop_casting = global::MapBoxQs.Droid.Resource.String.mr_controller_stop_casting;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_controller_volume_slider = global::MapBoxQs.Droid.Resource.String.mr_controller_volume_slider;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_system_route_name = global::MapBoxQs.Droid.Resource.String.mr_system_route_name;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_user_route_category_name = global::MapBoxQs.Droid.Resource.String.mr_user_route_category_name;
@@ -1341,6 +1366,7 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_AlertDialog_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.Base_AlertDialog_AppCompat_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_Animation_AppCompat_Dialog = global::MapBoxQs.Droid.Resource.Style.Base_Animation_AppCompat_Dialog;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_Animation_AppCompat_DropDownUp = global::MapBoxQs.Droid.Resource.Style.Base_Animation_AppCompat_DropDownUp;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_CardView = global::MapBoxQs.Droid.Resource.Style.Base_CardView;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_DialogWindowTitle_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_DialogWindowTitle_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_DialogWindowTitleBackground_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_DialogWindowTitleBackground_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_TextAppearance_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_TextAppearance_AppCompat;
@@ -1491,6 +1517,9 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_Widget_AppCompat_Toolbar_Button_Navigation = global::MapBoxQs.Droid.Resource.Style.Base_Widget_AppCompat_Toolbar_Button_Navigation;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_Widget_Design_AppBarLayout = global::MapBoxQs.Droid.Resource.Style.Base_Widget_Design_AppBarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_Widget_Design_TabLayout = global::MapBoxQs.Droid.Resource.Style.Base_Widget_Design_TabLayout;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Style.CardView = global::MapBoxQs.Droid.Resource.Style.CardView;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Style.CardView_Dark = global::MapBoxQs.Droid.Resource.Style.CardView_Dark;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Style.CardView_Light = global::MapBoxQs.Droid.Resource.Style.CardView_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Platform_AppCompat = global::MapBoxQs.Droid.Resource.Style.Platform_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Platform_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.Platform_AppCompat_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Platform_ThemeOverlay_AppCompat = global::MapBoxQs.Droid.Resource.Style.Platform_ThemeOverlay_AppCompat;
@@ -1932,6 +1961,20 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed = global::MapBoxQs.Droid.Resource.Styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.ButtonBarLayout = global::MapBoxQs.Droid.Resource.Styleable.ButtonBarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.ButtonBarLayout_allowStacking = global::MapBoxQs.Droid.Resource.Styleable.ButtonBarLayout_allowStacking;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView = global::MapBoxQs.Droid.Resource.Styleable.CardView;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_android_minHeight = global::MapBoxQs.Droid.Resource.Styleable.CardView_android_minHeight;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_android_minWidth = global::MapBoxQs.Droid.Resource.Styleable.CardView_android_minWidth;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_cardBackgroundColor = global::MapBoxQs.Droid.Resource.Styleable.CardView_cardBackgroundColor;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_cardCornerRadius = global::MapBoxQs.Droid.Resource.Styleable.CardView_cardCornerRadius;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_cardElevation = global::MapBoxQs.Droid.Resource.Styleable.CardView_cardElevation;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_cardMaxElevation = global::MapBoxQs.Droid.Resource.Styleable.CardView_cardMaxElevation;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_cardPreventCornerOverlap = global::MapBoxQs.Droid.Resource.Styleable.CardView_cardPreventCornerOverlap;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_cardUseCompatPadding = global::MapBoxQs.Droid.Resource.Styleable.CardView_cardUseCompatPadding;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_contentPadding = global::MapBoxQs.Droid.Resource.Styleable.CardView_contentPadding;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_contentPaddingBottom = global::MapBoxQs.Droid.Resource.Styleable.CardView_contentPaddingBottom;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_contentPaddingLeft = global::MapBoxQs.Droid.Resource.Styleable.CardView_contentPaddingLeft;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_contentPaddingRight = global::MapBoxQs.Droid.Resource.Styleable.CardView_contentPaddingRight;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CardView_contentPaddingTop = global::MapBoxQs.Droid.Resource.Styleable.CardView_contentPaddingTop;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CollapsingToolbarLayout = global::MapBoxQs.Droid.Resource.Styleable.CollapsingToolbarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleGravity = global::MapBoxQs.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleGravity;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance = global::MapBoxQs.Droid.Resource.Styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance;

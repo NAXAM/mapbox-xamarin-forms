@@ -90,18 +90,18 @@ namespace Naxam.Controls.Platform.Droid
              });
 
 
-            Element.UpdateLayerFunc = (string layerId, bool isVisible) =>
+            Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) =>
             {
                 if (!string.IsNullOrEmpty(layerId))
                 {
-                    string layerIdStr = layerId.Prefix();
+                    string layerIdStr = IsCustom ? layerId.Prefix() : layerId;
                     var layer = map.GetLayer(layerIdStr);
                     if (layer != null)
                     {
                         layer.SetProperties(layer.Visibility, isVisible ? Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.Visible) :
                             Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.None));
 
-                        if (Element.MapStyle.CustomLayers != null)
+                        if (IsCustom || Element.MapStyle.CustomLayers != null)
                         {
                             var count = Element.MapStyle.CustomLayers.Count();
                             for (var i = 0; i < count; i++)

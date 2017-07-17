@@ -318,16 +318,20 @@ namespace Naxam.Controls.Forms
             }
         }
 
-        public static readonly BindableProperty UpdateLayerFuncProperty = BindableProperty.Create (
+		/// <summary>
+		/// The update layer func property.
+        /// (layer Id, is visible, is custom layer)
+		/// </summary>
+		public static readonly BindableProperty UpdateLayerFuncProperty = BindableProperty.Create (
             nameof (UpdateLayerFunc),
-            typeof (Func<string, bool, bool>),
+            typeof (Func<string, bool, bool, bool>),
             typeof (MapView),
-            default (Func<string, bool, bool>),
+            default (Func<string, bool, bool, bool>),
              BindingMode.OneWayToSource);
 
-        public Func<string, bool, bool> UpdateLayerFunc {
+        public Func<string, bool, bool, bool> UpdateLayerFunc {
             get {
-                return ((Func<string, bool, bool>)GetValue (UpdateLayerFuncProperty));
+                return ((Func<string, bool, bool, bool>)GetValue (UpdateLayerFuncProperty));
             }
             set {
                 SetValue (UpdateLayerFuncProperty, value);

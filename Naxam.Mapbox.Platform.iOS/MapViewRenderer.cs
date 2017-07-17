@@ -352,13 +352,13 @@ namespace Naxam.Controls.Platform.iOS
                 return false;
             };
 
-            Element.UpdateLayerFunc = (string layerId, bool isVisible) => {
+            Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) => {
                 if (!string.IsNullOrEmpty (layerId)) {
-                        NSString layerIdStr = (NSString)("NXCustom_" + layerId);
+                    NSString layerIdStr = IsCustom ? (NSString)("NXCustom_" + layerId) : (NSString) layerId;
                         var layer = MapView.Style.LayerWithIdentifier (layerIdStr);
                     if (layer != null) {
                         layer.Visible = isVisible;
-                        if (Element.MapStyle.CustomLayers != null) {
+                        if (IsCustom && Element.MapStyle.CustomLayers != null) {
                             var count = Element.MapStyle.CustomLayers.Count ();
                             for (var i = 0; i<count; i++) {
                                     if (Element.MapStyle.CustomLayers.ElementAt (i).Id == layerId) {
