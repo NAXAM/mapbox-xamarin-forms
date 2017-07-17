@@ -77,12 +77,13 @@ namespace Naxam.Controls.Platform.Droid
                 if (mapStyle == null
                     || (!string.IsNullOrEmpty (map.StyleUrl) && mapStyle.UrlString != map.StyleUrl)) {
                     mapStyle = new MapStyle (map.StyleUrl);
-                    Element.MapStyle = mapStyle;
+                   
                 }
-                    Element.MapStyle.OriginalLayers = map.Layers.Select((arg) =>
-                                                                        new Layer(arg.Id)
+                    mapStyle.OriginalLayers = map.Layers.Select((arg) =>
+                                                                        new Layer(arg.Id) 
                                                                        ).ToArray();
-                Element.DidFinishLoadingStyleCommand?.Execute (mapStyle);
+					Element.MapStyle = mapStyle;
+                    Element.DidFinishLoadingStyleCommand?.Execute(mapStyle);
                 break;
             case MapView.DidFinishRenderingMap:
                 Element.DidFinishRenderingCommand?.Execute (false);

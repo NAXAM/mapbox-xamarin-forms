@@ -84,8 +84,11 @@ namespace Naxam.Controls.Platform.Droid
 
             Element.ResetPositionFunc = new Command(x =>
             {
-                map.ResetNorth();
-            });
+                //map.ResetNorth();
+
+                map.AnimateCamera(CameraUpdateFactory.ZoomBy(Element.ZoomLevel));
+             });
+
 
             Element.UpdateLayerFunc = (string layerId, bool isVisible) =>
             {
@@ -142,6 +145,10 @@ namespace Naxam.Controls.Platform.Droid
                 }
                 return false;
             };
+
+            Element.ReloadStyleFunc = new Command((obj) => {
+                map.SetStyleUrl(map.StyleUrl, null);
+            });
         }
 
         byte[] TakeMapSnapshot()

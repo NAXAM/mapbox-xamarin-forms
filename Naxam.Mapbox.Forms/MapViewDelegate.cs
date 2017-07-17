@@ -11,7 +11,7 @@ namespace Naxam.Controls.Forms
                     typeof (ICommand),
                     typeof (MapView),
                     default (ICommand),
-                    BindingMode.TwoWay);
+                    BindingMode.OneWay);
 
         /*
          * Output: (MapStyle) style

@@ -480,27 +480,37 @@ namespace Naxam.Controls.Platform.iOS
         }
         void OnLayersCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add) {
-                AddLayers (e.NewItems);
-            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-
-                RemoveLayers (e.OldItems);
-            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
-                var layersToRemove = new List<MGLStyleLayer> ();
-                foreach (MGLStyleLayer layer in MapView.Style.Sources) {
-                    if (layer.Identifier.StartsWith ("NXCustom_", StringComparison.OrdinalIgnoreCase)) {
-                        layersToRemove.Add (layer);
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    AddLayers(e.NewItems);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    RemoveLayers(e.OldItems);
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    var layersToRemove = new List<MGLStyleLayer>();
+                    foreach (MGLStyleLayer layer in MapView.Style.Layers)
+                    {
+                        if (layer.Identifier.StartsWith("NXCustom_", StringComparison.OrdinalIgnoreCase))
+                        {
+                            layersToRemove.Add(layer);
+                        }
                     }
-                }
-                foreach (MGLStyleLayer layer in layersToRemove) {
-                    MapView.Style.RemoveLayer (layer);
+                    foreach (MGLStyleLayer layer in layersToRemove)
+                    {
+                        MapView.Style.RemoveLayer(layer);
 
-                }
-                layersToRemove.Clear ();
-            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
-                RemoveLayers (e.OldItems);
+                    }
+                    layersToRemove.Clear();
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    RemoveLayers(e.OldItems);
 
-                AddLayers (e.NewItems);
+                    AddLayers(e.NewItems);
+                    break;
+                default:
+                    break;
             }
         }
 
