@@ -664,8 +664,32 @@ namespace Naxam.Controls.Platform.iOS
                         }
                     } ;
                 }
-
-            } else if (annotation is MultiPolylineAnnotation) {
+            }
+            else if (annotation is PolygonAnnotation)
+            {
+                var polygon = annotation as PolygonAnnotation;
+                shape = PolygonWithCoordinates(polygon.Coordinates.ToArray());
+                var notifiyCollection = polygon.Coordinates as INotifyCollectionChanged;
+                if (notifiyCollection != null)
+                {
+                    notifiyCollection.CollectionChanged += (sender, e) => {
+                        //TODO Move to a separated method
+                        if (e.Action == NotifyCollectionChangedAction.Add)
+                        {
+                            foreach (Position pos in e.NewItems)
+                            {
+                                var coord = TypeConverter.FromPositionToCoordinate(pos);
+                                (shape as MGLPolygon).AppendCoordinates(ref coord, 1);
+                            }
+                        }
+                        else if (e.Action == NotifyCollectionChangedAction.Remove)
+                        {
+                            (shape as MGLPolygon).RemoveCoordinatesInRange(new NSRange(e.OldStartingIndex, e.OldItems.Count));
+                        }
+                    };
+                }
+            }
+            else if (annotation is MultiPolylineAnnotation) {
                 var polyline = annotation as MultiPolylineAnnotation;
                 if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
                     return null;
@@ -678,6 +702,24 @@ namespace Naxam.Controls.Platform.iOS
                     lines [i] = PolyLineWithCoordinates(polyline.Coordinates[i]);
                 }
                 shape = MGLMultiPolyline.MultiPolylineWithPolylines (lines);
+            }
+            else if (annotation is MultiPolygonAnnotation)
+            {
+                var polygon = annotation as MultiPolygonAnnotation;
+                if (polygon.Coordinates == null || polygon.Coordinates.Length == 0)
+                {
+                    return null;
+                }
+                var lines = new MGLPolygon[polygon.Coordinates.Length];
+                for (var i = 0; i < polygon.Coordinates.Length; i++)
+                {
+                    if (polygon.Coordinates[i].Length == 0)
+                    {
+                        continue;
+                    }
+                    lines[i] = PolygonWithCoordinates(polygon.Coordinates[i]);
+                }
+                shape = MGLMultiPolygon.MultiPolygonWithPolygons(lines);
             }
             if (shape != null) {
                 if (annotation.Title != null) {
@@ -705,6 +747,24 @@ namespace Naxam.Controls.Platform.iOS
             while (i < positions.Length) {
                 var coord = new CLLocationCoordinate2D (positions [i].Lat, positions [i].Long);
                 output.AppendCoordinates (ref coord, 1);
+                i++;
+            }
+            return output;
+        }
+
+        MGLPolygon PolygonWithCoordinates(Position[] positions)
+        {
+            if (positions == null || positions.Length == 0)
+            {
+                return null;
+            }
+            var first = new CLLocationCoordinate2D(positions[0].Lat, positions[0].Long);
+            var output = MGLPolygon.PolygonWithCoordinates(ref first, 1);
+            var i = 1;
+            while (i < positions.Length)
+            {
+                var coord = new CLLocationCoordinate2D(positions[i].Lat, positions[i].Long);
+                output.AppendCoordinates(ref coord, 1);
                 i++;
             }
             return output;
@@ -754,8 +814,9 @@ namespace Naxam.Controls.Platform.iOS
 				AddSources (Element.MapStyle.CustomSources.ToList ());
             }
             if (Element.MapStyle.CustomLayers != null) {
-                if (Element.MapStyle.CustomLayers is INotifyCollectionChanged notifiyCollection)
+                if (Element.MapStyle.CustomLayers is INotifyCollectionChanged)
                 {
+                    var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
                     notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
                 }
 

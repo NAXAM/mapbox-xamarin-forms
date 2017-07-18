@@ -46,6 +46,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnnotationsAndFeatures\MultiPolygonAnnotation.cs" />
+    <Compile Include="AnnotationsAndFeatures\PolygonAnnotation.cs" />
     <Compile Include="MapStyle.cs" />
     <Compile Include="MapView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

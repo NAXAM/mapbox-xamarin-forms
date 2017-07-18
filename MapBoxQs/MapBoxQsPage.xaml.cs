@@ -3,6 +3,7 @@ using Naxam.Controls.Forms;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace MapBoxQs
 {
@@ -56,6 +57,44 @@ namespace MapBoxQs
         void ReloadStyle(object sender, EventArgs args)
         {
             map.ReloadStyleFunc?.Execute(sender);
+        }
+
+        void AddPolygon(object sender, EventArgs args)
+        {
+            var polygonCoords = new[] {
+                new Position {
+                    Lat = 21.0233,
+                    Long = 105.7400
+                },
+                new Position {
+                    Lat = 21.0233,
+                    Long = 105.9600
+                },
+                new Position {
+                    Lat = 21.0433,
+                    Long = 105.9600
+                },
+                new Position {
+                    Lat = 21.0433,
+                    Long = 105.7400
+                },
+                new Position {
+                    Lat = 21.0233,
+                    Long = 105.7400
+                },
+            };
+
+            var polygon = new PolylineAnnotation
+            {
+                Coordinates = polygonCoords,
+                Title = "Polyline",
+            };
+
+            var annotations = new List<Annotation>();
+
+            annotations.Add(polygon);
+
+            map.Annotations = annotations;
         }
     }
 }

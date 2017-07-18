@@ -13,6 +13,8 @@
             />
             <Button Clicked="ReloadStyle" Text="Reload Style"
                 Grid.Column="1"/>
+            <Button Clicked="AddPolygon" Text="Add Polygon"
+                Grid.Column="2"/>
         </Grid>
 		
         <local:MapView ZoomLevel="16" x:Name="map" VerticalOptions="FillAndExpand">

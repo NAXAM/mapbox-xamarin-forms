@@ -588,6 +588,53 @@ namespace Naxam.Controls.Platform.Droid
                     };
                 }
             }
+            else if (at is PolygonAnnotation)
+            {
+                var polygon = at as PolygonAnnotation;
+                if (polygon.Coordinates?.Count() == 0)
+                {
+                    return null;
+                }
+                var notifyCollection = polygon.Coordinates as INotifyCollectionChanged;
+                if (notifyCollection != null)
+                {
+                    notifyCollection.CollectionChanged += (s, e) =>
+                    {
+                        if (e.Action == NotifyCollectionChangedAction.Add)
+                        {
+                            if (_annotationDictionaries.ContainsKey(at.Id))
+                            {
+                                var poly = _annotationDictionaries[at.Id] as Sdk.Annotations.Polygon;
+                                poly.AddPoint(new LatLng(polygon.Coordinates.ElementAt(e.NewStartingIndex).Lat, polygon.Coordinates.ElementAt(e.NewStartingIndex).Long));
+                            }
+                            else
+                            {
+                                var coords = new ArrayList();
+                                for (var i = 0; i < polygon.Coordinates.Count(); i++)
+                                {
+                                    coords.Add(new LatLng(polygon.Coordinates.ElementAt(i).Lat, polygon.Coordinates.ElementAt(i).Long));
+                                }
+                                var polygonOpt = new PolygonOptions();
+                                // polygonOpt.Polygon.Width = Context.ToPixels(1); // No width for polygon strokes
+                                polygonOpt.Polygon.StrokeColor = Android.Graphics.Color.Blue;
+                                polygonOpt.Polygon.FillColor = Android.Graphics.Color.Blue;
+                                polygonOpt.Polygon.Alpha = 0.3f;
+                                polygonOpt.AddAll(coords);
+                                options = map.AddPolygon(polygonOpt);
+                                _annotationDictionaries.Add(at.Id, options);
+                            }
+                        }
+                        else if (e.Action == NotifyCollectionChangedAction.Remove)
+                        {
+                            if (_annotationDictionaries.ContainsKey(at.Id))
+                            {
+                                var poly = _annotationDictionaries[at.Id] as Sdk.Annotations.Polygon;
+                                poly.Points.Remove(new LatLng(polygon.Coordinates.ElementAt(e.OldStartingIndex).Lat, polygon.Coordinates.ElementAt(e.OldStartingIndex).Long));
+                            }
+                        }
+                    };
+                }
+            }
             else if (at is MultiPolylineAnnotation)
             {
                 var polyline = at as MultiPolylineAnnotation;
@@ -611,6 +658,30 @@ namespace Naxam.Controls.Platform.Droid
                     lines.Add(coords);
                 }
                 map.AddPolylines(lines);
+            }
+            else if (at is MultiPolygonAnnotation)
+            {
+                var polygon = at as MultiPolygonAnnotation;
+                if (polygon.Coordinates == null || polygon.Coordinates.Length == 0)
+                {
+                    return null;
+                }
+
+                var lines = new List<PolygonOptions>();
+                for (var i = 0; i < polygon.Coordinates.Length; i++)
+                {
+                    if (polygon.Coordinates[i].Length == 0)
+                    {
+                        continue;
+                    }
+                    var coords = new PolygonOptions();
+                    for (var j = 0; j < polygon.Coordinates[i].Length; j++)
+                    {
+                        coords.Add(new LatLng(polygon.Coordinates[i][j].Lat, polygon.Coordinates[i][j].Long));
+                    }
+                    lines.Add(coords);
+                }
+                map.AddPolygons(lines);
             }
             if (options != null)
             {
