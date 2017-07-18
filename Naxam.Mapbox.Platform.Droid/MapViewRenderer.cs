@@ -647,6 +647,11 @@ namespace Naxam.Controls.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
+            map.CameraPosition = new CameraPosition.Builder()
+                .Target(new LatLng(Element.Center.Lat, Element.Center.Long))
+                .Zoom(Element.ZoomLevel)
+                .Build();
+
             AddMapEvents();
 
             SetupFunctions();
