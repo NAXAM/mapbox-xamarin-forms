@@ -8,7 +8,7 @@ namespace MapBoxQs.iOS
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
 		{
-            Mapbox.MGLAccountManager.AccessToken = "<MAPBOX ACCESS TOKEN>";
+            Mapbox.MGLAccountManager.AccessToken = "sk.eyJ1IjoiamVzcGVyZGF4IiwiYSI6ImNpemo2ajloNTAwMmwyd3I0NWoxNHZoNTYifQ.TnTUuIPwpZzGfS47cr0YMw";
             new Naxam.Controls.Platform.iOS.MapViewRenderer();
 
             global::Xamarin.Forms.Forms.Init();

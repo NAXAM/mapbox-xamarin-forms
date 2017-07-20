@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -203,31 +204,31 @@ namespace Naxam.Controls.Forms
 
         public static readonly BindableProperty AnnotationsProperty = BindableProperty.Create (
             nameof (Annotations),
-            typeof (IEnumerable<Annotation>),
+            typeof (ObservableCollection<Annotation>),
             typeof (MapView),
-            default (IEnumerable<Annotation>),
+            new ObservableCollection<Annotation>(),
             BindingMode.TwoWay);
 
-        public IEnumerable<Annotation> Annotations {
+        public ObservableCollection<Annotation> Annotations {
             get {
-                return (IEnumerable<Annotation>)GetValue (AnnotationsProperty);
+                return (ObservableCollection<Annotation>)GetValue (AnnotationsProperty);
             }
             set {
-                SetValue (AnnotationsProperty, (IEnumerable<Annotation>)value);
+                SetValue (AnnotationsProperty, (ObservableCollection<Annotation>)value);
             }
         }
 
-        static Func<string, bool> DefaultCanShowCalloutChecker = x => true;
+        static Func<Annotation, bool> DefaultCanShowCalloutChecker = x => true;
         public static readonly BindableProperty CanShowCalloutCheckerProperty = BindableProperty.Create (
             nameof (CanShowCalloutChecker),
-            typeof (Func<string, bool>),
+            typeof (Func<Annotation, bool>),
             typeof (MapView),
             default (Func<string, bool>),
             BindingMode.OneWay);
 
-        public Func<string, bool> CanShowCalloutChecker {
+        public Func<Annotation, bool> CanShowCalloutChecker {
             get {
-                return (Func<string, bool>)GetValue (CanShowCalloutCheckerProperty) ?? DefaultCanShowCalloutChecker;
+                return (Func<Annotation, bool>)GetValue (CanShowCalloutCheckerProperty) ?? DefaultCanShowCalloutChecker;
             }
             set {
                 SetValue (CanShowCalloutCheckerProperty, value);

@@ -39,9 +39,6 @@ namespace Naxam.Controls.Platform.Droid
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
 
-        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
-            new Dictionary<string, Sdk.Annotations.Annotation>();
-
         protected override void OnElementChanged(
             ElementChangedEventArgs<MapView> e)
         {
@@ -51,6 +48,7 @@ namespace Naxam.Controls.Platform.Droid
             {
                 e.OldElement.TakeSnapshot -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPoint -= GetFeaturesAroundPoint;
+                e.OldElement.Annotations.CollectionChanged -= OnAnnotationsCollectionChanged;
             }
 
             if (e.NewElement == null)
@@ -81,6 +79,8 @@ namespace Naxam.Controls.Platform.Droid
 
             Element.TakeSnapshot += TakeMapSnapshot;
             Element.GetFeaturesAroundPoint += GetFeaturesAroundPoint;
+            // Monitor Annotations
+            Element.Annotations.CollectionChanged += OnAnnotationsCollectionChanged;
 
             Element.ResetPositionFunc = new Command(x =>
             {
@@ -88,7 +88,6 @@ namespace Naxam.Controls.Platform.Droid
 
                 map.AnimateCamera(CameraUpdateFactory.ZoomBy(Element.ZoomLevel));
              });
-
 
             Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) =>
             {
@@ -233,19 +232,6 @@ namespace Naxam.Controls.Platform.Droid
                 if (map != null)
                 {
                     map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
-                }
-            }
-            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
-            {
-                RemoveAllAnnotations();
-                if (Element.Annotations != null)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
-                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-                    if (notifyCollection != null)
-                    {
-                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    }
                 }
             }
         }
@@ -476,15 +462,10 @@ namespace Naxam.Controls.Platform.Droid
                     items.Add(annot);
                 }
                 RemoveAnnotations(items.ToArray());
-                foreach (var item in items)
-                {
-                    _annotationDictionaries.Remove(item.Id);
-                }
             }
             else if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 map.RemoveAnnotations();
-                _annotationDictionaries.Clear();
             }
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
@@ -515,9 +496,9 @@ namespace Naxam.Controls.Platform.Droid
             var annots = new List<Sdk.Annotations.Annotation>();
             foreach (Annotation at in annotations)
             {
-                if (_annotationDictionaries.ContainsKey(at.Id))
+                if (at.Native != null)
                 {
-                    annots.Add(_annotationDictionaries[at.Id]);
+                    annots.Add((Sdk.Annotations.Annotation)at.Native);
                 }
             }
             map.RemoveAnnotations(annots.ToArray());
@@ -533,68 +514,19 @@ namespace Naxam.Controls.Platform.Droid
 
         private Sdk.Annotations.Annotation AddAnnotation(Annotation at)
         {
-            Sdk.Annotations.Annotation options = null;
             if (at is PointAnnotation)
             {
-                var marker = new MarkerOptions();
-                marker.SetTitle(at.Title);
-                marker.SetSnippet(at.Title);
-                marker.SetPosition(new LatLng(((PointAnnotation)at).Coordinate.Lat,
+                var markerOpt = new MarkerOptions();
+                markerOpt.SetTitle(at.Title);
+                markerOpt.SetSnippet(at.Title);
+                markerOpt.SetPosition(new LatLng(((PointAnnotation)at).Coordinate.Lat,
                     ((PointAnnotation)at).Coordinate.Long));
-                options = map.AddMarker(marker);
-            }
-            else if (at is PolylineAnnotation)
-            {
-                var polyline = at as PolylineAnnotation;
-                if (polyline.Coordinates?.Count() == 0)
-                {
-                    return null;
-                }
-                var notifyCollection = polyline.Coordinates as INotifyCollectionChanged;
-                if (notifyCollection != null)
-                {
-                    notifyCollection.CollectionChanged += (s, e) =>
-                    {
-                        if (e.Action == NotifyCollectionChangedAction.Add)
-                        {
-                            if (_annotationDictionaries.ContainsKey(at.Id))
-                            {
-                                var poly = _annotationDictionaries[at.Id] as Polyline;
-                                poly.AddPoint(new LatLng(polyline.Coordinates.ElementAt(e.NewStartingIndex).Lat, polyline.Coordinates.ElementAt(e.NewStartingIndex).Long));
-                            }
-                            else
-                            {
-                                var coords = new ArrayList();
-                                for (var i = 0; i < polyline.Coordinates.Count(); i++)
-                                {
-                                    coords.Add(new LatLng(polyline.Coordinates.ElementAt(i).Lat, polyline.Coordinates.ElementAt(i).Long));
-                                }
-                                var polylineOpt = new PolylineOptions();
-                                polylineOpt.Polyline.Width = Context.ToPixels(1);
-                                polylineOpt.Polyline.Color = Android.Graphics.Color.Blue;
-                                polylineOpt.AddAll(coords);
-                                options = map.AddPolyline(polylineOpt);
-                                _annotationDictionaries.Add(at.Id, options);
-                            }
-                        }
-                        else if (e.Action == NotifyCollectionChangedAction.Remove)
-                        {
-                            if (_annotationDictionaries.ContainsKey(at.Id))
-                            {
-                                var poly = _annotationDictionaries[at.Id] as Polyline;
-                                poly.Points.Remove(new LatLng(polyline.Coordinates.ElementAt(e.OldStartingIndex).Lat, polyline.Coordinates.ElementAt(e.OldStartingIndex).Long));
-                            }
-                        }
-                    };
-                }
+                at.Native = map.AddMarker(markerOpt);
+                return (Sdk.Annotations.Annotation)at.Native;
             }
             else if (at is PolygonAnnotation)
             {
                 var polygon = at as PolygonAnnotation;
-                if (polygon.Coordinates?.Count() == 0)
-                {
-                    return null;
-                }
                 var notifyCollection = polygon.Coordinates as INotifyCollectionChanged;
                 if (notifyCollection != null)
                 {
@@ -602,96 +534,74 @@ namespace Naxam.Controls.Platform.Droid
                     {
                         if (e.Action == NotifyCollectionChangedAction.Add)
                         {
-                            if (_annotationDictionaries.ContainsKey(at.Id))
+                            if (at.Native != null)
                             {
-                                var poly = _annotationDictionaries[at.Id] as Sdk.Annotations.Polygon;
+                                var poly = at.Native as Sdk.Annotations.Polygon;
                                 poly.AddPoint(new LatLng(polygon.Coordinates.ElementAt(e.NewStartingIndex).Lat, polygon.Coordinates.ElementAt(e.NewStartingIndex).Long));
                             }
                             else
                             {
-                                var coords = new ArrayList();
-                                for (var i = 0; i < polygon.Coordinates.Count(); i++)
-                                {
-                                    coords.Add(new LatLng(polygon.Coordinates.ElementAt(i).Lat, polygon.Coordinates.ElementAt(i).Long));
-                                }
-                                var polygonOpt = new PolygonOptions();
-                                // polygonOpt.Polygon.Width = Context.ToPixels(1); // No width for polygon strokes
-                                polygonOpt.Polygon.StrokeColor = Android.Graphics.Color.Blue;
-                                polygonOpt.Polygon.FillColor = Android.Graphics.Color.Blue;
-                                polygonOpt.Polygon.Alpha = 0.3f;
-                                polygonOpt.AddAll(coords);
-                                options = map.AddPolygon(polygonOpt);
-                                _annotationDictionaries.Add(at.Id, options);
+                                CreatePolygon(at as PolygonAnnotation);
                             }
                         }
                         else if (e.Action == NotifyCollectionChangedAction.Remove)
                         {
-                            if (_annotationDictionaries.ContainsKey(at.Id))
+                            if (at.Native != null)
                             {
-                                var poly = _annotationDictionaries[at.Id] as Sdk.Annotations.Polygon;
+                                var poly = at.Native as Sdk.Annotations.Polygon;
                                 poly.Points.Remove(new LatLng(polygon.Coordinates.ElementAt(e.OldStartingIndex).Lat, polygon.Coordinates.ElementAt(e.OldStartingIndex).Long));
                             }
                         }
                     };
                 }
-            }
-            else if (at is MultiPolylineAnnotation)
-            {
-                var polyline = at as MultiPolylineAnnotation;
-                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0)
+                if (polygon.Coordinates?.Count() == 0)
                 {
                     return null;
                 }
-
-                var lines = new List<PolylineOptions>();
-                for (var i = 0; i < polyline.Coordinates.Length; i++)
-                {
-                    if (polyline.Coordinates[i].Length == 0)
-                    {
-                        continue;
-                    }
-                    var coords = new PolylineOptions();
-                    for (var j = 0; j < polyline.Coordinates[i].Length; j++)
-                    {
-                        coords.Add(new LatLng(polyline.Coordinates[i][j].Lat, polyline.Coordinates[i][j].Long));
-                    }
-                    lines.Add(coords);
-                }
-                map.AddPolylines(lines);
+                // We have some positions, so lets create polyline
+                CreatePolygon(at as PolygonAnnotation);
+                return (Sdk.Annotations.Annotation)at.Native;
             }
-            else if (at is MultiPolygonAnnotation)
+            else if (at is PolylineAnnotation)
             {
-                var polygon = at as MultiPolygonAnnotation;
-                if (polygon.Coordinates == null || polygon.Coordinates.Length == 0)
+                var polyline = at as PolylineAnnotation;
+                var notifyCollection = polyline.Coordinates as INotifyCollectionChanged;
+                if (notifyCollection != null)
+                {
+                    notifyCollection.CollectionChanged += (s, e) =>
+                    {
+                        if (e.Action == NotifyCollectionChangedAction.Add)
+                        {
+                            if (at.Native != null)
+                            {
+                                var poly = at.Native as Polyline;
+                                poly.AddPoint(new LatLng(polyline.Coordinates.ElementAt(e.NewStartingIndex).Lat, polyline.Coordinates.ElementAt(e.NewStartingIndex).Long));
+                            }
+                            else
+                            {
+                                CreatePolyline(at as PolylineAnnotation);
+                            }
+                        }
+                        else if (e.Action == NotifyCollectionChangedAction.Remove)
+                        {
+                            if (at.Native != null)
+                            {
+                                var poly = at.Native as Polyline;
+                                poly.Points.Remove(new LatLng(polyline.Coordinates.ElementAt(e.OldStartingIndex).Lat, polyline.Coordinates.ElementAt(e.OldStartingIndex).Long));
+                            }
+                        }
+                    };
+                }
+                // Check, if up to now any positions for this polyline
+                if (polyline.Coordinates?.Count() == 0)
                 {
                     return null;
                 }
-
-                var lines = new List<PolygonOptions>();
-                for (var i = 0; i < polygon.Coordinates.Length; i++)
-                {
-                    if (polygon.Coordinates[i].Length == 0)
-                    {
-                        continue;
-                    }
-                    var coords = new PolygonOptions();
-                    for (var j = 0; j < polygon.Coordinates[i].Length; j++)
-                    {
-                        coords.Add(new LatLng(polygon.Coordinates[i][j].Lat, polygon.Coordinates[i][j].Long));
-                    }
-                    lines.Add(coords);
-                }
-                map.AddPolygons(lines);
+                // We have some positions, so lets create polyline
+                CreatePolyline(at as PolylineAnnotation);
+                return (Sdk.Annotations.Annotation)at.Native;
             }
-            if (options != null)
-            {
-                if (at.Id != null)
-                {
-                    _annotationDictionaries.Add(at.Id, options);
-                }
-            }
-
-            return options;
+            return null;
         }
 
         void RemoveAllAnnotations()
@@ -700,6 +610,37 @@ namespace Naxam.Controls.Platform.Droid
             {
                 map.RemoveAnnotations(map.Annotations);
             }
+        }
+
+        void CreatePolyline(PolylineAnnotation polyline)
+        {
+            var coords = new ArrayList();
+            for (var i = 0; i < polyline.Coordinates.Count(); i++)
+            {
+                coords.Add(new LatLng(polyline.Coordinates.ElementAt(i).Lat, polyline.Coordinates.ElementAt(i).Long));
+            }
+            var polylineOpt = new PolylineOptions();
+            polylineOpt.Polyline.Width = (float)polyline.StrokeWidth;
+            polylineOpt.Polyline.Color = polyline.StrokeColor.ToAndroid();
+            polylineOpt.Polyline.Alpha = (float)polyline.Alpha;
+            polylineOpt.AddAll(coords);
+            polyline.Native = map.AddPolyline(polylineOpt);
+        }
+
+        void CreatePolygon(PolygonAnnotation polygon)
+        {
+            var coords = new ArrayList();
+            for (var i = 0; i < polygon.Coordinates.Count(); i++)
+            {
+                coords.Add(new LatLng(polygon.Coordinates.ElementAt(i).Lat, polygon.Coordinates.ElementAt(i).Long));
+            }
+            var polygonOpt = new PolygonOptions();
+            // polygonOpt.Polygon.Width = polygon.StrokeWidth; // No width for polygon strokes
+            polygonOpt.Polygon.StrokeColor = polygon.StrokeColor.ToAndroid();
+            polygonOpt.Polygon.FillColor = polygon.FillColor.ToAndroid();
+            polygonOpt.Polygon.Alpha = (float)polygon.Alpha;
+            polygonOpt.AddAll(coords);
+            polygon.Native = map.AddPolygon(polygonOpt);
         }
 
         private byte[] result;

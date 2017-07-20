@@ -80,6 +80,10 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Naxam.Mapbox.iOS, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Naxam.Mapbox.iOS.3.6.0\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -109,10 +113,6 @@
     <ProjectReference Include="..\Naxam.Mapbox.Platform.iOS\Naxam.Mapbox.Platform.iOS.csproj">
       <Project>{DDB8E5F0-975B-4CFB-8A72-AE662C0D2E1B}</Project>
       <Name>Naxam.Mapbox.Platform.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mapbox_iOS\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj">
-      <Project>{682AEE9E-B4F4-4BED-8D14-23582E4992FE}</Project>
-      <Name>Naxam.Mapbox.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -189,9 +189,7 @@
       <InProject>false</InProject>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>

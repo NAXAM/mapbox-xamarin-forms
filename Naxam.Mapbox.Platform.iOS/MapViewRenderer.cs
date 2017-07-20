@@ -104,14 +104,15 @@ namespace Naxam.Controls.Platform.iOS
         void OnElementPropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             if (Element == null) return;
-            if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName
-                && Element.Annotations != null) {
-                RemoveAllAnnotations ();
-                var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-                if (notifyCollection != null) {
-                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                }
-            } else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
+            //if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName
+            //    && Element.Annotations != null) {
+            //    RemoveAllAnnotations ();
+            //    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
+            //    if (notifyCollection != null) {
+            //        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+            //    }
+            //}
+            else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
                        && Element.MapStyle != null) {
                 Element.MapStyle.PropertyChanging -= OnMapStylePropertyChanging;
                 Element.MapStyle.PropertyChanged -= OnMapStylePropertyChanged;
@@ -210,6 +211,9 @@ namespace Naxam.Controls.Platform.iOS
 
         void SetupFunctions ()
         {
+            // Monitor Annotations
+            Element.Annotations.CollectionChanged += OnAnnotationsCollectionChanged;
+
             Element.TakeSnapshot = () => {
                 var image = MapView.Capture (true);
                 var imageData = image.AsJPEG ();
@@ -276,7 +280,7 @@ namespace Naxam.Controls.Platform.iOS
 
                             if (coorArr != null) {
                                 var coorsList = new List<Position>();
-                                (ifeat as PolylineFeature).Coordinates = new Position [coorArr.Count];
+//                                (ifeat as PolylineFeature).Coordinates = new Position [coorArr.Count];
                                 for (nuint i = 0; i < coorArr.Count; i++) {
                                     var childArr = coorArr.GetItem<NSArray> (i);
                                     if (childArr != null && childArr.Count == 2) {
@@ -444,25 +448,32 @@ namespace Naxam.Controls.Platform.iOS
 
         private void OnAnnotationsCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add) {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
                 var annots = new List<MGLShape> ();
                 foreach (Annotation annot in e.NewItems) {
                     var shape = ShapeFromAnnotation (annot);
                     if (shape != null) {
+                        annot.Native = shape;
                         annots.Add (shape);
                     }
                 }
                 MapView.AddAnnotations (annots.ToArray ());
-            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
                 var items = new List<Annotation> ();
                 foreach (Annotation annot in e.OldItems) {
                     items.Add (annot);
                 }
                 RemoveAnnotations (items.ToArray ());
-            } else if (e.Action == NotifyCollectionChangedAction.Reset) //The content of the collection was cleared.
-              {
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Reset) //The content of the collection was cleared.
+            {
                 RemoveAllAnnotations ();
-            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
                 var itemsToRemove = new List<Annotation> ();
                 foreach (Annotation annot in e.OldItems) {
                     itemsToRemove.Add (annot);
@@ -472,6 +483,7 @@ namespace Naxam.Controls.Platform.iOS
                 foreach (Annotation annot in e.NewItems) {
                     var shape = ShapeFromAnnotation (annot);
                     if (shape != null) {
+                        annot.Native = shape;
                         annots.Add (shape);
                     }
                 }
@@ -639,36 +651,23 @@ namespace Naxam.Controls.Platform.iOS
             }
         }
 
-        MGLShape ShapeFromAnnotation (FormsMB.Annotation annotation)
+        MGLShape ShapeFromAnnotation (Annotation annotation)
         {
-            MGLShape shape = null;
-            if (annotation is PointAnnotation) {
-                shape = new MGLPointAnnotation () {
+            if (annotation is PointAnnotation)
+            {
+                var shape = new MGLPointAnnotation ()
+                {
                     Coordinate = new CLLocationCoordinate2D (((PointAnnotation)annotation).Coordinate.Lat,
                                                                  ((PointAnnotation)annotation).Coordinate.Long),
                 };
-            } else if (annotation is PolylineAnnotation) {
-                var polyline = annotation as PolylineAnnotation;
-                shape = PolyLineWithCoordinates (polyline.Coordinates.ToArray());
-                var notifiyCollection = polyline.Coordinates as INotifyCollectionChanged;
-                if (notifiyCollection != null) {
-                    notifiyCollection.CollectionChanged += (sender, e) => {
-                        //TODO Move to a separated method
-                        if (e.Action == NotifyCollectionChangedAction.Add) {
-                            foreach (Position pos in e.NewItems) {
-                                var coord = TypeConverter.FromPositionToCoordinate (pos);
-                                (shape as MGLPolyline).AppendCoordinates (ref coord, 1);
-                            }
-                        } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-                            (shape as MGLPolyline).RemoveCoordinatesInRange (new NSRange (e.OldStartingIndex, e.OldItems.Count));
-                        }
-                    } ;
-                }
+                shape.Title = annotation.Title;
+                shape.Subtitle = annotation.SubTitle;
+                annotation.Native = shape;
+                return shape;
             }
             else if (annotation is PolygonAnnotation)
             {
                 var polygon = annotation as PolygonAnnotation;
-                shape = PolygonWithCoordinates(polygon.Coordinates.ToArray());
                 var notifiyCollection = polygon.Coordinates as INotifyCollectionChanged;
                 if (notifiyCollection != null)
                 {
@@ -676,101 +675,160 @@ namespace Naxam.Controls.Platform.iOS
                         //TODO Move to a separated method
                         if (e.Action == NotifyCollectionChangedAction.Add)
                         {
-                            foreach (Position pos in e.NewItems)
+                            if (polygon.Native != null)
                             {
-                                var coord = TypeConverter.FromPositionToCoordinate(pos);
-                                (shape as MGLPolygon).AppendCoordinates(ref coord, 1);
+                                foreach (Position pos in e.NewItems)
+                                {
+                                    var coord = TypeConverter.FromPositionToCoordinate(pos);
+                                    (polygon.Native as MGLPolygon).AppendCoordinates(ref coord, 1);
+                                }
+                            }
+                            else
+                            {
+                                CreatePolygon(polygon);
                             }
                         }
                         else if (e.Action == NotifyCollectionChangedAction.Remove)
                         {
-                            (shape as MGLPolygon).RemoveCoordinatesInRange(new NSRange(e.OldStartingIndex, e.OldItems.Count));
+                            (polygon.Native as MGLPolygon).RemoveCoordinatesInRange(new NSRange(e.OldStartingIndex, e.OldItems.Count));
                         }
                     };
                 }
-            }
-            else if (annotation is MultiPolylineAnnotation) {
-                var polyline = annotation as MultiPolylineAnnotation;
-                if (polyline.Coordinates == null || polyline.Coordinates.Length == 0) {
-                    return null;
-                }
-                var lines = new MGLPolyline [polyline.Coordinates.Length];
-                for (var i = 0; i < polyline.Coordinates.Length; i++) {
-                    if (polyline.Coordinates [i].Length == 0) {
-                        continue;
-                    }
-                    lines [i] = PolyLineWithCoordinates(polyline.Coordinates[i]);
-                }
-                shape = MGLMultiPolyline.MultiPolylineWithPolylines (lines);
-            }
-            else if (annotation is MultiPolygonAnnotation)
-            {
-                var polygon = annotation as MultiPolygonAnnotation;
-                if (polygon.Coordinates == null || polygon.Coordinates.Length == 0)
+                if (polygon.Coordinates?.Count() == 0)
                 {
                     return null;
                 }
-                var lines = new MGLPolygon[polygon.Coordinates.Length];
-                for (var i = 0; i < polygon.Coordinates.Length; i++)
+                // We have some positions, so lets create polyline
+                CreatePolygon(polygon);
+                return polygon.Native as MGLShape;
+            }
+            else if (annotation is PolylineAnnotation)
+            {
+                var polyline = annotation as PolylineAnnotation;
+                var notifiyCollection = polyline.Coordinates as INotifyCollectionChanged;
+                if (notifiyCollection != null)
                 {
-                    if (polygon.Coordinates[i].Length == 0)
-                    {
-                        continue;
-                    }
-                    lines[i] = PolygonWithCoordinates(polygon.Coordinates[i]);
+                    notifiyCollection.CollectionChanged += (sender, e) => {
+                        //TODO Move to a separated method
+                        if (e.Action == NotifyCollectionChangedAction.Add)
+                        {
+                            if (polyline.Native != null)
+                            {
+                                foreach (Position pos in e.NewItems)
+                                {
+                                    var coord = TypeConverter.FromPositionToCoordinate(pos);
+                                    (polyline.Native as MGLPolyline).AppendCoordinates(ref coord, 1);
+                                }
+                            }
+                            else
+                            {
+                                CreatePolyline(polyline);
+                            }
+                        }
+                        else if (e.Action == NotifyCollectionChangedAction.Remove)
+                        {
+                            (polyline.Native as MGLPolyline).RemoveCoordinatesInRange(new NSRange(e.OldStartingIndex, e.OldItems.Count));
+                        }
+                    };
                 }
-                shape = MGLMultiPolygon.MultiPolygonWithPolygons(lines);
-            }
-            if (shape != null) {
-                if (annotation.Title != null) {
-                    shape.Title = annotation.Title;
+                if (polyline.Coordinates?.Count() == 0)
+                {
+                    return null;
                 }
-                if (annotation.SubTitle != null) {
-                    shape.Subtitle = annotation.SubTitle;
-                }
-                if (!string.IsNullOrEmpty (annotation.Id)) {
-                    shape.SetId (annotation.Id);
-                }
+                // We have some positions, so lets create polyline
+                CreatePolyline(polyline);
+                return polyline.Native as MGLShape;
             }
 
-            return shape;
+            return null;
         }
 
-        MGLPolyline PolyLineWithCoordinates (Position[] positions)
+        void CreatePolyline(PolylineAnnotation annotation)
         {
-            if (positions == null || positions.Length == 0) {
-                return null;
-            }
-            var first = new CLLocationCoordinate2D (positions [0].Lat, positions [0].Long);
-            var output = MGLPolyline.PolylineWithCoordinates (ref first, 1);
+            var first = new CLLocationCoordinate2D (annotation.Coordinates[0].Lat, annotation.Coordinates[0].Long);
+            annotation.Native = MGLPolyline.PolylineWithCoordinates(ref first, 1);
             var i = 1;
-            while (i < positions.Length) {
-                var coord = new CLLocationCoordinate2D (positions [i].Lat, positions [i].Long);
-                output.AppendCoordinates (ref coord, 1);
+            while (i < annotation.Coordinates.Count())
+            {
+                var coord = new CLLocationCoordinate2D (annotation.Coordinates[i].Lat, annotation.Coordinates[i].Long);
+                ((MGLPolyline)annotation.Native).AppendCoordinates(ref coord, 1);
                 i++;
             }
-            return output;
+            (annotation.Native as MGLPolyline).SetId(annotation.Id);
+            //(annotation.Native as MGLPolyline).Title = annotation.Title;
+            //(annotation.Native as MGLPolyline).Subtitle = annotation.SubTitle;
         }
 
-        MGLPolygon PolygonWithCoordinates(Position[] positions)
+        void CreatePolygon(PolygonAnnotation annotation)
         {
-            if (positions == null || positions.Length == 0)
-            {
-                return null;
-            }
-            var first = new CLLocationCoordinate2D(positions[0].Lat, positions[0].Long);
-            var output = MGLPolygon.PolygonWithCoordinates(ref first, 1);
+            var first = new CLLocationCoordinate2D(annotation.Coordinates[0].Lat, annotation.Coordinates[0].Long);
+            annotation.Native = MGLPolygon.PolygonWithCoordinates(ref first, 1);
             var i = 1;
-            while (i < positions.Length)
+            while (i < annotation.Coordinates.Count())
             {
-                var coord = new CLLocationCoordinate2D(positions[i].Lat, positions[i].Long);
-                output.AppendCoordinates(ref coord, 1);
+                var coord = new CLLocationCoordinate2D(annotation.Coordinates[i].Lat, annotation.Coordinates[i].Long);
+                ((MGLPolygon)annotation.Native).AppendCoordinates(ref coord, 1);
                 i++;
             }
-            return output;
+            (annotation.Native as MGLPolygon).SetId(""); // annotation.Id);
+            //(annotation.Native as MGLPolygon).Title = annotation.Title;
+            //(annotation.Native as MGLPolygon).Subtitle = annotation.SubTitle;
         }
 
         #region MGLMapViewDelegate
+
+        [Export("mapView:strokeColorForShapeAnnotation:"),]
+        UIColor StrokeColorForShapeAnnotation(MGLMapView mapView, MGLShape annotation)
+        {
+            var annot = Element.Annotations.FirstOrDefault<Annotation>(x => x.Native.Equals(annotation));
+
+            if (annot is PolylineAnnotation)
+            {
+                return (annot as PolylineAnnotation)?.StrokeColor.ToUIColor();
+            }
+
+            return default(Color).ToUIColor();
+        }
+
+        [Export("mapView:fillColorForPolygonAnnotation:"),]
+        UIColor FillColorForPolygonAnnotation(MGLMapView mapView, MGLPolygon annotation)
+        {
+            var annot = Element.Annotations.FirstOrDefault<Annotation>(x => x.Native.Equals(annotation));
+
+            if (annot is PolygonAnnotation)
+            {
+                return (annot as PolygonAnnotation)?.FillColor.ToUIColor();
+            }
+
+            return default(Color).ToUIColor();
+        }
+
+        [Export("mapView:alphaForShapeAnnotation:"),]
+        nfloat AlphaForShapeAnnotation(MGLMapView mapView, MGLShape annotation)
+        {
+            var annot = Element.Annotations.FirstOrDefault<Annotation>(x => x.Native.Equals(annotation));
+
+            if (annot is PolylineAnnotation)
+            {
+                return (nfloat)(annot as PolylineAnnotation).Alpha;
+            }
+
+            return default(nfloat);
+        }
+
+        [Export("mapView:lineWidthForPolylineAnnotation:"),]
+        nfloat StrokeWidthForPolylineAnnotation(MGLMapView mapView, MGLPolyline annotation)
+        {
+            var annot = Element.Annotations.FirstOrDefault<Annotation>(x => x.Native.Equals(annotation));
+
+            if (annot is PolylineAnnotation)
+            {
+                return (nfloat)(annot as PolylineAnnotation).StrokeWidth;
+            }
+
+            return default(nfloat);
+        }
+
         [Export ("mapViewDidFinishRenderingMap:fullyRendered:"),]
         void DidFinishRenderingMap (MGLMapView mapView, bool fullyRendered)
         {
@@ -850,9 +908,11 @@ namespace Naxam.Controls.Platform.iOS
         [Export ("mapView:annotationCanShowCallout:"),]
         bool AnnotationCanShowCallout (MGLMapView mapView, NSObject annotation)
         {
-            if (annotation is MGLShape && Element.CanShowCalloutChecker != null) {
-                return Element.CanShowCalloutChecker.Invoke (((MGLShape)annotation).Id ());
+            if (annotation is MGLShape && Element.CanShowCalloutChecker != null)
+            {
+                return Element.CanShowCalloutChecker.Invoke(Element.Annotations.FirstOrDefault(x => x.Native.Equals(annotation)));
             }
+
             return true;
         }
         #endregion

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MapBoxQs
 {
@@ -61,40 +62,48 @@ namespace MapBoxQs
 
         void AddPolygon(object sender, EventArgs args)
         {
-            var polygonCoords = new[] {
+            var polygonCoords = new ObservableCollection<Position> {
                 new Position {
-                    Lat = 21.0233,
-                    Long = 105.7400
+                    Lat = 21.0343,
+                    Long = 105.84950
                 },
                 new Position {
-                    Lat = 21.0233,
-                    Long = 105.9600
+                    Lat = 21.0343,
+                    Long = 105.85050
                 },
                 new Position {
-                    Lat = 21.0433,
-                    Long = 105.9600
+                    Lat = 21.0323,
+                    Long = 105.85050
                 },
                 new Position {
-                    Lat = 21.0433,
-                    Long = 105.7400
+                    Lat = 21.0323,
+                    Long = 105.84950
                 },
                 new Position {
-                    Lat = 21.0233,
-                    Long = 105.7400
+                    Lat = 21.0343,
+                    Long = 105.84950
                 },
             };
 
-            var polygon = new PolylineAnnotation
+            var polygon = new PolygonAnnotation
             {
                 Coordinates = polygonCoords,
-                Title = "Polyline",
+                Title = "Polygon",
+                StrokeWidth = 2,
+                StrokeColor = Color.Pink,
+                FillColor = Color.LightPink,
+                Alpha = 0.5,
             };
 
-            var annotations = new List<Annotation>();
+            map.Annotations.Add(polygon);
 
-            annotations.Add(polygon);
+            var marker = new PointAnnotation
+            {
+                Coordinate = new Position(21.0333, 105.8500),
+                Title = "Marker",
+            };
 
-            map.Annotations = annotations;
+            map.Annotations.Add(marker);
         }
     }
 }
