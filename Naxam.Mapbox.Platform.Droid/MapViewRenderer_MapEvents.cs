@@ -62,9 +62,9 @@ namespace Naxam.Controls.Platform.Droid
             Element.Center.Long = args.P0.Position.Longitude;
             Element.IsMarkerClicked = true;
 
-            var annotationKey = _annotationDictionaries.FirstOrDefault (x => x.Value == args.P0).Key;
+            var annotation = Element.Annotations.FirstOrDefault(x => x.Native.Equals(args.P0));
 
-            if (Element.CanShowCalloutChecker?.Invoke (annotationKey) == true) {
+            if (Element.CanShowCalloutChecker?.Invoke (annotation) == true) {
                 args.P0.ShowInfoWindow (map, fragment.View as MapView);
             }
         }

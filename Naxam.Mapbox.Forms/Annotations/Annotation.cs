@@ -23,5 +23,11 @@
 			get;
 			set;
 		}
+
+        public object Native
+        {
+            get;
+            set;
+        }
 	}
 }

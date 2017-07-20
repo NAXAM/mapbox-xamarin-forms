@@ -46,18 +46,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Annotations\MultiPolygonAnnotation.cs" />
+    <Compile Include="Annotations\PolygonAnnotation.cs" />
     <Compile Include="MapStyle.cs" />
     <Compile Include="MapView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapViewDelegate.cs" />
-    <Compile Include="AnnotationsAndFeatures\PointAnnotation.cs" />
-    <Compile Include="AnnotationsAndFeatures\PolylineAnnotation.cs" />
-    <Compile Include="AnnotationsAndFeatures\MultiPolylineAnnotation.cs" />
-    <Compile Include="AnnotationsAndFeatures\Annotation.cs" />
-    <Compile Include="AnnotationsAndFeatures\IFeature.cs" />
-    <Compile Include="AnnotationsAndFeatures\PointFeature.cs" />
-    <Compile Include="AnnotationsAndFeatures\PolylineFeature.cs" />
-    <Compile Include="AnnotationsAndFeatures\MultiPolylineFeature.cs" />
+    <Compile Include="Annotations\PointAnnotation.cs" />
+    <Compile Include="Annotations\PolylineAnnotation.cs" />
+    <Compile Include="Annotations\MultiPolylineAnnotation.cs" />
+    <Compile Include="Annotations\Annotation.cs" />
+    <Compile Include="Features\IFeature.cs" />
+    <Compile Include="Features\PointFeature.cs" />
+    <Compile Include="Features\PolylineFeature.cs" />
+    <Compile Include="Features\MultiPolylineFeature.cs" />
     <Compile Include="ShapeSource.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Layers\CircleLayer.cs" />
