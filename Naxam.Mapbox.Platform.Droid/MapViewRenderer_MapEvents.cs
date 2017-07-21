@@ -83,6 +83,7 @@ namespace Naxam.Controls.Platform.Droid
                                                                         new Layer(arg.Id) 
                                                                        ).ToArray();
 					Element.MapStyle = mapStyle;
+                    Element.ZoomLevel = map.CameraPosition.Zoom;
                     Element.DidFinishLoadingStyleCommand?.Execute(mapStyle);
                 break;
             case MapView.DidFinishRenderingMap:
@@ -92,9 +93,16 @@ namespace Naxam.Controls.Platform.Droid
                 Element.DidFinishRenderingCommand?.Execute (true);
                 break;
             case MapView.RegionDidChange:
+                    if (!Element.ZoomLevel.Equals(map.CameraPosition.Zoom)){
+                        Element.ZoomLevel = map.CameraPosition.Zoom;
+                    }
                 Element.RegionDidChangeCommand?.Execute (false);
                 break;
             case MapView.RegionDidChangeAnimated:
+					if (!Element.ZoomLevel.Equals(map.CameraPosition.Zoom))
+					{
+						Element.ZoomLevel = map.CameraPosition.Zoom;
+					}
                 Element.RegionDidChangeCommand?.Execute (true);
                 break;
             default:

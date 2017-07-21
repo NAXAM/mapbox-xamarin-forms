@@ -59,18 +59,20 @@ namespace Naxam.Controls.Platform.Droid
             if (Control == null)
             {
                 var activity = (AppCompatActivity)Context;
-
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
                 };
-                SetNativeControl(view);
 
-                fragment = new MapViewFragment();
+	            SetNativeControl(view);
 
-                activity.SupportFragmentManager.BeginTransaction()
-                    .Replace(view.Id, fragment)
-                    .Commit();
+	            fragment = new MapViewFragment();
+
+	            activity.SupportFragmentManager.BeginTransaction()
+	                .Replace(view.Id, fragment)
+	                .Commit();
+                
+
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
             }
@@ -84,9 +86,9 @@ namespace Naxam.Controls.Platform.Droid
 
             Element.ResetPositionFunc = new Command(x =>
             {
+                
                 //map.ResetNorth();
-
-                map.AnimateCamera(CameraUpdateFactory.ZoomBy(Element.ZoomLevel));
+                //map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
              });
 
 
@@ -147,7 +149,8 @@ namespace Naxam.Controls.Platform.Droid
             };
 
             Element.ReloadStyleFunc = new Command((obj) => {
-                map.SetStyleUrl(map.StyleUrl, null);
+                //https://github.com/mapbox/mapbox-gl-native/issues/9511
+				map.SetStyleUrl(map.StyleUrl, null);
             });
         }
 
@@ -247,6 +250,9 @@ namespace Naxam.Controls.Platform.Droid
                         notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                     }
                 }
+            }
+            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName) {
+                map?.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
             }
         }
 
@@ -632,7 +638,7 @@ namespace Naxam.Controls.Platform.Droid
         }
 
         private byte[] result;
-        public void OnSnapshotReady(Bitmap bmp)
+        void MapboxMap.ISnapshotReadyCallback.OnSnapshotReady(Bitmap bmp)
         {
             MemoryStream stream = new MemoryStream();
             bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
@@ -647,10 +653,15 @@ namespace Naxam.Controls.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
-            map.CameraPosition = new CameraPosition.Builder()
-                .Target(new LatLng(Element.Center.Lat, Element.Center.Long))
-                .Zoom(Element.ZoomLevel)
-                .Build();
+            if (Element.Center != null) {
+				map.CameraPosition = new CameraPosition.Builder()
+			   .Target(new LatLng(Element.Center.Lat, Element.Center.Long))
+			   .Zoom(Element.ZoomLevel)
+			   .Build();
+            }
+            else {
+                map.CameraPosition.Zoom = Element.ZoomLevel;
+            }
 
             AddMapEvents();
 
