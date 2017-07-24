@@ -193,7 +193,8 @@ namespace Naxam.Controls.Forms
         nameof (MapStyle),
         typeof (MapStyle),
         typeof (MapView),
-        default (MapStyle));
+        default (MapStyle),
+            defaultBindingMode: BindingMode.TwoWay);
         public MapStyle MapStyle {
             get {
                 return (MapStyle)GetValue (MapStyleProperty);
