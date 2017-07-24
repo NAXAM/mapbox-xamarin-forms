@@ -11,30 +11,33 @@ namespace Naxam.Controls.Platform.Droid
     {
         void AddMapEvents ()
         {
-            map.CameraChange += CameraChanged;
             map.MarkerClick += MarkerClicked;
             map.MapClick += MapClicked;
             map.MyLocationChange += MyLocationChanged;
+            map.CameraIdle += OnCameraIdle;
 
             fragment.OnMapChangedListener = (this);
         }
 
+ 
         void RemoveMapEvents ()
         {
-            map.CameraChange -= CameraChanged;
             map.MarkerClick -= MarkerClicked;
             map.MapClick -= MapClicked;
             map.MyLocationChange -= MyLocationChanged;
+            map.CameraIdle -= OnCameraIdle;
 
             fragment.OnMapChangedListener = null;
         }
 
-        void CameraChanged (object o, MapboxMap.CameraChangeEventArgs args)
-        {
-            currentCamera.Lat = args.P0.Target.Latitude;
-            currentCamera.Long = args.P0.Target.Longitude;
+		private void OnCameraIdle(object sender, EventArgs e)
+		{
+            currentCamera.Lat = map.CameraPosition.Target.Latitude;
+            currentCamera.Long = map.CameraPosition.Target.Longitude;
+			Element.ZoomLevel = map.CameraPosition.Zoom;
             Element.Center = currentCamera;
-        }
+		}
+
 
         void MyLocationChanged (object o, MapboxMap.MyLocationChangeEventArgs args)
         {
@@ -83,26 +86,19 @@ namespace Naxam.Controls.Platform.Droid
                                                                         new Layer(arg.Id) 
                                                                        ).ToArray();
 					Element.MapStyle = mapStyle;
-                    Element.ZoomLevel = map.CameraPosition.Zoom;
                     Element.DidFinishLoadingStyleCommand?.Execute(mapStyle);
                 break;
             case MapView.DidFinishRenderingMap:
+					Element.Center = new Position(map.CameraPosition.Target.Latitude, map.CameraPosition.Target.Longitude);
                 Element.DidFinishRenderingCommand?.Execute (false);
                 break;
             case MapView.DidFinishRenderingMapFullyRendered:
                 Element.DidFinishRenderingCommand?.Execute (true);
                 break;
             case MapView.RegionDidChange:
-                    if (!Element.ZoomLevel.Equals(map.CameraPosition.Zoom)){
-                        Element.ZoomLevel = map.CameraPosition.Zoom;
-                    }
-                Element.RegionDidChangeCommand?.Execute (false);
+					Element.RegionDidChangeCommand?.Execute (false);
                 break;
             case MapView.RegionDidChangeAnimated:
-					if (!Element.ZoomLevel.Equals(map.CameraPosition.Zoom))
-					{
-						Element.ZoomLevel = map.CameraPosition.Zoom;
-					}
                 Element.RegionDidChangeCommand?.Execute (true);
                 break;
             default:

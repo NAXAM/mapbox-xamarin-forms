@@ -27,6 +27,7 @@ using MapView = Naxam.Controls.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
+using Naxam.Mapbox.Platform.Droid;
 
 namespace Naxam.Controls.Platform.Droid
 {
@@ -251,8 +252,13 @@ namespace Naxam.Controls.Platform.Droid
                     }
                 }
             }
-            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName) {
-                map?.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
+            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null) {
+                var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
+                System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
+                if (dif >= 0.01) {
+                    System.Diagnostics.Debug.WriteLine("Updating zoom level");  
+                    map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
+                }
             }
         }
 
@@ -660,7 +666,10 @@ namespace Naxam.Controls.Platform.Droid
 			   .Build();
             }
             else {
-                map.CameraPosition.Zoom = Element.ZoomLevel;
+				map.CameraPosition = new CameraPosition.Builder()
+                    .Target(map.CameraPosition.Target)
+			   .Zoom(Element.ZoomLevel)
+			   .Build();
             }
 
             AddMapEvents();

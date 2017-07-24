@@ -101,7 +101,9 @@ namespace Naxam.Controls.Forms
                 return (double)GetValue (ZoomLevelProperty);
             }
             set {
-                SetValue (ZoomLevelProperty, (double)value);
+                if (Math.Abs(value - ZoomLevel) > 0.01) {
+                    SetValue(ZoomLevelProperty, (double)value);
+                }
             }
         }
 
