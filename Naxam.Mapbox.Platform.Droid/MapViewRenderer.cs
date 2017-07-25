@@ -101,10 +101,11 @@ namespace Naxam.Controls.Platform.Droid
                     var layer = map.GetLayer(layerIdStr);
                     if (layer != null)
                     {
-                        layer.SetProperties(layer.Visibility, isVisible ? Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.Visible) :
-                            Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.None));
+                        layer.SetProperties(layer.Visibility, 
+                                            isVisible ? Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.Visible) 
+                                            : Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.None));
 
-                        if (IsCustom || Element.MapStyle.CustomLayers != null)
+                        if (IsCustom && Element.MapStyle.CustomLayers != null)
                         {
                             var count = Element.MapStyle.CustomLayers.Count();
                             for (var i = 0; i < count; i++)
@@ -130,7 +131,10 @@ namespace Naxam.Controls.Platform.Droid
                     var source = map.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
                     if (source != null)
                     {
-                        source.SetGeoJson(shape);
+						Device.BeginInvokeOnMainThread(() =>
+						{
+							source.SetGeoJson(shape);
+						});
                         if (Element.MapStyle.CustomSources != null)
                         {
                             var count = Element.MapStyle.CustomSources.Count();

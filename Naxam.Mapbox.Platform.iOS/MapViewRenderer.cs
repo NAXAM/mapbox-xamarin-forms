@@ -113,6 +113,23 @@ namespace Naxam.Controls.Platform.iOS
                 }
             } else if (e.PropertyName == FormsMap.MapStyleProperty.PropertyName
                        && Element.MapStyle != null) {
+                if (Element.MapStyle.CustomSources != null) {
+					var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+					if (notifiyCollection != null)
+					{
+						notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
+					}
+                    RemoveSources(Element.MapStyle.CustomSources.ToList());
+                }
+                if (Element.MapStyle.CustomLayers != null) {
+					var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+					if (notifiyCollection != null)
+					{
+						notifiyCollection.CollectionChanged -= OnLayersCollectionChanged;
+					}
+					RemoveLayers(Element.MapStyle.CustomLayers.ToList());
+                }
+
                 Element.MapStyle.PropertyChanging -= OnMapStylePropertyChanging;
                 Element.MapStyle.PropertyChanged -= OnMapStylePropertyChanged;
             }
@@ -158,12 +175,24 @@ namespace Naxam.Controls.Platform.iOS
         void OnMapStylePropertyChanging (object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
-                && (sender as MapStyle).CustomSources != null) {
+                && (sender as MapStyle).CustomSources != null)
+            {
                 var notifiyCollection = (sender as MapStyle).CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null) {
+                if (notifiyCollection != null)
+                {
                     notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
                 }
-                RemoveSources (Element.MapStyle.CustomSources.ToList ());
+                RemoveSources(Element.MapStyle.CustomSources.ToList());
+            }
+            else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
+                       && (sender as MapStyle).CustomLayers != null)
+            {
+				var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+				if (notifiyCollection != null)
+				{
+					notifiyCollection.CollectionChanged -= OnLayersCollectionChanged;
+				}
+				RemoveLayers(Element.MapStyle.CustomLayers.ToList());
             }
         }
 
@@ -334,9 +363,12 @@ namespace Naxam.Controls.Platform.iOS
 
             Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) => {
                 if (annotation != null && !string.IsNullOrEmpty (sourceId)) {
-                    var mglSource = MapView.Style.SourceWithIdentifier ((NSString)("NXCustom_" + sourceId));
+                    var mglSource = MapView.Style.SourceWithIdentifier (sourceId.ToCustomId());
                     if (mglSource != null && mglSource is MGLShapeSource) {
-                        (mglSource as MGLShapeSource).Shape = ShapeFromAnnotation (annotation);
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+							(mglSource as MGLShapeSource).Shape = ShapeFromAnnotation(annotation);
+						});
                         if (Element.MapStyle.CustomSources != null) {
                             var count = Element.MapStyle.CustomSources.Count ();
                             for (var i = 0; i < count; i++) {
@@ -354,7 +386,7 @@ namespace Naxam.Controls.Platform.iOS
 
             Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) => {
                 if (!string.IsNullOrEmpty (layerId)) {
-                    NSString layerIdStr = IsCustom ? (NSString)("NXCustom_" + layerId) : (NSString) layerId;
+                    NSString layerIdStr = IsCustom ? layerId.ToCustomId() : (NSString) layerId;
                         var layer = MapView.Style.LayerWithIdentifier (layerIdStr);
                     if (layer != null) {
                         layer.Visible = isVisible;
@@ -492,7 +524,7 @@ namespace Naxam.Controls.Platform.iOS
                     var layersToRemove = new List<MGLStyleLayer>();
                     foreach (MGLStyleLayer layer in MapView.Style.Layers)
                     {
-                        if (layer.Identifier.StartsWith("NXCustom_", StringComparison.OrdinalIgnoreCase))
+                        if (layer.Identifier.IsCustomId())
                         {
                             layersToRemove.Add(layer);
                         }
@@ -523,7 +555,7 @@ namespace Naxam.Controls.Platform.iOS
                 if (string.IsNullOrEmpty (layer.Id)) {
                     continue;
                 }
-                NSString id = (NSString)("NXCustom_" + layer.Id);
+                NSString id = layer.Id.ToCustomId();
                 var oldLayer = MapView.Style.LayerWithIdentifier (id);
                 if (oldLayer != null) {
                     MapView.Style.RemoveLayer (oldLayer);
@@ -533,7 +565,7 @@ namespace Naxam.Controls.Platform.iOS
                     if (string.IsNullOrEmpty (circleLayer.SourceId)) {
                         continue;
                     }
-                    var sourceId = (NSString)("NXCustom_" + circleLayer.SourceId);
+                    var sourceId = circleLayer.SourceId.ToCustomId();
 
                     var source = MapView.Style.SourceWithIdentifier (sourceId);
                     if (source == null) {
@@ -549,7 +581,7 @@ namespace Naxam.Controls.Platform.iOS
                         if (string.IsNullOrEmpty (lineLayer.SourceId)) {
                         continue;
                     }
-                    var sourceId = (NSString)("NXCustom_" + lineLayer.SourceId);
+                    var sourceId = lineLayer.SourceId.ToCustomId();
                     var source = MapView.Style.SourceWithIdentifier (sourceId);
                     if (source == null) {
                         continue;
@@ -572,7 +604,7 @@ namespace Naxam.Controls.Platform.iOS
                 if (string.IsNullOrEmpty (layer.Id)) {
                     continue;
                 }
-                NSString id = (NSString)("NXCustom_" + layer.Id);
+                NSString id = layer.Id.ToCustomId();
                 var oldLayer = MapView.Style.LayerWithIdentifier (id);
                 if (oldLayer != null) {
                     MapView.Style.RemoveLayer (oldLayer);
@@ -589,7 +621,7 @@ namespace Naxam.Controls.Platform.iOS
             } else if (e.Action == NotifyCollectionChangedAction.Reset) {
                 var sourcesToRemove = new List<MGLSource> ();
                 foreach (MGLSource source in MapView.Style.Sources) {
-                    if (source.Identifier.StartsWith ("NXCustom_", StringComparison.OrdinalIgnoreCase)) {
+                    if (source.Identifier.IsCustomId()) {
                         sourcesToRemove.Add (source);
                     }
                 }
@@ -612,7 +644,7 @@ namespace Naxam.Controls.Platform.iOS
             foreach (ShapeSource source in sources) {
                 if (source.Id != null && source.Shape != null) {
                     var shape = ShapeFromAnnotation (source.Shape);
-                    var sourceId = (NSString)("NXCustom_" + source.Id);
+                    var sourceId = source.Id.ToCustomId();
                     var oldSource = MapView.Style?.SourceWithIdentifier (sourceId);
                     if (oldSource != null && oldSource is MGLShapeSource) {
                         (oldSource as MGLShapeSource).Shape = shape;
@@ -631,7 +663,7 @@ namespace Naxam.Controls.Platform.iOS
             }
             foreach (ShapeSource source in sources) {
                 if (source.Id != null) {
-                    var oldSource = MapView.Style.SourceWithIdentifier ((NSString)("NXCustom_" + source.Id)) as MGLShapeSource;
+                    var oldSource = MapView.Style.SourceWithIdentifier (source.Id.ToCustomId()) as MGLShapeSource;
                     if (oldSource != null) {
                         MapView.Style.RemoveSource (oldSource);
                     }
@@ -835,6 +867,20 @@ namespace Naxam.Controls.Platform.iOS
         {
             var interval = date.SecondsSinceReferenceDate;
             return _nsRef.AddSeconds (interval);
+        }
+    }
+
+    public static class stringExtensions
+    {
+        static string CustomPrefix = "NXCustom_";
+        public static NSString ToCustomId(this string str) {
+            if (str == null) return null;
+            return (NSString) (CustomPrefix + str);
+        }
+
+        public static bool IsCustomId(this string str) {
+            if (str == null) return false;
+            return str.StartsWith("NXCustom_", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

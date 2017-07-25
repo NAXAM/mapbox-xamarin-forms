@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 using Naxam.Controls.Forms;
+using System.Collections.Specialized;
 
 namespace Naxam.Controls.Platform.Droid
 {
@@ -82,6 +83,25 @@ namespace Naxam.Controls.Platform.Droid
                     mapStyle = new MapStyle (map.StyleUrl);
                    
                 }
+					if (Element.MapStyle.CustomSources != null)
+					{
+						var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+						if (notifiyCollection != null)
+						{
+							notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+						}
+
+						AddSources(Element.MapStyle.CustomSources.ToList());
+					}
+					if (Element.MapStyle.CustomLayers != null)
+					{
+						if (Element.MapStyle.CustomLayers is INotifyCollectionChanged notifiyCollection)
+						{
+							notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+						}
+
+						AddLayers(Element.MapStyle.CustomLayers.ToList());
+					}
                     mapStyle.OriginalLayers = map.Layers.Select((arg) =>
                                                                         new Layer(arg.Id) 
                                                                        ).ToArray();
