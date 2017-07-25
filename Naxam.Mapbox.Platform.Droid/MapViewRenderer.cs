@@ -293,19 +293,21 @@ namespace Naxam.Controls.Platform.Droid
 
         void OnMapStylePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            var style = sender as MapStyle;
+            if (style == null) return;
             if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
-                && (sender as MapStyle).CustomSources != null)
+                && style.CustomSources != null)
             {
-                var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+                var notifiyCollection = style.CustomSources as INotifyCollectionChanged;
                 if (notifiyCollection != null)
                 {
                     notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
                 }
 
-                AddSources(Element.MapStyle.CustomSources.ToList());
+                AddSources(style.CustomSources.ToList());
             }
             else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
-                     && (sender as MapStyle).CustomLayers != null)
+                     && style.CustomLayers != null)
             {
                 var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
                 if (notifiyCollection != null)
@@ -329,14 +331,14 @@ namespace Naxam.Controls.Platform.Droid
             }
             else if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                var layers = map.Layers;
-                foreach (var layer in layers)
-                {
-                    if (layer.Id.HasPrefix())
-                    {
-                        map.RemoveLayer(layer);
-                    }
-                }
+                var sources = map.Sources;
+                foreach (var s in sources)
+				{
+					if (s.Id.HasPrefix())
+					{
+                        map.RemoveSource(s);
+					}
+				}
             }
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
@@ -362,10 +364,10 @@ namespace Naxam.Controls.Platform.Droid
 
                     if (source == null)
                     {
-                        map.AddSource(new Sdk.Style.Sources.GeoJsonSource(ss.Id.Prefix()));
+                        source = new Sdk.Style.Sources.GeoJsonSource(ss.Id.Prefix(), shape);
+                        map.AddSource(source);
                     }
-                    else
-                    {
+                    else {
                         source.SetGeoJson(shape);
                     }
                 }
