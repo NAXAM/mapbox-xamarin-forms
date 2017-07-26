@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ContentPage 
-	xmlns="http://xamarin.com/schemas/2014/forms" 
-	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-	xmlns:local="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms" 
-	x:Class="MapBoxQs.MapBoxQsPage">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms" x:Class="MapBoxQs.MapBoxQsPage">
     <StackLayout Orientation="Vertical">
-        <Grid Margin="40" VerticalOptions="Start">
-        <Button 
-            x:Name="btnChangeLocation"
-            Text="Change location"
-            Grid.Column="0"
-            />
-            <Button Clicked="ReloadStyle" Text="Reload Style"
-                Grid.Column="1"/>
+        <Grid Margin="20" VerticalOptions="Start">
+            <Button x:Name="btnChangeLocation" Text="Change location" Grid.Column="0" />
+            <Button Clicked="ReloadStyle" Text="Reload Style" Grid.Column="1" />
+            <Button Clicked="ShowStylesPicker" Text="Change style" Grid.Column="2" />
+            <Button Command="{Binding ZoomCommand}" CommandParameter="{x:Int32 1}" Text="Zoom in" Grid.Row="1" Grid.Column="0" />
+            <Button Command="{Binding ZoomCommand}" CommandParameter="{x:Int32 -1}" Text="Zoom out" Grid.Row="1" Grid.Column="1" />
         </Grid>
-		
-        <local:MapView ZoomLevel="16" x:Name="map" VerticalOptions="FillAndExpand">
-            <local:MapView.Center>
+        <local:MapView x:Name="map" VerticalOptions="FillAndExpand" MapStyle="{Binding CurrentMapStyle}" ZoomLevel="{Binding ZoomLevel}">
+            <!--            <local:MapView.Center>
                 <local:Position Lat="21.0333" Long="105.8500"/>
-            </local:MapView.Center>
+            </local:MapView.Center>-->
         </local:MapView>
-	</StackLayout>
+    </StackLayout>
 </ContentPage>
