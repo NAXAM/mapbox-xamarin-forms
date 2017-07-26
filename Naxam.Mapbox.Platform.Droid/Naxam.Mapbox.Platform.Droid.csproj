@@ -168,6 +168,8 @@
     <Compile Include="Extensions\LayerExtensions.cs" />
     <Compile Include="Extensions\AnnotationExtensions.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
+    <Compile Include="Extensions\PositionExtensions.cs" />
+    <Compile Include="CancelableCallback.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

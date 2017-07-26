@@ -106,6 +106,7 @@
     <Compile Include="MapViewRenderer.cs" />
     <Compile Include="Extensions\MGLShapeExtensions.cs" />
     <Compile Include="TypeConverter.cs" />
+    <Compile Include="Extensions\PositionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

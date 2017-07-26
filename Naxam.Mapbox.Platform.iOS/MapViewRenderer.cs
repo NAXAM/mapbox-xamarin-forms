@@ -404,6 +404,16 @@ namespace Naxam.Controls.Platform.iOS
                 }
                 return false;
                 };
+
+            Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionBlock) => {
+                MapView.SetCenterCoordinate(
+                    centerLocation?.ToCLCoordinate() ?? MapView.CenterCoordinate,
+                    zoomLevel ?? MapView.ZoomLevel,
+                    bearing ?? MapView.Direction,
+                    animated, 
+                    completionBlock
+                );
+            };
         }
 
         NSSet<NSString> SelectableLayersFromSources (string [] layersId)
@@ -676,8 +686,7 @@ namespace Naxam.Controls.Platform.iOS
             MGLShape shape = null;
             if (annotation is PointAnnotation) {
                 shape = new MGLPointAnnotation () {
-                    Coordinate = new CLLocationCoordinate2D (((PointAnnotation)annotation).Coordinate.Lat,
-                                                                 ((PointAnnotation)annotation).Coordinate.Long),
+                    Coordinate = ((PointAnnotation)annotation).Coordinate.ToCLCoordinate()
                 };
             } else if (annotation is PolylineAnnotation) {
                 var polyline = annotation as PolylineAnnotation;
@@ -731,11 +740,11 @@ namespace Naxam.Controls.Platform.iOS
             if (positions == null || positions.Length == 0) {
                 return null;
             }
-            var first = new CLLocationCoordinate2D (positions [0].Lat, positions [0].Long);
+            var first = positions[0].ToCLCoordinate();
             var output = MGLPolyline.PolylineWithCoordinates (ref first, 1);
             var i = 1;
             while (i < positions.Length) {
-                var coord = new CLLocationCoordinate2D (positions [i].Lat, positions [i].Long);
+                var coord = positions[i].ToCLCoordinate();
                 output.AppendCoordinates (ref coord, 1);
                 i++;
             }

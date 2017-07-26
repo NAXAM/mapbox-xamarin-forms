@@ -340,5 +340,28 @@ namespace Naxam.Controls.Forms
                 SetValue (UpdateLayerFuncProperty, value);
             }
         }
+
+        /// <summary>
+        /// Update view port (camera)
+        /// Params: Center location, zoom level, bearing, animated, completion handler
+        /// </summary>
+		public static readonly BindableProperty UpdateViewPortActionProperty = BindableProperty.Create(
+			nameof(UpdateViewPortAction),
+            typeof(Action<Position, double?, double?, bool, Action>),
+			typeof(MapView),
+			default(Action<Position, double?, double?, bool, Action>),
+			 BindingMode.OneWayToSource);
+
+		public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
+		{
+			get
+			{
+				return ((Action<Position, double?, double?, bool, Action>)GetValue(UpdateViewPortActionProperty));
+			}
+			set
+			{
+				SetValue(UpdateViewPortActionProperty, value);
+			}
+		}
     }
 }

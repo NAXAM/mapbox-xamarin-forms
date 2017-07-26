@@ -157,6 +157,26 @@ namespace Naxam.Controls.Platform.Droid
                 //https://github.com/mapbox/mapbox-gl-native/issues/9511
 				map.SetStyleUrl(map.StyleUrl, null);
             });
+
+            Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) => {
+                var newPosition = new CameraPosition.Builder()
+                                                    .Bearing(bearing ?? map.CameraPosition.Bearing)
+                                                    .Target(centerLocation?.ToLatLng() ?? map.CameraPosition.Target)
+                                                    .Zoom(zoomLevel ?? map.CameraPosition.Zoom)
+                                                    .Build();
+                var callback = completionHandler == null ? null : new CancelableCallback()
+                {
+                    FinishHandler = completionHandler,
+                    CancelHandler = completionHandler
+                };
+                var update = CameraUpdateFactory.NewCameraPosition(newPosition);
+                if (animated) {
+					map.AnimateCamera(update, callback);
+                }
+                else {
+					map.MoveCamera(update, callback);
+				}
+            };
         }
 
         byte[] TakeMapSnapshot()
@@ -222,7 +242,7 @@ namespace Naxam.Controls.Platform.Droid
                 if (!ReferenceEquals(Element.Center, currentCamera))
                 {
                     if (Element.Center == null) return;
-                    FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
+                    FocustoLocation(Element.Center.ToLatLng());
                 }
             }
             else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
@@ -557,8 +577,7 @@ namespace Naxam.Controls.Platform.Droid
                 var marker = new MarkerOptions();
                 marker.SetTitle(at.Title);
                 marker.SetSnippet(at.Title);
-                marker.SetPosition(new LatLng(((PointAnnotation)at).Coordinate.Lat,
-                    ((PointAnnotation)at).Coordinate.Long));
+                marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -578,14 +597,14 @@ namespace Naxam.Controls.Platform.Droid
                             if (_annotationDictionaries.ContainsKey(at.Id))
                             {
                                 var poly = _annotationDictionaries[at.Id] as Polyline;
-                                poly.AddPoint(new LatLng(polyline.Coordinates.ElementAt(e.NewStartingIndex).Lat, polyline.Coordinates.ElementAt(e.NewStartingIndex).Long));
+                                poly.AddPoint(polyline.Coordinates.ElementAt(e.NewStartingIndex).ToLatLng());
                             }
                             else
                             {
                                 var coords = new ArrayList();
                                 for (var i = 0; i < polyline.Coordinates.Count(); i++)
                                 {
-                                    coords.Add(new LatLng(polyline.Coordinates.ElementAt(i).Lat, polyline.Coordinates.ElementAt(i).Long));
+                                    coords.Add(polyline.Coordinates.ElementAt(i).ToLatLng());
                                 }
                                 var polylineOpt = new PolylineOptions();
                                 polylineOpt.Polyline.Width = Context.ToPixels(1);
@@ -600,7 +619,7 @@ namespace Naxam.Controls.Platform.Droid
                             if (_annotationDictionaries.ContainsKey(at.Id))
                             {
                                 var poly = _annotationDictionaries[at.Id] as Polyline;
-                                poly.Points.Remove(new LatLng(polyline.Coordinates.ElementAt(e.OldStartingIndex).Lat, polyline.Coordinates.ElementAt(e.OldStartingIndex).Long));
+                                poly.Points.Remove(polyline.Coordinates.ElementAt(e.OldStartingIndex).ToLatLng());
                             }
                         }
                     };
@@ -667,7 +686,7 @@ namespace Naxam.Controls.Platform.Droid
 
             if (Element.Center != null) {
 				map.CameraPosition = new CameraPosition.Builder()
-			   .Target(new LatLng(Element.Center.Lat, Element.Center.Long))
+                    .Target(Element.Center.ToLatLng())
 			   .Zoom(Element.ZoomLevel)
 			   .Build();
             }
