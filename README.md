@@ -1,7 +1,7 @@
 <img src="./art/repo_header.png" alt="Mapbox for Xamarin.Forms" width="800" />
 
 # Mapbox for Xamarin.Forms
-This library provides the controls/renderers for using Mapbox SDKs inside your Xamarin.App.
+This library provides the controls/renderers for using Mapbox SDKs inside your Xamarin.Forms app.
 
 ## About
 This project is maintained by Naxam Co.,Ltd.<br>
@@ -59,5 +59,5 @@ map.ZoomLevel = Device.RuntimePlatform == Device.Android ? 4 : 10;
 
 ## License
 
-BottmTabbedPage is released under the Apache License license.
+Mapbox for Xamarin.Forms is released under the Apache License license.
 See [LICENSE](./LICENSE) for details.
