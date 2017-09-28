@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
@@ -15,6 +15,7 @@ using Xamarin.Forms;
 using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
+using Naxam.Extensions.iOS;
 
 [assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Controls.Forms.MapView), typeof (Naxam.Controls.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Controls.Platform.iOS
@@ -144,7 +145,6 @@ namespace Naxam.Controls.Platform.iOS
                     PitchEnabled = Element.PitchEnabled,
                     RotateEnabled = Element.RotateEnabled
                 };
-
                 MapView.ZoomLevel = Element.ZoomLevel;
                 UpdateMapStyle ();
                 UpdateCenter ();
@@ -413,6 +413,27 @@ namespace Naxam.Controls.Platform.iOS
                     animated, 
                     completionBlock
                 );
+            };
+
+			//Element.GetMapScaleReciprocalFunc = () => {
+   //             if (MapView == null) return 500000000;
+   //             System.Diagnostics.Debug.WriteLine($"Center latitude: {MapView.CenterCoordinate.Latitude}");
+			//	var metersPerPoint = MapView.MetersPerPointAtLatitude(MapView.CenterCoordinate.Latitude);
+			//	System.Diagnostics.Debug.WriteLine($"metersPerPoint: {metersPerPoint}");
+			//	var resolution = metersPerPoint / Math.Pow(2, MapView.ZoomLevel);
+   //             System.Diagnostics.Debug.WriteLine($"resolution: {resolution}");
+			//	var output = UIDeviceExtensions.DPI() * 39.37 * resolution;
+			//	return output;
+			//};
+
+            Element.ToggleScaleBarFunc = (bool show) => {
+                if (MapView == null || MapView.ScaleBar == null) return false;
+                InvokeOnMainThread( () => {
+                    System.Diagnostics.Debug.WriteLine($"Toggle scale bar: {show}");
+                    MapView.ScaleBar.Hidden = !show;
+                });
+
+                return true;
             };
         }
 
