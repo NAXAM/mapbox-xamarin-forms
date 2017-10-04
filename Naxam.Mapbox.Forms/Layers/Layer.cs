@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Naxam.Controls.Forms
+namespace Naxam.Controls.Mapbox.Forms
 {
     public class Layer
     {
@@ -19,5 +19,17 @@ namespace Naxam.Controls.Forms
             get;
             set;
         }
+    }
+
+    public class StyleLayer: Layer {
+	    public StyleLayer(string id, string sourceId) : base(id)
+        {
+            SourceId = sourceId;
+		}
+		public string SourceId
+		{
+			get;
+			private set;
+		}
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Naxam.Controls.Forms
+namespace Naxam.Controls.Mapbox.Forms
 {
 	public interface IFeature
 	{

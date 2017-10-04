@@ -1,9 +1,9 @@
 ﻿using System;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using CoreLocation;
 using System.Collections.Generic;
 
-namespace Naxam.Controls.Platform.iOS
+namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public static class TypeConverter
     {

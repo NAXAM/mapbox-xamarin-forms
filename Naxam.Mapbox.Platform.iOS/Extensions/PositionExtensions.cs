@@ -1,8 +1,8 @@
 ﻿using System;
 using CoreLocation;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 
-namespace Naxam.Controls.Platform.iOS
+namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public static class PositionExtensions
     {

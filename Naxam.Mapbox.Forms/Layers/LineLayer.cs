@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace Naxam.Controls.Forms
+namespace Naxam.Controls.Mapbox.Forms
 {
     public enum MBLineCap : ulong
     {
@@ -10,40 +10,32 @@ namespace Naxam.Controls.Forms
     	Square
     }
 
-    public class LineLayer : Layer
+    public class LineLayer : StyleLayer
     {
-        public LineLayer (string id, string sourceId) : base (id)
+        public LineLayer (string id, string sourceId) : base (id, sourceId)
         {
-            SourceId = sourceId;
-            LineCap = MBLineCap.Round;
-            LineColor = Color.Red;
-            LineOpacity = 1.0;
-            LineWidth = 1.0;
         }
 
-        public string SourceId {
-            get;
-            private set;
-        }
+        public MBLineCap LineCap = MBLineCap.Round;
 
-        public MBLineCap LineCap {
-            get;
-            set;
-        }
+        public Color LineColor = Color.Red;
 
-        public Color LineColor {
-            get;
-            set;
-        }
-
+        private double lineOpacity = 1.0;
         public double LineOpacity {
-            get;
-            set;
+            get => lineOpacity;
+            set {
+                lineOpacity = Math.Min(1.0, Math.Max(value, 0.0));
+            }
         }
 
+        private double lineWidth = 1.0;
         public double LineWidth {
-            get;
-            set;
+            get => lineWidth;
+            set {
+                lineWidth = Math.Max(value, 0.0);
+            }
         }
+
+        public double[] Dashes;
     }
 }

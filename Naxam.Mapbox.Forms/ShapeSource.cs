@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace Naxam.Controls.Forms
+namespace Naxam.Controls.Mapbox.Forms
 {
     public class ShapeSource: BindableObject
     {

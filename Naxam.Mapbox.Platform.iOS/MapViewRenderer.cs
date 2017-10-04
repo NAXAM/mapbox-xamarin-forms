@@ -4,11 +4,11 @@ using System.Linq;
 using CoreGraphics;
 using Foundation;
 using Mapbox;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using Xamarin.Forms.Platform.iOS;
 using CoreLocation;
-using FormsMap = Naxam.Controls.Forms.MapView;
-using FormsMB = Naxam.Controls.Forms;
+using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
+using FormsMB = Naxam.Controls.Mapbox.Forms;
 using System.Collections.Specialized;
 using UIKit;
 using Xamarin.Forms;
@@ -17,10 +17,10 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using Naxam.Extensions.iOS;
 
-[assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Controls.Forms.MapView), typeof (Naxam.Controls.Platform.iOS.MapViewRenderer))]
-namespace Naxam.Controls.Platform.iOS
+[assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Controls.Mapbox.Forms.MapView), typeof (Naxam.Controls.Mapbox.Platform.iOS.MapViewRenderer))]
+namespace Naxam.Controls.Mapbox.Platform.iOS
 {
-    public class MapViewRenderer : ViewRenderer<Naxam.Controls.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
+    public class MapViewRenderer : ViewRenderer<Naxam.Controls.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
     {
         MGLMapView MapView { get; set; }
 
@@ -435,6 +435,13 @@ namespace Naxam.Controls.Platform.iOS
 
                 return true;
             };
+
+            Element.GetStyleImageFunc = (imageName) => {
+                if (string.IsNullOrEmpty(imageName)
+                    || MapView == null 
+                    || MapView.Style == null) return null;
+                return MapView.Style.ImageForName(imageName)?.AsPNG()?.AsStream();
+            };
         }
 
         NSSet<NSString> SelectableLayersFromSources (string [] layersId)
@@ -591,38 +598,61 @@ namespace Naxam.Controls.Platform.iOS
                 if (oldLayer != null) {
                     MapView.Style.RemoveLayer (oldLayer);
                 }
-                if (layer is CircleLayer) {
-                    var circleLayer = layer as CircleLayer;
-                    if (string.IsNullOrEmpty (circleLayer.SourceId)) {
-                        continue;
-                    }
-                    var sourceId = circleLayer.SourceId.ToCustomId();
+                if (layer is StyleLayer sl) {
+                    if (string.IsNullOrEmpty(sl.SourceId))
+					{
+						continue;
+					}
+					var sourceId = sl.SourceId.ToCustomId();
 
-                    var source = MapView.Style.SourceWithIdentifier (sourceId);
-                    if (source == null) {
-                        continue;
+					var source = MapView.Style.SourceWithIdentifier(sourceId);
+					if (source == null)
+					{
+						continue;
+					}
+                    if (sl is CircleLayer circleLayer) {
+						var newLayer = new MGLCircleStyleLayer(id, source)
+						{
+							CircleColor = MGLStyleValue.ValueWithRawValue(circleLayer.CircleColor.ToUIColor()),
+							CircleOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.CircleOpacity)),
+							CircleRadius = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.CircleRadius))
+						};
+						if (circleLayer.StrokeColor is Color strokeColor)
+						{
+							newLayer.CircleStrokeColor = MGLStyleValue.ValueWithRawValue(strokeColor.ToUIColor());
+							newLayer.CircleStrokeOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.StrokeOpacity));
+							newLayer.CircleStrokeWidth = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.StrokeWidth));
+						}
+						MapView.Style.AddLayer(newLayer);
                     }
-                    var newLayer = new MGLCircleStyleLayer (id, source);
-                    newLayer.CircleColor = MGLStyleValue.ValueWithRawValue (circleLayer.CircleColor.ToUIColor ());
-                    newLayer.CircleOpacity = MGLStyleValue.ValueWithRawValue (NSNumber.FromDouble (circleLayer.CircleOpacity));
-                    newLayer.CircleRadius = MGLStyleValue.ValueWithRawValue (NSNumber.FromDouble (circleLayer.CircleRadius));
-                    MapView.Style.AddLayer (newLayer);
-                } else if (layer is LineLayer) {
-                    var lineLayer = layer as LineLayer;
-                        if (string.IsNullOrEmpty (lineLayer.SourceId)) {
-                        continue;
+                    else if (sl is LineLayer lineLayer) {
+						var newLayer = new MGLLineStyleLayer(id, source)
+						{
+							LineWidth = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(lineLayer.LineWidth)),
+							LineColor = MGLStyleValue.ValueWithRawValue(lineLayer.LineColor.ToUIColor())
+						};
+						if (lineLayer.Dashes != null && lineLayer.Dashes.Length != 0)
+						{
+							var arr = new NSMutableArray<NSNumber>();
+							foreach (double dash in lineLayer.Dashes)
+							{
+								arr.Add(NSNumber.FromDouble(dash));
+							}
+							newLayer.LineDashPattern = MGLStyleValue.ValueWithRawValue(arr);
+						}
+						//TODO lineCap
+						MapView.Style.AddLayer(newLayer);
                     }
-                    var sourceId = lineLayer.SourceId.ToCustomId();
-                    var source = MapView.Style.SourceWithIdentifier (sourceId);
-                    if (source == null) {
-                        continue;
-                    }
-                    var newLayer = new MGLLineStyleLayer (id, source);
-                        newLayer.LineWidth = MGLStyleValue.ValueWithRawValue (NSNumber.FromDouble (lineLayer.LineWidth));
-                        newLayer.LineColor = MGLStyleValue.ValueWithRawValue (lineLayer.LineColor.ToUIColor());
-                        //TODO lineCap
-                        MapView.Style.AddLayer (newLayer);
-                    }
+					else if (sl is FillLayer fl)
+					{
+						var newLayer = new MGLFillStyleLayer(id, source)
+						{
+							FillColor = MGLStyleValue.ValueWithRawValue(fl.FillColor.ToUIColor()),
+							FillOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(fl.FillOpacity))
+						};
+						MapView.Style.AddLayer(newLayer);
+					}
+                }
             }
         }
 

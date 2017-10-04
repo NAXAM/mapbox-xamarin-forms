@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Naxam.Controls.Forms
+namespace Naxam.Controls.Mapbox.Forms
 {
     public class Position
     {
