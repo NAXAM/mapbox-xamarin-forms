@@ -1,8 +1,8 @@
 ﻿using System;
 using Com.Mapbox.Mapboxsdk.Geometry;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class PositionExtensions
     {

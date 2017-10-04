@@ -1,7 +1,7 @@
 ﻿using System;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
 
-namespace Naxam.Mapbox.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public class CancelableCallback: Java.Lang.Object, ICancelableCallback
     {

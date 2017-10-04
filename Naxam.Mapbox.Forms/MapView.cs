@@ -461,21 +461,40 @@ namespace Naxam.Controls.Mapbox.Forms
 
 		public static readonly BindableProperty GetStyleImageFuncProperty = BindableProperty.Create(
 			nameof(ToggleScaleBarFunc),
-            typeof(Func<string, Stream>),
+            typeof(Func<string, Byte[]>),
 			typeof(MapView),
-			default(Func<string, Stream>),
+			default(Func<string, Byte[]>),
 			BindingMode.OneWayToSource);
 
-		public Func<string, Stream> GetStyleImageFunc
+        public Func<string, Byte[]> GetStyleImageFunc
 		{
 			get
 			{
-				return ((Func<string, Stream>)GetValue(GetStyleImageFuncProperty));
+				return ((Func<string, Byte[]>)GetValue(GetStyleImageFuncProperty));
 			}
 			set
 			{
 				SetValue(GetStyleImageFuncProperty, value);
 			}
 		}
+
+        /// <summary>
+        /// Get StyleLayer
+        /// Params: (layer Id, is custom layer)
+        /// </summary>
+        public static BindableProperty GetStyleLayerFuncProperty = BindableProperty.Create(
+            propertyName: nameof(GetStyleLayerFunc),
+            returnType: typeof(Func<string, bool, StyleLayer>),
+            declaringType: typeof(MapView),
+            defaultValue: default(Func<string, bool, StyleLayer>),
+            defaultBindingMode: BindingMode.OneWayToSource
+        );
+
+
+        public Func<string, bool, StyleLayer> GetStyleLayerFunc
+        {
+            get { return (Func<string, bool, StyleLayer>)GetValue(GetStyleLayerFuncProperty); }
+            set { SetValue(GetStyleLayerFuncProperty, value); }
+        }
     }
 }

@@ -2,12 +2,12 @@
 using Com.Mapbox.Services.Commons.Geojson;
 using Point = Com.Mapbox.Services.Commons.Geojson.Point;
 using Position = Com.Mapbox.Services.Commons.Models.Position;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using System.Linq;
 using Android.Graphics;
 using System.Collections.Generic;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class FeatureExtensions
     {
@@ -57,9 +57,9 @@ namespace Naxam.Controls.Platform.Droid
             return forms;
         }
 
-        public static Naxam.Controls.Forms.Position ToForms (this Position position)
+        public static Naxam.Controls.Mapbox.Forms.Position ToForms (this Position position)
         {
-            return new Naxam.Controls.Forms.Position {
+            return new Naxam.Controls.Mapbox.Forms.Position {
                 Lat = position.Latitude,
                 Long = position.Longitude
             };

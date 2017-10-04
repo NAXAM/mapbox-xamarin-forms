@@ -20,7 +20,7 @@ using Naxam.Extensions.iOS;
 [assembly: Xamarin.Forms.ExportRenderer (typeof (Naxam.Controls.Mapbox.Forms.MapView), typeof (Naxam.Controls.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
-    public class MapViewRenderer : ViewRenderer<Naxam.Controls.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
+    public partial class MapViewRenderer : ViewRenderer<Naxam.Controls.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
     {
         MGLMapView MapView { get; set; }
 
@@ -237,7 +237,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             Element.PropertyChanging += OnElementPropertyChanging;
         }
 
-        void SetupFunctions ()
+        protected void SetupFunctions ()
         {
             Element.TakeSnapshot = () => {
                 var image = MapView.Capture (true);
@@ -440,7 +440,18 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (string.IsNullOrEmpty(imageName)
                     || MapView == null 
                     || MapView.Style == null) return null;
-                return MapView.Style.ImageForName(imageName)?.AsPNG()?.AsStream();
+                return MapView.Style.ImageForName(imageName)?.AsPNG().ToArray();
+            };
+
+            Element.GetStyleLayerFunc = (string layerId, bool isCustom) => {
+                if (string.IsNullOrEmpty(layerId)
+					|| MapView == null
+					|| MapView.Style == null) return null;
+				NSString layerIdStr = isCustom ? layerId.ToCustomId() : (NSString)layerId;
+				var layer = MapView.Style.LayerWithIdentifier(layerIdStr);
+                if (layer is MGLVectorStyleLayer vLayer) return CreateStyleLayer(vLayer, layerId);
+
+                return null;
             };
         }
 
@@ -599,59 +610,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     MapView.Style.RemoveLayer (oldLayer);
                 }
                 if (layer is StyleLayer sl) {
-                    if (string.IsNullOrEmpty(sl.SourceId))
-					{
-						continue;
-					}
-					var sourceId = sl.SourceId.ToCustomId();
-
-					var source = MapView.Style.SourceWithIdentifier(sourceId);
-					if (source == null)
-					{
-						continue;
-					}
-                    if (sl is CircleLayer circleLayer) {
-						var newLayer = new MGLCircleStyleLayer(id, source)
-						{
-							CircleColor = MGLStyleValue.ValueWithRawValue(circleLayer.CircleColor.ToUIColor()),
-							CircleOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.CircleOpacity)),
-							CircleRadius = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.CircleRadius))
-						};
-						if (circleLayer.StrokeColor is Color strokeColor)
-						{
-							newLayer.CircleStrokeColor = MGLStyleValue.ValueWithRawValue(strokeColor.ToUIColor());
-							newLayer.CircleStrokeOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.StrokeOpacity));
-							newLayer.CircleStrokeWidth = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.StrokeWidth));
-						}
-						MapView.Style.AddLayer(newLayer);
+                    var newLayer = GetStyleLayer(sl, id);
+                    if (newLayer != null) {
+                        MapView.Style.AddLayer(newLayer);
                     }
-                    else if (sl is LineLayer lineLayer) {
-						var newLayer = new MGLLineStyleLayer(id, source)
-						{
-							LineWidth = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(lineLayer.LineWidth)),
-							LineColor = MGLStyleValue.ValueWithRawValue(lineLayer.LineColor.ToUIColor())
-						};
-						if (lineLayer.Dashes != null && lineLayer.Dashes.Length != 0)
-						{
-							var arr = new NSMutableArray<NSNumber>();
-							foreach (double dash in lineLayer.Dashes)
-							{
-								arr.Add(NSNumber.FromDouble(dash));
-							}
-							newLayer.LineDashPattern = MGLStyleValue.ValueWithRawValue(arr);
-						}
-						//TODO lineCap
-						MapView.Style.AddLayer(newLayer);
-                    }
-					else if (sl is FillLayer fl)
-					{
-						var newLayer = new MGLFillStyleLayer(id, source)
-						{
-							FillColor = MGLStyleValue.ValueWithRawValue(fl.FillColor.ToUIColor()),
-							FillOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(fl.FillOpacity))
-						};
-						MapView.Style.AddLayer(newLayer);
-					}
                 }
             }
         }
@@ -940,7 +902,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         public static bool IsCustomId(this string str) {
             if (str == null) return false;
-            return str.StartsWith("NXCustom_", StringComparison.OrdinalIgnoreCase);
+            return str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string TrimCustomId(this string str) {
+            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase)) {
+                return str.Substring(CustomPrefix.Length);
+            }
+            return str;
         }
     }
 }

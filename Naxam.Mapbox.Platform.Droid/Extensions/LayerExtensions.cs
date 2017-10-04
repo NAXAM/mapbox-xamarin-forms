@@ -1,8 +1,8 @@
-﻿using Naxam.Controls.Forms;
+﻿using Naxam.Controls.Mapbox.Forms;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using Xamarin.Forms.Platform.Android;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class LayerExtensions
     {

@@ -15,21 +15,20 @@ using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Com.Mapbox.Services.Commons.Geojson;
-using Naxam.Controls.Platform.Droid;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Platform.Droid;
+using Naxam.Controls.Mapbox.Forms;
 
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using Annotation = Naxam.Controls.Forms.Annotation;
+using Annotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
-using MapView = Naxam.Controls.Forms.MapView;
+using MapView = Naxam.Controls.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
-using Naxam.Mapbox.Platform.Droid;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
         : ViewRenderer<MapView, View>, MapboxMap.ISnapshotReadyCallback, IOnMapReadyCallback

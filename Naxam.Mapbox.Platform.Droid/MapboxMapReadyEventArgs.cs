@@ -1,7 +1,7 @@
 using System;
 using Sdk = Com.Mapbox.Mapboxsdk;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public class MapboxMapReadyEventArgs : EventArgs
     {

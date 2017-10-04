@@ -4,7 +4,7 @@ using Android.Runtime;
 using Android.Views;
 using Com.Mapbox.Mapboxsdk.Maps;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public class MapViewFragment : SupportMapFragment, MapView.IOnMapChangedListener
     {

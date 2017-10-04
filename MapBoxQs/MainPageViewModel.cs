@@ -1,5 +1,5 @@
 ﻿using System;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.Windows.Input;

@@ -1,5 +1,5 @@
 ﻿using System;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using System.Linq;
@@ -50,6 +50,10 @@ namespace MapBoxQs
                 foreach (Layer layer in obj.OriginalLayers)
 				{
                     System.Diagnostics.Debug.WriteLine(layer.Id);
+                    var styleLayer = map.GetStyleLayerFunc(layer.Id, false);
+                    if (styleLayer != null) {
+                        System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(styleLayer));
+                    }
 				}
 
 			});

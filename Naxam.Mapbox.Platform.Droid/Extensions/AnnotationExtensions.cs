@@ -1,10 +1,10 @@
-﻿using Naxam.Controls.Forms;
+﻿using Naxam.Controls.Mapbox.Forms;
 using Geojson = Com.Mapbox.Services.Commons.Geojson;
 
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class AnnotationExtensions
     {

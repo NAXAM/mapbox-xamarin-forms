@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using ModernHttpClient;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using Newtonsoft.Json;
 
 namespace MapBoxQs.Services

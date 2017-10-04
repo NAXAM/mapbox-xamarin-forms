@@ -64,6 +64,7 @@
     <Compile Include="Layers\LineLayer.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Layers\FillLayer.cs" />
+    <Compile Include="Layers\SymbolLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

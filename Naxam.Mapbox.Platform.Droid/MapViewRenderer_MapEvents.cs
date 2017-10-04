@@ -2,10 +2,10 @@
 using System;
 using System.Linq;
 using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
-using Naxam.Controls.Forms;
+using Naxam.Controls.Mapbox.Forms;
 using System.Collections.Specialized;
 
-namespace Naxam.Controls.Platform.Droid
+namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     
     public partial class MapViewRenderer : MapView.IOnMapChangedListener

@@ -108,6 +108,7 @@
     <Compile Include="TypeConverter.cs" />
     <Compile Include="Extensions\PositionExtensions.cs" />
     <Compile Include="Extensions\UIDeviceExtensions.cs" />
+    <Compile Include="MapViewRenderer_StyleLayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
