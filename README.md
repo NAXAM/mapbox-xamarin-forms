@@ -20,6 +20,11 @@ We specialize in developing mobile applications using Xamarin and native technol
 Install-Package Naxam.Mapbox.Forms -pre
 ```
 
+### Add the Mapbox Service to your Manifest
+```xml
+<service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
+```
+
 ### Your XAML
 ```xml
 <local:MapView 
