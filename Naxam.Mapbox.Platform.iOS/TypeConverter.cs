@@ -13,7 +13,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 return default(CLLocationCoordinate2D);
             }
-            return new CLLocationCoordinate2D(position.Lat, position.Long);
+            return position.ToCLCoordinate();
         }
 
         public static Position FromCoordinateToPosition(CLLocationCoordinate2D coordinate)

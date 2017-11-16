@@ -36,7 +36,7 @@ namespace MapBoxQs
 
             map.DidTapOnMapCommand = new Command<Tuple<Position, Point>>((Tuple<Position, Point> obj) =>
             {
-                var features = map.GetFeaturesAroundPoint.Invoke(obj.Item2, 6, null);
+                var features = map.GetFeaturesAroundPointFunc.Invoke(obj.Item2, 6, new string[] {"[FG] Solcelleanlæg (ude af drift)"});
                 var filtered = features.Where((arg) => arg.Attributes != null);
                 foreach (IFeature feat in filtered) {
                     var str = JsonConvert.SerializeObject(feat);
@@ -46,7 +46,7 @@ namespace MapBoxQs
             });
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>((obj) =>
             {
-                map.ResetPositionFunc.Execute(null);
+                //map.ResetPositionFunc.Execute(null);
                 foreach (Layer layer in obj.OriginalLayers)
 				{
                     System.Diagnostics.Debug.WriteLine(layer.Id);
@@ -54,10 +54,13 @@ namespace MapBoxQs
                     if (styleLayer != null) {
                         System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(styleLayer));
                     }
+                    if (layer.Id.ToLower().Contains("satellite")) {
+                        map.UpdateLayerFunc.Invoke(layer.Id, false, false);
+                    }
 				}
 
 			});
-			map.ZoomLevel = Device.RuntimePlatform == Device.Android ? 4 : 10;
+			map.ZoomLevel = Device.RuntimePlatform == Device.Android ? 4 : 14;
 
 
 			BindingContext = _ViewModel;
@@ -99,7 +102,7 @@ namespace MapBoxQs
 
         void ReloadStyle(object sender, EventArgs args)
         {
-            map.ReloadStyleFunc?.Execute(sender);
+            map.ReloadStyleAction?.Invoke();
         }
 
         void ZoomIn(object sender, EventArgs args)

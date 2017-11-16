@@ -239,7 +239,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         protected void SetupFunctions ()
         {
-            Element.TakeSnapshot = () => {
+            Element.TakeSnapshotFunc = () => {
                 var image = MapView.Capture (true);
                 var imageData = image.AsJPEG ();
                 Byte [] imgByteArray = new Byte [imageData.Length];
@@ -250,7 +250,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 return imgByteArray;
             };
 
-            Element.GetFeaturesAroundPoint = (Point point, double radius, string [] layers) => {
+            Element.GetFeaturesAroundPointFunc = (Point point, double radius, string [] layers) => {
                 var selectableLayers = SelectableLayersFromSources (layers);
                 NSObject [] features;
                 var cgPoint = new CGPoint ((nfloat)point.X, (nfloat)point.Y);
@@ -352,14 +352,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 return output.ToArray ();
             };
 
-            Element.ResetPositionFunc = new Command ((arg) => {
+            Element.ResetPositionAction = () => {
                 MapView.ResetPosition ();
-            });
+            };
 
-            Element.ReloadStyleFunc = new Command((arg) =>
+            Element.ReloadStyleAction = () =>
             {
                 MapView.ReloadStyle(MapView);
-            });
+            };
 
             Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) => {
                 if (annotation != null && !string.IsNullOrEmpty (sourceId)) {
@@ -467,7 +467,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 output.Add ((NSString)acceptedId);
                 output.Add ((NSString)(acceptedId + " (1)"));
             }
-            return output.Copy() as NSSet<NSString>;
+            return new NSSet<NSString>(output);
         }
 
         void AddAnnotation (Annotation annotation)

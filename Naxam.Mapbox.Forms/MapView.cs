@@ -274,79 +274,79 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public static readonly BindableProperty TakeSnapshotProperty = BindableProperty.Create(
-            nameof(TakeSnapshot),
+        public static readonly BindableProperty TakeSnapshotFuncProperty = BindableProperty.Create(
+            nameof(TakeSnapshotFunc),
             typeof(Func<byte[]>),
             typeof(MapView),
             default(Func<byte[]>),
             defaultBindingMode: BindingMode.OneWayToSource);
 
-        public Func<byte[]> TakeSnapshot
+        public Func<byte[]> TakeSnapshotFunc
         {
             get
             {
-                return (Func<byte[]>)GetValue(TakeSnapshotProperty);
+                return (Func<byte[]>)GetValue(TakeSnapshotFuncProperty);
             }
             set
             {
-                SetValue(TakeSnapshotProperty, value);
+                SetValue(TakeSnapshotFuncProperty, value);
             }
         }
 
-        public static readonly BindableProperty GetFeaturesAroundPointProperty = BindableProperty.Create(
-            nameof(GetFeaturesAroundPoint),
+        public static readonly BindableProperty GetFeaturesAroundPointFuncProperty = BindableProperty.Create(
+            nameof(GetFeaturesAroundPointFunc),
             typeof(Func<Point, double, string[], IFeature[]>),
             typeof(MapView),
             default(Func<Point, double, string[], IFeature[]>),
             BindingMode.OneWayToSource);
 
-        public Func<Point, double, string[], IFeature[]> GetFeaturesAroundPoint
+        public Func<Point, double, string[], IFeature[]> GetFeaturesAroundPointFunc
         {
             get
             {
-                return ((Func<Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointProperty));
+                return ((Func<Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointFuncProperty));
             }
             set
             {
-                SetValue(GetFeaturesAroundPointProperty, value);
+                SetValue(GetFeaturesAroundPointFuncProperty, value);
             }
         }
 
-        public static readonly BindableProperty ResetPositionFuncProperty = BindableProperty.Create(
-            nameof(ResetPositionFunc),
-            typeof(ICommand),
+        public static readonly BindableProperty ResetPositionActionProperty = BindableProperty.Create(
+            nameof(ResetPositionAction),
+            typeof(Action),
             typeof(MapView),
-            default(ICommand),
+            default(Action),
             BindingMode.OneWayToSource);
 
-        public ICommand ResetPositionFunc
+        public Action ResetPositionAction
         {
             get
             {
-                return (ICommand)GetValue(ResetPositionFuncProperty);
+                return (Action)GetValue(ResetPositionActionProperty);
             }
             set
             {
-                SetValue(ResetPositionFuncProperty, value);
+                SetValue(ResetPositionActionProperty, value);
             }
         }
 
-        public static readonly BindableProperty ReloadStyleFuncProperty = BindableProperty.Create(
-            nameof(ReloadStyleFunc),
-            typeof(ICommand),
+        public static readonly BindableProperty ReloadStyleActionProperty = BindableProperty.Create(
+            nameof(ReloadStyleAction),
+            typeof(Action),
             typeof(MapView),
-            default(ICommand),
+            default(Action),
             BindingMode.OneWayToSource);
 
-        public ICommand ReloadStyleFunc
+        public Action ReloadStyleAction
         {
             get
             {
-                return (ICommand)GetValue(ReloadStyleFuncProperty);
+                return (Action)GetValue(ReloadStyleActionProperty);
             }
             set
             {
-                SetValue(ReloadStyleFuncProperty, value);
+                SetValue(ReloadStyleActionProperty, value);
             }
         }
 

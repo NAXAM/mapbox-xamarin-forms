@@ -49,8 +49,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (e.OldElement != null)
             {
-                e.OldElement.TakeSnapshot -= TakeMapSnapshot;
-                e.OldElement.GetFeaturesAroundPoint -= GetFeaturesAroundPoint;
+                e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
+                e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
             }
 
             if (e.NewElement == null)
@@ -81,15 +81,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void SetupFunctions()
         {
 
-            Element.TakeSnapshot += TakeMapSnapshot;
-            Element.GetFeaturesAroundPoint += GetFeaturesAroundPoint;
+            Element.TakeSnapshotFunc += TakeMapSnapshot;
+            Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
 
-            Element.ResetPositionFunc = new Command(x =>
+            Element.ResetPositionAction = () =>
             {
-                
+                //TODO handle reset position call
                 //map.ResetNorth();
                 //map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
-             });
+            };
 
 
             Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) =>
@@ -152,10 +152,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 return false;
             };
 
-            Element.ReloadStyleFunc = new Command((obj) => {
+            Element.ReloadStyleAction = () => {
                 //https://github.com/mapbox/mapbox-gl-native/issues/9511
 				map.SetStyleUrl(map.StyleUrl, null);
-            });
+            };
 
             Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) => {
                 var newPosition = new CameraPosition.Builder()

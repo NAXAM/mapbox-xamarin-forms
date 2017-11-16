@@ -18,15 +18,15 @@ namespace MapBoxQs
                 if (_IsScaleBarShown == false && CenterLocation != null) {
                     _IsScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
 					System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
-					UpdateViewPortAction?.Invoke(new Position(CenterLocation.Lat + 0.001, CenterLocation.Long + 0.001), 16, null, false, () => {
-						System.Diagnostics.Debug.WriteLine("Did update center location");
-					});
+					//UpdateViewPortAction?.Invoke(new Position(CenterLocation.Lat + 0.001, CenterLocation.Long + 0.001), 16, null, false, () => {
+					//	System.Diagnostics.Debug.WriteLine("Did update center location");
+					//});
                 }
 
             }, (arg) =>  true);
 		}
 
-		private MapStyle _CurrentMapStyle;
+        private MapStyle _CurrentMapStyle = new MapStyle("cj7rtpzfde3oe2sta2xwhdi6l", "El", null, "gevadmin");
 
 		public MapStyle CurrentMapStyle
 		{

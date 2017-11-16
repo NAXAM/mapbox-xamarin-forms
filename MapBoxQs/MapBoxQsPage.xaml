@@ -45,7 +45,7 @@
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             >
             <local:MapView.Center>
-                <local:Position Lat="21.0333" Long="105.8500" />
+                <local:Position Lat="55.75719563" Long="8.93032908" />
             </local:MapView.Center>
         </local:MapView>
     </StackLayout>
