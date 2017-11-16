@@ -3,13 +3,13 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Mapbox.Forms</id>
-       <version>1.0.0-pre99</version>
+       <version>1.0.1-pre002</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Mapbox for Xamarin.Forms</title>
         <description>Mapbox for Xamarin.Forms</description>
-        <releaseNotes>- Add function to get style's images in iOS</releaseNotes>
+        <releaseNotes>Add support for offline storage in iOS</releaseNotes>
         <copyright>Copyright (c) 2017 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
         <projectUrl>https://github.com/naxam/xf-mapbox</projectUrl>
@@ -24,7 +24,7 @@
                 <dependency id="Naxam.Mapbox.Droid" version="5.1.0.1" />
             </group>
             <group targetFramework="Xamarin.iOS10">
-                <dependency id="Naxam.Mapbox.iOS" version="3.6.0" />
+                <dependency id="Naxam.Mapbox.iOS" version="3.6.0.3" />
             </group>
         </dependencies>
     </metadata>

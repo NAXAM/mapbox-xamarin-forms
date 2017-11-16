@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{0EA28244
 		mapbox.nuspec = mapbox.nuspec
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naxam.Mapbox.iOS", "..\_Naxam\Mapbox_iOS\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj", "{682AEE9E-B4F4-4BED-8D14-23582E4992FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,18 @@ Global
 		{DDB8E5F0-975B-4CFB-8A72-AE662C0D2E1B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{DDB8E5F0-975B-4CFB-8A72-AE662C0D2E1B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{DDB8E5F0-975B-4CFB-8A72-AE662C0D2E1B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Release|iPhone.Build.0 = Release|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{682AEE9E-B4F4-4BED-8D14-23582E4992FE}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EBB04763-2E36-4D2C-94C9-351FBACE3C83} = {CC219E0E-3822-4F20-9549-D4341744DF2D}

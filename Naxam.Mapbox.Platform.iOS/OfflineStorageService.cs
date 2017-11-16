@@ -150,7 +150,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         public OfflinePack[] GetPacks()
         {
-            return MGLOfflineStorage.SharedOfflineStorage().Packs?.Select((arg) => arg.ToFormsPack()).ToArray();
+            var packs = MGLOfflineStorage.SharedOfflineStorage().Packs;
+            return packs?.Select((arg) => arg.ToFormsPack()).ToArray();
         }
 
         public Task<bool> RemovePack(OfflinePack pack)
