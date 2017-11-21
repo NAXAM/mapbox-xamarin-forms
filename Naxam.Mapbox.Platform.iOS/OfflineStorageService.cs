@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Foundation;
 using Naxam.Controls.Mapbox.Forms;
@@ -11,10 +11,15 @@ using ObjCRuntime;
 [assembly: Xamarin.Forms.Dependency(typeof(Naxam.Controls.Mapbox.Platform.iOS.OfflineStorageService))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
+    
+
     public class OfflineStorageService : NSObject, IOfflineStorageService
     {
         Dictionary<nuint, OfflinePack> tempPacks;
-        IOfflineStorageDelegate downloadDelegate;
+
+        public event EventHandler<OSSEventArgs> OfflinePackProgressChanged;
+        public event EventHandler<OSSErrorEventArgs> OfflinePackGotError;
+        public event EventHandler<OSSMaximumMapboxTilesReachedEventArgs> MaximumMapboxTilesReached;
 
         public OfflineStorageService()
         {
@@ -25,18 +30,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             tempPacks = new Dictionary<nuint, OfflinePack>();
         }
 
+
         protected override void Dispose(bool disposing)
         {
             NSNotificationCenter.DefaultCenter.RemoveObserver(this);
             base.Dispose(disposing);
+
         }
 
         private void OnOfflinePackError(NSNotification notification)
         {
-            if (downloadDelegate == null)
-            {
-                return;
-            }
+
             MGLOfflinePack pack = notification.Object as MGLOfflinePack;
             NSError error = notification.UserInfo[MGLOfflinePackKeys.UserInfoKeyError] as NSError;
             OfflinePack formsPack;
@@ -51,15 +55,19 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 formsPack = pack.ToFormsPack();
             }
-            downloadDelegate.OfflinePackDidGetError(formsPack, error.LocalizedFailureReason);
+            EventHandler<OSSErrorEventArgs> handler = OfflinePackGotError;
+            if (handler != null)
+            {
+                handler(this, new OSSErrorEventArgs()
+                {
+                    OfflinePack = formsPack,
+                    ErrorMessage = error.LocalizedFailureReason
+                });
+            }
         }
 
         private void OnMaximumMapboxTilesReached(NSNotification notification)
         {
-            if (downloadDelegate == null)
-            {
-                return;
-            }
             MGLOfflinePack pack = notification.Object as MGLOfflinePack;
           
             var maximumCount = notification.UserInfo[MGLOfflinePackKeys.UserInfoKeyMaximumCount] as NSNumber;
@@ -73,16 +81,20 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else {
                 formsPack = pack.ToFormsPack();
             }
-            downloadDelegate.MaximumMapboxTilesWasReached(formsPack, maximumCount.UInt64Value);
+           
+            EventHandler<OSSMaximumMapboxTilesReachedEventArgs> handler = MaximumMapboxTilesReached;
+            if (handler != null)
+            {
+                handler(this, new OSSMaximumMapboxTilesReachedEventArgs()
+                {
+                    OfflinePack = formsPack,
+                    MaximumCount = maximumCount.UInt64Value
+                });
+            }
         }
 
         private void OnOfflinePackProgressChanged(NSNotification notification)
         {
-            if (downloadDelegate == null)
-            {
-                return;
-            }
-
             MGLOfflinePack pack = notification.Object as MGLOfflinePack;
             var hash = pack.GetNativeHash();
             var completed = pack.State == MGLOfflinePackState.Complete || (pack.Progress.countOfResourcesExpected == pack.Progress.countOfResourcesCompleted);
@@ -103,12 +115,18 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     tempPacks.Add(hash, formsPack);
                 }
             }
-            downloadDelegate.OfflinePackProgressDidChange(formsPack);
+            EventHandler<OSSEventArgs> handler = OfflinePackProgressChanged;
+            if (handler != null)
+            {
+                handler(this, new OSSEventArgs()
+                {
+                    OfflinePack = formsPack
+                });
+            }
         }
 
-        public Task<OfflinePack> DownloadMap(OfflinePackRegion formsRegion, Dictionary<string, string> packInfo, IOfflineStorageDelegate downloadDelegate = null)
+        public Task<OfflinePack> DownloadMap(OfflinePackRegion formsRegion, Dictionary<string, string> packInfo)
         {
-            this.downloadDelegate = downloadDelegate;
             var tsc = new TaskCompletionSource<OfflinePack>();
             var region = new MGLTilePyramidOfflineRegion(
                 new NSUrl(formsRegion.StyleURL),
@@ -127,7 +145,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     keys.Add((NSString) key);
                     values.Add((NSString) packInfo[key]);
                 }
-                var userInfo = NSDictionary.FromObjectsAndKeys(keys.ToArray(), values.ToArray());
+                var userInfo = NSDictionary.FromObjectsAndKeys(values.ToArray(), keys.ToArray());
                 context = NSKeyedArchiver.ArchivedDataWithRootObject(userInfo);
             }
 
@@ -189,6 +207,33 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 System.Diagnostics.Debug.WriteLine("[Exception]: " + ex.Message);
                 return false;
+            }
+        }
+
+        public bool SuspendPack(OfflinePack pack)
+        {
+            try
+            {
+                var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
+                mbPack.Suspend();
+                return true;
+            }
+            catch (Exception ex) {
+                System.Diagnostics.Debug.WriteLine("[Naxam.Mapbox] Suspend offline pack failed: " + ex.Message);
+                return false;
+            }
+        }
+
+        public void RequestPackProgress(OfflinePack pack)
+        {
+            try
+            {
+                var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
+                mbPack.RequestProgress();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("[Naxam.Mapbox] Request progress of offline pack failed: " + ex.Message);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Naxam.Controls.Mapbox.Forms;
 using CoreLocation;
 using System.Collections.Generic;
