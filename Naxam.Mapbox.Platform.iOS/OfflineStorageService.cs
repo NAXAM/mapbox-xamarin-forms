@@ -34,8 +34,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected override void Dispose(bool disposing)
         {
             NSNotificationCenter.DefaultCenter.RemoveObserver(this);
+            packsObservingToken?.Dispose();
+            packsObservingToken = null;
+            getPacksTask?.SetCanceled();
             base.Dispose(disposing);
-
         }
 
         private void OnOfflinePackError(NSNotification notification)
@@ -55,15 +57,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 formsPack = pack.ToFormsPack();
             }
-            EventHandler<OSSErrorEventArgs> handler = OfflinePackGotError;
-            if (handler != null)
+            OfflinePackGotError?.Invoke(this, new OSSErrorEventArgs()
             {
-                handler(this, new OSSErrorEventArgs()
-                {
-                    OfflinePack = formsPack,
-                    ErrorMessage = error.LocalizedFailureReason
-                });
-            }
+                OfflinePack = formsPack,
+                ErrorMessage = error.LocalizedFailureReason
+            });
         }
 
         private void OnMaximumMapboxTilesReached(NSNotification notification)
@@ -81,16 +79,12 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else {
                 formsPack = pack.ToFormsPack();
             }
-           
-            EventHandler<OSSMaximumMapboxTilesReachedEventArgs> handler = MaximumMapboxTilesReached;
-            if (handler != null)
+
+            MaximumMapboxTilesReached?.Invoke(this, new OSSMaximumMapboxTilesReachedEventArgs()
             {
-                handler(this, new OSSMaximumMapboxTilesReachedEventArgs()
-                {
-                    OfflinePack = formsPack,
-                    MaximumCount = maximumCount.UInt64Value
-                });
-            }
+                OfflinePack = formsPack,
+                MaximumCount = maximumCount.UInt64Value
+            });
         }
 
         private void OnOfflinePackProgressChanged(NSNotification notification)
@@ -115,14 +109,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     tempPacks.Add(hash, formsPack);
                 }
             }
-            EventHandler<OSSEventArgs> handler = OfflinePackProgressChanged;
-            if (handler != null)
+            OfflinePackProgressChanged?.Invoke(this, new OSSEventArgs()
             {
-                handler(this, new OSSEventArgs()
-                {
-                    OfflinePack = formsPack
-                });
-            }
+                OfflinePack = formsPack
+            });
         }
 
         public Task<OfflinePack> DownloadMap(OfflinePackRegion formsRegion, Dictionary<string, string> packInfo)
@@ -132,8 +122,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 new NSUrl(formsRegion.StyleURL),
                 new MGLCoordinateBounds()
                 {
-                    sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
-                    ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
+                    Sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
+                    Ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
                 },
                 formsRegion.MinimumZoomLevel,
                 formsRegion.MaximumZoomLevel);
@@ -166,10 +156,38 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return tsc.Task;
         }
 
-        public OfflinePack[] GetPacks()
+        IDisposable packsObservingToken;
+        TaskCompletionSource<OfflinePack[]> getPacksTask;
+        public Task<OfflinePack[]> GetPacks()
         {
-            var packs = MGLOfflineStorage.SharedOfflineStorage().Packs;
-            return packs?.Select((arg) => arg.ToFormsPack()).ToArray();
+            var tsc = new TaskCompletionSource<OfflinePack[]>();
+            var sharedStorage = MGLOfflineStorage.SharedOfflineStorage();
+            var packs = sharedStorage.Packs;
+            if (packs == null) {
+                /*
+                 * This property is set to nil, indicating that the receiver does not yet know the existing packs, 
+                 * for an undefined amount of time starting from the moment the shared offline storage object is initialized 
+                 * until the packs are fetched from the database. After that point, this property is always non-nil,
+                 * but it may be empty to indicate that no packs are present. 
+                 * To detect when the shared offline storage object has finished loading its packs property,
+                 * observe KVO change notifications on the packs key path. The initial load results in an NSKeyValueChangeSetting change.
+                */
+                getPacksTask = tsc;
+                packsObservingToken = sharedStorage.AddObserver("packs", NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, (obj) =>
+                {
+                    var allPacks = sharedStorage.Packs;
+                    if (allPacks != null) {
+                        getPacksTask?.SetResult(allPacks?.Select((arg) => arg.ToFormsPack()).ToArray());
+                        packsObservingToken?.Dispose();
+                        packsObservingToken = null;
+                        getPacksTask = null;
+                    }
+                });
+            }
+            else {
+                tsc.SetResult(packs.Select((arg) => arg.ToFormsPack()).ToArray());
+            }
+            return tsc.Task;
         }
 
         public Task<bool> RemovePack(OfflinePack pack)

@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleDisplayName</key>
-	<string>MapBoxQs</string>
-	<key>CFBundleName</key>
-	<string>MapBoxQs</string>
-	<key>CFBundleIdentifier</key>
-	<string>net.naxam.mapboxqs</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -43,6 +37,12 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app needs to use your location</string>
+	<key>CFBundleIdentifier</key>
+	<string>dk.dax.flexgrid</string>
+	<key>CFBundleName</key>
+	<string>Mapbox</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs to use your location</string>
 </dict>
 </plist>

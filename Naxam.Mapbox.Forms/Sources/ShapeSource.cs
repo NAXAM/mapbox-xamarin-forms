@@ -3,23 +3,18 @@ using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
 {
-    public class ShapeSource: BindableObject
+    public class ShapeSource: MapSource
     {
         public ShapeSource ()
         {
         }
 
-        public ShapeSource (string id, Annotation shape)
+        public ShapeSource (string id, Annotation shape): base(id)
         {
-            Id = id;
             Shape = shape;
         }
 
-        public string Id {
-            get;
-            set;
-        }
-
+       
         public static readonly BindableProperty ShapeProperty = BindableProperty.Create (
                     nameof (Shape),
                     typeof (Annotation),

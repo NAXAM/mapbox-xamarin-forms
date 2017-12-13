@@ -79,17 +79,17 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public static readonly BindableProperty CustomSourcesProperty = BindableProperty.Create (
                    nameof (CustomSources),
-           typeof (IEnumerable<ShapeSource>),
+            typeof (IEnumerable<MapSource>),
            typeof (MapView),
-           default (IEnumerable<ShapeSource>),
+            default (IEnumerable<MapSource>),
                    BindingMode.TwoWay);
 
-        public IEnumerable<ShapeSource> CustomSources {
+        public IEnumerable<MapSource> CustomSources {
             get {
-                return (IEnumerable<ShapeSource>)GetValue (CustomSourcesProperty);
+                return (IEnumerable<MapSource>)GetValue (CustomSourcesProperty);
             }
             set {
-                SetValue (CustomSourcesProperty, (IList<ShapeSource>)value);
+                SetValue (CustomSourcesProperty, (IList<MapSource>)value);
             }
         }
 

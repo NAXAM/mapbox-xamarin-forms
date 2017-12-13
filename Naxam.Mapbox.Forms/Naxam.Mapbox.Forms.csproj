@@ -58,7 +58,6 @@
     <Compile Include="AnnotationsAndFeatures\PointFeature.cs" />
     <Compile Include="AnnotationsAndFeatures\PolylineFeature.cs" />
     <Compile Include="AnnotationsAndFeatures\MultiPolylineFeature.cs" />
-    <Compile Include="ShapeSource.cs" />
     <Compile Include="Layers\Layer.cs" />
     <Compile Include="Layers\CircleLayer.cs" />
     <Compile Include="Layers\LineLayer.cs" />
@@ -71,9 +70,15 @@
     <Compile Include="OfflinePack\OfflinePackState.cs" />
     <Compile Include="OfflinePack\OfflineStorage.cs" />
     <Compile Include="CoordinateBounds.cs" />
+    <Compile Include="Sources\MapSource.cs" />
+    <Compile Include="Sources\ShapeSource.cs" />
+    <Compile Include="Sources\RasterSource.cs" />
+    <Compile Include="Layers\RasterStyleLayer.cs" />
+    <Compile Include="MapView_Commands.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="OfflinePack\" />
+    <Folder Include="Sources\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

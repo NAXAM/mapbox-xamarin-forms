@@ -371,11 +371,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 						});
                         if (Element.MapStyle.CustomSources != null) {
                             var count = Element.MapStyle.CustomSources.Count ();
-                            for (var i = 0; i < count; i++) {
-                                if (Element.MapStyle.CustomSources.ElementAt (i).Id == sourceId) {
-                                    Element.MapStyle.CustomSources.ElementAt (i).Shape = annotation;
-                                    break;
-                                }
+                            if (Element.MapStyle.CustomSources.FirstOrDefault((arg) => arg.Id == sourceId) is ShapeSource shapeSource)
+                            {
+                                shapeSource.Shape = annotation;
                             }
                         }
                         return true;
@@ -452,6 +450,25 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (layer is MGLVectorStyleLayer vLayer) return CreateStyleLayer(vLayer, layerId);
 
                 return null;
+            };
+
+            Element.InsertLayerAboveLayerFunc = (newLayer, siblingLayerId) => {
+                if (MapView.Style?.LayerWithIdentifier(siblingLayerId) is MGLStyleLayer siblingLayer
+                    && GetStyleLayer(newLayer, newLayer.Id.ToCustomId()) is MGLStyleLayer layerToInsert) {
+                    MapView.Style.InsertLayerAboveLayer(layerToInsert, siblingLayer);
+                    return true;
+                }
+                return false;
+            };
+
+            Element.InsertLayerBelowLayerFunc = (newLayer, siblingLayerId) => {
+                if (MapView.Style?.LayerWithIdentifier(siblingLayerId) is MGLStyleLayer siblingLayer
+                    && GetStyleLayer(newLayer, newLayer.Id.ToCustomId()) is MGLStyleLayer layerToInsert)
+                {
+                    MapView.Style.InsertLayerBelowLayer(layerToInsert, siblingLayer);
+                    return true;
+                }
+                return false;
             };
         }
 
@@ -564,7 +581,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    AddLayers(e.NewItems);
+                    var currentLayersCount = MapView.Style.Layers.Length;
+                    var index = currentLayersCount  + e.NewStartingIndex - Element.MapStyle.CustomLayers.Count() + e.NewItems.Count;
+                    if (index < currentLayersCount) {
+                        AddLayers(e.NewItems, index);
+                    }
+                    else {
+                        AddLayers(e.NewItems);
+                    }
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     RemoveLayers(e.OldItems);
@@ -595,11 +619,12 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void AddLayers (System.Collections.IList layers)
+        void AddLayers (System.Collections.IList layers, int startIndex = -1)
         {
             if (layers == null) {
                 return;
             }
+            nuint index = (nuint) Math.Max(0, startIndex);
             foreach (Layer layer in layers) {
                 if (string.IsNullOrEmpty (layer.Id)) {
                     continue;
@@ -612,7 +637,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (layer is StyleLayer sl) {
                     var newLayer = GetStyleLayer(sl, id);
                     if (newLayer != null) {
-                        MapView.Style.AddLayer(newLayer);
+                        if (startIndex == -1) {
+                            MapView.Style.AddLayer(newLayer);
+                        }
+                        else {
+                            MapView.Style.InsertLayer(newLayer, index);
+                            index += 1;
+                        }
                     }
                 }
             }
@@ -637,25 +668,35 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         void OnShapeSourcesCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add) {
-                AddSources (e.NewItems);
-            } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-                RemoveSources (e.OldItems);
-            } else if (e.Action == NotifyCollectionChangedAction.Reset) {
-                var sourcesToRemove = new List<MGLSource> ();
-                foreach (MGLSource source in MapView.Style.Sources) {
-                    if (source.Identifier.IsCustomId()) {
-                        sourcesToRemove.Add (source);
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    AddSources(e.NewItems);
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    RemoveSources(e.OldItems);
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    var sourcesToRemove = new List<MGLSource>();
+                    foreach (MGLSource source in MapView.Style.Sources)
+                    {
+                        if (source.Identifier.IsCustomId())
+                        {
+                            sourcesToRemove.Add(source);
+                        }
                     }
-                }
-                foreach (MGLSource source in sourcesToRemove) {
-                    MapView.Style.RemoveSource (source);
+                    foreach (MGLSource source in sourcesToRemove)
+                    {
+                        MapView.Style.RemoveSource(source);
 
-                }
-                sourcesToRemove.Clear ();
-            } else if (e.Action == NotifyCollectionChangedAction.Replace) {
-                RemoveSources (e.OldItems);
-                AddSources (e.NewItems);
+                    }
+                    sourcesToRemove.Clear();
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    RemoveSources(e.OldItems);
+                    AddSources(e.NewItems);
+                    break;
+                default: break;
             }
         }
 
@@ -664,17 +705,96 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             if (sources == null || MapView == null || MapView.Style == null) {
                 return;
             }
-            foreach (ShapeSource source in sources) {
-                if (source.Id != null && source.Shape != null) {
-                    var shape = ShapeFromAnnotation (source.Shape);
+            foreach (MapSource source in sources) {
+                MGLSource mglSource = null;
+                if (source.Id != null) {
                     var sourceId = source.Id.ToCustomId();
-                    var oldSource = MapView.Style?.SourceWithIdentifier (sourceId);
-                    if (oldSource != null && oldSource is MGLShapeSource) {
-                        (oldSource as MGLShapeSource).Shape = shape;
-                    } else {
-                        var mglSource = new MGLShapeSource (sourceId, shape, null);
-                        MapView.Style.AddSource (mglSource);
+                    if (source is ShapeSource shapeSource) {
+                        if (shapeSource.Shape == null) continue;
+                        var shape = ShapeFromAnnotation(shapeSource.Shape);
+                        var oldSource = MapView.Style?.SourceWithIdentifier(sourceId);
+                        if (oldSource != null && oldSource is MGLShapeSource)
+                        {
+                            (oldSource as MGLShapeSource).Shape = shape;
+                        }
+                        else
+                        {
+                            mglSource = new MGLShapeSource(sourceId, shape, null);
+                        }
                     }
+                    else if (source is RasterSource rasterSource) {
+                        if (string.IsNullOrEmpty(rasterSource.ConfigurationURL) == false
+                            && NSUrl.FromString(rasterSource.ConfigurationURL) is NSUrl url) {
+                            if (rasterSource.TileSize <= 0) {
+                                mglSource = new MGLRasterSource(sourceId, url);
+                            }
+                            else {
+                                mglSource = new MGLRasterSource(sourceId, url, (nfloat) rasterSource.TileSize);
+                            }
+                        }
+                        else if (rasterSource.TileURLTemplates != null) {
+                            if (rasterSource.Options != null) {
+                                var keys = new List<NSString>();
+                                var values = new List<NSObject>();
+                                foreach (TileSourceOption key in rasterSource.Options.Keys) {
+                                    switch (key) {
+                                        case TileSourceOption.AttributionHTMLString:
+                                            keys.Add(MGLTileSourceOptions.AttributionHTMLString);
+                                            values.Add((NSString)(rasterSource.Options[key] as string));
+                                            break;
+                                        case TileSourceOption.AttributionInfos:
+                                            if (rasterSource.Options[key] is AttributionInfo[] infos) {
+                                                var infosList = new NSMutableArray<MGLAttributionInfo>();
+                                                foreach (AttributionInfo info in infos) {
+                                                    var attr = new MGLAttributionInfo(new NSAttributedString(info.Title), info.Url != null ? NSUrl.FromString(info.Url) : null);
+                                                    infosList.Add(attr);
+                                                }
+                                                keys.Add(MGLTileSourceOptions.AttributionInfos);
+                                                values.Add(infosList);
+                                            }
+                                            break;
+                                        case TileSourceOption.MaximumZoomLevel:
+                                            keys.Add(MGLTileSourceOptions.MaximumZoomLevel);
+                                            values.Add(NSNumber.FromDouble((double)rasterSource.Options[key]));
+                                            break;
+                                        case TileSourceOption.MinimumZoomLevel:
+                                            keys.Add(MGLTileSourceOptions.MinimumZoomLevel);
+                                            values.Add(NSNumber.FromDouble((double)rasterSource.Options[key]));
+                                            break;
+                                        case TileSourceOption.TileCoordinateSystem:
+                                            if (rasterSource.Options[key] is TileCoordinateSystem sys) {
+                                                if (sys == TileCoordinateSystem.TileCoordinateSystemTMS)
+                                                {
+                                                    keys.Add(MGLTileSourceOptions.TileCoordinateSystem);
+                                                    values.Add(NSNumber.FromUInt64((ulong)MGLTileCoordinateSystem.Tms));
+                                                }
+                                                else {
+                                                    keys.Add(MGLTileSourceOptions.TileCoordinateSystem);
+                                                    values.Add(NSNumber.FromUInt64((ulong)MGLTileCoordinateSystem.Xyz));
+                                                }
+                                            }
+                                            break;
+                                        default: break;
+                                    }
+                                }
+                                mglSource = new MGLRasterSource(sourceId, 
+                                                                tileURLTemplates: rasterSource.TileURLTemplates, 
+                                                                options: new NSDictionary<NSString, NSObject>(keys.ToArray(), values.ToArray()));
+                            }
+                            else {
+                                mglSource = new MGLRasterSource(sourceId,
+                                                                tileURLTemplates: rasterSource.TileURLTemplates,
+                                                                options: null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mglSource = new MGLSource(sourceId);
+                    }
+                }
+                if (mglSource != null) {
+                    MapView.Style.AddSource(mglSource);
                 }
             }
         }
@@ -684,9 +804,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             if (sources == null) {
                 return;
             }
-            foreach (ShapeSource source in sources) {
+            foreach (MapSource source in sources) {
                 if (source.Id != null) {
-                    var oldSource = MapView.Style.SourceWithIdentifier (source.Id.ToCustomId()) as MGLShapeSource;
+                    var oldSource = MapView.Style.SourceWithIdentifier (source.Id.ToCustomId());
                     if (oldSource != null) {
                         MapView.Style.RemoveSource (oldSource);
                     }
@@ -704,19 +824,24 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             } else if (annotation is PolylineAnnotation) {
                 var polyline = annotation as PolylineAnnotation;
                 shape = PolyLineWithCoordinates (polyline.Coordinates.ToArray());
-                var notifiyCollection = polyline.Coordinates as INotifyCollectionChanged;
-                if (notifiyCollection != null) {
-                    notifiyCollection.CollectionChanged += (sender, e) => {
+                if (polyline.Coordinates is INotifyCollectionChanged notifiyCollection)
+                {
+                    notifiyCollection.CollectionChanged += (sender, e) =>
+                    {
                         //TODO Move to a separated method
-                        if (e.Action == NotifyCollectionChangedAction.Add) {
-                            foreach (Position pos in e.NewItems) {
-                                var coord = TypeConverter.FromPositionToCoordinate (pos);
-                                (shape as MGLPolyline).AppendCoordinates (ref coord, 1);
+                        if (e.Action == NotifyCollectionChangedAction.Add)
+                        {
+                            foreach (Position pos in e.NewItems)
+                            {
+                                var coord = TypeConverter.FromPositionToCoordinate(pos);
+                                (shape as MGLPolyline).AppendCoordinates(ref coord, 1);
                             }
-                        } else if (e.Action == NotifyCollectionChangedAction.Remove) {
-                            (shape as MGLPolyline).RemoveCoordinatesInRange (new NSRange (e.OldStartingIndex, e.OldItems.Count));
                         }
-                    } ;
+                        else if (e.Action == NotifyCollectionChangedAction.Remove)
+                        {
+                            (shape as MGLPolyline).RemoveCoordinatesInRange(new NSRange(e.OldStartingIndex, e.OldItems.Count));
+                        }
+                    };
                 }
 
             } else if (annotation is MultiPolylineAnnotation) {

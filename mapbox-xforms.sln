@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{0EA28244
 		mapbox.nuspec = mapbox.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naxam.Mapbox.iOS", "..\_Naxam\Mapbox_iOS\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj", "{682AEE9E-B4F4-4BED-8D14-23582E4992FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naxam.Mapbox.iOS", "..\..\..\..\Users\hado\Projects\_Naxam\Mapbox_iOS\Naxam.Mapbox.iOS\Naxam.Mapbox.iOS.csproj", "{682AEE9E-B4F4-4BED-8D14-23582E4992FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

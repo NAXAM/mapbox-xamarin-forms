@@ -134,18 +134,21 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 						{
 							source.SetGeoJson(shape);
 						});
-                        if (Element.MapStyle.CustomSources != null)
-                        {
-                            var count = Element.MapStyle.CustomSources.Count();
-                            for (var i = 0; i < count; i++)
-                            {
-                                if (Element.MapStyle.CustomSources.ElementAt(i).Id == sourceId)
-                                {
-                                    Element.MapStyle.CustomSources.ElementAt(i).Shape = annotation;
-                                    break;
-                                }
-                            }
+                        if (Element.MapStyle.CustomSources?.FirstOrDefault( (arg) => arg.Id == sourceId) is ShapeSource ss) {
+                            ss.Shape = annotation;
                         }
+                        //if (Element.MapStyle.CustomSources != null)
+                        //{
+                        //    var count = Element.MapStyle.CustomSources.Count();
+                        //    for (var i = 0; i < count; i++)
+                        //    {
+                        //        if (Element.MapStyle.CustomSources.ElementAt(i).Id == sourceId)
+                        //        {
+                        //            Element.MapStyle.CustomSources.ElementAt(i).Shape = annotation;
+                        //            break;
+                        //        }
+                        //    }
+                        //}
                         return true;
                     }
                 }
@@ -342,11 +345,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                AddSources(e.NewItems.Cast<ShapeSource>().ToList());
+                AddSources(e.NewItems.Cast<MapSource>().ToList());
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
-                RemoveSources(e.OldItems.Cast<ShapeSource>().ToList());
+                RemoveSources(e.OldItems.Cast<MapSource>().ToList());
             }
             else if (e.Action == NotifyCollectionChangedAction.Reset)
             {
@@ -361,45 +364,51 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
-                RemoveSources(e.OldItems.Cast<ShapeSource>().ToList());
-                AddSources(e.NewItems.Cast<ShapeSource>().ToList());
+                RemoveSources(e.OldItems.Cast<MapSource>().ToList());
+                AddSources(e.NewItems.Cast<MapSource>().ToList());
             }
         }
 
-        void AddSources(List<ShapeSource> sources)
+        void AddSources(List<MapSource> sources)
         {
             if (sources == null || map == null)
             {
                 return;
             }
 
-            foreach (ShapeSource ss in sources)
+            foreach (MapSource ms in sources)
             {
-                if (ss.Id != null && ss.Shape != null)
+                if (ms.Id != null)
                 {
-                    var shape = ss.Shape.ToFeatureCollection();
+                    if (ms is ShapeSource ss && ss.Shape != null) {
+                        var shape = ss.Shape.ToFeatureCollection();
 
-                    var source = map.GetSource(ss.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
+                        var source = map.GetSource(ss.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
 
-                    if (source == null)
-                    {
-                        source = new Sdk.Style.Sources.GeoJsonSource(ss.Id.Prefix(), shape);
-                        map.AddSource(source);
+                        if (source == null)
+                        {
+                            source = new Sdk.Style.Sources.GeoJsonSource(ss.Id.Prefix(), shape);
+                            map.AddSource(source);
+                        }
+                        else
+                        {
+                            source.SetGeoJson(shape);
+                        }
                     }
                     else {
-                        source.SetGeoJson(shape);
+                        //TODO handle RasterSource
                     }
                 }
             }
         }
 
-        void RemoveSources(List<ShapeSource> sources)
+        void RemoveSources(List<MapSource> sources)
         {
             if (sources == null)
             {
                 return;
             }
-            foreach (ShapeSource source in sources)
+            foreach (MapSource source in sources)
             {
                 if (source.Id != null)
                 {

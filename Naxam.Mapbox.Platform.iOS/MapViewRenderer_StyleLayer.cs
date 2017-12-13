@@ -60,7 +60,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			return value;
 		}
 
-		private MGLVectorStyleLayer GetStyleLayer(StyleLayer styleLayer, NSString id)
+        private MGLStyleLayer GetStyleLayer(StyleLayer styleLayer, NSString id)
 		{
 			if (string.IsNullOrEmpty(styleLayer.SourceId))
 			{
@@ -130,6 +130,12 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 				return newLayer;
 			}
 
+            if (styleLayer is RasterStyleLayer rl)
+            {
+
+                var newLayer = new MGLRasterStyleLayer(id, source);
+                return newLayer;
+            }
 			return null;
 		}
 

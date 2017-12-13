@@ -9,6 +9,11 @@
         <Grid
             Margin="20"
             VerticalOptions="Start">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
             <Button
                 x:Name="btnChangeLocation"
                 Text="Change location"
@@ -33,6 +38,23 @@
                 Text="Zoom out"
                 Grid.Row="1"
                 Grid.Column="1" />
+
+            <!-- Offline -->
+            <Button
+                Grid.Row="2"
+                Grid.Column="0"
+                Command="{Binding DownloadCommand}"
+                Text="Download"/>
+            <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Command="{Binding LoadOfflinePackCommand}"
+                Text="Load"/>
+            <Button
+                Grid.Row="2"
+                Grid.Column="2"
+                Command="{Binding ClearOfflinePacksCommand}"
+                Text="Clear"/>
         </Grid>
         <local:MapView
             x:Name="map"
@@ -43,6 +65,7 @@
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
             DidFinishRenderingCommand="{Binding DidFinishRenderingCommand}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
+            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
             >
             <local:MapView.Center>
                 <local:Position Lat="55.75719563" Long="8.93032908" />

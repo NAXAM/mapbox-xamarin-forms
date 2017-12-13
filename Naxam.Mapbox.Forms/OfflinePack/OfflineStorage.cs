@@ -25,7 +25,7 @@ namespace Naxam.Controls.Mapbox.Forms
         event EventHandler<OSSMaximumMapboxTilesReachedEventArgs> MaximumMapboxTilesReached;
 
         Task<OfflinePack> DownloadMap(OfflinePackRegion region, Dictionary<string, string> packInfo);
-        OfflinePack[] GetPacks();
+        Task<OfflinePack[]> GetPacks();
         bool Resume(OfflinePack pack);
         Task<bool> RemovePack(OfflinePack pack);
         bool SuspendPack(OfflinePack pack);
