@@ -44,7 +44,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public byte[] TakSnapshot() {
+        public byte[] TakSnapshot()
+        {
             return TakeSnapshotFunc?.Invoke();
         }
 
@@ -86,7 +87,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public void ResetPosition() {
+        public void ResetPosition()
+        {
             ResetPositionAction?.Invoke();
         }
 
@@ -109,7 +111,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public void ReloadStyle() {
+        public void ReloadStyle()
+        {
             ReloadStyleAction?.Invoke();
         }
 
@@ -133,7 +136,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public bool UpdateShapeOfSource(Annotation shape, string sourceId) {
+        public bool UpdateShapeOfSource(Annotation shape, string sourceId)
+        {
             return UpdateShapeOfSourceFunc?.Invoke(shape, sourceId) ?? false;
         }
 
@@ -160,7 +164,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public bool UpdateLayer(string layerId, bool isVisible, bool isCustomLayer) {
+        public bool UpdateLayer(string layerId, bool isVisible, bool isCustomLayer)
+        {
             return UpdateLayerFunc?.Invoke(layerId, isVisible, isCustomLayer) ?? false;
         }
 
@@ -187,7 +192,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public void UpdateViewPort(Position center, double? zoomLevel = null, double? bearing = null, bool animated = false, Action completionHandler = null) {
+        public void UpdateViewPort(Position center, double? zoomLevel = null, double? bearing = null, bool animated = false, Action completionHandler = null)
+        {
             UpdateViewPortAction?.Invoke(center, zoomLevel, bearing, animated, completionHandler);
         }
 
@@ -234,7 +240,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public bool ToggleScaleBar(bool isVisible) {
+        public bool ToggleScaleBar(bool isVisible)
+        {
             return ToggleScaleBarFunc?.Invoke(isVisible) ?? false;
         }
 
@@ -257,7 +264,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public Byte[] GetStyleImage(string imageName) {
+        public Byte[] GetStyleImage(string imageName)
+        {
             return GetStyleImageFunc?.Invoke(imageName);
         }
 
@@ -280,10 +288,12 @@ namespace Naxam.Controls.Mapbox.Forms
             set { SetValue(GetStyleLayerFuncProperty, value); }
         }
 
-        public StyleLayer GetStyleLayer(string layerId, bool isCustomLayer) {
+        public StyleLayer GetStyleLayer(string layerId, bool isCustomLayer)
+        {
             return GetStyleLayerFunc?.Invoke(layerId, isCustomLayer);
         }
 
+        #region Layers
         public static BindableProperty InsertLayerAboveLayerFuncProperty = BindableProperty.Create(
             propertyName: nameof(InsertLayerAboveLayerFunc),
             returnType: typeof(Func<StyleLayer, string, bool>),
@@ -298,11 +308,22 @@ namespace Naxam.Controls.Mapbox.Forms
             set { SetValue(InsertLayerAboveLayerFuncProperty, value); }
         }
 
-        public bool InsertLayerAboveLayer(StyleLayer layerToInsert, string siblingLayerId) {
+        public bool InsertLayerAboveLayer(StyleLayer layerToInsert, string siblingLayerId)
+        {
             return InsertLayerAboveLayerFunc?.Invoke(layerToInsert, siblingLayerId) ?? false;
         }
 
         public static BindableProperty InsertLayerBelowLayerFuncProperty = BindableProperty.Create(             propertyName: nameof(InsertLayerBelowLayerFunc),             returnType: typeof(Func<StyleLayer, string, bool>),             declaringType: typeof(MapView),             defaultValue: default(Func<StyleLayer, string, bool>),             defaultBindingMode: BindingMode.OneWayToSource         );          public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc         {             get { return (Func<StyleLayer, string, bool>)GetValue(InsertLayerBelowLayerFuncProperty); }             set { SetValue(InsertLayerBelowLayerFuncProperty, value); }         }          public bool InsertLayerBelowLayer(StyleLayer layerToInsert, string siblingLayerId)
-        {             return InsertLayerBelowLayerFunc?.Invoke(layerToInsert, siblingLayerId) ?? false;         } 
+        {             return InsertLayerBelowLayerFunc?.Invoke(layerToInsert, siblingLayerId) ?? false;         }
+        #endregion
+
+        #region Annotations
+        /// <summary>
+        /// Select an annotation
+        /// Params (annotation id, is animated)
+        /// </summary>
+        public static BindableProperty SelectAnnotationActionProperty = BindableProperty.Create(             propertyName: nameof(SelectAnnotationAction),             returnType: typeof(Action<Tuple<string, bool>>),             declaringType: typeof(MapView),             defaultValue: default(Action<Tuple<string, bool>>),             defaultBindingMode: BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> SelectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(SelectAnnotationActionProperty); }             set { SetValue(SelectAnnotationActionProperty, value); }         } 
+        public static BindableProperty DeselectAnnotationActionProperty = BindableProperty.Create(             propertyName: nameof(DeselectAnnotationAction),             returnType: typeof(Action<Tuple<string, bool>>),             declaringType: typeof(MapView),             defaultValue: default(Action<Tuple<string, bool>>),             defaultBindingMode: BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> DeselectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(DeselectAnnotationActionProperty); }             set { SetValue(DeselectAnnotationActionProperty, value); }         } 
+        #endregion
     }
 }

@@ -276,9 +276,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                             id = feature.Identifier.ToString ();
                         }
                     }
-                    if (id == null || output.Any ((arg) => (arg as Annotation).Id == id)) {
-                        continue;
-                    }
+                    //if (id == null || output.Any ((arg) => (arg as Annotation).Id == id)) {
+                    //    continue;
+                    //}
 
 
                     var geoData = feature.GeoJSONDictionary ;
@@ -469,6 +469,30 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     return true;
                 }
                 return false;
+            };
+
+            Element.SelectAnnotationAction = (Tuple<string, bool> obj) => {
+                if (obj == null || MapView == null || MapView.Annotations == null) return;
+                foreach (NSObject childObj in MapView.Annotations) {
+                    if (childObj is MGLShape shape
+                        && shape.Id() == obj.Item1) {
+                        MapView.SelectAnnotation(shape, obj.Item2);
+                        break;
+                    }
+                }
+            };
+
+            Element.DeselectAnnotationAction = (Tuple<string, bool> obj) => {
+                if (obj == null || MapView == null || MapView.Annotations == null) return;
+                foreach (NSObject childObj in MapView.Annotations)
+                {
+                    if (childObj is MGLShape shape
+                        && shape.Id() == obj.Item1)
+                    {
+                        MapView.DeselectAnnotation(shape, obj.Item2);
+                        break;
+                    }
+                }
             };
         }
 
@@ -972,6 +996,43 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 return Element.CanShowCalloutChecker.Invoke (((MGLShape)annotation).Id ());
             }
             return true;
+        }
+
+        [Export("mapView:tapOnCalloutForAnnotation:")]
+        void MapView_TapOnCalloutForAnnotation(MGLMapView mapView, NSObject annotation)
+        {
+            if (annotation is MGLShape shape) {
+                Element.DidTapOnCalloutViewCommand?.Execute(shape.Id());
+            }
+            else {
+                Element.DidTapOnCalloutViewCommand?.Execute(null);
+            }
+        }
+
+        [Export("mapView:imageForAnnotation:")]
+        MGLAnnotationImage MapView_ImageForAnnotation(MGLMapView mapView, IMGLAnnotation annotation) {
+            if (annotation is MGLShape shape)
+            {
+                var result = Element.GetImageForAnnotationFunc?.Invoke(shape.Id());
+                if (result != null 
+                    && false == string.IsNullOrEmpty(result.Item1)
+                    && false == string.IsNullOrEmpty(result.Item2))
+                {
+                    var image = MapView.DequeueReusableAnnotationImageWithIdentifier(result.Item1);
+                    if (image == null)
+                    {
+                        var iosImage = new UIImage(result.Item2);
+                        if (iosImage != null)
+                        {
+                            iosImage = iosImage.ImageWithAlignmentRectInsets(new UIEdgeInsets(0, 0, iosImage.Size.Height / 2, 0));
+                            return MGLAnnotationImage.AnnotationImageWithImage(iosImage, result.Item1);
+                        }
+                    }
+                    return image;
+                }
+            }
+            return null;
+
         }
         #endregion
 
