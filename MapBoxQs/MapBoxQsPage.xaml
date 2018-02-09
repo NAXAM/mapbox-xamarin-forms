@@ -56,6 +56,8 @@
                 Command="{Binding ClearOfflinePacksCommand}"
                 Text="Clear"/>
         </Grid>
+<!--                    DidFinishRenderingCommand="{Binding DidFinishRenderingCommand}"-->
+
         <local:MapView
             x:Name="map"
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
@@ -63,7 +65,6 @@
             MapStyle="{Binding CurrentMapStyle}"
             ZoomLevel="{Binding ZoomLevel}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
-            DidFinishRenderingCommand="{Binding DidFinishRenderingCommand}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
             >

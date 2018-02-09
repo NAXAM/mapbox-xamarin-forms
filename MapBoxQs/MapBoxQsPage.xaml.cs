@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MapBoxQs
 {
@@ -44,6 +45,14 @@ namespace MapBoxQs
                 }
 
             });
+
+            map.CanShowCalloutChecker = (arg) => true;
+
+            map.DidTapOnCalloutViewCommand = new Command<string>((obj) =>
+            {
+                System.Diagnostics.Debug.WriteLine("Did tap on callout view: " + obj);
+            });
+
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>((obj) =>
             {
                 //map.ResetPositionFunc.Execute(null);
@@ -57,9 +66,24 @@ namespace MapBoxQs
                     if (layer.Id.ToLower().Contains("satellite")) {
                         map.UpdateLayerFunc.Invoke(layer.Id, false, false);
                     }
-				}
 
+				}
+             
 			});
+            map.DidFinishRenderingCommand = new Command<object>((obj) =>
+            {
+                map.Annotations = new ObservableCollection<Annotation>() {
+                        new PointAnnotation() {
+                            Id = "test id",
+                            Title = "test",
+                        Coordinate = new Position {
+                    Lat = 21.0333,
+                    Long = 105.8500
+                },
+                        }
+                    };
+
+            });
 			map.ZoomLevel = Device.RuntimePlatform == Device.Android ? 4 : 14;
 
 

@@ -4,6 +4,8 @@ using System.Runtime.CompilerServices;
 using System.ComponentModel;
 using System.Windows.Input;
 using Xamarin.Forms;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace MapBoxQs
 {
@@ -11,6 +13,9 @@ namespace MapBoxQs
     {
         public event PropertyChangedEventHandler PropertyChanged;
         bool _IsScaleBarShown = false;
+        OfflinePackRegion forcedRegion;
+        IOfflineStorageService offlineService;
+
 		public MainPageViewModel()
 		{
             DidFinishRenderingCommand = new Command((obj) =>
@@ -22,11 +27,58 @@ namespace MapBoxQs
 					//	System.Diagnostics.Debug.WriteLine("Did update center location");
 					//});
                 }
+                if (forcedRegion != null) {
+                    UpdateViewPortAction?.Invoke(
+                        new Position()
+                        {
+                            Lat = forcedRegion.Bounds.SouthWest.Lat / 2 + forcedRegion.Bounds.NorthEast.Lat / 2,
+                            Long = forcedRegion.Bounds.SouthWest.Long / 2 + forcedRegion.Bounds.NorthEast.Long / 2
+                        },
+                        forcedRegion.MaximumZoomLevel / 2 + forcedRegion.MinimumZoomLevel / 2,
+                        null,
+                        true,
+                        null
+                    );
+                    forcedRegion = null;
+                }
 
+                CurrentMapStyle.CustomSources = CurrentMapStyle.CustomSources ?? new ObservableCollection<MapSource>();
+                var source = new RasterSource("satellite", "mapbox://mapbox.satellite", 256);
+                (CurrentMapStyle.CustomSources as ObservableCollection<MapSource>).Add(source);
+                var satellite = new RasterStyleLayer("satellite", source.Id);
+
+                bool found = false;
+                foreach (Layer layer in CurrentMapStyle.OriginalLayers) {
+                    if (layer.Id.StartsWith("[FG]", StringComparison.OrdinalIgnoreCase)) {
+                        InsertLayerBelowLayerFunc?.Invoke(satellite, layer.Id);
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
+                    CurrentMapStyle.CustomLayers = CurrentMapStyle.CustomLayers ?? new ObservableCollection<Layer>();
+                    (CurrentMapStyle.CustomLayers as ObservableCollection<Layer>).Add(satellite);
+                }
             }, (arg) =>  true);
+
+
+            offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
+            offlineService.OfflinePackProgressChanged += (sender, e) => {
+                var progress = e.OfflinePack.Progress;
+                float percentage = 0;
+                if (progress.CountOfResourcesExpected > 0)
+                {
+                    percentage = (float)progress.CountOfResourcesCompleted / progress.CountOfResourcesExpected;
+                }
+                System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
+                System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
+                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
+                    System.Diagnostics.Debug.WriteLine("Download completed");
+                }
+            };
 		}
 
-        private MapStyle _CurrentMapStyle = new MapStyle("cj7rtpzfde3oe2sta2xwhdi6l", "El", null, "gevadmin");
+        private MapStyle _CurrentMapStyle = new MapStyle("ciyxczsj9004b2rtoji7t5hkj", "El", null, "jesperdax");
 
 		public MapStyle CurrentMapStyle
 		{
@@ -47,7 +99,7 @@ namespace MapBoxQs
                 _ZoomLevel = value;
                 OnPropertyChanged("ZoomLevel");
                 var scale = GetMapScaleReciprocalFunc?.Invoke();
-                System.Diagnostics.Debug.WriteLine($"Zoom level: {ZoomLevel})");
+                System.Diagnostics.Debug.WriteLine($"Zoom level: {value}");
                 System.Diagnostics.Debug.WriteLine($"Scale: 1 : {scale}");
             }
         }
@@ -58,6 +110,11 @@ namespace MapBoxQs
 			set;
 		}
 
+        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
+        {
+            get;
+            set;
+        }
 
 		private ICommand _ZoomCommand;
 
@@ -105,5 +162,104 @@ namespace MapBoxQs
 		}
 
         public ICommand DidFinishRenderingCommand { get; set; }
+
+        private ICommand _DownloadCommand;
+        public ICommand DownloadCommand
+        {
+            get { return _DownloadCommand = _DownloadCommand ?? new Command<object>(DownloadMap); }
+            set {
+                _DownloadCommand = value;
+                OnPropertyChanged("DownloadCommand");
+            }
+        }
+
+        private void DownloadMap(object obj)
+        {
+            if (offlineService != null)
+            {
+                var region = new OfflinePackRegion()
+                {
+                    StyleURL = CurrentMapStyle.UrlString,
+                    MaximumZoomLevel = 14,
+                    MinimumZoomLevel = 1,
+                    Bounds = new CoordinateBounds()
+                    {
+                        NorthEast = new Position()
+                        {
+                            Lat = 55.800,
+                            Long = 9.000
+                        },
+                        SouthWest = new Position()
+                        {
+                            Lat = 55.650,
+                            Long = 8.700
+                        }
+                    }
+                };
+
+                offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
+                    {"name", "test"}
+                });
+            }
+
+        }
+
+        private ICommand _ClearOfflinePacksCommand;
+        public ICommand ClearOfflinePacksCommand
+        {
+            get { return _ClearOfflinePacksCommand = _ClearOfflinePacksCommand ?? new Command<object>(ClearOfflinePacks); }
+            set { _ClearOfflinePacksCommand = value;
+                OnPropertyChanged("ClearOfflinePacksCommand");
+            }
+        }
+
+        private async void ClearOfflinePacks(object obj)
+        {
+            var packs = await offlineService.GetPacks();
+            if (packs != null)
+            {
+                foreach (OfflinePack pack in packs)
+                {
+                    await offlineService.RemovePack(pack);
+                }
+            }
+        }
+
+        private ICommand _LoadOfflinePackCommand;
+        public ICommand LoadOfflinePackCommand
+        {
+            get { return _LoadOfflinePackCommand = _LoadOfflinePackCommand ?? new Command<object>(LoadOfflinePack); }
+            set {
+                _LoadOfflinePackCommand = value;
+                OnPropertyChanged("LoadOfflinePackCommand");
+            }
+        }
+
+        private async void LoadOfflinePack(object obj)
+        {
+            var packs = await offlineService.GetPacks();
+            if (packs?.FirstOrDefault() is OfflinePack pack)
+            {
+                forcedRegion = pack.Region;
+                CurrentMapStyle = new MapStyle(pack.Region.StyleURL);
+            }
+
+        }
+
+       
+        public void OfflinePackProgressDidChange(OfflinePack pack)
+        {
+            var expected = (float)pack.Progress.CountOfResourcesExpected;
+            float percentage = 0;
+            if (expected > 0)
+            {
+                percentage = (float)pack.Progress.CountOfResourcesCompleted / expected;
+            }
+            System.Diagnostics.Debug.WriteLine($"Progress: {percentage}");
+            if (pack.State == OfflinePackState.Completed)
+            {
+                System.Diagnostics.Debug.WriteLine("Download completed");
+            }
+        }
     }
 }
