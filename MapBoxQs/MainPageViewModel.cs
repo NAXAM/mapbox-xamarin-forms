@@ -42,23 +42,6 @@ namespace MapBoxQs
                     forcedRegion = null;
                 }
 
-                CurrentMapStyle.CustomSources = CurrentMapStyle.CustomSources ?? new ObservableCollection<MapSource>();
-                var source = new RasterSource("satellite", "mapbox://mapbox.satellite", 256);
-                (CurrentMapStyle.CustomSources as ObservableCollection<MapSource>).Add(source);
-                var satellite = new RasterStyleLayer("satellite", source.Id);
-
-                bool found = false;
-                foreach (Layer layer in CurrentMapStyle.OriginalLayers) {
-                    if (layer.Id.StartsWith("[FG]", StringComparison.OrdinalIgnoreCase)) {
-                        InsertLayerBelowLayerFunc?.Invoke(satellite, layer.Id);
-                        found = true;
-                        break;
-                    }
-                }
-                if (found == false) {
-                    CurrentMapStyle.CustomLayers = CurrentMapStyle.CustomLayers ?? new ObservableCollection<Layer>();
-                    (CurrentMapStyle.CustomLayers as ObservableCollection<Layer>).Add(satellite);
-                }
             }, (arg) =>  true);
 
 
@@ -78,7 +61,7 @@ namespace MapBoxQs
             };
 		}
 
-        private MapStyle _CurrentMapStyle = new MapStyle("ciyxczsj9004b2rtoji7t5hkj", "El", null, "jesperdax");
+        private MapStyle _CurrentMapStyle;
 
 		public MapStyle CurrentMapStyle
 		{

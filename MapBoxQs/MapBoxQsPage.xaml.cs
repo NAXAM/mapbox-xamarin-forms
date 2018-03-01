@@ -37,7 +37,7 @@ namespace MapBoxQs
 
             map.DidTapOnMapCommand = new Command<Tuple<Position, Point>>((Tuple<Position, Point> obj) =>
             {
-                var features = map.GetFeaturesAroundPointFunc.Invoke(obj.Item2, 6, new string[] {"[FG] Solcelleanlæg (ude af drift)"});
+                var features = map.GetFeaturesAroundPointFunc.Invoke(obj.Item2, 6, null);
                 var filtered = features.Where((arg) => arg.Attributes != null);
                 foreach (IFeature feat in filtered) {
                     var str = JsonConvert.SerializeObject(feat);
@@ -58,11 +58,11 @@ namespace MapBoxQs
                 //map.ResetPositionFunc.Execute(null);
                 foreach (Layer layer in obj.OriginalLayers)
 				{
-                    System.Diagnostics.Debug.WriteLine(layer.Id);
-                    var styleLayer = map.GetStyleLayerFunc(layer.Id, false);
-                    if (styleLayer != null) {
-                        System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(styleLayer));
-                    }
+                    //System.Diagnostics.Debug.WriteLine(layer.Id);
+                    //var styleLayer = map.GetStyleLayerFunc(layer.Id, false);
+                    //if (styleLayer != null) {
+                    //    System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(styleLayer));
+                    //}
                     if (layer.Id.ToLower().Contains("satellite")) {
                         map.UpdateLayerFunc.Invoke(layer.Id, false, false);
                     }

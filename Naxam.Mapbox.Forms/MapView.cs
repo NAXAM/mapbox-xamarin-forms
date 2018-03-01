@@ -87,7 +87,7 @@ namespace Naxam.Controls.Mapbox.Forms
             typeof(Position),
             typeof(MapView),
             default(Position),
-            BindingMode.TwoWay);
+            BindingMode.OneWayToSource);
 
         public Position UserLocation
         {
@@ -231,7 +231,7 @@ namespace Naxam.Controls.Mapbox.Forms
             }
             set
             {
-                SetValue(MapStyleProperty, (MapStyle)value);
+                SetValue(MapStyleProperty, value);
             }
         }
 

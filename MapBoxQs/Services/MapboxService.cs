@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ModernHttpClient;
 using Naxam.Controls.Mapbox.Forms;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace MapBoxQs.Services
 {
@@ -20,7 +21,6 @@ namespace MapBoxQs.Services
 		private static string BaseURL = "https://api.mapbox.com/";
 		public static string AccessToken = "sk.eyJ1IjoibmF4YW10ZXN0IiwiYSI6ImNqNWtpb2d1ZzJpMngyd3J5ZnB2Y2JhYmQifQ.LEvGqQkAqM4MO3ZtGbQrdw";
 		public static string Username = "naxamtest";
-
 
 		public MapBoxService()
 		{

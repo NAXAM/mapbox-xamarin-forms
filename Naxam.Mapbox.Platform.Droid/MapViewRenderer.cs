@@ -27,6 +27,7 @@ using MapView = Naxam.Controls.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
+using Android.Content;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -41,6 +42,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
             new Dictionary<string, Sdk.Annotations.Annotation>();
+
+        public MapViewRenderer(Context context): base(context)
+        {
+            
+        }
 
         protected override void OnElementChanged(
             ElementChangedEventArgs<MapView> e)

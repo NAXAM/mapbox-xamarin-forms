@@ -4,6 +4,7 @@ using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
 {
+   
     public partial class MapView
     {
         public static readonly BindableProperty DidFinishLoadingStyleCommandProperty = BindableProperty.Create (

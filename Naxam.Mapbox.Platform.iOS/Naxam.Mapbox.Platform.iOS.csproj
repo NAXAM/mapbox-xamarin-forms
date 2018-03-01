@@ -97,7 +97,8 @@
       <HintPath>..\packages\Xamarin.Forms.2.5.0.91635\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\..\Flexgrid\flexgrid_forms_2\packages\Naxam.Mapbox.iOS.3.7.0.3\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.iOS.3.7.3.2\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
