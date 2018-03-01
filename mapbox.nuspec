@@ -3,13 +3,13 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Mapbox.Forms</id>
-       <version>1.0.1-pre011</version>
+       <version>1.0.1-pre012</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Mapbox for Xamarin.Forms</title>
         <description>Mapbox for Xamarin.Forms</description>
-        <releaseNotes>Add RasterSource and iOS implementation for RasterSource</releaseNotes>
+        <releaseNotes>Fix UpdateLayer sometimes crashes on iOS</releaseNotes>
         <copyright>Copyright (c) 2017 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
         <projectUrl>https://github.com/naxam/xf-mapbox</projectUrl>

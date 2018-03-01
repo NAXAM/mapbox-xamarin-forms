@@ -47,14 +47,14 @@ namespace Naxam.Controls.Mapbox.Forms
         }
 
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
-           nameof(IsTouchInMap),
+            nameof(FocusPosition),
            typeof(bool),
            typeof(MapView),
            default(bool),
-            BindingMode.TwoWay);
+            BindingMode.OneWay);
 
 
-        public bool IsTouchInMap
+        public bool FocusPosition
         {
             get
             {
