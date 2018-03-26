@@ -1,9 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.CompilerServices;
-using System.Windows.Input;
 
 using Xamarin.Forms;
 
@@ -99,6 +97,20 @@ namespace Naxam.Controls.Mapbox.Forms
             {
                 SetValue(UserLocationProperty, (Position)value);
             }
+        }
+
+        public static BindableProperty ShowUserLocationProperty = BindableProperty.Create(
+            propertyName: nameof(ShowUserLocation),
+            returnType: typeof(bool),
+            declaringType: typeof(MapView),
+            defaultValue: default(bool),
+            defaultBindingMode: BindingMode.OneWay
+        );
+
+        public bool ShowUserLocation
+        {
+            get { return (bool)GetValue(ShowUserLocationProperty); }
+            set { SetValue(ShowUserLocationProperty, value); }
         }
 
         public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(

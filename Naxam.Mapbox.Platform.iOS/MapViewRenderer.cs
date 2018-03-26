@@ -1,21 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
 using Mapbox;
 using Naxam.Controls.Mapbox.Forms;
-using Xamarin.Forms.Platform.iOS;
-using CoreLocation;
-using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
-using FormsMB = Naxam.Controls.Mapbox.Forms;
-using System.Collections.Specialized;
 using UIKit;
 using Xamarin.Forms;
-using System.ComponentModel;
-using System.Collections;
-using System.Collections.ObjectModel;
-using Naxam.Extensions.iOS;
+using Xamarin.Forms.Platform.iOS;
+using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
+using FormsMB = Naxam.Controls.Mapbox.Forms;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Controls.Mapbox.Forms.MapView), typeof(Naxam.Controls.Mapbox.Platform.iOS.MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
@@ -122,6 +119,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                                                               (nfloat)Element.RotatedDegree);
                 MapView.SetCamera(newCamera, true);
             }
+            else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName) {
+                MapView.ShowsUserLocation = Element.ShowUserLocation;
+            }
         }
 
         void OnElementPropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
@@ -170,7 +170,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 MapView = new MGLMapView(Bounds)
                 {
-                    ShowsUserLocation = true,
+                    ShowsUserLocation = Element.ShowUserLocation,
                     WeakDelegate = this,
                     PitchEnabled = Element.PitchEnabled,
                     RotateEnabled = Element.RotateEnabled
