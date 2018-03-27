@@ -261,7 +261,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.PitchProperty.PropertyName)
             {
-                map.SetTilt(Element.Pitch);
+                map?.SetTilt(Element.Pitch);
             }
             else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
             {
@@ -269,6 +269,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 {
                     map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
                 }
+            }
+            else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName) {
+                map?.SetBearing(Element.RotatedDegree);
             }
             else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
             {
@@ -709,6 +712,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     .Target(Element.Center.ToLatLng())
 			   .Zoom(Element.ZoomLevel)
                     .Tilt(Element.Pitch)
+                    .Bearing(Element.RotatedDegree)
 			   .Build();
             }
             else {
@@ -716,6 +720,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     .Target(map.CameraPosition.Target)
 			   .Zoom(Element.ZoomLevel)
                     .Tilt(Element.Pitch)
+                    .Bearing(Element.RotatedDegree)
 			   .Build();
             }
 

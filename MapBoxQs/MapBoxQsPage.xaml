@@ -36,7 +36,8 @@
                     Command="{Binding ShowStylePickerCommand}"
                     Text="Change style" />
                 <Button
-                    Command="{Binding ShowCameraToolsCommand}"
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Camera}"
                     Text="Change camera" />
                 <Button
                     Command="{Binding ShowOfflineToolsCommand}"
@@ -45,6 +46,7 @@
         </ScrollView>
         <!-- Main -->
         <controls:MapView
+            x:Name="Map"
             Grid.Row="1"
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
             VerticalOptions="FillAndExpand"
@@ -53,7 +55,10 @@
             ZoomLevel="{Binding ZoomLevel}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
-            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}">
+            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
+            Pitch="{Binding Pitch}"
+            RotatedDegree="{Binding RotatedDegree}"
+            >
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -117,6 +122,86 @@
                 </DataTrigger>
             </Grid.Triggers>
         </Grid>
+        <!-- Camera tools -->
+        <StackLayout
+            Orientation="Vertical"
+            BackgroundColor="White"
+            Grid.Row="1"
+            VerticalOptions="Start"
+            IsVisible="false"
+            Padding="16,0"
+            >
+            <!-- Rotate -->
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40">
+                <Label
+                    Text="Rotation:"
+                    VerticalTextAlignment="Center" />
+                <Switch
+                    IsToggled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWayToSource}"
+                    VerticalOptions="Center" />
+                <Button
+                    Text="↪️"
+                    IsEnabled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding RotateCommand}"
+                    CommandParameter="{x:Int32 1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="↩️️"
+                    IsEnabled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding RotateCommand}"
+                    CommandParameter="{x:Int32 -1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="Reset"
+                    Command="{Binding RotateCommand}"
+                    CommandParameter="{x:Int32 0}"
+                    VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <!-- Tilt / pitch -->
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40">
+                <Label
+                    Text="Pitch:"
+                    VerticalTextAlignment="Center" />
+                <Switch
+                    IsToggled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWayToSource}"
+                    VerticalOptions="Center" />
+                <Button
+                    Text="⬆️"
+                    IsEnabled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding TiltCommand}"
+                    CommandParameter="{x:Int32 -1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="⬇️"
+                    IsEnabled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding TiltCommand}"
+                    CommandParameter="{x:Int32 1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="Reset"
+                    Command="{Binding TiltCommand}"
+                    CommandParameter="{x:Int32 0}"
+                    VerticalOptions="FillAndExpand"/>
+            </StackLayout>
+            <StackLayout.Triggers>
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Camera}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
+                </DataTrigger>
+            </StackLayout.Triggers>
+        </StackLayout>
     </Grid>
     <!--    <StackLayout
         Orientation="Vertical">

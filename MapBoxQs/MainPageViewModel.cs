@@ -26,18 +26,20 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
-		public MainPageViewModel()
-		{
+        public MainPageViewModel()
+        {
             DidFinishRenderingCommand = new Command((obj) =>
             {
-                if (_IsScaleBarShown == false && CenterLocation != null) {
+                if (_IsScaleBarShown == false && CenterLocation != null)
+                {
                     _IsScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
-					System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
-					//UpdateViewPortAction?.Invoke(new Position(CenterLocation.Lat + 0.001, CenterLocation.Long + 0.001), 16, null, false, () => {
-					//	System.Diagnostics.Debug.WriteLine("Did update center location");
-					//});
+                    System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
+                    //UpdateViewPortAction?.Invoke(new Position(CenterLocation.Lat + 0.001, CenterLocation.Long + 0.001), 16, null, false, () => {
+                    //	System.Diagnostics.Debug.WriteLine("Did update center location");
+                    //});
                 }
-                if (forcedRegion != null) {
+                if (forcedRegion != null)
+                {
                     UpdateViewPortAction?.Invoke(
                         new Position()
                         {
@@ -52,7 +54,7 @@ namespace MapBoxQs
                     forcedRegion = null;
                 }
 
-            }, (arg) =>  true);
+            }, (arg) => true);
 
 
             offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
@@ -69,26 +71,27 @@ namespace MapBoxQs
             //        System.Diagnostics.Debug.WriteLine("Download completed");
             //    }
             //};
-		}
+        }
 
         private MapStyle _CurrentMapStyle;
 
-		public MapStyle CurrentMapStyle
-		{
-			get { return _CurrentMapStyle; }
-			set
-			{
-				_CurrentMapStyle = value;
-				OnPropertyChanged("CurrentMapStyle");
-			}
-		}
+        public MapStyle CurrentMapStyle
+        {
+            get { return _CurrentMapStyle; }
+            set
+            {
+                _CurrentMapStyle = value;
+                OnPropertyChanged("CurrentMapStyle");
+            }
+        }
 
         private double _ZoomLevel = 16;
 
         public double ZoomLevel
         {
             get { return _ZoomLevel; }
-            set {
+            set
+            {
                 _ZoomLevel = value;
                 OnPropertyChanged("ZoomLevel");
                 var scale = GetMapScaleReciprocalFunc?.Invoke();
@@ -97,11 +100,11 @@ namespace MapBoxQs
             }
         }
 
-		public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
-		{
-			get;
-			set;
-		}
+        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
+        {
+            get;
+            set;
+        }
 
         public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
         {
@@ -109,15 +112,17 @@ namespace MapBoxQs
             set;
         }
 
-		private ICommand _ZoomCommand;
+        private ICommand _ZoomCommand;
 
         public ICommand ZoomCommand
         {
-            get {
+            get
+            {
                 return _ZoomCommand = _ZoomCommand
-                        ?? new Command<int>( (int step) => ZoomLevel += step);
+                        ?? new Command<int>((int step) => ZoomLevel += step);
             }
-            set {
+            set
+            {
                 _ZoomCommand = value;
                 OnPropertyChanged("ZoomLevel");
             }
@@ -125,34 +130,37 @@ namespace MapBoxQs
 
         private void OnPropertyChanged(string propertyName = null)
         {
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-		}
+        }
 
-        public Func<double> GetMapScaleReciprocalFunc {
+        public Func<double> GetMapScaleReciprocalFunc
+        {
             get; set;
         }
 
         private Func<bool, bool> _ToggleScaleBarFunc;
 
         public Func<bool, bool> ToggleScaleBarFunc
-		{
+        {
             get => _ToggleScaleBarFunc;
-            set {
+            set
+            {
                 _ToggleScaleBarFunc = value;
             }
-		}
+        }
 
-		private Position _centerLocation;
+        private Position _centerLocation;
 
-		public Position CenterLocation
-		{
-			get { return _centerLocation; }
-			set {
+        public Position CenterLocation
+        {
+            get { return _centerLocation; }
+            set
+            {
                 _centerLocation = value;
                 OnPropertyChanged("CenterLocation");
             }
-		}
+        }
 
         public ICommand DidFinishRenderingCommand { get; set; }
 
@@ -160,7 +168,8 @@ namespace MapBoxQs
         public ICommand DownloadCommand
         {
             get { return _DownloadCommand = _DownloadCommand ?? new Command<object>(DownloadMap); }
-            set {
+            set
+            {
                 _DownloadCommand = value;
                 OnPropertyChanged("DownloadCommand");
             }
@@ -201,7 +210,9 @@ namespace MapBoxQs
         public ICommand ClearOfflinePacksCommand
         {
             get { return _ClearOfflinePacksCommand = _ClearOfflinePacksCommand ?? new Command<object>(ClearOfflinePacks); }
-            set { _ClearOfflinePacksCommand = value;
+            set
+            {
+                _ClearOfflinePacksCommand = value;
                 OnPropertyChanged("ClearOfflinePacksCommand");
             }
         }
@@ -222,7 +233,8 @@ namespace MapBoxQs
         public ICommand LoadOfflinePackCommand
         {
             get { return _LoadOfflinePackCommand = _LoadOfflinePackCommand ?? new Command<object>(LoadOfflinePack); }
-            set {
+            set
+            {
                 _LoadOfflinePackCommand = value;
                 OnPropertyChanged("LoadOfflinePackCommand");
             }
@@ -239,7 +251,7 @@ namespace MapBoxQs
 
         }
 
-       
+
         public void OfflinePackProgressDidChange(OfflinePack pack)
         {
             var expected = (float)pack.Progress.CountOfResourcesExpected;
@@ -375,30 +387,38 @@ namespace MapBoxQs
             get { return (_ShowStylePickerCommand = _ShowStylePickerCommand ?? new Command<object>(ExecuteShowStylePickerCommand, CanExecuteShowStylePickerCommand)); }
         }
         bool CanExecuteShowStylePickerCommand(object obj) { return true; }
-        async void ExecuteShowStylePickerCommand(object obj) {
-            if (Styles == null) {
-                if (false == await GetAllStyles()) {
+        async void ExecuteShowStylePickerCommand(object obj)
+        {
+            if (Styles == null)
+            {
+                if (false == await GetAllStyles())
+                {
                     return;
                 }
             }
             var buttons = Styles.Select((arg) => arg.Name).ToArray();
             var choice = await UserDialogs.Instance.ActionSheetAsync("Change style", "Cancel", "Reload current style", buttons: buttons);
-            if (choice == "Reload current style") {
+            if (choice == "Reload current style")
+            {
                 ReloadStyleAction?.Invoke();
             }
-            else if (buttons.Contains(choice)) {
+            else if (buttons.Contains(choice))
+            {
                 CurrentMapStyle = Styles.FirstOrDefault((arg) => arg.Name == choice);
             }
         }
 
-        private async Task<bool> GetAllStyles() {
+        private async Task<bool> GetAllStyles()
+        {
             UserDialogs.Instance.ShowLoading();
-            try {
+            try
+            {
                 Styles = await MBService.GetAllStyles();
                 UserDialogs.Instance.HideLoading();
                 return Styles != null;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 UserDialogs.Instance.HideLoading();
                 await UserDialogs.Instance.AlertAsync(ex.Message);
                 return false;
@@ -407,6 +427,75 @@ namespace MapBoxQs
 
 
         #endregion
+        #region Rotation
+        private double _RotatedDegree;
+        public double RotatedDegree
+        {
+            get { return _RotatedDegree; }
+            set
+            {
+                if (Math.Abs(_RotatedDegree - value) > 0.001)
+                {
+                    _RotatedDegree = value;
+                    OnPropertyChanged("RotatedDegree");
+                }
+            }
+        }
+        private ICommand _RotateCommand;
+        public ICommand RotateCommand
+        {
+            get
+            {
+                return _RotateCommand = _RotateCommand
+                        ?? new Command<int>(RotateMap);
+            }
+        }
 
+        private void RotateMap(int obj)
+        {
+            if (obj == 0) {
+                RotatedDegree = 0;
+            }
+            else {
+                RotatedDegree += obj;
+            }
+        }
+        #endregion
+        #region Pitch
+        private double _Pitch;
+        public double Pitch
+        {
+            get { return _Pitch; }
+            set
+            {
+                if (Math.Abs(_Pitch - value) > 0.001)
+                {
+                    _Pitch = value;
+                    OnPropertyChanged("Pitch");
+                }
+            }
+        }
+
+        private ICommand _TiltCommand;
+        public ICommand TiltCommand
+        {
+            get
+            {
+                return _TiltCommand = _TiltCommand
+                        ?? new Command<int>(TiltMap);
+            }
+        }
+
+        private void TiltMap(int obj)
+        {
+            if (obj == 0) {
+                Pitch = 0.0;
+            }
+            else {
+                var newValue = Pitch + obj;
+                Pitch = Math.Max(0, newValue);
+            }
+        }
+        #endregion
     }
 }
