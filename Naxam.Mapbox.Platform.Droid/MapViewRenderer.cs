@@ -4,20 +4,16 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-
+using Android.Content;
 using Android.Graphics;
 using Android.Support.V7.App;
-using Android.Views;
-using Java.Util;
-
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
-using Com.Mapbox.Services.Commons.Geojson;
-using Naxam.Controls.Mapbox.Platform.Droid;
+using Java.Util;
 using Naxam.Controls.Mapbox.Forms;
-
+using Naxam.Controls.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -27,7 +23,6 @@ using MapView = Naxam.Controls.Mapbox.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
-using Android.Content;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -263,6 +258,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 {
                     map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
                 }
+            }
+            else if (e.PropertyName == MapView.PitchProperty.PropertyName)
+            {
+                map.SetTilt(Element.Pitch);
             }
             else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
             {
@@ -667,7 +666,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 if (at.Id != null)
                 {
-                    _annotationDictionaries.Add(at.Id, options);
+                    if (_annotationDictionaries.ContainsKey(at.Id))
+                    {
+                        _annotationDictionaries[at.Id] = options;
+                    }
+                    else
+                    {
+                        _annotationDictionaries.Add(at.Id, options);
+                    }
                 }
             }
 
@@ -702,12 +708,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 				map.CameraPosition = new CameraPosition.Builder()
                     .Target(Element.Center.ToLatLng())
 			   .Zoom(Element.ZoomLevel)
+                    .Tilt(Element.Pitch)
 			   .Build();
             }
             else {
 				map.CameraPosition = new CameraPosition.Builder()
                     .Target(map.CameraPosition.Target)
 			   .Zoom(Element.ZoomLevel)
+                    .Tilt(Element.Pitch)
 			   .Build();
             }
 
