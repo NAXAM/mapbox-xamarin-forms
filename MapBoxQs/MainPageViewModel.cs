@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using Naxam.Controls.Mapbox.Forms;
 using Xamarin.Forms;
 
@@ -381,25 +382,25 @@ namespace MapBoxQs
                 }
             }
             var buttons = Styles.Select((arg) => arg.Name).ToArray();
-            //var choice = await UserDialogs.Instance.ActionSheetAsync("Change style", "Cancel", "Reload current style", buttons: buttons);
-            //if (choice == "Reload current style") {
-            //    ReloadStyleAction?.Invoke();
-            //}
-            //else if (buttons.Contains(choice)) {
-            //    CurrentMapStyle = Styles.FirstOrDefault((arg) => arg.Name == choice);
-            //}
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Change style", "Cancel", "Reload current style", buttons: buttons);
+            if (choice == "Reload current style") {
+                ReloadStyleAction?.Invoke();
+            }
+            else if (buttons.Contains(choice)) {
+                CurrentMapStyle = Styles.FirstOrDefault((arg) => arg.Name == choice);
+            }
         }
 
         private async Task<bool> GetAllStyles() {
-            //UserDialogs.Instance.ShowLoading();
+            UserDialogs.Instance.ShowLoading();
             try {
                 Styles = await MBService.GetAllStyles();
-                //UserDialogs.Instance.HideLoading();
+                UserDialogs.Instance.HideLoading();
                 return Styles != null;
             }
             catch (Exception ex) {
-                //UserDialogs.Instance.HideLoading();
-                //await UserDialogs.Instance.AlertAsync(ex.Message);
+                UserDialogs.Instance.HideLoading();
+                await UserDialogs.Instance.AlertAsync(ex.Message);
                 return false;
             }
         }

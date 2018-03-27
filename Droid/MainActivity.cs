@@ -16,6 +16,7 @@ namespace MapBoxQs.Droid
             base.OnCreate(savedInstanceState);
 
             Com.Mapbox.Mapboxsdk.Mapbox.GetInstance(this, MapBoxQs.Services.MapBoxService.AccessToken);
+            Acr.UserDialogs.UserDialogs.Init(() => this);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
