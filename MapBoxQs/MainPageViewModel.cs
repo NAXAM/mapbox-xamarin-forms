@@ -85,20 +85,6 @@ namespace MapBoxQs
             }
         }
 
-        private double _ZoomLevel = 16;
-
-        public double ZoomLevel
-        {
-            get { return _ZoomLevel; }
-            set
-            {
-                _ZoomLevel = value;
-                OnPropertyChanged("ZoomLevel");
-                var scale = GetMapScaleReciprocalFunc?.Invoke();
-                System.Diagnostics.Debug.WriteLine($"Zoom level: {value}");
-                System.Diagnostics.Debug.WriteLine($"Scale: 1 : {scale}");
-            }
-        }
 
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
         {
@@ -112,6 +98,7 @@ namespace MapBoxQs
             set;
         }
 
+        #region Zoom
         private ICommand _ZoomCommand;
 
         public ICommand ZoomCommand
@@ -127,6 +114,22 @@ namespace MapBoxQs
                 OnPropertyChanged("ZoomLevel");
             }
         }
+
+        private double _ZoomLevel = 16;
+
+        public double ZoomLevel
+        {
+            get { return _ZoomLevel; }
+            set
+            {
+                _ZoomLevel = value;
+                OnPropertyChanged("ZoomLevel");
+                var scale = GetMapScaleReciprocalFunc?.Invoke();
+                System.Diagnostics.Debug.WriteLine($"Zoom level: {value}");
+                System.Diagnostics.Debug.WriteLine($"Scale: 1 : {scale}");
+            }
+        }
+        #endregion
 
         private void OnPropertyChanged(string propertyName = null)
         {
@@ -453,10 +456,12 @@ namespace MapBoxQs
 
         private void RotateMap(int obj)
         {
-            if (obj == 0) {
+            if (obj == 0)
+            {
                 RotatedDegree = 0;
             }
-            else {
+            else
+            {
                 RotatedDegree += obj;
             }
         }
@@ -488,10 +493,12 @@ namespace MapBoxQs
 
         private void TiltMap(int obj)
         {
-            if (obj == 0) {
+            if (obj == 0)
+            {
                 Pitch = 0.0;
             }
-            else {
+            else
+            {
                 var newValue = Pitch + obj;
                 Pitch = Math.Max(0, newValue);
             }

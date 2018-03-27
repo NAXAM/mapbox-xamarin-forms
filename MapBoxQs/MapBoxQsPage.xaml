@@ -57,8 +57,7 @@
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
             Pitch="{Binding Pitch}"
-            RotatedDegree="{Binding RotatedDegree}"
-            >
+            RotatedDegree="{Binding RotatedDegree}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -129,8 +128,24 @@
             Grid.Row="1"
             VerticalOptions="Start"
             IsVisible="false"
-            Padding="16,0"
-            >
+            Padding="16,0">
+            <!-- Zoom -->
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40">
+                <Button
+                    Command="{Binding ZoomCommand}"
+                    CommandParameter="{x:Int32 1}"
+                    Text="Zoom in"
+                    VerticalOptions="FillAndExpand"
+                />
+                <Button
+                    Command="{Binding ZoomCommand}"
+                    CommandParameter="{x:Int32 -1}"
+                    Text="Zoom out" 
+                    VerticalOptions="FillAndExpand"
+                />
+            </StackLayout>
             <!-- Rotate -->
             <StackLayout
                 Orientation="Horizontal"
@@ -159,7 +174,7 @@
                     Text="Reset"
                     Command="{Binding RotateCommand}"
                     CommandParameter="{x:Int32 0}"
-                    VerticalOptions="FillAndExpand"/>
+                    VerticalOptions="FillAndExpand" />
             </StackLayout>
             <!-- Tilt / pitch -->
             <StackLayout
@@ -189,7 +204,7 @@
                     Text="Reset"
                     Command="{Binding TiltCommand}"
                     CommandParameter="{x:Int32 0}"
-                    VerticalOptions="FillAndExpand"/>
+                    VerticalOptions="FillAndExpand" />
             </StackLayout>
             <StackLayout.Triggers>
                 <DataTrigger
