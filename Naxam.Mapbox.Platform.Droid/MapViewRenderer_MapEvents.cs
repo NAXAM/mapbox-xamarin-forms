@@ -1,13 +1,13 @@
-﻿﻿using Com.Mapbox.Mapboxsdk.Maps;
-using System;
-using System.Linq;
-using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
-using Naxam.Controls.Mapbox.Forms;
+﻿using System;
 using System.Collections.Specialized;
+using System.Linq;
+using Com.Mapbox.Mapboxsdk.Maps;
+using Naxam.Controls.Mapbox.Forms;
+using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    
+
     public partial class MapViewRenderer : MapView.IOnMapChangedListener
     {
         void AddMapEvents ()
@@ -83,7 +83,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     mapStyle = new MapStyle (map.StyleUrl);
                    
                 }
-					if (Element.MapStyle.CustomSources != null)
+                    if (mapStyle.CustomSources != null)
 					{
 						var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
 						if (notifiyCollection != null)
@@ -93,7 +93,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
 						AddSources(Element.MapStyle.CustomSources.ToList());
 					}
-					if (Element.MapStyle.CustomLayers != null)
+                    if (mapStyle.CustomLayers != null)
 					{
 						if (Element.MapStyle.CustomLayers is INotifyCollectionChanged notifiyCollection)
 						{

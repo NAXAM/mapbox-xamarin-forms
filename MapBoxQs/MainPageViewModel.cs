@@ -1,11 +1,9 @@
 ﻿using System;
-using Naxam.Controls.Mapbox.Forms;
-using System.Runtime.CompilerServices;
 using System.ComponentModel;
-using System.Windows.Input;
-using Xamarin.Forms;
 using System.Linq;
-using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Naxam.Controls.Mapbox.Forms;
+using Xamarin.Forms;
 
 namespace MapBoxQs
 {
@@ -46,19 +44,19 @@ namespace MapBoxQs
 
 
             offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
-            offlineService.OfflinePackProgressChanged += (sender, e) => {
-                var progress = e.OfflinePack.Progress;
-                float percentage = 0;
-                if (progress.CountOfResourcesExpected > 0)
-                {
-                    percentage = (float)progress.CountOfResourcesCompleted / progress.CountOfResourcesExpected;
-                }
-                System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
-                System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
-                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
-                    System.Diagnostics.Debug.WriteLine("Download completed");
-                }
-            };
+            //offlineService.OfflinePackProgressChanged += (sender, e) => {
+            //    var progress = e.OfflinePack.Progress;
+            //    float percentage = 0;
+            //    if (progress.CountOfResourcesExpected > 0)
+            //    {
+            //        percentage = (float)progress.CountOfResourcesCompleted / progress.CountOfResourcesExpected;
+            //    }
+            //    System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
+            //    System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
+            //    if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
+            //        System.Diagnostics.Debug.WriteLine("Download completed");
+            //    }
+            //};
 		}
 
         private MapStyle _CurrentMapStyle;
