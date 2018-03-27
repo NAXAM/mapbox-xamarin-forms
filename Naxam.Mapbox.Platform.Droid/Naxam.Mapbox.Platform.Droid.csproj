@@ -197,6 +197,7 @@
     <Compile Include="Offline\OfflinePackExtensions.cs" />
     <Compile Include="Offline\ListOfflineRegionsCallback.cs" />
     <Compile Include="Offline\OfflineRegionDeleteCallback.cs" />
+    <Compile Include="Offline\OfflineRegionObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

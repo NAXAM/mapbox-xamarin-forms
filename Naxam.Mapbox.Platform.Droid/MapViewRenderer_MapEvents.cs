@@ -16,10 +16,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.MapClick += MapClicked;
             map.MyLocationChange += MyLocationChanged;
             map.CameraIdle += OnCameraIdle;
-
             fragment.OnMapChangedListener = (this);
         }
-
  
         void RemoveMapEvents ()
         {

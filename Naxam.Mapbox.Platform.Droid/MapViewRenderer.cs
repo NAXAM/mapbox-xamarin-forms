@@ -52,6 +52,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
+                if (map != null) {
+                    RemoveMapEvents();
+                }
             }
 
             if (e.NewElement == null)
@@ -725,9 +728,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
 
             AddMapEvents();
-
             SetupFunctions();
-            UpdateMapStyle();
+            if (Element.MapStyle == null) {
+                if (map.StyleUrl != null) {
+                    Element.MapStyle = new MapStyle(map.StyleUrl);
+                }
+            }
+            else {
+                UpdateMapStyle();
+            }
         }
     }
 }

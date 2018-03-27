@@ -113,7 +113,54 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public void RequestPackProgress(OfflinePack pack)
         {
-            throw new NotImplementedException();
+            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferLocalRef);
+            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
+            var callback = new OfflineRegionObserver()
+            {
+                OnErrorHandle = (error) =>
+                {
+                    System.Diagnostics.Debug.WriteLine($"[ERROR] {error.Message} {error.Reason}");
+                    OfflinePackGotError?.Invoke(pack,
+                                                new OSSErrorEventArgs()
+                                                {
+                                                    ErrorMessage = error.Message
+                                                });
+                },
+                MapboxTileCountLimitExceededHandle = (maximumCount) => {
+                    MaximumMapboxTilesReached?.Invoke(this, new OSSMaximumMapboxTilesReachedEventArgs()
+                    {
+                        OfflinePack = pack,
+                        MaximumCount = (ulong) maximumCount
+                    });
+                },
+                OnStatusChangedHandle = (status) =>
+                {
+                    pack.Progress = new OfflinePackProgress()
+                    {
+                        CountOfResourcesExpected = (ulong)status.RequiredResourceCount,
+                        CountOfResourcesCompleted = (ulong)status.CompletedResourceCount,
+                        CountOfTilesCompleted = (ulong)status.CompletedTileCount,
+                        CountOfTileBytesCompleted = (ulong)status.CompletedTileSize,
+                        CountOfBytesCompleted = (ulong)status.CompletedResourceSize,
+                        MaximumResourcesExpected = (ulong)status.RequiredResourceCount
+                    };
+                    if (status.IsComplete) {
+                        pack.State = OfflinePackState.Completed;
+                    }
+                    else if (status.DownloadState == OfflineRegion.StateActive) {
+                        pack.State = OfflinePackState.Active;
+                    }
+                    else {
+                        pack.State = OfflinePackState.Inactive;
+                    }
+                   
+                    OfflinePackProgressChanged?.Invoke(this, new OSSEventArgs()
+                    {
+                        OfflinePack = pack
+                    });
+                }
+            };
+            region.SetObserver(callback);
         }
 
         public bool Resume(OfflinePack pack)

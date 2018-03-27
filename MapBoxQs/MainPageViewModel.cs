@@ -58,19 +58,19 @@ namespace MapBoxQs
 
 
             offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
-            //offlineService.OfflinePackProgressChanged += (sender, e) => {
-            //    var progress = e.OfflinePack.Progress;
-            //    float percentage = 0;
-            //    if (progress.CountOfResourcesExpected > 0)
-            //    {
-            //        percentage = (float)progress.CountOfResourcesCompleted / progress.CountOfResourcesExpected;
-            //    }
-            //    System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
-            //    System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
-            //    if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
-            //        System.Diagnostics.Debug.WriteLine("Download completed");
-            //    }
-            //};
+            offlineService.OfflinePackProgressChanged += (sender, e) => {
+                var progress = e.OfflinePack.Progress;
+                float percentage = 0;
+                if (progress.CountOfResourcesExpected > 0)
+                {
+                    percentage = (float)progress.CountOfResourcesCompleted / progress.CountOfResourcesExpected;
+                }
+                System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
+                System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
+                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
+                    System.Diagnostics.Debug.WriteLine("Download completed");
+                }
+            };
         }
 
         private MapStyle _CurrentMapStyle;
@@ -191,20 +191,23 @@ namespace MapBoxQs
                     {
                         NorthEast = new Position()
                         {
-                            Lat = 55.800,
-                            Long = 9.000
+                            Lat = CenterLocation.Lat - 0.01,
+                            Long = CenterLocation.Long + 0.01
                         },
                         SouthWest = new Position()
                         {
-                            Lat = 55.650,
-                            Long = 8.700
+                            Lat = CenterLocation.Lat + 0.01,
+                            Long = CenterLocation.Long - 0.01
                         }
                     }
                 };
                 UserDialogs.Instance.ShowLoading();
-                await offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
+                var pack = await offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
                     {"name", "test"}
                 });
+                if (pack != null) {
+                    offlineService.RequestPackProgress(pack);
+                }
                 UserDialogs.Instance.HideLoading();
             }
 
