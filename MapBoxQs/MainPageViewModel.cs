@@ -7,8 +7,18 @@ using Xamarin.Forms;
 
 namespace MapBoxQs
 {
+    public enum MapTools
+    {
+        None,
+        CustomLocation,
+        Camera,
+        Offline
+    }
+
     public class MainPageViewModel : INotifyPropertyChanged
     {
+        readonly MapBoxQs.Services.IMapBoxService MBService = new MapBoxQs.Services.MapBoxService();
+
         public event PropertyChangedEventHandler PropertyChanged;
         bool _IsScaleBarShown = false;
         OfflinePackRegion forcedRegion;

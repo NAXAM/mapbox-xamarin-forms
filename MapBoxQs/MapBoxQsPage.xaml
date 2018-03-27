@@ -2,9 +2,123 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
+    xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
+    xmlns:local="clr-namespace:MapBoxQs"
     x:Class="MapBoxQs.MapBoxQsPage">
-    <StackLayout
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style
+                TargetType="Button">
+                <Setter
+                    Property="FontSize"
+                    Value="14" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="40" />
+            <RowDefinition
+                Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Top tools -->
+        <ScrollView
+            Orientation="Horizontal">
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Center">
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.CustomLocation}"
+                    Text="Change location" />
+                <Button
+                    Command="{Binding ShowStylePickerCommand}"
+                    Text="Change style" />
+                <Button
+                    Command="{Binding ShowCameraToolsCommand}"
+                    Text="Change camera" />
+                <Button
+                    Command="{Binding ShowOfflineToolsCommand}"
+                    Text="Offline storage" />
+            </StackLayout>
+        </ScrollView>
+        <!-- Main -->
+        <controls:MapView
+            Grid.Row="1"
+            Center="{Binding CenterLocation, Mode=OneWayToSource}"
+            VerticalOptions="FillAndExpand"
+            MapStyle="{Binding CurrentMapStyle}"
+            ReloadStyleAction="{Binding ReloadStyleAction}"
+            ZoomLevel="{Binding ZoomLevel}"
+            ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
+            UpdateViewPortAction="{Binding UpdateViewPortAction}"
+            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}">
+            <controls:MapView.Center>
+                <controls:Position
+                    Lat="21.028511"
+                    Long="105.804817" />
+            </controls:MapView.Center>
+        </controls:MapView>
+        <!-- Location input -->
+        <Grid
+            Grid.Row="1"
+            IsVisible="false"
+            HeightRequest="40"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            Padding="8,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label
+                Text="Latitude:"
+                VerticalTextAlignment="Center" />
+            <Entry
+                Grid.Column="1"
+                Text="{Binding CustomLatitude}"
+                Keyboard="Numeric"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                FontSize="14" />
+            <Label
+                Grid.Column="2"
+                Text="Longitude:"
+                VerticalTextAlignment="Center" />
+            <Entry
+                Grid.Column="3"
+                Text="{Binding CustomLongitude}"
+                Keyboard="Numeric"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                FontSize="14" />
+            <Button
+                Grid.Column="4"
+                Text="Apply"
+                Command="{Binding ChangeLocationCommand}"
+                VerticalOptions="Center" />
+            <Grid.Triggers>
+                <DataTrigger
+                    TargetType="Grid"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.CustomLocation}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
+                </DataTrigger>
+            </Grid.Triggers>
+        </Grid>
+    </Grid>
+    <!--    <StackLayout
         Orientation="Vertical">
         <Grid
             Margin="20"
@@ -37,10 +151,9 @@
                 CommandParameter="{x:Int32 -1}"
                 Text="Zoom out"
                 Grid.Row="1"
-                Grid.Column="1" />
-
-            <!-- Offline -->
-            <Button
+                Grid.Column="1" /> -->
+    <!-- Offline -->
+    <!-- <Button
                 Grid.Row="2"
                 Grid.Column="0"
                 Command="{Binding DownloadCommand}"
@@ -56,7 +169,6 @@
                 Command="{Binding ClearOfflinePacksCommand}"
                 Text="Clear"/>
         </Grid>
-<!--                    DidFinishRenderingCommand="{Binding DidFinishRenderingCommand}"-->
 
         <local:MapView
             x:Name="map"
@@ -72,5 +184,5 @@
                 <local:Position Lat="55.75719563" Long="8.93032908" />
             </local:MapView.Center>
         </local:MapView>
-    </StackLayout>
+    </StackLayout>-->
 </ContentPage>
