@@ -94,8 +94,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //map.ResetNorth();
                 //map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
             };
-
-
             Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) =>
             {
                 if (!string.IsNullOrEmpty(layerId))
@@ -183,6 +181,19 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 					map.MoveCamera(update, callback);
 				}
             };
+
+            Element.GetStyleImageFunc += GetStyleImage;
+        }
+
+        private byte[] GetStyleImage(string imageName)
+        {
+            var img = map.GetImage(imageName);
+            if (img != null) {
+                var stream = new MemoryStream();
+                img.Compress(Bitmap.CompressFormat.Png, 100, stream);
+                return stream.ToArray();
+            }
+            return null;
         }
 
         byte[] TakeMapSnapshot()
@@ -705,7 +716,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void OnMapReady(MapboxMap p0)
         {
             map = p0;
-
             map.MyLocationEnabled = true;
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;

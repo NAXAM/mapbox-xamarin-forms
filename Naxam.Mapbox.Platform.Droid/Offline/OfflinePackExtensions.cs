@@ -1,4 +1,7 @@
-﻿using Com.Mapbox.Mapboxsdk.Offline;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Com.Mapbox.Mapboxsdk.Offline;
 using Naxam.Controls.Mapbox.Forms;
 
 namespace Naxam.Mapbox.Platform.Droid.Offline
@@ -16,20 +19,15 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             if (definition is OfflineTilePyramidRegionDefinition def) {
                 output.Region = def.ToFormsRegion();
             }
+            if (mbRegion.GetMetadata() is byte[] metadata) {
+                var mStream = new MemoryStream();
+                var binFormatter = new BinaryFormatter();
 
-            //var mbRegion = mbPack.Region;
-            //var region = ObjCRuntime.Runtime.GetINativeObject<MGLTilePyramidOfflineRegion>(mbRegion.Handle, false);
-            //output.Region = region?.ToFormsRegion();
-            //if (mbPack.Context != null)
-            //{
-            //    var info = new Dictionary<string, string>();
-            //    NSDictionary userInfo = NSKeyedUnarchiver.UnarchiveObject(mbPack.Context) as NSDictionary;
-            //    foreach (NSObject key in userInfo.Keys)
-            //    {
-            //        info.Add(key.ToString(), userInfo[key].ToString());
-            //    }
-            //    output.Info = info;
-            //}
+                mStream.Write(metadata, 0, metadata.Length);
+                mStream.Position = 0;
+
+                output.Info = binFormatter.Deserialize(mStream) as Dictionary<string, string>;
+            }
             return output;
         }
 

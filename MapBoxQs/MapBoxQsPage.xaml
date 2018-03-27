@@ -49,6 +49,7 @@
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            ShowUserLocation="true"
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
             VerticalOptions="FillAndExpand"
             MapStyle="{Binding CurrentMapStyle}"
