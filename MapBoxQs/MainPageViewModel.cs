@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Naxam.Controls.Mapbox.Forms;
 using Xamarin.Forms;
@@ -252,5 +253,159 @@ namespace MapBoxQs
                 System.Diagnostics.Debug.WriteLine("Download completed");
             }
         }
+
+        private MapTools _ShowingTool = MapTools.None;
+        public MapTools ShowingTool
+        {
+            get { return _ShowingTool; }
+            set
+            {
+                if (_ShowingTool != value)
+                {
+                    _ShowingTool = value;
+                    OnPropertyChanged("ShowingTool");
+                }
+            }
+        }
+
+        ICommand _SwitchToolCommand;
+        public ICommand SwitchToolCommand
+        {
+            get { return (_SwitchToolCommand = _SwitchToolCommand ?? new Command<MapTools>(ExecuteSwitchToolCommand, CanExecuteSwitchToolCommand)); }
+        }
+        bool CanExecuteSwitchToolCommand(MapTools obj) { return true; }
+        void ExecuteSwitchToolCommand(MapTools obj)
+        {
+            if (ShowingTool == obj)
+            {
+                ShowingTool = MapTools.None;
+                return;
+            }
+            if (obj == MapTools.CustomLocation)
+            {
+                if (CenterLocation != null
+                    && (Math.Abs(CenterLocation.Lat - positions[0].Lat) > 0.01)
+                    || Math.Abs(CenterLocation.Long - positions[0].Long) > 0.01)
+                {
+                    CustomLatitude = positions[0].Lat.ToString();
+                    CustomLongitude = positions[0].Long.ToString();
+                }
+                else
+                {
+                    CustomLatitude = positions[1].Lat.ToString();
+                    CustomLongitude = positions[1].Long.ToString();
+                }
+            }
+            ShowingTool = obj;
+        }
+
+        #region Custom locations
+        Position[] positions = new[] {
+             new Position {
+              Lat = 21.0333,
+              Long = 105.8500
+                     },
+              new Position {
+                            Lat = 55.75719563,
+                            Long = 8.93032908
+              }
+         };
+
+        private string _CustomLatitude;
+        public string CustomLatitude
+        {
+            get { return _CustomLatitude; }
+            set
+            {
+                if (_CustomLatitude != value)
+                {
+                    _CustomLatitude = value;
+                    OnPropertyChanged("CustomLatitude");
+                }
+            }
+        }
+
+        private string _CustomLongitude;
+        public string CustomLongitude
+        {
+            get { return _CustomLongitude; }
+            set
+            {
+                if (_CustomLongitude != value)
+                {
+                    _CustomLongitude = value;
+                    OnPropertyChanged("CustomLongitude");
+                }
+            }
+        }
+
+        ICommand _ChangeLocationCommand;
+        public ICommand ChangeLocationCommand
+        {
+            get { return (_ChangeLocationCommand = _ChangeLocationCommand ?? new Command<object>(ExecuteChangeLocationCommand, CanExecuteChangeLocationCommand)); }
+        }
+        bool CanExecuteChangeLocationCommand(object obj) { return true; }
+        void ExecuteChangeLocationCommand(object obj)
+        {
+            if (double.TryParse(CustomLatitude, out double lat)
+                && double.TryParse(CustomLongitude, out double lon))
+            {
+                UpdateViewPortAction?.Invoke(new Position(lat, lon), null, null, true, null);
+            }
+        }
+        #endregion
+
+        #region Styles
+        public Action ReloadStyleAction
+        {
+            get;
+            set;
+        }
+
+        private MapStyle[] Styles
+        {
+            get;
+            set;
+        }
+
+        ICommand _ShowStylePickerCommand;
+        public ICommand ShowStylePickerCommand
+        {
+            get { return (_ShowStylePickerCommand = _ShowStylePickerCommand ?? new Command<object>(ExecuteShowStylePickerCommand, CanExecuteShowStylePickerCommand)); }
+        }
+        bool CanExecuteShowStylePickerCommand(object obj) { return true; }
+        async void ExecuteShowStylePickerCommand(object obj) {
+            if (Styles == null) {
+                if (false == await GetAllStyles()) {
+                    return;
+                }
+            }
+            var buttons = Styles.Select((arg) => arg.Name).ToArray();
+            //var choice = await UserDialogs.Instance.ActionSheetAsync("Change style", "Cancel", "Reload current style", buttons: buttons);
+            //if (choice == "Reload current style") {
+            //    ReloadStyleAction?.Invoke();
+            //}
+            //else if (buttons.Contains(choice)) {
+            //    CurrentMapStyle = Styles.FirstOrDefault((arg) => arg.Name == choice);
+            //}
+        }
+
+        private async Task<bool> GetAllStyles() {
+            //UserDialogs.Instance.ShowLoading();
+            try {
+                Styles = await MBService.GetAllStyles();
+                //UserDialogs.Instance.HideLoading();
+                return Styles != null;
+            }
+            catch (Exception ex) {
+                //UserDialogs.Instance.HideLoading();
+                //await UserDialogs.Instance.AlertAsync(ex.Message);
+                return false;
+            }
+        }
+
+
+        #endregion
+
     }
 }
