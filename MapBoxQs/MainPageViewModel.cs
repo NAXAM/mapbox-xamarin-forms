@@ -178,7 +178,7 @@ namespace MapBoxQs
             }
         }
 
-        private void DownloadMap(object obj)
+        private async void DownloadMap(object obj)
         {
             if (offlineService != null)
             {
@@ -201,10 +201,11 @@ namespace MapBoxQs
                         }
                     }
                 };
-
-                offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
+                UserDialogs.Instance.ShowLoading();
+                await offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
                     {"name", "test"}
                 });
+                UserDialogs.Instance.HideLoading();
             }
 
         }

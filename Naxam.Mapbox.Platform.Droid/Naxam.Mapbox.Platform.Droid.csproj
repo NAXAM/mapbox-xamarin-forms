@@ -192,6 +192,11 @@
     <Compile Include="Extensions\FeatureExtensions.cs" />
     <Compile Include="Extensions\PositionExtensions.cs" />
     <Compile Include="CancelableCallback.cs" />
+    <Compile Include="Offline\OfflineStorageService.cs" />
+    <Compile Include="Offline\CreateOfflineRegionCallback.cs" />
+    <Compile Include="Offline\OfflinePackExtensions.cs" />
+    <Compile Include="Offline\ListOfflineRegionsCallback.cs" />
+    <Compile Include="Offline\OfflineRegionDeleteCallback.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -203,6 +208,7 @@
   <ItemGroup />
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Offline\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

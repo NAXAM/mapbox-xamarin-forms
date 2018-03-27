@@ -40,7 +40,8 @@
                     CommandParameter="{x:Static local:MapTools.Camera}"
                     Text="Change camera" />
                 <Button
-                    Command="{Binding ShowOfflineToolsCommand}"
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Offline}"
                     Text="Offline storage" />
             </StackLayout>
         </ScrollView>
@@ -137,14 +138,12 @@
                     Command="{Binding ZoomCommand}"
                     CommandParameter="{x:Int32 1}"
                     Text="Zoom in"
-                    VerticalOptions="FillAndExpand"
-                />
+                    VerticalOptions="FillAndExpand" />
                 <Button
                     Command="{Binding ZoomCommand}"
                     CommandParameter="{x:Int32 -1}"
-                    Text="Zoom out" 
-                    VerticalOptions="FillAndExpand"
-                />
+                    Text="Zoom out"
+                    VerticalOptions="FillAndExpand" />
             </StackLayout>
             <!-- Rotate -->
             <StackLayout
@@ -217,72 +216,43 @@
                 </DataTrigger>
             </StackLayout.Triggers>
         </StackLayout>
-    </Grid>
-    <!--    <StackLayout
-        Orientation="Vertical">
+        <!-- Offline -->
         <Grid
-            Margin="20"
-            VerticalOptions="Start">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="40"/>
-            </Grid.RowDefinitions>
+            Grid.Row="1"
+            IsVisible="false"
+            HeightRequest="40"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            Padding="8,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+            </Grid.ColumnDefinitions>
             <Button
-                x:Name="btnChangeLocation"
-                Text="Change location"
-                Grid.Column="0" />
-            <Button
-                Clicked="ReloadStyle"
-                Text="Reload Style"
-                Grid.Column="1" />
-            <Button
-                Clicked="ShowStylesPicker"
-                Text="Change style"
-                Grid.Column="2" />
-            <Button
-                Command="{Binding ZoomCommand}"
-                CommandParameter="{x:Int32 1}"
-                Text="Zoom in"
-                Grid.Row="1"
-                Grid.Column="0" />
-            <Button
-                Command="{Binding ZoomCommand}"
-                CommandParameter="{x:Int32 -1}"
-                Text="Zoom out"
-                Grid.Row="1"
-                Grid.Column="1" /> -->
-    <!-- Offline -->
-    <!-- <Button
-                Grid.Row="2"
-                Grid.Column="0"
-                Command="{Binding DownloadCommand}"
-                Text="Download"/>
-            <Button
-                Grid.Row="2"
+                Text="Download"
+                Command="{Binding DownloadCommand}" />
+             <Button
                 Grid.Column="1"
                 Command="{Binding LoadOfflinePackCommand}"
                 Text="Load"/>
             <Button
-                Grid.Row="2"
                 Grid.Column="2"
                 Command="{Binding ClearOfflinePacksCommand}"
                 Text="Clear"/>
+            <Grid.Triggers>
+                <DataTrigger
+                    TargetType="Grid"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Offline}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
+                </DataTrigger>
+            </Grid.Triggers>
         </Grid>
-
-        <local:MapView
-            x:Name="map"
-            Center="{Binding CenterLocation, Mode=OneWayToSource}"
-            VerticalOptions="FillAndExpand"
-            MapStyle="{Binding CurrentMapStyle}"
-            ZoomLevel="{Binding ZoomLevel}"
-            ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
-            UpdateViewPortAction="{Binding UpdateViewPortAction}"
-            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
-            >
-            <local:MapView.Center>
-                <local:Position Lat="55.75719563" Long="8.93032908" />
-            </local:MapView.Center>
-        </local:MapView>
-    </StackLayout>-->
+    </Grid>
 </ContentPage>
