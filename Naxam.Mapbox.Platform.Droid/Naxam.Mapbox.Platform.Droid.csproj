@@ -68,15 +68,6 @@
     <Reference Include="Naxam.Jakewharton.Timber">
       <HintPath>..\packages\Naxam.Jakewharton.Timber.4.5.1\lib\MonoAndroid10\Naxam.Jakewharton.Timber.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleGson">
-      <HintPath>..\packages\GoogleGson.2.8.0\lib\MonoAndroid\GoogleGson.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.MapboxJavaCore">
-      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaCore.2.2.9\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.MapboxJavaGeojson">
-      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.2.9\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -173,11 +164,20 @@
     <Reference Include="Xamarin.GooglePlayServices.Location">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Location.42.1021.1\lib\MonoAndroid70\Xamarin.GooglePlayServices.Location.dll</HintPath>
     </Reference>
+    <Reference Include="Naxam.Mapbox.MapboxJavaCore">
+      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaCore.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.MapboxJavaGeojson">
+      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
+    </Reference>
     <Reference Include="Naxam.Mapbox.Services.Android.Telemetry">
-      <HintPath>..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.2.9.3\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
     </Reference>
     <Reference Include="Naxam.Mapbox.Droid">
-      <HintPath>..\packages\Naxam.Mapbox.Droid.5.3.2\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.Droid.5.5.0\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleGson">
+      <HintPath>..\packages\GoogleGson.2.8.1\lib\MonoAndroid\GoogleGson.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

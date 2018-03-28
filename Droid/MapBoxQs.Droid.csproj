@@ -57,20 +57,8 @@
     </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\netstandard1.3\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="Naxam.Mapzen.Lost.Droid">
       <HintPath>..\packages\Naxam.Mapzen.Lost.Droid.3.0.4\lib\MonoAndroid10\Naxam.Mapzen.Lost.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="GoogleGson">
-      <HintPath>..\packages\GoogleGson.2.8.0\lib\MonoAndroid\GoogleGson.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.MapboxJavaCore">
-      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaCore.2.2.9\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.MapboxJavaGeojson">
-      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.2.9\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
     </Reference>
     <Reference Include="Square.OkIO">
       <HintPath>..\packages\Square.OkIO.1.13.0\lib\MonoAndroid\Square.OkIO.dll</HintPath>
@@ -147,12 +135,6 @@
     <Reference Include="Xamarin.GooglePlayServices.Location">
       <HintPath>..\packages\Xamarin.GooglePlayServices.Location.42.1021.1\lib\MonoAndroid70\Xamarin.GooglePlayServices.Location.dll</HintPath>
     </Reference>
-    <Reference Include="Naxam.Mapbox.Services.Android.Telemetry">
-      <HintPath>..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.2.9.3\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
-    </Reference>
-    <Reference Include="Naxam.Mapbox.Droid">
-      <HintPath>..\packages\Naxam.Mapbox.Droid.5.3.2\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="FormsViewGroup">
       <HintPath>..\packages\Xamarin.Forms.2.5.0.280555\lib\MonoAndroid10\FormsViewGroup.dll</HintPath>
     </Reference>
@@ -182,6 +164,24 @@
     </Reference>
     <Reference Include="Acr.UserDialogs.Interface">
       <HintPath>..\packages\Acr.UserDialogs.6.5.1\lib\MonoAndroid10\Acr.UserDialogs.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.MapboxJavaCore">
+      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaCore.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.MapboxJavaGeojson">
+      <HintPath>..\packages\Naxam.Mapbox.MapboxJavaGeojson.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.MapboxJavaGeojson.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Services.Android.Telemetry">
+      <HintPath>..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.5.5.0\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleGson">
+      <HintPath>..\packages\GoogleGson.2.8.1\lib\MonoAndroid\GoogleGson.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
