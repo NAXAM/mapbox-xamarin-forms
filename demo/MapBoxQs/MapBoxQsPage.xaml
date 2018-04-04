@@ -43,6 +43,10 @@
                     Command="{Binding SwitchToolCommand}"
                     CommandParameter="{x:Static local:MapTools.Offline}"
                     Text="Offline storage" />
+                <Button
+                    Command="{Binding TakeSnapshotCommand}"
+                    CommandParameter="{x:Static local:MapTools.None}"
+                    Text="Take Snapshot" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
@@ -59,7 +63,8 @@
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
             Pitch="{Binding Pitch}"
-            RotatedDegree="{Binding RotatedDegree}">
+            RotatedDegree="{Binding RotatedDegree}"
+            TakeSnapshotFunc="{Binding TakeSnapshotFunc}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"

@@ -79,7 +79,6 @@ namespace MapBoxQs
         }
 
         private MapStyle _CurrentMapStyle;
-
         public MapStyle CurrentMapStyle
         {
             get { return _CurrentMapStyle; }
@@ -90,13 +89,11 @@ namespace MapBoxQs
             }
         }
 
-
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
         {
             get;
             set;
         }
-
         public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
         {
             get;
@@ -135,7 +132,6 @@ namespace MapBoxQs
             }
         }
         #endregion
-
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -157,6 +153,18 @@ namespace MapBoxQs
                 _ToggleScaleBarFunc = value;
             }
         }
+
+
+        Func<byte[]> _TakeSnapshotFunc;
+        public Func<byte[]> TakeSnapshotFunc
+        {
+            get => _TakeSnapshotFunc;
+            set
+            {
+                _TakeSnapshotFunc = value;
+                OnPropertyChanged("TakeSnapshotFunc");
+            }
+        } 
 
         private Position _centerLocation;
 
@@ -182,7 +190,6 @@ namespace MapBoxQs
                 OnPropertyChanged("DownloadCommand");
             }
         }
-
         private async void DownloadMap(object obj)
         {
             if (offlineService != null)
@@ -395,8 +402,19 @@ namespace MapBoxQs
                 UpdateViewPortAction?.Invoke(new Position(lat, lon), null, null, true, null);
             }
         }
-        #endregion
 
+        ICommand _TakeSnapshotCommand;
+        public ICommand TakeSnapshotCommand
+        {
+            get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
+        }
+        bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
+        void ExecuteTakeSnapshotCommand(object obj)
+        {
+            var xxx = TakeSnapshotFunc?.Invoke();
+        }
+
+        #endregion
         #region Styles
         public Action ReloadStyleAction
         {
