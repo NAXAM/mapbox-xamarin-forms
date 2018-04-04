@@ -9,7 +9,7 @@ namespace Naxam.Controls.Mapbox.Forms
 {
     public class PositionChangeEventArgs : EventArgs
     {
-        private Position _newPosition;
+        //private Position _newPosition;
 
         public PositionChangeEventArgs(Position newPosition)
         {

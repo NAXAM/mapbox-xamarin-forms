@@ -3,7 +3,7 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Mapbox.Forms</id>
-       <version>1.0.1-pre013</version>
+       <version>1.0.2-pre001</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -21,7 +21,7 @@
             </group>
             <group targetFramework="MonoAndroid10">
                 <dependency id="Newtonsoft.Json" version="10.0.3" />
-                <dependency id="Naxam.Mapbox.Droid" version="5.3.2" />
+                <dependency id="Naxam.Mapbox.Droid" version="5.5.1.1" />
             </group>
             <group targetFramework="Xamarin.iOS10">
                 <dependency id="Naxam.Mapbox.iOS" version="3.7.6" />
