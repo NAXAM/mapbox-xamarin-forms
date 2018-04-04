@@ -155,8 +155,8 @@ namespace MapBoxQs
         }
 
 
-        Func<byte[]> _TakeSnapshotFunc;
-        public Func<byte[]> TakeSnapshotFunc
+        Func<Task<byte[]>> _TakeSnapshotFunc;
+        public Func<Task<byte[]>> TakeSnapshotFunc
         {
             get => _TakeSnapshotFunc;
             set
@@ -409,9 +409,9 @@ namespace MapBoxQs
             get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
         }
         bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
-        void ExecuteTakeSnapshotCommand(object obj)
+        async void ExecuteTakeSnapshotCommand(object obj)
         {
-            var xxx = TakeSnapshotFunc?.Invoke();
+            var xxx = await TakeSnapshotFunc?.Invoke();
         }
 
         #endregion

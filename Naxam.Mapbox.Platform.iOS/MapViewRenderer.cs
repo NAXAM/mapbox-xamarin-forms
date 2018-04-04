@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using Mapbox;
@@ -119,7 +120,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                                                               (nfloat)Element.RotatedDegree);
                 MapView.SetCamera(newCamera, true);
             }
-            else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName) {
+            else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName)
+            {
                 MapView.ShowsUserLocation = Element.ShowUserLocation;
             }
         }
@@ -280,17 +282,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         protected void SetupFunctions()
         {
-            Element.TakeSnapshotFunc = () =>
-            {
-                var image = MapView.Capture(true);
-                var imageData = image.AsJPEG();
-                Byte[] imgByteArray = new Byte[imageData.Length];
-                System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
-                                                            imgByteArray,
-                                                            0,
-                                                            Convert.ToInt32(imageData.Length));
-                return imgByteArray;
-            };
+            Element.TakeSnapshotFunc += TakeMapSnapshot;
 
             Element.GetFeaturesAroundPointFunc = GetFeaturesArroundPoint;
 
@@ -461,6 +453,21 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             };
         }
 
+        Task<byte[]> TakeMapSnapshot()
+        {
+            var tcs = new TaskCompletionSource<byte[]>();
+            var image = MapView.Capture(true);
+            var imageData = image.AsJPEG();
+            Byte[] imgByteArray = new Byte[imageData.Length];
+            System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
+                                                        imgByteArray,
+                                                        0,
+                                                        Convert.ToInt32(imageData.Length));
+
+            tcs.TrySetResult(imgByteArray);
+            return tcs.Task;
+        }
+
         private IFeature[] GetFeaturesArroundPoint(Point point, double radius, string[] layers)
         {
             var selectableLayers = SelectableLayersFromSources(layers);
@@ -514,7 +521,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     NSArray coorArr = null;
                     if (geoData.TryGetValue((NSString)"geometry", out NSObject geometryObj)
                         && geometryObj is NSDictionary geometry
-                        && geometry.TryGetValue((NSString)"coordinates", out NSObject coordinates)) {
+                        && geometry.TryGetValue((NSString)"coordinates", out NSObject coordinates))
+                    {
                         coorArr = coordinates as NSArray;
                     }
                     if (feature is MGLPolylineFeature)
@@ -637,7 +645,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 foreach (NSObject curAnnot in currentAnnotations)
                 {
-                    if (curAnnot is MGLShape shape) 
+                    if (curAnnot is MGLShape shape)
                     {
                         if (string.IsNullOrEmpty(shape.Id()))
                         {
@@ -1223,7 +1231,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             foreach (NSString key in fromDict.Keys)
             {
                 var value = fromDict[key];
-                switch (value) {
+                switch (value)
+                {
                     case NSString str:
                         if (str == "<NULL>")
                         {
