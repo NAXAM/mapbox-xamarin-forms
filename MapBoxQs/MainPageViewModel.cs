@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,6 +70,10 @@ namespace MapBoxQs
                 System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
                 if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
                     System.Diagnostics.Debug.WriteLine("Download completed");
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UserDialogs.Instance.HideLoading();
+                    });
                 }
             };
         }
@@ -192,25 +197,27 @@ namespace MapBoxQs
                         NorthEast = new Position()
                         {
                             Lat = CenterLocation.Lat - 0.01,
-                            Long = CenterLocation.Long + 0.01
+                            Long = CenterLocation.Long + 0.005
                         },
                         SouthWest = new Position()
                         {
                             Lat = CenterLocation.Lat + 0.01,
-                            Long = CenterLocation.Long - 0.01
+                            Long = CenterLocation.Long - 0.005
                         }
                     }
                 };
                 UserDialogs.Instance.ShowLoading();
                 var pack = await offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
-                    {"name", "test"}
+                    {"name", "test"},
+                    {"started_at", DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")}
                 });
                 if (pack != null) {
                     offlineService.RequestPackProgress(pack);
                 }
-                UserDialogs.Instance.HideLoading();
+                else {
+                    UserDialogs.Instance.HideLoading();
+                }
             }
-
         }
 
         private ICommand _ClearOfflinePacksCommand;
@@ -250,12 +257,27 @@ namespace MapBoxQs
         private async void LoadOfflinePack(object obj)
         {
             var packs = await offlineService.GetPacks();
-            if (packs?.FirstOrDefault() is OfflinePack pack)
-            {
-                forcedRegion = pack.Region;
-                CurrentMapStyle = new MapStyle(pack.Region.StyleURL);
-            }
+            if (packs != null && packs.Length != 0) {
+                var buttons = new List<string>();
+                foreach (OfflinePack pack in packs) {
+                    if (pack.Info != null 
+                        && pack.Info.TryGetValue("name", out string name)
+                        && pack.Info.TryGetValue("started_at", out string startTime)) {
+                        buttons.Add(name + " - " + startTime);
+                    }
+                }
+                var chosen = await UserDialogs.Instance.ActionSheetAsync("Load offline pack", "Cancel", null, null, buttons.ToArray());
+                var chosenIndex = buttons.IndexOf(chosen);
+                if (chosenIndex >= 0 && chosenIndex < packs.Length) {
+                    var chosenPack = packs[chosenIndex];
+                    forcedRegion = chosenPack.Region;
+                    CurrentMapStyle = new MapStyle(chosenPack.Region.StyleURL);
 
+                }
+            }
+            else {
+                await UserDialogs.Instance.AlertAsync("There's no offline pack to load");
+            }
         }
 
 

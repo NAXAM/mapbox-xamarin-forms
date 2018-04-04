@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Offline;
+using GoogleGson;
 using Naxam.Controls.Mapbox.Forms;
 using Naxam.Mapbox.Platform.Droid.Offline;
 
@@ -14,6 +13,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public class OfflineStorageService : IOfflineStorageService
     {
+        internal static string JSON_CHARSET = "UTF-8";
+
         OfflineManager offlineManager;
         List<TaskCompletionSource<OfflinePack>> RunningTasks;
 
@@ -45,31 +46,40 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             byte[] metadata = null;
             if (packInfo != null)
             {
-                var binFormatter = new BinaryFormatter();
-                var mStream = new MemoryStream();
-                binFormatter.Serialize(mStream, packInfo);
-                metadata = mStream.ToArray();
-            }
-            using (var callback = new CreateOfflineRegionCallback()
-            {
-                OnErrorHandle = ((msg) =>
-                {
-                    System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't create offline pack: " + msg);
-                    tcs.TrySetResult(null);
-                }),
-                OnCreateHandle = ((reg) =>
-                {
-                    reg.SetDownloadState(OfflineRegion.StateActive);
-                    tcs.TrySetResult(reg.ToFormsPack());
-                })
-            }
-                  )
-            {
-                offlineManager.CreateOfflineRegion(definition,
-                                              metadata,
-                                                   callback);
+                //var binFormatter = new BinaryFormatter();
+                //var mStream = new MemoryStream();
+                //binFormatter.Serialize(mStream, packInfo);
+                //metadata = mStream.ToArray();
+                try {
+                    JsonObject jsonObject = new JsonObject();
+
+                    foreach (KeyValuePair<string, string> pair in packInfo)
+                    {
+                        jsonObject.AddProperty(pair.Key, pair.Value);
+                    }
+                    var json = new Java.Lang.String(jsonObject.ToString());
+                    metadata = json.GetBytes(JSON_CHARSET);
+                    System.Diagnostics.Debug.WriteLine("Encoding metadata succeeded: " + metadata.Length.ToString());
+                }
+                catch (Exception ex) {
+                    System.Diagnostics.Debug.WriteLine("Failed to encode metadata: " + ex.Message);
+                }
             }
 
+            offlineManager.CreateOfflineRegion(definition,
+                                              metadata,
+                                               new CreateOfflineRegionCallback(
+                                                   (reg) =>
+                                                  {
+                                                      reg.SetDownloadState(OfflineRegion.StateActive);
+                                                      tcs.TrySetResult(reg.ToFormsPack());
+                                                  },
+                                                   (msg) =>
+                                                    {
+                                                        System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't create offline pack: " + msg);
+                                                        tcs.TrySetResult(null);
+                                                    }
+                                                  ));
 
             return tcs.Task;
         }
@@ -77,7 +87,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public Task<OfflinePack[]> GetPacks()
         {
             var tcs = new TaskCompletionSource<OfflinePack[]>();
-            using (var callback = new ListOfflineRegionsCallback()
+            offlineManager.ListOfflineRegions(new ListOfflineRegionsCallback()
             {
                 OnErrorHandle = ((msg) =>
                 {
@@ -89,51 +99,37 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var output = regs.Select((reg) => reg.ToFormsPack());
                     tcs.TrySetResult(output.ToArray());
                 })
-            })
-                return tcs.Task;
+            });
+            return tcs.Task;
         }
 
 
         public Task<bool> RemovePack(OfflinePack pack)
         {
             var tcs = new TaskCompletionSource<bool>();
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferLocalRef);
+            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
             var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
-            using (var callback = new OfflineRegionDeleteCallback()
-            {
-                OnErrorHandle = ((msg) =>
+            if (region == null) {
+                tcs.TrySetResult(false);
+
+            }
+            else region.Delete(new OfflineRegionDeleteCallback(
+                () => tcs.TrySetResult(true),
+                (msg) =>
                 {
                     System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't delete offline pack: " + msg);
                     tcs.TrySetResult(false);
-                }),
-                OnDeleteHandle = () => tcs.TrySetResult(true)
-            })
+                }
+            ));
             return tcs.Task;
         }
 
         public void RequestPackProgress(OfflinePack pack)
         {
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferLocalRef);
+            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
             var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
-            var callback = new OfflineRegionObserver()
-            {
-                OnErrorHandle = (error) =>
-                {
-                    System.Diagnostics.Debug.WriteLine($"[ERROR] {error.Message} {error.Reason}");
-                    OfflinePackGotError?.Invoke(pack,
-                                                new OSSErrorEventArgs()
-                                                {
-                                                    ErrorMessage = error.Message
-                                                });
-                },
-                MapboxTileCountLimitExceededHandle = (maximumCount) => {
-                    MaximumMapboxTilesReached?.Invoke(this, new OSSMaximumMapboxTilesReachedEventArgs()
-                    {
-                        OfflinePack = pack,
-                        MaximumCount = (ulong) maximumCount
-                    });
-                },
-                OnStatusChangedHandle = (status) =>
+            region?.SetObserver(new OfflineRegionObserver(
+                (status) =>
                 {
                     pack.Progress = new OfflinePackProgress()
                     {
@@ -144,33 +140,60 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         CountOfBytesCompleted = (ulong)status.CompletedResourceSize,
                         MaximumResourcesExpected = (ulong)status.RequiredResourceCount
                     };
-                    if (status.IsComplete) {
+                    if (status.IsComplete)
+                    {
                         pack.State = OfflinePackState.Completed;
                     }
-                    else if (status.DownloadState == OfflineRegion.StateActive) {
+                    else if (status.DownloadState == OfflineRegion.StateActive)
+                    {
                         pack.State = OfflinePackState.Active;
                     }
-                    else {
+                    else
+                    {
                         pack.State = OfflinePackState.Inactive;
                     }
-                   
+
                     OfflinePackProgressChanged?.Invoke(this, new OSSEventArgs()
                     {
                         OfflinePack = pack
                     });
+                },
+                (error) =>
+                {
+                    System.Diagnostics.Debug.WriteLine($"[ERROR] {error.Message} {error.Reason}");
+                    OfflinePackGotError?.Invoke(pack,
+                                                new OSSErrorEventArgs()
+                                                {
+                                                    ErrorMessage = error.Message
+                                                });
+                },
+                (maximumCount) =>
+                {
+                    MaximumMapboxTilesReached?.Invoke(this, new OSSMaximumMapboxTilesReachedEventArgs()
+                    {
+                        OfflinePack = pack,
+                        MaximumCount = (ulong)maximumCount
+                    });
                 }
-            };
-            region.SetObserver(callback);
+            ));
         }
 
         public bool Resume(OfflinePack pack)
         {
-            throw new NotImplementedException();
+            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
+            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
+            if (region == null) return false;
+            region.SetDownloadState(OfflineRegion.StateActive);
+            return true;
         }
 
         public bool SuspendPack(OfflinePack pack)
         {
-            throw new NotImplementedException();
+            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
+            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
+            if (region == null) return false;
+            region.SetDownloadState(OfflineRegion.StateInactive);
+            return true;
         }
     }
 }

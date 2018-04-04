@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using Com.Mapbox.Mapboxsdk.Offline;
+using GoogleGson;
+using Java.Lang;
 using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Mapbox.Platform.Droid;
 
 namespace Naxam.Mapbox.Platform.Droid.Offline
 {
@@ -20,13 +21,24 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
                 output.Region = def.ToFormsRegion();
             }
             if (mbRegion.GetMetadata() is byte[] metadata) {
-                var mStream = new MemoryStream();
-                var binFormatter = new BinaryFormatter();
+                String json = new String(metadata, OfflineStorageService.JSON_CHARSET);
 
-                mStream.Write(metadata, 0, metadata.Length);
-                mStream.Position = 0;
-
-                output.Info = binFormatter.Deserialize(mStream) as Dictionary<string, string>;
+                try
+                {
+                    JsonObject jsonObject = (JsonObject)new Gson().FromJson(json.ToString(), Java.Lang.Class.FromType(typeof(JsonObject)));
+                    if (jsonObject != null)
+                    {
+                        var keys = jsonObject.KeySet();
+                        output.Info = new Dictionary<string, string>(keys.Count);
+                        foreach (string key in keys)
+                        {
+                            output.Info.Add(key, jsonObject.Get(key).AsString);
+                        }
+                    }
+                }                
+                catch (Exception ex) {
+                    System.Diagnostics.Debug.WriteLine("Failed to decode offline region metadata: " + ex.Message);
+                }
             }
             return output;
         }

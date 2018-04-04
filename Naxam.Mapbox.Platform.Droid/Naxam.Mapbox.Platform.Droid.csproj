@@ -173,11 +173,14 @@
     <Reference Include="Naxam.Mapbox.Services.Android.Telemetry">
       <HintPath>..\packages\Naxam.Mapbox.Services.Android.Telemetry.2.2.10\lib\MonoAndroid10\Naxam.Mapbox.Services.Android.Telemetry.dll</HintPath>
     </Reference>
-    <Reference Include="Naxam.Mapbox.Droid">
-      <HintPath>..\packages\Naxam.Mapbox.Droid.5.5.0\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleGson">
       <HintPath>..\packages\GoogleGson.2.8.1\lib\MonoAndroid\GoogleGson.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapzen.Droid">
+      <HintPath>..\packages\Naxam.Mapzen.Droid.1.2.1\lib\MonoAndroid10\Naxam.Mapzen.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.Droid">
+      <HintPath>..\packages\Naxam.Mapbox.Droid.5.5.1.1\lib\MonoAndroid10\Naxam.Mapbox.Droid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

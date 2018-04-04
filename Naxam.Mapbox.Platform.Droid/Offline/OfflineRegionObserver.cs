@@ -4,17 +4,22 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
 {
     public class OfflineRegionObserver: Java.Lang.Object, OfflineRegion.IOfflineRegionObserver
     {
-        public OfflineRegionObserver()
+        public OfflineRegionObserver(Action<OfflineRegionStatus> statusHandle, 
+                                     Action<OfflineRegionError>  errorHandle,
+                                     Action<long> tileCountLimitExceededHanle)
         {
+            this.OnStatusChangedHandle = statusHandle;
+            this.OnErrorHandle = errorHandle;
+            this.OnMapboxTileCountLimitExceededHandle = tileCountLimitExceededHanle;
         }
 
-        internal Action<long> MapboxTileCountLimitExceededHandle;
-        internal Action<OfflineRegionError> OnErrorHandle;
-        internal Action<OfflineRegionStatus> OnStatusChangedHandle;
+        internal Action<long> OnMapboxTileCountLimitExceededHandle { get; set; }
+        internal Action<OfflineRegionError> OnErrorHandle { get; set; }
+        internal Action<OfflineRegionStatus> OnStatusChangedHandle { get; set; }
 
         public void MapboxTileCountLimitExceeded(long p0)
         {
-            MapboxTileCountLimitExceededHandle?.Invoke(p0);
+            OnMapboxTileCountLimitExceededHandle?.Invoke(p0);
         }
 
         public void OnError(OfflineRegionError p0)
