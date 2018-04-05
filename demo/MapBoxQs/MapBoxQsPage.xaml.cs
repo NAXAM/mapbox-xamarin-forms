@@ -6,10 +6,10 @@ namespace MapBoxQs
 {
     public partial class MapBoxQsPage : ContentPage
     {
-        MainPageViewModel viewModel = new MainPageViewModel();
 
         public MapBoxQsPage()
         {
+            var viewModel = new MainPageViewModel(Navigation);
             On<iOS>().SetUseSafeArea(true);
             BindingContext = viewModel;
             InitializeComponent();

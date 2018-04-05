@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
@@ -27,16 +28,16 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public static readonly BindableProperty TakeSnapshotFuncProperty = BindableProperty.Create(
             nameof(TakeSnapshotFunc),
-            typeof(Func<byte[]>),
+            typeof(Func<Task<byte[]>>),
             typeof(MapView),
-            default(Func<byte[]>),
+            default(Func<Task<byte[]>>),
             defaultBindingMode: BindingMode.OneWayToSource);
 
-        public Func<byte[]> TakeSnapshotFunc
+        public Func<Task<byte[]>> TakeSnapshotFunc
         {
             get
             {
-                return (Func<byte[]>)GetValue(TakeSnapshotFuncProperty);
+                return (Func<Task<byte[]>>)GetValue(TakeSnapshotFuncProperty);
             }
             set
             {
@@ -44,7 +45,7 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public byte[] TakSnapshot()
+        public Task<byte[]> TakSnapshot()
         {
             return TakeSnapshotFunc?.Invoke();
         }

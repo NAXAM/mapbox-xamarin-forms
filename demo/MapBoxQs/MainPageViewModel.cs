@@ -21,13 +21,14 @@ namespace MapBoxQs
     public class MainPageViewModel : INotifyPropertyChanged
     {
         readonly MapBoxQs.Services.IMapBoxService MBService = new MapBoxQs.Services.MapBoxService();
+        private readonly INavigation navigation;
 
         public event PropertyChangedEventHandler PropertyChanged;
         bool _IsScaleBarShown = false;
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
-        public MainPageViewModel()
+        public MainPageViewModel(INavigation navigation)
         {
             DidFinishRenderingCommand = new Command((obj) =>
             {
@@ -59,7 +60,8 @@ namespace MapBoxQs
 
 
             offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
-            offlineService.OfflinePackProgressChanged += (sender, e) => {
+            offlineService.OfflinePackProgressChanged += (sender, e) =>
+            {
                 var progress = e.OfflinePack.Progress;
                 float percentage = 0;
                 if (progress.CountOfResourcesExpected > 0)
@@ -68,7 +70,8 @@ namespace MapBoxQs
                 }
                 System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
                 System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
-                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
+                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted)
+                {
                     System.Diagnostics.Debug.WriteLine("Download completed");
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -76,10 +79,10 @@ namespace MapBoxQs
                     });
                 }
             };
+            this.navigation = navigation;
         }
 
         private MapStyle _CurrentMapStyle;
-
         public MapStyle CurrentMapStyle
         {
             get { return _CurrentMapStyle; }
@@ -90,13 +93,11 @@ namespace MapBoxQs
             }
         }
 
-
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
         {
             get;
             set;
         }
-
         public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
         {
             get;
@@ -135,7 +136,6 @@ namespace MapBoxQs
             }
         }
         #endregion
-
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -157,6 +157,10 @@ namespace MapBoxQs
                 _ToggleScaleBarFunc = value;
             }
         }
+
+        public Func<Task<byte[]>> TakeSnapshotFunc { get; set; }
+
+        public Func<string, Byte[]> GetStyleImageFunc { get; set; }
 
         private Position _centerLocation;
 
@@ -182,7 +186,6 @@ namespace MapBoxQs
                 OnPropertyChanged("DownloadCommand");
             }
         }
-
         private async void DownloadMap(object obj)
         {
             if (offlineService != null)
@@ -211,10 +214,12 @@ namespace MapBoxQs
                     {"name", "test"},
                     {"started_at", DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")}
                 });
-                if (pack != null) {
+                if (pack != null)
+                {
                     offlineService.RequestPackProgress(pack);
                 }
-                else {
+                else
+                {
                     UserDialogs.Instance.HideLoading();
                 }
             }
@@ -257,25 +262,30 @@ namespace MapBoxQs
         private async void LoadOfflinePack(object obj)
         {
             var packs = await offlineService.GetPacks();
-            if (packs != null && packs.Length != 0) {
+            if (packs != null && packs.Length != 0)
+            {
                 var buttons = new List<string>();
-                foreach (OfflinePack pack in packs) {
-                    if (pack.Info != null 
+                foreach (OfflinePack pack in packs)
+                {
+                    if (pack.Info != null
                         && pack.Info.TryGetValue("name", out string name)
-                        && pack.Info.TryGetValue("started_at", out string startTime)) {
+                        && pack.Info.TryGetValue("started_at", out string startTime))
+                    {
                         buttons.Add(name + " - " + startTime);
                     }
                 }
                 var chosen = await UserDialogs.Instance.ActionSheetAsync("Load offline pack", "Cancel", null, null, buttons.ToArray());
                 var chosenIndex = buttons.IndexOf(chosen);
-                if (chosenIndex >= 0 && chosenIndex < packs.Length) {
+                if (chosenIndex >= 0 && chosenIndex < packs.Length)
+                {
                     var chosenPack = packs[chosenIndex];
                     forcedRegion = chosenPack.Region;
                     CurrentMapStyle = new MapStyle(chosenPack.Region.StyleURL);
 
                 }
             }
-            else {
+            else
+            {
                 await UserDialogs.Instance.AlertAsync("There's no offline pack to load");
             }
         }
@@ -395,8 +405,20 @@ namespace MapBoxQs
                 UpdateViewPortAction?.Invoke(new Position(lat, lon), null, null, true, null);
             }
         }
-        #endregion
 
+        ICommand _TakeSnapshotCommand;
+        public ICommand TakeSnapshotCommand
+        {
+            get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
+        }
+        bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
+        async void ExecuteTakeSnapshotCommand(object obj)
+        {
+            var snapshotResult = await TakeSnapshotFunc?.Invoke();
+            await navigation.PushAsync( new Views.ShowPhotoDialog(snapshotResult));
+        }
+
+        #endregion
         #region Styles
         public Action ReloadStyleAction
         {
