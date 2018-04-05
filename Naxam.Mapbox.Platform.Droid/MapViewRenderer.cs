@@ -205,10 +205,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return null;
         }
 
+        TaskCompletionSource<byte[]> tcs;
         Task<byte[]> TakeMapSnapshot()
         {
             //TODO
-            var tcs = new TaskCompletionSource<byte[]>();
+            if (tcs != null && tcs.Task.IsCompleted == false)
+                return tcs.Task;
+            tcs = new TaskCompletionSource<byte[]>();
 
             map.Snapshot(new SnapshotReadyCallback((bmp) =>
             {

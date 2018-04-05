@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
     xmlns:local="clr-namespace:MapBoxQs"
-    x:Class="MapBoxQs.MapBoxQsPage">
+    x:Class="MapBoxQs.MapBoxQsPage"
+    NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style
@@ -64,7 +65,8 @@
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
             Pitch="{Binding Pitch}"
             RotatedDegree="{Binding RotatedDegree}"
-            TakeSnapshotFunc="{Binding TakeSnapshotFunc}">
+            TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
+            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"

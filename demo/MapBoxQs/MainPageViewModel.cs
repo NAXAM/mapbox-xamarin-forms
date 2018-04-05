@@ -21,13 +21,14 @@ namespace MapBoxQs
     public class MainPageViewModel : INotifyPropertyChanged
     {
         readonly MapBoxQs.Services.IMapBoxService MBService = new MapBoxQs.Services.MapBoxService();
+        private readonly INavigation navigation;
 
         public event PropertyChangedEventHandler PropertyChanged;
         bool _IsScaleBarShown = false;
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
-        public MainPageViewModel()
+        public MainPageViewModel(INavigation navigation)
         {
             DidFinishRenderingCommand = new Command((obj) =>
             {
@@ -59,7 +60,8 @@ namespace MapBoxQs
 
 
             offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
-            offlineService.OfflinePackProgressChanged += (sender, e) => {
+            offlineService.OfflinePackProgressChanged += (sender, e) =>
+            {
                 var progress = e.OfflinePack.Progress;
                 float percentage = 0;
                 if (progress.CountOfResourcesExpected > 0)
@@ -68,7 +70,8 @@ namespace MapBoxQs
                 }
                 System.Diagnostics.Debug.WriteLine($"Downloaded resources: {progress.CountOfResourcesCompleted} ({percentage * 100} %)");
                 System.Diagnostics.Debug.WriteLine($"Downloaded tiles: {progress.CountOfTilesCompleted}");
-                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted) {
+                if (progress.CountOfResourcesExpected == progress.CountOfResourcesCompleted)
+                {
                     System.Diagnostics.Debug.WriteLine("Download completed");
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -76,6 +79,7 @@ namespace MapBoxQs
                     });
                 }
             };
+            this.navigation = navigation;
         }
 
         private MapStyle _CurrentMapStyle;
@@ -154,17 +158,9 @@ namespace MapBoxQs
             }
         }
 
+        public Func<Task<byte[]>> TakeSnapshotFunc { get; set; }
 
-        Func<Task<byte[]>> _TakeSnapshotFunc;
-        public Func<Task<byte[]>> TakeSnapshotFunc
-        {
-            get => _TakeSnapshotFunc;
-            set
-            {
-                _TakeSnapshotFunc = value;
-                OnPropertyChanged("TakeSnapshotFunc");
-            }
-        } 
+        public Func<string, Byte[]> GetStyleImageFunc { get; set; }
 
         private Position _centerLocation;
 
@@ -218,10 +214,12 @@ namespace MapBoxQs
                     {"name", "test"},
                     {"started_at", DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")}
                 });
-                if (pack != null) {
+                if (pack != null)
+                {
                     offlineService.RequestPackProgress(pack);
                 }
-                else {
+                else
+                {
                     UserDialogs.Instance.HideLoading();
                 }
             }
@@ -264,25 +262,30 @@ namespace MapBoxQs
         private async void LoadOfflinePack(object obj)
         {
             var packs = await offlineService.GetPacks();
-            if (packs != null && packs.Length != 0) {
+            if (packs != null && packs.Length != 0)
+            {
                 var buttons = new List<string>();
-                foreach (OfflinePack pack in packs) {
-                    if (pack.Info != null 
+                foreach (OfflinePack pack in packs)
+                {
+                    if (pack.Info != null
                         && pack.Info.TryGetValue("name", out string name)
-                        && pack.Info.TryGetValue("started_at", out string startTime)) {
+                        && pack.Info.TryGetValue("started_at", out string startTime))
+                    {
                         buttons.Add(name + " - " + startTime);
                     }
                 }
                 var chosen = await UserDialogs.Instance.ActionSheetAsync("Load offline pack", "Cancel", null, null, buttons.ToArray());
                 var chosenIndex = buttons.IndexOf(chosen);
-                if (chosenIndex >= 0 && chosenIndex < packs.Length) {
+                if (chosenIndex >= 0 && chosenIndex < packs.Length)
+                {
                     var chosenPack = packs[chosenIndex];
                     forcedRegion = chosenPack.Region;
                     CurrentMapStyle = new MapStyle(chosenPack.Region.StyleURL);
 
                 }
             }
-            else {
+            else
+            {
                 await UserDialogs.Instance.AlertAsync("There's no offline pack to load");
             }
         }
@@ -412,6 +415,7 @@ namespace MapBoxQs
         async void ExecuteTakeSnapshotCommand(object obj)
         {
             var snapshotResult = await TakeSnapshotFunc?.Invoke();
+            await navigation.PushAsync( new Views.ShowPhotoDialog(snapshotResult));
         }
 
         #endregion

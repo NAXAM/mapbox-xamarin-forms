@@ -4,10 +4,10 @@ namespace MapBoxQs
 {
     public partial class MapBoxQsPage : ContentPage
     {
-        MainPageViewModel viewModel = new MainPageViewModel();
 
         public MapBoxQsPage()
         {
+            var viewModel = new MainPageViewModel(Navigation);
             BindingContext = viewModel;
             InitializeComponent();
         }
