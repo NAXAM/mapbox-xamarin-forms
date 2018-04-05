@@ -131,6 +131,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             region?.SetObserver(new OfflineRegionObserver(
                 (status) =>
                 {
+                
                     pack.Progress = new OfflinePackProgress()
                     {
                         CountOfResourcesExpected = (ulong)status.RequiredResourceCount,
@@ -179,7 +180,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         }
 
         public bool Resume(OfflinePack pack)
-        {
+        { 
             var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
             var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
             if (region == null) return false;
