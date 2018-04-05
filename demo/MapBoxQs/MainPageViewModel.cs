@@ -290,7 +290,6 @@ namespace MapBoxQs
             }
         }
 
-
         public void OfflinePackProgressDidChange(OfflinePack pack)
         {
             var expected = (float)pack.Progress.CountOfResourcesExpected;
@@ -351,6 +350,31 @@ namespace MapBoxQs
             ShowingTool = obj;
         }
 
+
+        ICommand _GetStyleImageCommand;
+        public ICommand GetStyleImageCommand
+        {
+            get { return _GetStyleImageCommand = _GetStyleImageCommand ?? new Command<object>(ExecuteGetStyleImageCommand, CanExecuteGetStyleImageCommand); }
+        }
+        bool CanExecuteGetStyleImageCommand(object obj) { return true; }
+        async void ExecuteGetStyleImageCommand(object obj)
+        {
+            var styleImageResult = GetStyleImageFunc?.Invoke("city-small");
+            await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
+        }
+
+        ICommand _TakeSnapshotCommand;
+        public ICommand TakeSnapshotCommand
+        {
+            get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
+        }
+        bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
+        async void ExecuteTakeSnapshotCommand(object obj)
+        {
+            var snapshotResult = await TakeSnapshotFunc?.Invoke();
+            await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
+        }
+
         #region Custom locations
         Position[] positions = new[] {
              new Position {
@@ -404,18 +428,6 @@ namespace MapBoxQs
             {
                 UpdateViewPortAction?.Invoke(new Position(lat, lon), null, null, true, null);
             }
-        }
-
-        ICommand _TakeSnapshotCommand;
-        public ICommand TakeSnapshotCommand
-        {
-            get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
-        }
-        bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
-        async void ExecuteTakeSnapshotCommand(object obj)
-        {
-            var snapshotResult = await TakeSnapshotFunc?.Invoke();
-            await navigation.PushAsync( new Views.ShowPhotoDialog(snapshotResult));
         }
 
         #endregion

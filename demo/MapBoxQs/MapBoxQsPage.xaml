@@ -48,6 +48,10 @@
                     Command="{Binding TakeSnapshotCommand}"
                     CommandParameter="{x:Static local:MapTools.None}"
                     Text="Take Snapshot" />
+                <Button
+                    Command="{Binding GetStyleImageCommand}"
+                    CommandParameter="{x:Static local:MapTools.None}"
+                    Text="Get Style Image" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
