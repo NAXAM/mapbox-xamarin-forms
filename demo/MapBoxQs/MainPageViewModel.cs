@@ -411,7 +411,7 @@ namespace MapBoxQs
         bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
         async void ExecuteTakeSnapshotCommand(object obj)
         {
-            var xxx = await TakeSnapshotFunc?.Invoke();
+            var snapshotResult = await TakeSnapshotFunc?.Invoke();
         }
 
         #endregion
