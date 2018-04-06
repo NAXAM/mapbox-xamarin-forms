@@ -54,9 +54,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
+
                 if (map != null)
                 {
                     RemoveMapEvents();
+                }
+
+                if (e.OldElement.Annotations != null)
+                {
+                    if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection)
+                    {
+                        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                    }
                 }
             }
 
@@ -82,6 +91,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
+                if (Element.Annotations != null)
+                {
+                    AddAnnotations(Element.Annotations.ToArray());
+                    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
+                }
             }
         }
 
@@ -636,9 +653,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
                 if (output?.Item2 is string imgName)
                 {
-                    IconFactory iconFactory = IconFactory.GetInstance(Context);
-                    Icon icon = iconFactory.FromResource(Context.Resources.GetIdentifier(imgName, "drawable", Context.PackageName));
-                    marker.SetIcon(icon);
+                    try
+                    {
+                        IconFactory iconFactory = IconFactory.GetInstance(Context);
+                        Icon icon = iconFactory.FromResource(Context.Resources.GetIdentifier(imgName, "drawable", Context.PackageName));
+                        marker.SetIcon(icon);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
+                    }
                 }
                 options = map.AddMarker(marker);
             }

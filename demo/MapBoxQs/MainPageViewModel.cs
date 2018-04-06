@@ -52,15 +52,13 @@ namespace MapBoxQs
 
         public MainPageViewModel(INavigation navigation)
         {
+
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (_IsScaleBarShown == false && CenterLocation != null)
                 {
                     _IsScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
                     System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
-                    //UpdateViewPortAction?.Invoke(new Position(CenterLocation.Lat + 0.001, CenterLocation.Long + 0.001), 16, null, false, () => {
-                    //	System.Diagnostics.Debug.WriteLine("Did update center location");
-                    //});
                 }
                 if (forcedRegion != null)
                 {
@@ -79,7 +77,6 @@ namespace MapBoxQs
                 }
 
             }, (arg) => true);
-
 
             offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
             offlineService.OfflinePackProgressChanged += (sender, e) =>
@@ -188,7 +185,7 @@ namespace MapBoxQs
 
         Tuple<string, string> GetImageForAnnotation(string annotationId)
         {
-            return new Tuple<string, string>("default_pin", "pin.png");
+            return new Tuple<string, string>("default_pin", "pin");
         }
 
         public Func<string, Byte[]> GetStyleImageFunc { get; set; }
@@ -400,12 +397,15 @@ namespace MapBoxQs
             };
 
             var result = await UserDialogs.Instance.PromptAsync(configs);
-            if (result.Ok && false == string.IsNullOrEmpty(result.Text)) {
+            if (result.Ok && false == string.IsNullOrEmpty(result.Text))
+            {
                 var styleImageResult = GetStyleImageFunc?.Invoke(result.Text);
-                if (styleImageResult == null) {
+                if (styleImageResult == null)
+                {
                     await UserDialogs.Instance.AlertAsync("Image not found!");
                 }
-                else {
+                else
+                {
                     await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
                 }
             }
@@ -635,12 +635,15 @@ namespace MapBoxQs
             get { return (_ToggleCurrentActionCommand = _ToggleCurrentActionCommand ?? new Command<ActionState>(ExecuteToggleCurrentActionCommand, CanExecuteToggleCurrentActionCommand)); }
         }
         bool CanExecuteToggleCurrentActionCommand(ActionState state) { return true; }
-        void ExecuteToggleCurrentActionCommand(ActionState state) {
-            if (CurrentAction != state) {
+        void ExecuteToggleCurrentActionCommand(ActionState state)
+        {
+            if (CurrentAction != state)
+            {
                 CurrentAction = state;
                 Annotations.Clear();
             }
-            else {
+            else
+            {
                 CurrentAction = ActionState.None;
             }
         }
@@ -651,8 +654,11 @@ namespace MapBoxQs
             get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand, CanExecuteDidTapOnMapCommand)); }
         }
         bool CanExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { return true; }
-        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { 
-            if (CurrentAction == ActionState.AddPointAnnotation) {
+        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> obj)
+        {
+            Annotations = Annotations ?? new ObservableCollection<Annotation>();
+            if (CurrentAction == ActionState.AddPointAnnotation)
+            {
                 var annot = new PointAnnotation()
                 {
                     Id = "PointAnnot." + Annotations.Count.ToString(),
@@ -660,8 +666,21 @@ namespace MapBoxQs
                 };
                 annot.Title = annot.Id;
                 Annotations.Add(annot);
+                OnPropertyChanged("Annotations");
             }
         }
+
+        ICommand _ClearAllAnnotation;
+        public ICommand ClearAllAnnotation
+        {
+            get { return _ClearAllAnnotation = _ClearAllAnnotation ?? new Command<object>(ExecuteClearAllAnnotation, CanExecuteClearAllAnnotation); }
+        }
+        bool CanExecuteClearAllAnnotation(object obj) { return true; }
+        void ExecuteClearAllAnnotation(object obj)
+        {
+            Annotations = new ObservableCollection<Annotation>();
+        }
+
         #endregion
     }
 }

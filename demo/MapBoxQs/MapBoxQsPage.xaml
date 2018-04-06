@@ -62,7 +62,7 @@
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
             VerticalOptions="FillAndExpand"
             MapStyle="{Binding CurrentMapStyle}"
-            Annotations="{Binding Annotations}"
+            Annotations="{Binding Annotations,Mode=OneWay}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
@@ -276,6 +276,9 @@
             Orientation="Vertical"
             BackgroundColor="White"
             VerticalOptions="Start">
+            <Button
+                Text="Clear All Annotations"
+                Command="{Binding ClearAllAnnotation}"/>
             <Button
                 Text="Stop adding annotation"
                 Command="{Binding ToggleCurrentActionCommand}"
