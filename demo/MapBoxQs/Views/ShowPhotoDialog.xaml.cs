@@ -1,10 +1,5 @@
-﻿using Rg.Plugins.Popup.Pages;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -20,6 +15,11 @@ namespace MapBoxQs.Views
             Image image = new Image();
             Stream stream = new MemoryStream(data);
             demoImage.Source = ImageSource.FromStream(() => { return stream; });
+        }
+
+        private async void DismissView(object sender, EventArgs e)
+        {
+            await  Navigation?.PopAsync();
         }
     }
 }
