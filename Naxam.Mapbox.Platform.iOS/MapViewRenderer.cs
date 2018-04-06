@@ -75,15 +75,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
             else if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName)
             {
-                if (Element.Annotations != null)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
-                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-                    if (notifyCollection != null)
-                    {
-                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    }
-                }
+                HandleElementAnnotations();
             }
             //else if (e.PropertyName == FormsMap.StyleUrlProperty.PropertyName
             //		 && !string.IsNullOrEmpty(Element.StyleUrl)
@@ -617,7 +609,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void AddAnnotations(Annotation[] annotations)
+        void AddAnnotations(System.Collections.Generic.IEnumerable<Annotation> annotations)
         {
 
             var annots = new List<IMGLAnnotation>();
@@ -1147,7 +1139,21 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
                                                          ).ToArray();
             newStyle.Name = style.Name;
+            HandleElementAnnotations();
             Element.DidFinishLoadingStyleCommand?.Execute(newStyle);
+        }
+
+        void HandleElementAnnotations() {
+            RemoveAllAnnotations();
+            if (Element.Annotations != null)
+            {
+                AddAnnotations(Element.Annotations);
+                var notifyCollection = Element.Annotations as INotifyCollectionChanged;
+                if (notifyCollection != null)
+                {
+                    notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                }
+            }
         }
 
         [Export("mapViewRegionIsChanging:"),]
@@ -1201,11 +1207,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     var image = MapView.DequeueReusableAnnotationImageWithIdentifier(result.Item1);
                     if (image == null)
                     {
-                        var iosImage = new UIImage(result.Item2);
-                        if (iosImage != null)
-                        {
-                            iosImage = iosImage.ImageWithAlignmentRectInsets(new UIEdgeInsets(0, 0, iosImage.Size.Height / 2, 0));
-                            return MGLAnnotationImage.AnnotationImageWithImage(iosImage, result.Item1);
+                        try {
+                            var iosImage = new UIImage(result.Item2);
+                            if (iosImage != null)
+                            {
+                                iosImage = iosImage.ImageWithAlignmentRectInsets(new UIEdgeInsets(0, 0, iosImage.Size.Height / 2, 0));
+                                return MGLAnnotationImage.AnnotationImageWithImage(iosImage, result.Item1);
+                            }
+                        }
+                        catch (Exception ex) {
+                            System.Diagnostics.Debug.WriteLine("Unable to get image: " + result.Item2 + "\n" + ex.Message);
+                            return null;
                         }
                     }
                     return image;

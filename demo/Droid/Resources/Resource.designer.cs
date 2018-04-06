@@ -5247,26 +5247,26 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f02015d
-			public const int avd_hide_password_1 = 2130837853;
-			
 			// aapt resource value: 0x7f02015e
-			public const int avd_hide_password_2 = 2130837854;
+			public const int avd_hide_password_1 = 2130837854;
 			
 			// aapt resource value: 0x7f02015f
-			public const int avd_hide_password_3 = 2130837855;
+			public const int avd_hide_password_2 = 2130837855;
+			
+			// aapt resource value: 0x7f020160
+			public const int avd_hide_password_3 = 2130837856;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020160
-			public const int avd_show_password_1 = 2130837856;
-			
 			// aapt resource value: 0x7f020161
-			public const int avd_show_password_2 = 2130837857;
+			public const int avd_show_password_1 = 2130837857;
 			
 			// aapt resource value: 0x7f020162
-			public const int avd_show_password_3 = 2130837858;
+			public const int avd_show_password_2 = 2130837858;
+			
+			// aapt resource value: 0x7f020163
+			public const int avd_show_password_3 = 2130837859;
 			
 			// aapt resource value: 0x7f020055
 			public const int bg_splash = 2130837589;
@@ -6036,11 +6036,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f020154
 			public const int notification_icon_background = 2130837844;
 			
-			// aapt resource value: 0x7f02015b
-			public const int notification_template_icon_bg = 2130837851;
-			
 			// aapt resource value: 0x7f02015c
-			public const int notification_template_icon_low_bg = 2130837852;
+			public const int notification_template_icon_bg = 2130837852;
+			
+			// aapt resource value: 0x7f02015d
+			public const int notification_template_icon_low_bg = 2130837853;
 			
 			// aapt resource value: 0x7f020155
 			public const int notification_tile_bg = 2130837845;
@@ -6049,16 +6049,19 @@ namespace MapBoxQs.Droid
 			public const int notify_panel_notification_icon_bg = 2130837846;
 			
 			// aapt resource value: 0x7f020157
-			public const int roundedbg = 2130837847;
+			public const int pin = 2130837847;
 			
 			// aapt resource value: 0x7f020158
-			public const int roundedbgdark = 2130837848;
+			public const int roundedbg = 2130837848;
 			
 			// aapt resource value: 0x7f020159
-			public const int tooltip_frame_dark = 2130837849;
+			public const int roundedbgdark = 2130837849;
 			
 			// aapt resource value: 0x7f02015a
-			public const int tooltip_frame_light = 2130837850;
+			public const int tooltip_frame_dark = 2130837850;
+			
+			// aapt resource value: 0x7f02015b
+			public const int tooltip_frame_light = 2130837851;
 			
 			static Drawable()
 			{
@@ -7179,8 +7182,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090036
 			public const int abc_toolbar_collapse_description = 2131296310;
 			
-			// aapt resource value: 0x7f090054
-			public const int app_name = 2131296340;
+			// aapt resource value: 0x7f090053
+			public const int app_name = 2131296339;
 			
 			// aapt resource value: 0x7f090044
 			public const int appbar_scrolling_view_behavior = 2131296324;
@@ -7188,8 +7191,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090045
 			public const int bottom_sheet_behavior = 2131296325;
 			
-			// aapt resource value: 0x7f09004e
-			public const int cancel = 2131296334;
+			// aapt resource value: 0x7f09004d
+			public const int cancel = 2131296333;
 			
 			// aapt resource value: 0x7f090046
 			public const int character_counter_pattern = 2131296326;
@@ -7245,8 +7248,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090010
 			public const int common_signin_button_text_long = 2131296272;
 			
-			// aapt resource value: 0x7f09004d
-			public const int library_name = 2131296333;
+			// aapt resource value: 0x7f090054
+			public const int library_name = 2131296340;
 			
 			// aapt resource value: 0x7f090060
 			public const int mapbox_attributionErrorNoBrowser = 2131296352;
@@ -7377,14 +7380,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090025
 			public const int mr_user_route_category_name = 2131296293;
 			
+			// aapt resource value: 0x7f090050
+			public const int mz_attribution = 2131296336;
+			
 			// aapt resource value: 0x7f090051
-			public const int mz_attribution = 2131296337;
+			public const int mz_find_me = 2131296337;
 			
-			// aapt resource value: 0x7f090052
-			public const int mz_find_me = 2131296338;
-			
-			// aapt resource value: 0x7f09004f
-			public const int ok = 2131296335;
+			// aapt resource value: 0x7f09004e
+			public const int ok = 2131296334;
 			
 			// aapt resource value: 0x7f090047
 			public const int password_toggle_content_description = 2131296327;
@@ -7404,14 +7407,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090037
 			public const int search_menu_title = 2131296311;
 			
-			// aapt resource value: 0x7f090050
-			public const int settings_alert_title = 2131296336;
+			// aapt resource value: 0x7f09004f
+			public const int settings_alert_title = 2131296335;
 			
 			// aapt resource value: 0x7f09004c
 			public const int status_bar_notification_info_overflow = 2131296332;
 			
-			// aapt resource value: 0x7f090053
-			public const int tangram_version = 2131296339;
+			// aapt resource value: 0x7f090052
+			public const int tangram_version = 2131296338;
 			
 			static String()
 			{

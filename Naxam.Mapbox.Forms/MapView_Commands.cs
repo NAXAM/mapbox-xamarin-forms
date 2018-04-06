@@ -50,6 +50,7 @@ namespace Naxam.Controls.Mapbox.Forms
             return TakeSnapshotFunc?.Invoke();
         }
 
+
         public static readonly BindableProperty GetFeaturesAroundPointFuncProperty = BindableProperty.Create(
             nameof(GetFeaturesAroundPointFunc),
             typeof(Func<Point, double, string[], IFeature[]>),
@@ -281,7 +282,6 @@ namespace Naxam.Controls.Mapbox.Forms
             defaultValue: default(Func<string, bool, StyleLayer>),
             defaultBindingMode: BindingMode.OneWayToSource
         );
-
 
         public Func<string, bool, StyleLayer> GetStyleLayerFunc
         {

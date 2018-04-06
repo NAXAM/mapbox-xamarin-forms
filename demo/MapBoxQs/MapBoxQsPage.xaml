@@ -45,9 +45,13 @@
                     CommandParameter="{x:Static local:MapTools.Offline}"
                     Text="Offline storage" />
                 <Button
-                    Command="{Binding TakeSnapshotCommand}"
-                    CommandParameter="{x:Static local:MapTools.None}"
-                    Text="Take Snapshot" />
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Annotations}"
+                    Text="Annotations" />
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Misc}"
+                    Text="Others" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
@@ -58,6 +62,7 @@
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
             VerticalOptions="FillAndExpand"
             MapStyle="{Binding CurrentMapStyle}"
+            Annotations="{Binding Annotations,Mode=OneWay}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
@@ -66,7 +71,9 @@
             Pitch="{Binding Pitch}"
             RotatedDegree="{Binding RotatedDegree}"
             TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
-            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}">
+            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
+            GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
+            DidTapOnMapCommand="{Binding DidTapOnMapCommand}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -243,14 +250,14 @@
             <Button
                 Text="Download"
                 Command="{Binding DownloadCommand}" />
-             <Button
+            <Button
                 Grid.Column="1"
                 Command="{Binding LoadOfflinePackCommand}"
-                Text="Load"/>
+                Text="Load" />
             <Button
                 Grid.Column="2"
                 Command="{Binding ClearOfflinePacksCommand}"
-                Text="Clear"/>
+                Text="Clear" />
             <Grid.Triggers>
                 <DataTrigger
                     TargetType="Grid"
@@ -262,5 +269,98 @@
                 </DataTrigger>
             </Grid.Triggers>
         </Grid>
+        <!-- Annotations tool -->
+        <StackLayout
+            Grid.Row="1"
+            IsVisible="false"
+            Orientation="Vertical"
+            BackgroundColor="White"
+            VerticalOptions="Start">
+            <Button
+                Text="Clear All Annotations"
+                Command="{Binding ClearAllAnnotation}"/>
+            <Button
+                Text="Stop adding annotation"
+                Command="{Binding ToggleCurrentActionCommand}"
+                CommandParameter="{x:Static local:ActionState.AddPointAnnotation}">
+                <Button.Triggers>
+                    <DataTrigger
+                        TargetType="Button"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.None}">
+                        <Setter
+                            Property="Text"
+                            Value="Start adding point annotation" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button
+                Text="Add polyline" />
+            
+            <Label>
+                <Label.Triggers>
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.None}">
+                        <Setter
+                            Property="IsVisible"
+                            Value="False" />
+                    </DataTrigger>
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.AddPointAnnotation}">
+                        <Setter
+                            Property="Text"
+                            Value="Tap on map to add point annotation" />
+                    </DataTrigger>
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.AddPolyline}">
+                        <Setter
+                            Property="Text"
+                            Value="Tap on map to add coordinates into polyline" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+            <StackLayout.Triggers>
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Annotations}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
+                </DataTrigger>
+            </StackLayout.Triggers>
+        </StackLayout>
+        <!-- Misc -->
+        <StackLayout
+            Orientation="Vertical"
+            Grid.Row="1"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            IsVisible="false"
+            >
+            <Button
+                Command="{Binding TakeSnapshotCommand}"
+                CommandParameter="{x:Static local:MapTools.None}"
+                Text="Take Snapshot" />
+            <Button
+                Command="{Binding GetStyleImageCommand}"
+                Text="Get Style Image" />
+            <StackLayout.Triggers>
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Misc}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
+                </DataTrigger>
+            </StackLayout.Triggers>
+        </StackLayout>
     </Grid>
 </ContentPage>
