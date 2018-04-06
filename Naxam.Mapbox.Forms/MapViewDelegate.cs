@@ -118,5 +118,10 @@ namespace Naxam.Controls.Mapbox.Forms
             get { return (Func<string, Tuple<string, string>>)GetValue(GetImageForAnnotationFuncProperty); }
             set { SetValue(GetImageForAnnotationFuncProperty, value); }
         }
+
+        //public Tuple<string,string> GetImageForAnnotation(string imName)
+        //{
+        //    return GetImageForAnnotationFunc?.Invoke(imName);
+        //}
     }
 }

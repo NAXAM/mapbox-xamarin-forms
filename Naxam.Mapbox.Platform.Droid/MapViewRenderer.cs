@@ -90,7 +90,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             Element.TakeSnapshotFunc += TakeMapSnapshot;
             Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
-
             Element.ResetPositionAction = () =>
             {
                 //TODO handle reset position call
@@ -274,6 +273,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
+            System.Diagnostics.Debug.WriteLine("MapViewRenderer:" + e.PropertyName);
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
                 if (!ReferenceEquals(Element.Center, currentCamera))
@@ -633,6 +633,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 marker.SetTitle(at.Title);
                 marker.SetSnippet(at.Title);
                 marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
+                var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
+                if (output?.Item2 is string imgName)
+                {
+                    IconFactory iconFactory = IconFactory.GetInstance(Context);
+                    Icon icon = iconFactory.FromResource(Context.Resources.GetIdentifier(imgName, "drawable", Context.PackageName));
+                    marker.SetIcon(icon);
+                }
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)

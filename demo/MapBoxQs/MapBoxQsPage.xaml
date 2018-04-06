@@ -50,8 +50,13 @@
                     Text="Take Snapshot" />
                 <Button
                     Command="{Binding GetStyleImageCommand}"
-                    CommandParameter="{x:Static local:MapTools.None}"
                     Text="Get Style Image" />
+                <Button
+                    Command="{Binding GetImageForAnnotationCommadn}"
+                    Text="Get Image For Annotation" />
+                <Button
+                    Command="{Binding AddMarkerCommand}"
+                    Text="Add Demo Marker" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
@@ -62,6 +67,7 @@
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
             VerticalOptions="FillAndExpand"
             MapStyle="{Binding CurrentMapStyle}"
+            Annotations="{Binding ListMarkers}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
@@ -70,7 +76,8 @@
             Pitch="{Binding Pitch}"
             RotatedDegree="{Binding RotatedDegree}"
             TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
-            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}">
+            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
+            GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc,Mode=OneWayToSource}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"

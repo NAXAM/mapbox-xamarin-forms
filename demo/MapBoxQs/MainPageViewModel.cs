@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,8 +29,22 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
+        private ObservableCollection<Annotation> _ListMarkers;
+
+        public ObservableCollection<Annotation> ListMarkers
+        {
+            get { return _ListMarkers; }
+            set
+            {
+                _ListMarkers = value;
+                OnPropertyChanged("ListMarkers");
+            }
+        }
+
         public MainPageViewModel(INavigation navigation)
         {
+            ListMarkers = new ObservableCollection<Annotation>();
+            ListMarkers.Add(new PointAnnotation { Coordinate = new Position { Lat = 21.028511, Long = 105.804817 } });
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (_IsScaleBarShown == false && CenterLocation != null)
@@ -159,6 +174,7 @@ namespace MapBoxQs
         }
 
         public Func<Task<byte[]>> TakeSnapshotFunc { get; set; }
+        public Func<string, Tuple<string, string>> GetImageForAnnotationFunc { get; set; }
 
         public Func<string, Byte[]> GetStyleImageFunc { get; set; }
 
@@ -373,6 +389,30 @@ namespace MapBoxQs
         {
             var snapshotResult = await TakeSnapshotFunc?.Invoke();
             await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
+        }
+
+        ICommand _GetImageForAnnotationCommadn;
+        public ICommand GetImageForAnnotationCommadn
+        {
+            get { return _GetImageForAnnotationCommadn = _GetImageForAnnotationCommadn ?? new Command<object>(ExecuteGetImageForAnnotationCommadn, CanExecuteGetImageForAnnotationCommadn); }
+        }
+        bool CanExecuteGetImageForAnnotationCommadn(object obj) { return true; }
+        void ExecuteGetImageForAnnotationCommadn(object obj)
+        {
+            GetImageForAnnotationFunc?.Invoke("pin");
+        }
+
+        ICommand _AddMarkerCommand;
+        public ICommand AddMarkerCommand
+        {
+            get { return _AddMarkerCommand = _AddMarkerCommand ?? new Command<object>(ExecuteAddMarkerCommand, CanExecuteAddMarkerCommand); }
+        }
+        bool CanExecuteAddMarkerCommand(object obj) { return true; }
+        void ExecuteAddMarkerCommand(object obj)
+        {
+            var xxx = new ObservableCollection<Annotation>();
+            xxx.Add(new PointAnnotation { Coordinate = new Position { Lat = 21.028511, Long = 105.804817 }, Id = "1", Title = "Ha noi", SubTitle = "Xin chao ha noi" });
+            ListMarkers = xxx;
         }
 
         #region Custom locations
