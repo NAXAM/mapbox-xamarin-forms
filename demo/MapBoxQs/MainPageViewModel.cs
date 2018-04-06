@@ -16,7 +16,16 @@ namespace MapBoxQs
         None,
         CustomLocation,
         Camera,
-        Offline
+        Offline,
+        Annotations,
+        Misc
+    }
+
+    public enum ActionState
+    {
+        None,
+        AddPointAnnotation,
+        AddPolyline
     }
 
     public class MainPageViewModel : INotifyPropertyChanged
@@ -29,22 +38,20 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
-        private ObservableCollection<Annotation> _ListMarkers;
+        private ObservableCollection<Annotation> _Annotations = new ObservableCollection<Annotation>();
 
-        public ObservableCollection<Annotation> ListMarkers
+        public ObservableCollection<Annotation> Annotations
         {
-            get { return _ListMarkers; }
+            get { return _Annotations; }
             set
             {
-                _ListMarkers = value;
-                OnPropertyChanged("ListMarkers");
+                _Annotations = value;
+                OnPropertyChanged("Annotations");
             }
         }
 
         public MainPageViewModel(INavigation navigation)
         {
-            ListMarkers = new ObservableCollection<Annotation>();
-            ListMarkers.Add(new PointAnnotation { Coordinate = new Position { Lat = 21.028511, Long = 105.804817 } });
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (_IsScaleBarShown == false && CenterLocation != null)
@@ -174,7 +181,15 @@ namespace MapBoxQs
         }
 
         public Func<Task<byte[]>> TakeSnapshotFunc { get; set; }
-        public Func<string, Tuple<string, string>> GetImageForAnnotationFunc { get; set; }
+        public Func<string, Tuple<string, string>> GetImageForAnnotationFunc
+        {
+            get => GetImageForAnnotation;
+        }
+
+        Tuple<string, string> GetImageForAnnotation(string annotationId)
+        {
+            return new Tuple<string, string>("default_pin", "pin.png");
+        }
 
         public Func<string, Byte[]> GetStyleImageFunc { get; set; }
 
@@ -375,8 +390,25 @@ namespace MapBoxQs
         bool CanExecuteGetStyleImageCommand(object obj) { return true; }
         async void ExecuteGetStyleImageCommand(object obj)
         {
-            var styleImageResult = GetStyleImageFunc?.Invoke("city-small");
-            await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
+            var configs = new PromptConfig()
+            {
+                Title = "Get an image of the current style",
+                Message = "Please input image name",
+                CancelText = "Cancel",
+                OkText = "Get image",
+                Text = "city-small"
+            };
+
+            var result = await UserDialogs.Instance.PromptAsync(configs);
+            if (result.Ok && false == string.IsNullOrEmpty(result.Text)) {
+                var styleImageResult = GetStyleImageFunc?.Invoke(result.Text);
+                if (styleImageResult == null) {
+                    await UserDialogs.Instance.AlertAsync("Image not found!");
+                }
+                else {
+                    await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
+                }
+            }
         }
 
         ICommand _TakeSnapshotCommand;
@@ -389,30 +421,6 @@ namespace MapBoxQs
         {
             var snapshotResult = await TakeSnapshotFunc?.Invoke();
             await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
-        }
-
-        ICommand _GetImageForAnnotationCommadn;
-        public ICommand GetImageForAnnotationCommadn
-        {
-            get { return _GetImageForAnnotationCommadn = _GetImageForAnnotationCommadn ?? new Command<object>(ExecuteGetImageForAnnotationCommadn, CanExecuteGetImageForAnnotationCommadn); }
-        }
-        bool CanExecuteGetImageForAnnotationCommadn(object obj) { return true; }
-        void ExecuteGetImageForAnnotationCommadn(object obj)
-        {
-            GetImageForAnnotationFunc?.Invoke("pin");
-        }
-
-        ICommand _AddMarkerCommand;
-        public ICommand AddMarkerCommand
-        {
-            get { return _AddMarkerCommand = _AddMarkerCommand ?? new Command<object>(ExecuteAddMarkerCommand, CanExecuteAddMarkerCommand); }
-        }
-        bool CanExecuteAddMarkerCommand(object obj) { return true; }
-        void ExecuteAddMarkerCommand(object obj)
-        {
-            var xxx = new ObservableCollection<Annotation>();
-            xxx.Add(new PointAnnotation { Coordinate = new Position { Lat = 21.028511, Long = 105.804817 }, Id = "1", Title = "Ha noi", SubTitle = "Xin chao ha noi" });
-            ListMarkers = xxx;
         }
 
         #region Custom locations
@@ -591,6 +599,7 @@ namespace MapBoxQs
             }
         }
 
+
         private void TiltMap(int obj)
         {
             if (obj == 0)
@@ -601,6 +610,56 @@ namespace MapBoxQs
             {
                 var newValue = Pitch + obj;
                 Pitch = Math.Max(0, newValue);
+            }
+        }
+        #endregion
+
+        #region Annotations
+        private ActionState _CurrentAction;
+        public ActionState CurrentAction
+        {
+            get { return _CurrentAction; }
+            set
+            {
+                if (_CurrentAction != value)
+                {
+                    _CurrentAction = value;
+                    OnPropertyChanged("CurrentAction");
+                }
+            }
+        }
+
+        ICommand _ToggleCurrentActionCommand;
+        public ICommand ToggleCurrentActionCommand
+        {
+            get { return (_ToggleCurrentActionCommand = _ToggleCurrentActionCommand ?? new Command<ActionState>(ExecuteToggleCurrentActionCommand, CanExecuteToggleCurrentActionCommand)); }
+        }
+        bool CanExecuteToggleCurrentActionCommand(ActionState state) { return true; }
+        void ExecuteToggleCurrentActionCommand(ActionState state) {
+            if (CurrentAction != state) {
+                CurrentAction = state;
+                Annotations.Clear();
+            }
+            else {
+                CurrentAction = ActionState.None;
+            }
+        }
+
+        ICommand _DidTapOnMapCommand;
+        public ICommand DidTapOnMapCommand
+        {
+            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand, CanExecuteDidTapOnMapCommand)); }
+        }
+        bool CanExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { return true; }
+        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { 
+            if (CurrentAction == ActionState.AddPointAnnotation) {
+                var annot = new PointAnnotation()
+                {
+                    Id = "PointAnnot." + Annotations.Count.ToString(),
+                    Coordinate = obj.Item1
+                };
+                annot.Title = annot.Id;
+                Annotations.Add(annot);
             }
         }
         #endregion
