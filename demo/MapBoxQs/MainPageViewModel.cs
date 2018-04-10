@@ -168,6 +168,18 @@ namespace MapBoxQs
             this.navigation = navigation;
 
             ListLayers = new ObservableCollection<Layer>();
+
+            DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
+            {
+                ListLayers = new ObservableCollection<Layer>(style.OriginalLayers);
+            });
+
+        }
+
+        public ICommand DidFinishLoadingStyleCommand
+        {
+            get;
+            set;
         }
 
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
@@ -436,10 +448,6 @@ namespace MapBoxQs
                 }
             }
             ShowingTool = obj;
-            if (obj == MapTools.CurrentStyle)
-            {
-                await GetStyle(CurrentMapStyle.Id);
-            }
         }
 
         #region Custom locations
@@ -554,29 +562,6 @@ namespace MapBoxQs
                 return false;
             }
         }
-
-        private async Task<bool> GetStyle(string styleId)
-        {
-            if (ListLayers.Count() > 0) return true;
-            else
-            {
-                UserDialogs.Instance.ShowLoading();
-                try
-                {
-                    var mapStyleDetail = await MBService.GetStyleDetails(styleId);
-                    ListLayers = new ObservableCollection<Layer>(mapStyleDetail.OriginalLayers);
-                    UserDialogs.Instance.HideLoading();
-                    return Styles.Count() > 0;
-                }
-                catch (Exception ex)
-                {
-                    UserDialogs.Instance.HideLoading();
-                    await UserDialogs.Instance.AlertAsync(ex.Message);
-                    return false;
-                }
-            }
-        }
-
 
         #endregion
         #region Rotation

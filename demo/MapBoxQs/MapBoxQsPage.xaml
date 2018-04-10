@@ -74,7 +74,8 @@
             GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
             GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
             DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
-            GetStyleLayerFunc="{Binding GetStyleLayerFunc}">
+            GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
+            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
