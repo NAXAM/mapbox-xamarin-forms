@@ -54,7 +54,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
-
                 if (map != null)
                 {
                     RemoveMapEvents();
@@ -104,7 +103,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public void SetupFunctions()
         {
-
             Element.TakeSnapshotFunc += TakeMapSnapshot;
             Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
             Element.ResetPositionAction = () =>
@@ -207,6 +205,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             };
 
             Element.GetStyleImageFunc += GetStyleImage;
+
+            Element.GetStyleLayerFunc = GetStyleLayer;
+
         }
 
         private byte[] GetStyleImage(string imageName)
@@ -217,6 +218,40 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 var stream = new MemoryStream();
                 img.Compress(Bitmap.CompressFormat.Png, 100, stream);
                 return stream.ToArray();
+            }
+            return null;
+        }
+
+        private StyleLayer GetStyleLayer(string layerId, bool isCustomLayer)
+        {
+            var layer = map.GetLayer(layerId);
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.BackgroundLayer background)
+            {
+                return background.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.CircleLayer circle)
+            {
+                return circle.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.LineLayer line)
+            {
+                return line.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.FillLayer fill)
+            {
+                return fill.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.SymbolLayer symbol)
+            {
+                return symbol.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.RasterLayer raster)
+            {
+                return raster.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.UnknownLayer unknown)
+            {
+                return null;
             }
             return null;
         }

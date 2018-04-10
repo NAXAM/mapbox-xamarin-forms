@@ -73,7 +73,8 @@
             TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
             GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
             GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
-            DidTapOnMapCommand="{Binding DidTapOnMapCommand}">
+            DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
+            GetStyleLayerFunc="{Binding GetStyleLayerFunc}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -342,8 +343,7 @@
             Grid.Row="1"
             BackgroundColor="White"
             VerticalOptions="Start"
-            IsVisible="false"
-            >
+            IsVisible="false">
             <Button
                 Command="{Binding TakeSnapshotCommand}"
                 CommandParameter="{x:Static local:MapTools.None}"
@@ -351,11 +351,39 @@
             <Button
                 Command="{Binding GetStyleImageCommand}"
                 Text="Get Style Image" />
+            <Button
+                Command="{Binding SwitchToolCommand}"
+                CommandParameter="{x:Static local:MapTools.CurrentStyle}"
+                Text="Get Style Layer" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"
                     Binding="{Binding ShowingTool}"
                     Value="{x:Static local:MapTools.Misc}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
+                </DataTrigger>
+            </StackLayout.Triggers>
+        </StackLayout>
+
+        <StackLayout
+            Orientation="Vertical"
+            Grid.Row="1"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            IsVisible="False">
+            <Picker
+                Title="List Layers"
+                HorizontalOptions="Fill"
+                ItemsSource="{Binding ListLayers}"
+                ItemDisplayBinding="{Binding Id}"
+                SelectedItem="{Binding SelectedLayer}"/>
+            <StackLayout.Triggers>
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.CurrentStyle}">
                     <Setter
                         Property="IsVisible"
                         Value="True" />
