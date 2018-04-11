@@ -75,7 +75,9 @@
             GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
             DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
             GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
-            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}">
+            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
+            SelectAnnotationAction="{Binding SelectAnnotationAction}"
+            DeselectAnnotationAction="{Binding DeselectAnnotationAction}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -297,8 +299,7 @@
                 </Button.Triggers>
             </Button>
             <Button
-                Text="Add polyline" />
-            
+                Text="Add polyline" />            
             <Label>
                 <Label.Triggers>
                     <DataTrigger
@@ -327,6 +328,12 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
+            <Button
+                Command="{Binding SelectAnnotationCommand}"
+                Text="Select Annotation" />
+            <Button
+                Command="{Binding DeselectAnnotationCommand}"
+                Text="Deselect Annotation" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"
@@ -354,7 +361,7 @@
                 Text="Get Style Image" />
             <Button
                 Command="{Binding GetStyleLayerCommand}"
-                Text="Get Style Layer" />
+                Text="Get Style Layer" />            
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"
