@@ -73,7 +73,9 @@
             TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
             GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
             GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
-            DidTapOnMapCommand="{Binding DidTapOnMapCommand}">
+            DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
+            GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
+            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -342,8 +344,7 @@
             Grid.Row="1"
             BackgroundColor="White"
             VerticalOptions="Start"
-            IsVisible="false"
-            >
+            IsVisible="false">
             <Button
                 Command="{Binding TakeSnapshotCommand}"
                 CommandParameter="{x:Static local:MapTools.None}"
@@ -351,6 +352,9 @@
             <Button
                 Command="{Binding GetStyleImageCommand}"
                 Text="Get Style Image" />
+            <Button
+                Command="{Binding GetStyleLayerCommand}"
+                Text="Get Style Layer" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"

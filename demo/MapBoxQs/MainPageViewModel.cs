@@ -50,6 +50,40 @@ namespace MapBoxQs
             }
         }
 
+        #region MapStyle Layer
+        private ObservableCollection<Layer> _ListLayers;
+        public ObservableCollection<Layer> ListLayers
+        {
+            get { return _ListLayers; }
+            set
+            {
+                _ListLayers = value;
+                OnPropertyChanged("ListLayers");
+            }
+        }
+
+        private Layer _SelectedLayer;
+        public Layer SelectedLayer
+        {
+            get { return _SelectedLayer; }
+            set
+            {
+                _SelectedLayer = value;
+                OnPropertyChanged("SelectedLayer");
+            }
+        }
+        #endregion
+        private MapStyle _CurrentMapStyle;
+        public MapStyle CurrentMapStyle
+        {
+            get { return _CurrentMapStyle; }
+            set
+            {
+                _CurrentMapStyle = value;
+                OnPropertyChanged("CurrentMapStyle");
+            }
+        }
+
         public MainPageViewModel(INavigation navigation)
         {
 
@@ -75,6 +109,10 @@ namespace MapBoxQs
                     );
                     forcedRegion = null;
                 }
+                foreach (Layer layer in CurrentMapStyle.OriginalLayers)
+                {
+                    System.Diagnostics.Debug.WriteLine(layer.Id);
+                }
 
             }, (arg) => true);
 
@@ -99,17 +137,20 @@ namespace MapBoxQs
                 }
             };
             this.navigation = navigation;
+
+            ListLayers = new ObservableCollection<Layer>();
+
+            DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
+            {
+                ListLayers = new ObservableCollection<Layer>(style.OriginalLayers);
+            });
+
         }
 
-        private MapStyle _CurrentMapStyle;
-        public MapStyle CurrentMapStyle
+        public ICommand DidFinishLoadingStyleCommand
         {
-            get { return _CurrentMapStyle; }
-            set
-            {
-                _CurrentMapStyle = value;
-                OnPropertyChanged("CurrentMapStyle");
-            }
+            get;
+            set;
         }
 
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
@@ -178,6 +219,7 @@ namespace MapBoxQs
         }
 
         public Func<Task<byte[]>> TakeSnapshotFunc { get; set; }
+        public Func<string, bool, StyleLayer> GetStyleLayerFunc { get; set; }
         public Func<string, Tuple<string, string>> GetImageForAnnotationFunc
         {
             get => GetImageForAnnotation;
@@ -203,6 +245,7 @@ namespace MapBoxQs
         }
 
         public ICommand DidFinishRenderingCommand { get; set; }
+
 
         private ICommand _DownloadCommand;
         public ICommand DownloadCommand
@@ -353,7 +396,7 @@ namespace MapBoxQs
             get { return (_SwitchToolCommand = _SwitchToolCommand ?? new Command<MapTools>(ExecuteSwitchToolCommand, CanExecuteSwitchToolCommand)); }
         }
         bool CanExecuteSwitchToolCommand(MapTools obj) { return true; }
-        void ExecuteSwitchToolCommand(MapTools obj)
+        async void ExecuteSwitchToolCommand(MapTools obj)
         {
             if (ShowingTool == obj)
             {
@@ -376,51 +419,6 @@ namespace MapBoxQs
                 }
             }
             ShowingTool = obj;
-        }
-
-
-        ICommand _GetStyleImageCommand;
-        public ICommand GetStyleImageCommand
-        {
-            get { return _GetStyleImageCommand = _GetStyleImageCommand ?? new Command<object>(ExecuteGetStyleImageCommand, CanExecuteGetStyleImageCommand); }
-        }
-        bool CanExecuteGetStyleImageCommand(object obj) { return true; }
-        async void ExecuteGetStyleImageCommand(object obj)
-        {
-            var configs = new PromptConfig()
-            {
-                Title = "Get an image of the current style",
-                Message = "Please input image name",
-                CancelText = "Cancel",
-                OkText = "Get image",
-                Text = "city-small"
-            };
-
-            var result = await UserDialogs.Instance.PromptAsync(configs);
-            if (result.Ok && false == string.IsNullOrEmpty(result.Text))
-            {
-                var styleImageResult = GetStyleImageFunc?.Invoke(result.Text);
-                if (styleImageResult == null)
-                {
-                    await UserDialogs.Instance.AlertAsync("Image not found!");
-                }
-                else
-                {
-                    await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
-                }
-            }
-        }
-
-        ICommand _TakeSnapshotCommand;
-        public ICommand TakeSnapshotCommand
-        {
-            get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
-        }
-        bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
-        async void ExecuteTakeSnapshotCommand(object obj)
-        {
-            var snapshotResult = await TakeSnapshotFunc?.Invoke();
-            await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
         }
 
         #region Custom locations
@@ -536,7 +534,6 @@ namespace MapBoxQs
             }
         }
 
-
         #endregion
         #region Rotation
         private double _RotatedDegree;
@@ -613,7 +610,6 @@ namespace MapBoxQs
             }
         }
         #endregion
-
         #region Annotations
         private ActionState _CurrentAction;
         public ActionState CurrentAction
@@ -679,6 +675,104 @@ namespace MapBoxQs
         void ExecuteClearAllAnnotation(object obj)
         {
             Annotations = new ObservableCollection<Annotation>();
+        }
+
+        #endregion
+        #region Other
+
+        ICommand _GetStyleImageCommand;
+        public ICommand GetStyleImageCommand
+        {
+            get { return _GetStyleImageCommand = _GetStyleImageCommand ?? new Command<object>(ExecuteGetStyleImageCommand, CanExecuteGetStyleImageCommand); }
+        }
+        bool CanExecuteGetStyleImageCommand(object obj) { return true; }
+        async void ExecuteGetStyleImageCommand(object obj)
+        {
+            var configs = new PromptConfig()
+            {
+                Title = "Get an image of the current style",
+                Message = "Please input image name",
+                CancelText = "Cancel",
+                OkText = "Get image",
+                Text = "city-small"
+            };
+
+            var result = await UserDialogs.Instance.PromptAsync(configs);
+            if (result.Ok && false == string.IsNullOrEmpty(result.Text))
+            {
+                var styleImageResult = GetStyleImageFunc?.Invoke(result.Text);
+                if (styleImageResult == null)
+                {
+                    await UserDialogs.Instance.AlertAsync("Image not found!");
+                }
+                else
+                {
+                    await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
+                }
+            }
+        }
+
+        ICommand _TakeSnapshotCommand;
+        public ICommand TakeSnapshotCommand
+        {
+            get { return _TakeSnapshotCommand = _TakeSnapshotCommand ?? new Command<object>(ExecuteTakeSnapshotCommand, CanExecuteTakeSnapshotCommand); }
+        }
+        bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
+        async void ExecuteTakeSnapshotCommand(object obj)
+        {
+            var snapshotResult = await TakeSnapshotFunc?.Invoke();
+            await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
+        }
+
+        ICommand _GetStyleLayerCommand;
+        public ICommand GetStyleLayerCommand
+        {
+            get { return _GetStyleLayerCommand = _GetStyleLayerCommand ?? new Command<object>(ExecuteGetStyleLayerCommand, CanExecuteGetStyleLayerCommand); }
+        }
+        bool CanExecuteGetStyleLayerCommand(object obj) { return true; }
+        async void ExecuteGetStyleLayerCommand(object obj)
+        {
+            var buttons = ListLayers.Select((arg) => arg.Id).ToArray();
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "", "OK", buttons: buttons);
+            if (choice == "OK")
+            {
+
+            }
+            else if (buttons.Contains(choice))
+            {
+                var layer = GetStyleLayerFunc(choice, false);
+                if (layer is BackgroundLayer background)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + background.Id + "\nType: " + nameof(BackgroundLayer) + "\n" + background.BackgroundColor.ToString(), "Layer Detail");
+                    return;
+                }
+                if (layer is LineLayer line)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + line.Id + "\nType: " + nameof(LineLayer) + "\n" + line.LineColor.ToString(), "Layer Detail");
+                    return;
+                }
+                if (layer is CircleLayer circle)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + circle.Id + "\nType: " + nameof(CircleLayer) + "\n" + circle.CircleColor.ToString(), "Layer Detail");
+                    return;
+                }
+                if (layer is FillLayer fill)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "\nType: " + nameof(FillLayer) + "\n" + fill.FillColor.ToString(), "Layer Detail");
+                    return;
+                }
+                if (layer is RasterStyleLayer raster)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "\nType: " + nameof(RasterStyleLayer) + "\n" + raster.SourceId.ToString(), "Layer Detail");
+                    return;
+                }
+                if (layer is SymbolLayer symbol)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + symbol.Id + "\nType: " + nameof(SymbolLayer) + "\n" + symbol.IconImageName.ToString(), "Layer Detail");
+                    return;
+                }
+                UserDialogs.Instance.Alert("Can not find informations of layer : " + choice, "Layer Detail");
+            }
         }
 
         #endregion

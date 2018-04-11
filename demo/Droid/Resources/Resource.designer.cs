@@ -7248,74 +7248,74 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090010
 			public const int common_signin_button_text_long = 2131296272;
 			
-			// aapt resource value: 0x7f090054
-			public const int library_name = 2131296340;
-			
-			// aapt resource value: 0x7f090060
-			public const int mapbox_attributionErrorNoBrowser = 2131296352;
-			
-			// aapt resource value: 0x7f090055
-			public const int mapbox_attributionTelemetryMessage = 2131296341;
-			
-			// aapt resource value: 0x7f090056
-			public const int mapbox_attributionTelemetryNegative = 2131296342;
-			
-			// aapt resource value: 0x7f090057
-			public const int mapbox_attributionTelemetryNeutral = 2131296343;
-			
-			// aapt resource value: 0x7f090058
-			public const int mapbox_attributionTelemetryPositive = 2131296344;
-			
-			// aapt resource value: 0x7f090059
-			public const int mapbox_attributionTelemetryTitle = 2131296345;
-			
-			// aapt resource value: 0x7f09005a
-			public const int mapbox_attributionsDialogTitle = 2131296346;
-			
-			// aapt resource value: 0x7f09005b
-			public const int mapbox_attributionsIconContentDescription = 2131296347;
-			
-			// aapt resource value: 0x7f09005c
-			public const int mapbox_compassContentDescription = 2131296348;
-			
-			// aapt resource value: 0x7f09005d
-			public const int mapbox_mapActionDescription = 2131296349;
-			
-			// aapt resource value: 0x7f09005e
-			public const int mapbox_myLocationViewContentDescription = 2131296350;
+			// aapt resource value: 0x7f09006a
+			public const int library_name = 2131296362;
 			
 			// aapt resource value: 0x7f09005f
-			public const int mapbox_offline_error_region_definition_invalid = 2131296351;
+			public const int mapbox_attributionErrorNoBrowser = 2131296351;
 			
-			// aapt resource value: 0x7f090062
-			public const int mapbox_style_dark = 2131296354;
+			// aapt resource value: 0x7f090054
+			public const int mapbox_attributionTelemetryMessage = 2131296340;
 			
-			// aapt resource value: 0x7f090063
-			public const int mapbox_style_light = 2131296355;
+			// aapt resource value: 0x7f090055
+			public const int mapbox_attributionTelemetryNegative = 2131296341;
 			
-			// aapt resource value: 0x7f090064
-			public const int mapbox_style_mapbox_streets = 2131296356;
+			// aapt resource value: 0x7f090056
+			public const int mapbox_attributionTelemetryNeutral = 2131296342;
 			
-			// aapt resource value: 0x7f090065
-			public const int mapbox_style_outdoors = 2131296357;
+			// aapt resource value: 0x7f090057
+			public const int mapbox_attributionTelemetryPositive = 2131296343;
 			
-			// aapt resource value: 0x7f090066
-			public const int mapbox_style_satellite = 2131296358;
+			// aapt resource value: 0x7f090058
+			public const int mapbox_attributionTelemetryTitle = 2131296344;
 			
-			// aapt resource value: 0x7f090067
-			public const int mapbox_style_satellite_streets = 2131296359;
+			// aapt resource value: 0x7f090059
+			public const int mapbox_attributionsDialogTitle = 2131296345;
 			
-			// aapt resource value: 0x7f090068
-			public const int mapbox_style_traffic_day = 2131296360;
+			// aapt resource value: 0x7f09005a
+			public const int mapbox_attributionsIconContentDescription = 2131296346;
 			
-			// aapt resource value: 0x7f090069
-			public const int mapbox_style_traffic_night = 2131296361;
+			// aapt resource value: 0x7f09005b
+			public const int mapbox_compassContentDescription = 2131296347;
 			
-			// aapt resource value: 0x7f09006a
-			public const int mapbox_telemetryLink = 2131296362;
+			// aapt resource value: 0x7f09005c
+			public const int mapbox_mapActionDescription = 2131296348;
+			
+			// aapt resource value: 0x7f09005d
+			public const int mapbox_myLocationViewContentDescription = 2131296349;
+			
+			// aapt resource value: 0x7f09005e
+			public const int mapbox_offline_error_region_definition_invalid = 2131296350;
 			
 			// aapt resource value: 0x7f090061
-			public const int mapbox_telemetrySettings = 2131296353;
+			public const int mapbox_style_dark = 2131296353;
+			
+			// aapt resource value: 0x7f090062
+			public const int mapbox_style_light = 2131296354;
+			
+			// aapt resource value: 0x7f090063
+			public const int mapbox_style_mapbox_streets = 2131296355;
+			
+			// aapt resource value: 0x7f090064
+			public const int mapbox_style_outdoors = 2131296356;
+			
+			// aapt resource value: 0x7f090065
+			public const int mapbox_style_satellite = 2131296357;
+			
+			// aapt resource value: 0x7f090066
+			public const int mapbox_style_satellite_streets = 2131296358;
+			
+			// aapt resource value: 0x7f090067
+			public const int mapbox_style_traffic_day = 2131296359;
+			
+			// aapt resource value: 0x7f090068
+			public const int mapbox_style_traffic_night = 2131296360;
+			
+			// aapt resource value: 0x7f090069
+			public const int mapbox_telemetryLink = 2131296361;
+			
+			// aapt resource value: 0x7f090060
+			public const int mapbox_telemetrySettings = 2131296352;
 			
 			// aapt resource value: 0x7f090011
 			public const int mr_button_content_description = 2131296273;

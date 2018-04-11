@@ -42,6 +42,8 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
+        private Layer[] layers;
+
         public MapStyle ()
         {
         }
@@ -115,8 +117,7 @@ namespace Naxam.Controls.Mapbox.Forms
 					typeof(MapStyle),
 					default(Layer[]),
             BindingMode.OneWayToSource);
-
-		public Layer[] OriginalLayers
+        public Layer[] OriginalLayers
 		{
 			get
 			{
