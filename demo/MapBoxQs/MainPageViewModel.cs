@@ -691,10 +691,10 @@ namespace MapBoxQs
             {
                 var annot = new PointAnnotation()
                 {
-                    Id = "PointAnnot." + Annotations.Count.ToString(),
+                    Id = Annotations.Count.ToString(),
                     Coordinate = obj.Item1
                 };
-                annot.Title = annot.Id;
+                annot.Title = "PointAnnot." + annot.Id;
                 Annotations.Add(annot);
                 OnPropertyChanged("Annotations");
             }
@@ -847,7 +847,7 @@ namespace MapBoxQs
                 if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
                 {
                     SelectedAnnotations.Remove(point);
-                    UserDialogs.Instance.Alert("You just deselect marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Deselected Annotation");
+                    UserDialogs.Instance.Alert("You just deselect marker:\nId: " + point.Title + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Deselected Annotation");
                 }
             }
         }
