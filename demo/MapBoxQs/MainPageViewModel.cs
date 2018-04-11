@@ -18,8 +18,7 @@ namespace MapBoxQs
         Camera,
         Offline,
         Annotations,
-        Misc,
-        CurrentStyle
+        Misc
     }
 
     public enum ActionState
@@ -69,34 +68,6 @@ namespace MapBoxQs
             get { return _SelectedLayer; }
             set
             {
-                if (value != null)
-                {
-                    var layer = GetStyleLayerFunc(value.Id, true);
-                    if(layer is BackgroundLayer background)
-                    {
-                        UserDialogs.Instance.Alert("You choose layer: " + background.Id + "  " + background.BackgroundColor.ToString(), "Layer Detail");
-                    }
-                    if (layer is LineLayer line)
-                    {
-                        UserDialogs.Instance.Alert("You choose layer: " + line.Id + "  " + line.LineColor.ToString(), "Layer Detail");
-                    }
-                    if (layer is CircleLayer circle)
-                    {
-                        UserDialogs.Instance.Alert("You choose layer: " + circle.Id + "  " + circle.CircleColor.ToString(), "Layer Detail");
-                    }
-                    if (layer is FillLayer fill)
-                    {
-                        UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "  " + fill.FillColor.ToString(), "Layer Detail");
-                    }
-                    if (layer is RasterStyleLayer raster)
-                    {
-                        UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "  " + raster.SourceId.ToString(), "Layer Detail");
-                    }
-                    if (layer is SymbolLayer symbol)
-                    {
-                        UserDialogs.Instance.Alert("You choose layer: " + symbol.Id + "  " + symbol.IconImageName.ToString(), "Layer Detail");
-                    }
-                }
                 _SelectedLayer = value;
                 OnPropertyChanged("SelectedLayer");
             }
@@ -752,6 +723,51 @@ namespace MapBoxQs
             var snapshotResult = await TakeSnapshotFunc?.Invoke();
             await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
         }
+
+        ICommand _GetStyleLayerCommand;
+        public ICommand GetStyleLayerCommand
+        {
+            get { return _GetStyleLayerCommand = _GetStyleLayerCommand ?? new Command<object>(ExecuteGetStyleLayerCommand, CanExecuteGetStyleLayerCommand); }
+        }
+        bool CanExecuteGetStyleLayerCommand(object obj) { return true; }
+        async void ExecuteGetStyleLayerCommand(object obj)
+        {
+            var buttons = ListLayers.Select((arg) => arg.Id).ToArray();
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
+            if (choice == "OK")
+            {
+
+            }
+            else if (buttons.Contains(choice))
+            {
+                var layer = GetStyleLayerFunc(choice, true);
+                if (layer is BackgroundLayer background)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + background.Id + "  " + background.BackgroundColor.ToString(), "Layer Detail");
+                }
+                if (layer is LineLayer line)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + line.Id + "  " + line.LineColor.ToString(), "Layer Detail");
+                }
+                if (layer is CircleLayer circle)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + circle.Id + "  " + circle.CircleColor.ToString(), "Layer Detail");
+                }
+                if (layer is FillLayer fill)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "  " + fill.FillColor.ToString(), "Layer Detail");
+                }
+                if (layer is RasterStyleLayer raster)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "  " + raster.SourceId.ToString(), "Layer Detail");
+                }
+                if (layer is SymbolLayer symbol)
+                {
+                    UserDialogs.Instance.Alert("You choose layer: " + symbol.Id + "  " + symbol.IconImageName.ToString(), "Layer Detail");
+                }
+            }
+        }
+
         #endregion
     }
 }

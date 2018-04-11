@@ -353,38 +353,13 @@
                 Command="{Binding GetStyleImageCommand}"
                 Text="Get Style Image" />
             <Button
-                Command="{Binding SwitchToolCommand}"
-                CommandParameter="{x:Static local:MapTools.CurrentStyle}"
+                Command="{Binding GetStyleLayerCommand}"
                 Text="Get Style Layer" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"
                     Binding="{Binding ShowingTool}"
                     Value="{x:Static local:MapTools.Misc}">
-                    <Setter
-                        Property="IsVisible"
-                        Value="True" />
-                </DataTrigger>
-            </StackLayout.Triggers>
-        </StackLayout>
-
-        <StackLayout
-            Orientation="Vertical"
-            Grid.Row="1"
-            BackgroundColor="White"
-            VerticalOptions="Start"
-            IsVisible="False">
-            <Picker
-                Title="List Layers"
-                HorizontalOptions="Fill"
-                ItemsSource="{Binding ListLayers}"
-                ItemDisplayBinding="{Binding Id}"
-                SelectedItem="{Binding SelectedLayer}"/>
-            <StackLayout.Triggers>
-                <DataTrigger
-                    TargetType="StackLayout"
-                    Binding="{Binding ShowingTool}"
-                    Value="{x:Static local:MapTools.CurrentStyle}">
                     <Setter
                         Property="IsVisible"
                         Value="True" />
