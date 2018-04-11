@@ -208,6 +208,29 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             Element.GetStyleLayerFunc = GetStyleLayer;
 
+            Element.SelectAnnotationAction = (Tuple<string, bool> obj) =>
+            {
+                if (obj == null || map == null || map.Annotations == null) return;
+                foreach (var item in map.Annotations)
+                {
+                    if (item is Marker marker && marker.Title == obj.Item1)
+                    {
+                        map.SelectMarker(marker);
+                    }
+                }
+            };
+
+            Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
+            {
+                if (obj == null || map == null || map.Annotations == null) return;
+                foreach (var item in map.Annotations)
+                {
+                    if (item is Marker marker && marker.Title == obj.Item1)
+                    {
+                        map.DeselectMarker(marker);
+                    }
+                }
+            };
         }
 
         private byte[] GetStyleImage(string imageName)

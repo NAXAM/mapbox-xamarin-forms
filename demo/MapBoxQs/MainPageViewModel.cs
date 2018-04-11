@@ -50,6 +50,18 @@ namespace MapBoxQs
             }
         }
 
+
+        ObservableCollection<Annotation> _SelectedAnnotations;
+        public ObservableCollection<Annotation> SelectedAnnotations
+        {
+            get { return _SelectedAnnotations; }
+            set
+            {
+                _SelectedAnnotations = value;
+                OnPropertyChanged("SelectedAnnotations");
+            }
+        }
+
         #region MapStyle Layer
         private ObservableCollection<Layer> _ListLayers;
         public ObservableCollection<Layer> ListLayers
@@ -144,7 +156,7 @@ namespace MapBoxQs
             {
                 ListLayers = new ObservableCollection<Layer>(style.OriginalLayers);
             });
-
+            SelectedAnnotations = new ObservableCollection<Annotation>();
         }
 
         public ICommand DidFinishLoadingStyleCommand
@@ -162,6 +174,28 @@ namespace MapBoxQs
         {
             get;
             set;
+        }
+
+        private Action<Tuple<string, bool>> _SelectAnnotationAction;
+        public Action<Tuple<string, bool>> SelectAnnotationAction
+        {
+            get { return _SelectAnnotationAction; }
+            set
+            {
+                _SelectAnnotationAction = value;
+                OnPropertyChanged("SelectAnnotationAction");
+            }
+        }
+
+        private Action<Tuple<string, bool>> _DeselectAnnotationAction;
+        public Action<Tuple<string, bool>> DeselectAnnotationAction
+        {
+            get { return _DeselectAnnotationAction; }
+            set
+            {
+                _DeselectAnnotationAction = value;
+                OnPropertyChanged("DeselectAnnotationAction");
+            }
         }
 
         #region Zoom
@@ -396,7 +430,7 @@ namespace MapBoxQs
             get { return (_SwitchToolCommand = _SwitchToolCommand ?? new Command<MapTools>(ExecuteSwitchToolCommand, CanExecuteSwitchToolCommand)); }
         }
         bool CanExecuteSwitchToolCommand(MapTools obj) { return true; }
-        async void ExecuteSwitchToolCommand(MapTools obj)
+        void ExecuteSwitchToolCommand(MapTools obj)
         {
             if (ShowingTool == obj)
             {
@@ -675,6 +709,7 @@ namespace MapBoxQs
         void ExecuteClearAllAnnotation(object obj)
         {
             Annotations = new ObservableCollection<Annotation>();
+            SelectedAnnotations.Clear();
         }
 
         #endregion
@@ -775,6 +810,47 @@ namespace MapBoxQs
             }
         }
 
+        ICommand _SelectAnnotationCommand;
+        public ICommand SelectAnnotationCommand
+        {
+            get { return _SelectAnnotationCommand = _SelectAnnotationCommand ?? new Command<object>(ExecuteSelectAnnotationCommand, CanExecuteSelectAnnotationCommand); }
+        }
+        bool CanExecuteSelectAnnotationCommand(object obj) { return true; }
+        async void ExecuteSelectAnnotationCommand(object obj)
+        {
+            var buttons = Annotations.Select((arg) => arg.Id).ToArray();
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
+            if (buttons.Contains(choice))
+            {
+                SelectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
+                if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
+                {
+                    SelectedAnnotations.Add(point);
+                    UserDialogs.Instance.Alert("You just select marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Selected Annotation");
+                }
+            }
+        }
+
+        ICommand _DeselectAnnotationCommand;
+        public ICommand DeselectAnnotationCommand
+        {
+            get { return _DeselectAnnotationCommand = _DeselectAnnotationCommand ?? new Command<object>(ExecuteDeselectAnnotationCommand, CanExecuteDeselectAnnotationCommand); }
+        }
+        bool CanExecuteDeselectAnnotationCommand(object obj) { return true; }
+        async void ExecuteDeselectAnnotationCommand(object obj)
+        {
+            var buttons = SelectedAnnotations.Select((arg) => arg.Id).ToArray();
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
+            if (buttons.Contains(choice))
+            {
+                DeselectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
+                if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
+                {
+                    SelectedAnnotations.Remove(point);
+                    UserDialogs.Instance.Alert("You just deselect marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Deselected Annotation");
+                }
+            }
+        }
         #endregion
     }
 }
