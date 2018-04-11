@@ -68,7 +68,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (background == null) return null;
             BackgroundLayer forms = new BackgroundLayer(background.Id, "");
-            if (background.BackgroundColor.IsNull)
+            if (background.BackgroundColor.IsNull && background.BackgroundColor.ColorInt != null)
             {
                 Android.Graphics.Color backgroundColor = new Android.Graphics.Color((int)background.BackgroundColor.ColorInt);
                 forms.BackgroundColor = Xamarin.Forms.Color.FromRgb(backgroundColor.R, backgroundColor.G, backgroundColor.B);
@@ -79,7 +79,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (fill == null) return null;
             FillLayer forms = new FillLayer(fill.Id, fill.SourceLayer);
-            if (!fill.FillColor.IsNull)
+            if (!fill.FillColor.IsNull && fill.FillColor.ColorInt != null)
             {
                 Android.Graphics.Color fillColor = new Android.Graphics.Color((int)fill.FillColor.ColorInt);
                 forms.FillColor = Xamarin.Forms.Color.FromRgb(fillColor.R, fillColor.G, fillColor.B);
@@ -91,7 +91,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (circle == null) { return null; }
 
             var forms = new Mapbox.Forms.CircleLayer(circle.Id.Prefix(), circle.SourceLayer);
-            if(circle.CircleColor!=null)
+            if (circle.CircleColor != null && circle.CircleColor.ColorInt != null)
             {
                 Android.Graphics.Color circleColor = new Android.Graphics.Color((int)circle.CircleColor.ColorInt);
                 forms.CircleColor = Xamarin.Forms.Color.FromRgb(circleColor.R, circleColor.G, circleColor.B);
@@ -102,7 +102,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (line == null) { return null; }
             var forms = new LineLayer(line.Id, line.SourceLayer);
-            if (line.LineColor.IsNull)
+            if (line.LineColor.IsNull && line.LineColor.ColorInt != null)
             {
                 var lineColor = new Android.Graphics.Color((int)line.LineColor.ColorInt);
                 forms.LineColor = Xamarin.Forms.Color.FromRgb(lineColor.R, lineColor.G, lineColor.B);

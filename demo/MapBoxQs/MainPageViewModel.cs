@@ -733,38 +733,45 @@ namespace MapBoxQs
         async void ExecuteGetStyleLayerCommand(object obj)
         {
             var buttons = ListLayers.Select((arg) => arg.Id).ToArray();
-            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "", "OK", buttons: buttons);
             if (choice == "OK")
             {
 
             }
             else if (buttons.Contains(choice))
             {
-                var layer = GetStyleLayerFunc(choice, true);
+                var layer = GetStyleLayerFunc(choice, false);
                 if (layer is BackgroundLayer background)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + background.Id + "  " + background.BackgroundColor.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + background.Id + "\nType: " + nameof(BackgroundLayer) + "\n" + background.BackgroundColor.ToString(), "Layer Detail");
+                    return;
                 }
                 if (layer is LineLayer line)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + line.Id + "  " + line.LineColor.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + line.Id + "\nType: " + nameof(LineLayer) + "\n" + line.LineColor.ToString(), "Layer Detail");
+                    return;
                 }
                 if (layer is CircleLayer circle)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + circle.Id + "  " + circle.CircleColor.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + circle.Id + "\nType: " + nameof(CircleLayer) + "\n" + circle.CircleColor.ToString(), "Layer Detail");
+                    return;
                 }
                 if (layer is FillLayer fill)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "  " + fill.FillColor.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "\nType: " + nameof(FillLayer) + "\n" + fill.FillColor.ToString(), "Layer Detail");
+                    return;
                 }
                 if (layer is RasterStyleLayer raster)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "  " + raster.SourceId.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "\nType: " + nameof(RasterStyleLayer) + "\n" + raster.SourceId.ToString(), "Layer Detail");
+                    return;
                 }
                 if (layer is SymbolLayer symbol)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + symbol.Id + "  " + symbol.IconImageName.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + symbol.Id + "\nType: " + nameof(SymbolLayer) + "\n" + symbol.IconImageName.ToString(), "Layer Detail");
+                    return;
                 }
+                UserDialogs.Instance.Alert("Can not find informations of layer : " + choice, "Layer Detail");
             }
         }
 

@@ -224,7 +224,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private StyleLayer GetStyleLayer(string layerId, bool isCustomLayer)
         {
-            var layer = map.GetLayer(layerId);
+            var layer = map.GetLayer(isCustomLayer ? layerId.Prefix() : layerId);
             if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.BackgroundLayer background)
             {
                 return background.ToForms();
