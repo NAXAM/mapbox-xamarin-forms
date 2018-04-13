@@ -77,7 +77,8 @@
             GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
             DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
             SelectAnnotationAction="{Binding SelectAnnotationAction}"
-            DeselectAnnotationAction="{Binding DeselectAnnotationAction}">
+            DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
+            DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
@@ -299,7 +300,16 @@
                 </Button.Triggers>
             </Button>
             <Button
-                Text="Add polyline" />            
+                Text="Add polyline" />
+
+            <Button
+                Command="{Binding SelectAnnotationCommand}"
+                Text="Select Annotation" />
+            
+            <Button
+                Command="{Binding DeselectAnnotationCommand}"
+                Text="Deselect Annotation" />
+            
             <Label>
                 <Label.Triggers>
                     <DataTrigger
@@ -328,12 +338,6 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <Button
-                Command="{Binding SelectAnnotationCommand}"
-                Text="Select Annotation" />
-            <Button
-                Command="{Binding DeselectAnnotationCommand}"
-                Text="Deselect Annotation" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"

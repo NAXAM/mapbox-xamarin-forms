@@ -153,13 +153,26 @@ namespace MapBoxQs
             ListLayers = new ObservableCollection<Layer>();
 
             DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
+           {
+               ListLayers = new ObservableCollection<Layer>(style.OriginalLayers);
+           });
+
+
+            DidTapOnCalloutViewCommand = new Command<long>((markerId) =>
             {
-                ListLayers = new ObservableCollection<Layer>(style.OriginalLayers);
+                UserDialogs.Instance.Alert("You just click callout view of marker have id: " + markerId);
             });
+
             SelectedAnnotations = new ObservableCollection<Annotation>();
         }
 
         public ICommand DidFinishLoadingStyleCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand DidTapOnCalloutViewCommand
         {
             get;
             set;
@@ -197,6 +210,8 @@ namespace MapBoxQs
                 OnPropertyChanged("DeselectAnnotationAction");
             }
         }
+
+
 
         #region Zoom
         private ICommand _ZoomCommand;

@@ -213,9 +213,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (obj == null || map == null || map.Annotations == null) return;
                 foreach (var item in map.Annotations)
                 {
-                    if (item is Marker marker && marker.Id.ToString() == obj.Item1)
+
+                    if (item is Marker marker)
                     {
-                        map.SelectMarker(marker);
+                        marker.HideInfoWindow();
+                        if (marker.Id.ToString() == obj.Item1) map.SelectMarker(marker);
                     }
                 }
             };
@@ -228,6 +230,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     if (item is Marker marker && marker.Id.ToString() == obj.Item1)
                     {
                         map.DeselectMarker(marker);
+                        marker.HideInfoWindow();
                     }
                 }
             };
@@ -858,6 +861,20 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
+            map.InfoWindowClick += (s, e) =>
+            {
+                if (e.P0 != null)
+                {
+                    Element.DidTapOnCalloutViewCommand?.Execute(e.P0.Id);
+                }
+            };
+            map.MarkerClick += (s, e) =>
+            {
+                foreach (var item in map.Annotations.Where(d => d.Id != e.P0.Id && d is Marker).Select(d => (Marker)d))
+                {
+                    item.HideInfoWindow();
+                }
+            };
         }
     }
 
