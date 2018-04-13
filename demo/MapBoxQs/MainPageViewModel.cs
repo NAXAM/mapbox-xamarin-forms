@@ -51,14 +51,14 @@ namespace MapBoxQs
         }
 
 
-        ObservableCollection<Annotation> _SelectedAnnotations;
-        public ObservableCollection<Annotation> SelectedAnnotations
+        Annotation _SelectedAnnotation;
+        public Annotation SelectedAnnotation
         {
-            get { return _SelectedAnnotations; }
+            get => _SelectedAnnotation;
             set
             {
-                _SelectedAnnotations = value;
-                OnPropertyChanged("SelectedAnnotations");
+                _SelectedAnnotation = value;
+                OnPropertyChanged("SelectedAnnotation");
             }
         }
 
@@ -163,7 +163,11 @@ namespace MapBoxQs
                 UserDialogs.Instance.Alert("You just click callout view of marker have id: " + markerId);
             });
 
-            SelectedAnnotations = new ObservableCollection<Annotation>();
+            DidTapOnMarkerCommand = new Command<long>((markerId) =>
+            {
+                SelectedAnnotation = Annotations.First(d => d.Id == markerId.ToString());
+                //UserDialogs.Instance.Alert("You just tap on marker have id: " + markerId);
+            });
         }
 
         public ICommand DidFinishLoadingStyleCommand
@@ -173,6 +177,12 @@ namespace MapBoxQs
         }
 
         public ICommand DidTapOnCalloutViewCommand
+        {
+            get;
+            set;
+        }
+
+        public ICommand DidTapOnMarkerCommand
         {
             get;
             set;
@@ -724,7 +734,6 @@ namespace MapBoxQs
         void ExecuteClearAllAnnotation(object obj)
         {
             Annotations = new ObservableCollection<Annotation>();
-            SelectedAnnotations.Clear();
         }
 
         #endregion
@@ -840,8 +849,8 @@ namespace MapBoxQs
                 SelectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
                 if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
                 {
-                    SelectedAnnotations.Add(point);
                     UserDialogs.Instance.Alert("You just select marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Selected Annotation");
+                    SelectedAnnotation = point;
                 }
             }
         }
@@ -852,19 +861,10 @@ namespace MapBoxQs
             get { return _DeselectAnnotationCommand = _DeselectAnnotationCommand ?? new Command<object>(ExecuteDeselectAnnotationCommand, CanExecuteDeselectAnnotationCommand); }
         }
         bool CanExecuteDeselectAnnotationCommand(object obj) { return true; }
-        async void ExecuteDeselectAnnotationCommand(object obj)
+        void ExecuteDeselectAnnotationCommand(object obj)
         {
-            var buttons = SelectedAnnotations.Select((arg) => arg.Id).ToArray();
-            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
-            if (buttons.Contains(choice))
-            {
-                DeselectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
-                if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
-                {
-                    SelectedAnnotations.Remove(point);
-                    UserDialogs.Instance.Alert("You just deselect marker:\nId: " + point.Title + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Deselected Annotation");
-                }
-            }
+            if (SelectedAnnotation != null)
+                DeselectAnnotationAction?.Invoke(new Tuple<string, bool>(SelectedAnnotation.Id, false));
         }
         #endregion
     }

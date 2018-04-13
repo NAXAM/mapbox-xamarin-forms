@@ -36,6 +36,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
+        private bool isShowInfoWindow;
+        private long currentSelectedMarker;
 
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
             new Dictionary<string, Sdk.Annotations.Annotation>();
@@ -218,8 +220,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     {
                         marker.HideInfoWindow();
                         if (marker.Id.ToString() == obj.Item1) map.SelectMarker(marker);
+                        currentSelectedMarker = marker.Id;
                     }
                 }
+                isShowInfoWindow = true;
             };
 
             Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
@@ -233,6 +237,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         marker.HideInfoWindow();
                     }
                 }
+                isShowInfoWindow = false;
             };
         }
 
@@ -870,10 +875,20 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             };
             map.MarkerClick += (s, e) =>
             {
+                if (isShowInfoWindow && e.P0.Id == currentSelectedMarker)
+                {
+                    (e.P0 as Marker).HideInfoWindow();
+                    isShowInfoWindow = false;
+                } else
+                {
+                    currentSelectedMarker = e.P0.Id;
+                    isShowInfoWindow = true;
+                }
                 foreach (var item in map.Annotations.Where(d => d.Id != e.P0.Id && d is Marker).Select(d => (Marker)d))
                 {
                     item.HideInfoWindow();
                 }
+                Element.DidTapOnMarkerCommand?.Execute(e.P0.Id);
             };
         }
     }

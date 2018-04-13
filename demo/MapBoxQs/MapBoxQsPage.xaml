@@ -78,7 +78,8 @@
             DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
             SelectAnnotationAction="{Binding SelectAnnotationAction}"
             DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
-            DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}">
+            DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
+            DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
             <controls:MapView.Center>
                 <controls:Position
                     Lat="21.028511"
