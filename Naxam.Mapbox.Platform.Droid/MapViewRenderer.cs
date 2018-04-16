@@ -36,8 +36,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
-        private bool isShowInfoWindow;
-        private long currentSelectedMarker;
 
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
             new Dictionary<string, Sdk.Annotations.Annotation>();
@@ -216,14 +214,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 foreach (var item in map.Annotations)
                 {
 
-                    if (item is Marker marker)
+                    if (item is Marker marker && marker.Id.ToString() == obj.Item1)
                     {
-                        marker.HideInfoWindow();
-                        if (marker.Id.ToString() == obj.Item1) map.SelectMarker(marker);
-                        currentSelectedMarker = marker.Id;
+                        map.SelectMarker(marker);
                     }
                 }
-                isShowInfoWindow = true;
             };
 
             Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
@@ -234,10 +229,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     if (item is Marker marker && marker.Id.ToString() == obj.Item1)
                     {
                         map.DeselectMarker(marker);
-                        marker.HideInfoWindow();
                     }
                 }
-                isShowInfoWindow = false;
             };
         }
 
@@ -866,32 +859,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
-            map.InfoWindowClick += (s, e) =>
-            {
-                if (e.P0 != null)
-                {
-                    Element.DidTapOnCalloutViewCommand?.Execute(e.P0.Id.ToString());
-                }
-            };
-            map.MarkerClick += (s, e) =>
-            {
-                if (isShowInfoWindow && e.P0.Id == currentSelectedMarker)
-                {
-                    (e.P0 as Marker).HideInfoWindow();
-                    isShowInfoWindow = false;
-                } else
-                {
-                    currentSelectedMarker = e.P0.Id;
-                    isShowInfoWindow = true;
-                    foreach (var item in map.Annotations.Select(d => (Marker)d))
-                    {
-                        item.HideInfoWindow();
-                    }
-                    map.DeselectMarkers();
-                    map.SelectMarker(e.P0 as Marker);
-                }
-                Element.DidTapOnMarkerCommand?.Execute(e.P0.Id.ToString());
-            };
         }
     }
 
