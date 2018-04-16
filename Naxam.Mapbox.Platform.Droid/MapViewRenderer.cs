@@ -213,6 +213,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (obj == null || map == null || map.Annotations == null) return;
                 foreach (var item in map.Annotations)
                 {
+
                     if (item is Marker marker && marker.Id.ToString() == obj.Item1)
                     {
                         map.SelectMarker(marker);
