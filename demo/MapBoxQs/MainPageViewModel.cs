@@ -158,14 +158,14 @@ namespace MapBoxQs
            });
 
 
-            DidTapOnCalloutViewCommand = new Command<long>((markerId) =>
+            DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
             {
-                UserDialogs.Instance.Alert("You just click callout view of marker have id: " + markerId);
+                UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
             });
 
-            DidTapOnMarkerCommand = new Command<long>((markerId) =>
+            DidTapOnMarkerCommand = new Command<string>((markerId) =>
             {
-                SelectedAnnotation = Annotations.First(d => d.Id == markerId.ToString());
+                SelectedAnnotation = Annotations.First(d => d.Id == markerId);
                 //UserDialogs.Instance.Alert("You just tap on marker have id: " + markerId);
             });
         }
@@ -733,7 +733,7 @@ namespace MapBoxQs
         bool CanExecuteClearAllAnnotation(object obj) { return true; }
         void ExecuteClearAllAnnotation(object obj)
         {
-            Annotations = new ObservableCollection<Annotation>();
+            Annotations.Clear();
         }
 
         #endregion

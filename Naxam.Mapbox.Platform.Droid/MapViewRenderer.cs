@@ -870,7 +870,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 if (e.P0 != null)
                 {
-                    Element.DidTapOnCalloutViewCommand?.Execute(e.P0.Id);
+                    Element.DidTapOnCalloutViewCommand?.Execute(e.P0.Id.ToString());
                 }
             };
             map.MarkerClick += (s, e) =>
@@ -883,12 +883,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 {
                     currentSelectedMarker = e.P0.Id;
                     isShowInfoWindow = true;
+                    foreach (var item in map.Annotations.Select(d => (Marker)d))
+                    {
+                        item.HideInfoWindow();
+                    }
+                    map.DeselectMarkers();
+                    map.SelectMarker(e.P0 as Marker);
                 }
-                foreach (var item in map.Annotations.Where(d => d.Id != e.P0.Id && d is Marker).Select(d => (Marker)d))
-                {
-                    item.HideInfoWindow();
-                }
-                Element.DidTapOnMarkerCommand?.Execute(e.P0.Id);
+                Element.DidTapOnMarkerCommand?.Execute(e.P0.Id.ToString());
             };
         }
     }
