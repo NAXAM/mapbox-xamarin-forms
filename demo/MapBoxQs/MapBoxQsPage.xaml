@@ -394,6 +394,9 @@
             <Button
                 Command="{Binding GetStyleLayerCommand}"
                 Text="Get Style Layer" />
+            <Button
+                Command="{Binding AddSatelliteLayerCommand}"
+                Text="Add Satellite Layer" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"

@@ -517,9 +517,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             source.SetGeoJson(shape);
                         }
                     }
-                    else
+                    else if (ms is RasterSource rs && rs != null)
                     {
-                        //TODO handle RasterSource
+                        var source = map.GetSource(rs.Id);
+                        if (source == null)
+                        {
+                            Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
+                            map.AddSource(rasterSource);
+                            map.AddLayer(new Com.Mapbox.Mapboxsdk.Style.Layers.RasterLayer(rs.Id.ToCustomId(), rs.Id));
+                        }
                     }
                 }
             }
@@ -586,7 +592,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        void AddLayers(List<Layer> layers)
+        void AddLayers(List<Naxam.Controls.Mapbox.Forms.Layer> layers)
         {
             if (layers == null)
             {
@@ -873,6 +879,31 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void OnSnapshotReady(Bitmap p0)
         {
             SnapshotReady?.Invoke(p0);
+        }
+    }
+
+    public static class StringExtensions
+    {
+        static string CustomPrefix = "NXCustom_";
+        public static string ToCustomId(this string str)
+        {
+            if (str == null) return null;
+            return CustomPrefix + str;
+        }
+
+        public static bool IsCustomId(this string str)
+        {
+            if (str == null) return false;
+            return str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string TrimCustomId(this string str)
+        {
+            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return str.Substring(CustomPrefix.Length);
+            }
+            return str;
         }
     }
 }

@@ -835,6 +835,20 @@ namespace MapBoxQs
             }
         }
 
+        ICommand _AddSatelliteLayerCommand;
+        public ICommand AddSatelliteLayerCommand
+        {
+            get { return _AddSatelliteLayerCommand = _AddSatelliteLayerCommand ?? new Command<object>(ExecuteAddSatelliteLayerCommand, CanExecuteAddSatelliteLayerCommand); }
+        }
+        bool CanExecuteAddSatelliteLayerCommand(object obj) { return true; }
+        void ExecuteAddSatelliteLayerCommand(object obj)
+        {
+            List<MapSource> listCustomLayer = new List<MapSource>();
+            listCustomLayer.Add(new RasterSource("my-raster-source", "mapbox://mapbox.satellite", 512));
+            CurrentMapStyle.CustomSources = listCustomLayer;
+        }
+
+
         ICommand _SelectAnnotationCommand;
         public ICommand SelectAnnotationCommand
         {
