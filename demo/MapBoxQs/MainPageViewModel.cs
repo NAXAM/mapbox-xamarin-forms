@@ -165,8 +165,7 @@ namespace MapBoxQs
 
             DidTapOnMarkerCommand = new Command<string>((markerId) =>
             {
-                //SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
-                var xxx = Annotations.First(d => d.Id == "0");
+                SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
                 System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
             });
         }
