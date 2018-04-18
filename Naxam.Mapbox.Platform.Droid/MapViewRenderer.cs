@@ -517,14 +517,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             source.SetGeoJson(shape);
                         }
                     }
-                    else if (ms is RasterSource rs && rs != null)
+                    else if (ms is RasterSource rs)
                     {
                         var source = map.GetSource(rs.Id);
                         if (source == null)
                         {
                             Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
                             map.AddSource(rasterSource);
-                            map.AddLayer(new Com.Mapbox.Mapboxsdk.Style.Layers.RasterLayer(rs.Id.ToCustomId(), rs.Id));
                         }
                     }
                 }
@@ -624,6 +623,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var cross = (LineLayer)layer;
 
                     var source = map.GetSource(cross.SourceId.Prefix());
+                    if (source == null)
+                    {
+                        continue;
+                    }
+
+                    map.AddLayer(cross.ToNative());
+                } else if(layer is RasterLayer cross)
+                {
+                    var source = map.GetSource(cross.SourceId);
                     if (source == null)
                     {
                         continue;
