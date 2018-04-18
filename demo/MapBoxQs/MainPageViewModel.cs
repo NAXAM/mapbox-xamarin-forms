@@ -165,7 +165,7 @@ namespace MapBoxQs
 
             DidTapOnMarkerCommand = new Command<string>((markerId) =>
             {
-                SelectedAnnotation = Annotations.First(d => d.Id == markerId);
+                SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
                 System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
             });
         }
@@ -820,9 +820,9 @@ namespace MapBoxQs
                     UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "\nType: " + nameof(FillLayer) + "\n" + fill.FillColor.ToString(), "Layer Detail");
                     return;
                 }
-                if (layer is RasterStyleLayer raster)
+                if (layer is RasterLayer raster)
                 {
-                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "\nType: " + nameof(RasterStyleLayer) + "\n" + raster.SourceId.ToString(), "Layer Detail");
+                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "\nType: " + nameof(RasterLayer) + "\n" + raster.SourceId.ToString(), "Layer Detail");
                     return;
                 }
                 if (layer is SymbolLayer symbol)
@@ -833,6 +833,23 @@ namespace MapBoxQs
                 UserDialogs.Instance.Alert("Can not find informations of layer : " + choice, "Layer Detail");
             }
         }
+
+        ICommand _AddSatelliteLayerCommand;
+        public ICommand AddSatelliteLayerCommand
+        {
+            get { return _AddSatelliteLayerCommand = _AddSatelliteLayerCommand ?? new Command<object>(ExecuteAddSatelliteLayerCommand, CanExecuteAddSatelliteLayerCommand); }
+        }
+        bool CanExecuteAddSatelliteLayerCommand(object obj) { return true; }
+        void ExecuteAddSatelliteLayerCommand(object obj)
+        {
+            List<MapSource> listCustomSources = new List<MapSource>();
+            listCustomSources.Add(new RasterSource("my-raster-source", "mapbox://mapbox.satellite", 512));
+            CurrentMapStyle.CustomSources = listCustomSources;
+            List<Layer> listCustomLayers = new List<Layer>();
+            listCustomLayers.Add(new RasterLayer("0", "my-raster-source"));
+            CurrentMapStyle.CustomLayers = listCustomLayers;
+        }
+
 
         ICommand _SelectAnnotationCommand;
         public ICommand SelectAnnotationCommand

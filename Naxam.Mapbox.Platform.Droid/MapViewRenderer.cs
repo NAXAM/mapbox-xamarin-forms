@@ -517,9 +517,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             source.SetGeoJson(shape);
                         }
                     }
-                    else
+                    else if (ms is RasterSource rs)
                     {
-                        //TODO handle RasterSource
+                        var source = map.GetSource(rs.Id);
+                        if (source == null)
+                        {
+                            Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
+                            map.AddSource(rasterSource);
+                        }
                     }
                 }
             }
@@ -586,7 +591,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        void AddLayers(List<Layer> layers)
+        void AddLayers(List<Naxam.Controls.Mapbox.Forms.Layer> layers)
         {
             if (layers == null)
             {
@@ -618,6 +623,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var cross = (LineLayer)layer;
 
                     var source = map.GetSource(cross.SourceId.Prefix());
+                    if (source == null)
+                    {
+                        continue;
+                    }
+
+                    map.AddLayer(cross.ToNative());
+                } else if(layer is RasterLayer cross)
+                {
+                    var source = map.GetSource(cross.SourceId);
                     if (source == null)
                     {
                         continue;
@@ -873,6 +887,31 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void OnSnapshotReady(Bitmap p0)
         {
             SnapshotReady?.Invoke(p0);
+        }
+    }
+
+    public static class StringExtensions
+    {
+        static string CustomPrefix = "NXCustom_";
+        public static string ToCustomId(this string str)
+        {
+            if (str == null) return null;
+            return CustomPrefix + str;
+        }
+
+        public static bool IsCustomId(this string str)
+        {
+            if (str == null) return false;
+            return str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string TrimCustomId(this string str)
+        {
+            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return str.Substring(CustomPrefix.Length);
+            }
+            return str;
         }
     }
 }

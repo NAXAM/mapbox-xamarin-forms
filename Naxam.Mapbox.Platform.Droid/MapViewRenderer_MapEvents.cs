@@ -68,33 +68,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (!marker.IsInfoWindowShown) map.SelectMarker(marker);
                 else map.DeselectMarker(marker);
             }
-            Element.Center.Lat = args.P0.Position.Latitude;
-            Element.Center.Long = args.P0.Position.Longitude;
-            Element.IsMarkerClicked = true;
-
-            //var annotationKey = _annotationDictionaries.FirstOrDefault(x => x.Value == args.P0).Key;
-
-            ////if (Element.CanShowCalloutChecker?.Invoke (annotationKey) == true) {
-            ////    args.P0.ShowInfoWindow (map, fragment.View as MapView);
-            ////}
-
-
-            ////if (isShowInfoWindow && args.P0.Id == currentSelectedMarker)
-            ////{
-            ////    (args.P0 as Marker).HideInfoWindow();
-            ////    isShowInfoWindow = false;
-            ////}
-            ////else
-            ////{
-            ////    currentSelectedMarker = args.P0.Id;
-            ////    isShowInfoWindow = true;
-            ////    foreach (var item in map.Annotations.Select(d => (Marker)d))
-            ////    {
-            ////        item.HideInfoWindow();
-            ////    }
-            ////    map.DeselectMarkers();
-            ////    map.SelectMarker(args.P0 as Marker);
-            ////}
             Element.DidTapOnMarkerCommand?.Execute(args.P0.Id.ToString());
         }
 

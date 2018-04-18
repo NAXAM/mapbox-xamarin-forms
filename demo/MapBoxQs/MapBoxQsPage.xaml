@@ -276,15 +276,24 @@
             </Grid.Triggers>
         </Grid>
         <!-- Annotations tool -->
-        <StackLayout
+        <Grid
             Grid.Row="1"
-            IsVisible="false"
-            Orientation="Vertical"
+            IsVisible="False"
             BackgroundColor="White"
-            VerticalOptions="Start">
-            <Button
-                Text="Clear All Annotations"
-                Command="{Binding ClearAllAnnotation}"/>
+            VerticalOptions="Start"
+            ColumnSpacing="0"
+            RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="48"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
             <Button
                 Text="Stop adding annotation"
                 Command="{Binding ToggleCurrentActionCommand}"
@@ -300,18 +309,35 @@
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
-            <Button
-                Text="Add polyline" />
 
             <Button
-                Command="{Binding SelectAnnotationCommand}"
-                Text="Select Annotation" />
-            
+                Grid.Column="1"
+                Text="Clear All Annotations"
+                Command="{Binding ClearAllAnnotation}"
+                Margin="2,2,1,1"/>
+
             <Button
+                Grid.Row="1"
+                Command="{Binding SelectAnnotationCommand}"
+                Text="Select Annotation"
+                Margin="1,2,2,1" />
+
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
                 Command="{Binding DeselectAnnotationCommand}"
-                Text="Deselect Annotation" />
-            
-            <Label>
+                Text="Deselect Annotation" 
+                Margin="2,1,1,1"/>
+
+            <Button
+                Grid.Row="2"
+                Text="Add polyline"
+                Margin="1,1,2,1" />
+
+            <Label
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                Margin="2">
                 <Label.Triggers>
                     <DataTrigger
                         TargetType="Label"
@@ -339,17 +365,18 @@
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
-            <StackLayout.Triggers>
+            <Grid.Triggers>
                 <DataTrigger
-                    TargetType="StackLayout"
+                    TargetType="Grid"
                     Binding="{Binding ShowingTool}"
                     Value="{x:Static local:MapTools.Annotations}">
                     <Setter
                         Property="IsVisible"
                         Value="True" />
                 </DataTrigger>
-            </StackLayout.Triggers>
-        </StackLayout>
+            </Grid.Triggers>
+        </Grid>
+
         <!-- Misc -->
         <StackLayout
             Orientation="Vertical"
@@ -366,7 +393,10 @@
                 Text="Get Style Image" />
             <Button
                 Command="{Binding GetStyleLayerCommand}"
-                Text="Get Style Layer" />            
+                Text="Get Style Layer" />
+            <Button
+                Command="{Binding AddSatelliteLayerCommand}"
+                Text="Add Satellite Layer" />
             <StackLayout.Triggers>
                 <DataTrigger
                     TargetType="StackLayout"

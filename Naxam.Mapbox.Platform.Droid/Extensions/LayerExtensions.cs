@@ -10,7 +10,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (layer == null) { return null; }
 
-            var native = new Sdk.Style.Layers.CircleLayer(layer.Id.Prefix(), layer.SourceId.Prefix());
+            var native = new Sdk.Style.Layers.CircleLayer(layer.Id, layer.SourceId);
             native.SetProperties(
                                     Sdk.Style.Layers.PropertyFactory.CircleColor(layer.CircleColor.ToAndroid()),
                                     Sdk.Style.Layers.PropertyFactory.CircleOpacity(new Java.Lang.Float(layer.CircleOpacity)),
@@ -23,7 +23,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (layer == null) { return null; }
 
-            var native = new Sdk.Style.Layers.LineLayer(layer.Id.Prefix(), layer.SourceId.Prefix());
+            var native = new Sdk.Style.Layers.LineLayer(layer.Id, layer.SourceId);
             native.SetProperties(
                 Sdk.Style.Layers.PropertyFactory.LineWidth(new Java.Lang.Float(layer.LineWidth)),
                 Sdk.Style.Layers.PropertyFactory.LineColor(layer.LineColor.ToAndroid())
@@ -34,7 +34,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public static Sdk.Style.Layers.BackgroundLayer ToNative(this BackgroundLayer background)
         {
             if (background == null) return null;
-            var native = new Sdk.Style.Layers.BackgroundLayer(background.Id.Prefix());
+            var native = new Sdk.Style.Layers.BackgroundLayer(background.Id);
             native.SetProperties
                 (
                     Sdk.Style.Layers.PropertyFactory.BackgroundColor(background.BackgroundColor.ToAndroid())
@@ -44,7 +44,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public static Sdk.Style.Layers.FillLayer ToNative(this FillLayer fill)
         {
             if (fill == null) return null;
-            var native = new Sdk.Style.Layers.FillLayer(fill.Id.Prefix(), fill.SourceId.Prefix());
+            var native = new Sdk.Style.Layers.FillLayer(fill.Id, fill.SourceId);
             native.SetProperties
                 (
                     Sdk.Style.Layers.PropertyFactory.FillColor(fill.FillColor.ToAndroid())
@@ -54,13 +54,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public static Sdk.Style.Layers.SymbolLayer ToNative(this SymbolLayer symbol)
         {
             if (symbol == null) return null;
-            var native = new Sdk.Style.Layers.SymbolLayer(symbol.Id.Prefix(), symbol.SourceId.Prefix());
+            var native = new Sdk.Style.Layers.SymbolLayer(symbol.Id, symbol.SourceId);
             return native;
         }
-        public static Sdk.Style.Layers.RasterLayer ToNative(this RasterStyleLayer raster)
+        public static Sdk.Style.Layers.RasterLayer ToNative(this RasterLayer raster)
         {
             if (raster == null) return null;
-            var native = new Sdk.Style.Layers.RasterLayer(raster.Id.Prefix(), raster.SourceId.Prefix());
+            var native = new Sdk.Style.Layers.RasterLayer(raster.Id, raster.SourceId);
             return native;
         }
 
@@ -90,7 +90,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (circle == null) { return null; }
 
-            var forms = new Mapbox.Forms.CircleLayer(circle.Id.Prefix(), circle.SourceLayer);
+            var forms = new Mapbox.Forms.CircleLayer(circle.Id, circle.SourceLayer);
             if (circle.CircleColor != null && circle.CircleColor.ColorInt != null)
             {
                 Android.Graphics.Color circleColor = new Android.Graphics.Color((int)circle.CircleColor.ColorInt);
@@ -109,10 +109,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             return forms;
         }
-        public static RasterStyleLayer ToForms(this Sdk.Style.Layers.RasterLayer raster)
+        public static RasterLayer ToForms(this Sdk.Style.Layers.RasterLayer raster)
         {
             if (raster == null) { return null; }
-            var forms = new RasterStyleLayer(raster.Id, "");
+            var forms = new RasterLayer(raster.Id, "");
             return forms;
         }
         public static SymbolLayer ToForms(this Sdk.Style.Layers.SymbolLayer symbol)

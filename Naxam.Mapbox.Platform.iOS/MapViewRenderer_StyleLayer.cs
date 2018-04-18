@@ -130,7 +130,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 				return newLayer;
 			}
 
-            if (styleLayer is RasterStyleLayer rl)
+            if (styleLayer is RasterLayer rl)
             {
 
                 var newLayer = new MGLRasterStyleLayer(id, source);
