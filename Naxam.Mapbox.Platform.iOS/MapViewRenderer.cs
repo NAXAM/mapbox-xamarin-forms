@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Windows.Input;
 using CoreGraphics;
 using Foundation;
 using Mapbox;
 using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Mapbox.Platform.iOS;
+using Naxam.Mapbox.Platform.iOS;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
 using FormsMB = Naxam.Controls.Mapbox.Forms;
 
-[assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Controls.Mapbox.Forms.MapView), typeof(Naxam.Controls.Mapbox.Platform.iOS.MapViewRenderer))]
+[assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Controls.Mapbox.Forms.MapView), typeof(MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public partial class MapViewRenderer : ViewRenderer<Naxam.Controls.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
@@ -35,8 +39,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 {
                     SetupUserInterface();
                     SetupEventHandlers();
-                    SetupFunctions();
-                    SetNativeControl(MapView);
+					SetupFunctions();
+                    SetNativeControl(MapView);               
                 }
             }
             catch (Exception ex)
@@ -67,6 +71,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else if (e.PropertyName == FormsMap.PitchEnabledProperty.PropertyName && MapView.PitchEnabled != Element.PitchEnabled)
             {
                 MapView.PitchEnabled = Element.PitchEnabled;
+            }
+            else if (e.PropertyName == FormsMap.ScrollEnabledProperty.PropertyName && MapView.ScrollEnabled != Element.ScrollEnabled)
+            {
+                MapView.ScrollEnabled = Element.ScrollEnabled;
             }
             else if (e.PropertyName == FormsMap.RotateEnabledProperty.PropertyName && MapView.RotateEnabled != Element.RotateEnabled)
             {
@@ -383,7 +391,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (MapView == null || MapView.ScaleBar == null) return false;
                 InvokeOnMainThread(() =>
                 {
-                    System.Diagnostics.Debug.WriteLine($"Toggle scale bar: {show}");
+                    Debug.WriteLine($"Toggle scale bar: {show}");
                     MapView.ScaleBar.Hidden = !show;
                 });
 
@@ -405,7 +413,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     || MapView.Style == null) return null;
                 NSString layerIdStr = isCustom ? layerId.ToCustomId() : (NSString)layerId;
                 var layer = MapView.Style.LayerWithIdentifier(layerIdStr);
-                if (layer is MGLVectorStyleLayer vLayer) return CreateStyleLayer(vLayer, layerId);
+                if (layer is MGLVectorStyleLayer vLayer) 
+                {
+                    return CreateStyleLayer(vLayer, layerId);   
+                }
 
                 return null;
             };
@@ -415,7 +426,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (MapView.Style?.LayerWithIdentifier(siblingLayerId) is MGLStyleLayer siblingLayer
                     && GetStyleLayer(newLayer, newLayer.Id.ToCustomId()) is MGLStyleLayer layerToInsert)
                 {
-                    MapView.Style.InsertLayerAboveLayer(layerToInsert, siblingLayer);
+                    MapView.Style.InsertLayerAbove(layerToInsert, siblingLayer);
                     return true;
                 }
                 return false;
@@ -426,7 +437,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (MapView.Style?.LayerWithIdentifier(siblingLayerId) is MGLStyleLayer siblingLayer
                     && GetStyleLayer(newLayer, newLayer.Id.ToCustomId()) is MGLStyleLayer layerToInsert)
                 {
-                    MapView.Style.InsertLayerBelowLayer(layerToInsert, siblingLayer);
+                    MapView.Style.InsertLayerBelow(layerToInsert, siblingLayer);
                     return true;
                 }
                 return false;
@@ -625,6 +636,22 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             MapView.AddAnnotations(annots.ToArray());
         }
 
+        [Export("mapView:viewForAnnotation:")]
+        public MGLAnnotationView MapView_ViewForAnnotation(MGLMapView mapView, MGLPointAnnotation annotation)
+        {
+            var annotationView = mapView.DequeueReusableAnnotationViewWithIdentifier("draggablePoint");
+            if (annotationView != null) return annotationView;
+            var view = new DraggableAnnotationView(reuseIdentifier: "draggablePoint", size: 24);
+            view.DragFinished += (sender, e) => {
+                var point = new PointAnnotation();
+                point.HandleId = annotation.Handle.ToString();
+                point.Coordinate = TypeConverter.FromCoordinateToPosition(annotation.Coordinate);
+                Element.DragFinishedCommand?.Execute(point);
+            };
+
+            return view;
+        }
+
         void RemoveAnnotations(Annotation[] annotations)
         {
             var currentAnnotations = MapView.Annotations;
@@ -661,6 +688,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 MapView.RemoveAnnotations(MapView.Annotations);
             }
         }
+
+       
 
         private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -881,11 +910,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                         {
                             if (rasterSource.TileSize <= 0)
                             {
-                                mglSource = new MGLRasterSource(sourceId, url);
+                                mglSource = new MGLRasterTileSource(sourceId, url);
                             }
                             else
                             {
-                                mglSource = new MGLRasterSource(sourceId, url, (nfloat)rasterSource.TileSize);
+                                mglSource = new MGLRasterTileSource(sourceId, url, (nfloat)rasterSource.TileSize);
                             }
                         }
                         else if (rasterSource.TileURLTemplates != null)
@@ -941,13 +970,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                         default: break;
                                     }
                                 }
-                                mglSource = new MGLRasterSource(sourceId,
+                                mglSource = new MGLRasterTileSource(sourceId,
                                                                 tileURLTemplates: rasterSource.TileURLTemplates,
                                                                 options: new NSDictionary<NSString, NSObject>(keys.ToArray(), values.ToArray()));
                             }
                             else
                             {
-                                mglSource = new MGLRasterSource(sourceId,
+                                mglSource = new MGLRasterTileSource(sourceId,
                                                                 tileURLTemplates: rasterSource.TileURLTemplates,
                                                                 options: null);
                             }
@@ -987,11 +1016,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         MGLShape ShapeFromAnnotation(FormsMB.Annotation annotation)
         {
             MGLShape shape = null;
-            if (annotation is PointAnnotation)
+			if (annotation is PointAnnotation pointAnnotation)
             {
                 shape = new MGLPointAnnotation()
                 {
-                    Coordinate = ((PointAnnotation)annotation).Coordinate.ToCLCoordinate()
+					Coordinate = pointAnnotation.Coordinate.ToCLCoordinate()
                 };
             }
             else if (annotation is PolylineAnnotation)
@@ -1050,6 +1079,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 {
                     shape.SetId(annotation.Id);
                 }
+                
+                annotation.HandleId = shape.Handle.ToString();
             }
 
             return shape;

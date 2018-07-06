@@ -49,9 +49,11 @@
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            DragFinishedCommand="{Binding DragFinishedCommand}"
             ShowUserLocation="true"
             Center="{Binding CenterLocation, Mode=OneWayToSource}"
             VerticalOptions="FillAndExpand"
+            Annotations="{Binding Pins}"
             MapStyle="{Binding CurrentMapStyle}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
@@ -59,12 +61,8 @@
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
             Pitch="{Binding Pitch}"
+            DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
             RotatedDegree="{Binding RotatedDegree}">
-            <controls:MapView.Center>
-                <controls:Position
-                    Lat="21.028511"
-                    Long="105.804817" />
-            </controls:MapView.Center>
         </controls:MapView>
         <!-- Location input -->
         <Grid

@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Naxam.Mapbox.Forms", "Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj", "{EBB04763-2E36-4D2C-94C9-351FBACE3C83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naxam.Mapbox.Forms", "Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj", "{EBB04763-2E36-4D2C-94C9-351FBACE3C83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naxam.Mapbox.Platform.Droid", "Naxam.Mapbox.Platform.Droid\Naxam.Mapbox.Platform.Droid.csproj", "{E4589CB9-67C1-46BA-A464-4B543D5E732A}"
 EndProject
@@ -97,6 +97,8 @@ Global
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Release|iPhone.Build.0 = Release|iPhone
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Debug|Any CPU.Build.0 = Debug|iPhone
+		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Release|Any CPU.Build.0 = Release|iPhone
 		{85E7EE45-A434-481B-8777-B6AC6F986F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85E7EE45-A434-481B-8777-B6AC6F986F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85E7EE45-A434-481B-8777-B6AC6F986F24}.Debug|iPhone.ActiveCfg = Debug|Any CPU
