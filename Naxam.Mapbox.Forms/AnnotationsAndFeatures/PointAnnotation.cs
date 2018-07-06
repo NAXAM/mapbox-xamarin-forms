@@ -7,6 +7,8 @@ namespace Naxam.Controls.Mapbox.Forms
 		{
 		}
 
+		public EventHandler<string> FinishDragged { get; set; }
+
 		public Position Coordinate
 		{
 			get;

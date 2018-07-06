@@ -9,7 +9,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>8.0</string>
+	<string>9.0</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
@@ -38,11 +38,11 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs to use your location</string>
-	<key>CFBundleIdentifier</key>
-	<string>dk.dax.flexgrid</string>
 	<key>CFBundleName</key>
 	<string>Mapbox</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs to use your location</string>
+	<key>CFBundleIdentifier</key>
+	<string>net.naxam.mapbox</string>
 </dict>
 </plist>

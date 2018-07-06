@@ -6,6 +6,8 @@
 		{
 		}
 
+        public string HandleId { get; set; }
+
 		public string Id
 		{
 			get;
