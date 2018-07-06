@@ -163,10 +163,23 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     if (GetValueFromExpression<NSArray>(ll.LineDashPattern) is NSArray arr && arr.Count != 0)
 					{
 						var dash = new List<double>();
-						for (nuint i = 0; i < arr.Count; i++)
+                        for (nuint i = 0; i < arr.Count; i++)
 						{
-							var obj = arr.GetItem<NSNumber>(i);
-							dash.Add(obj.DoubleValue);
+                            var obj = arr.GetItem<NSObject>(i);
+                            switch (obj)
+                            {
+                                case NSExpression expression:
+                                    if(expression.ExpressionType==NSExpressionType.ConstantValue){
+                                        var number = GetValueFromExpression<NSNumber>(expression);
+                                        dash.Add(number.DoubleValue);
+                                    }
+                                    break;
+                                case NSNumber number:
+                                    dash.Add(number.DoubleValue);
+                                    break;
+                                default:
+                                    break;
+                            }
 						}
 						newLayer.Dashes = dash.ToArray();
 					}

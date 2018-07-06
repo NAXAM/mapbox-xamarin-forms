@@ -126,7 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
-      <Project>{EBB04763-2E36-4D2C-94C9-351FBACE3C83}</Project>
+      <Project>{6F43FE71-CD16-4554-8DC5-E883626A283E}</Project>
       <Name>Naxam.Mapbox.Forms</Name>
     </ProjectReference>
   </ItemGroup>
