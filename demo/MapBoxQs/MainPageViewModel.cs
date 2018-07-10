@@ -83,6 +83,19 @@ namespace MapBoxQs
 
 		}
 
+		private Position _UserLocation;
+
+		public Position UserLocation
+        {
+			get { return _UserLocation; }
+            set
+            {
+				_UserLocation = value;
+				OnPropertyChanged("UserLocation");
+            }
+        }
+
+
 		private MapStyle _CurrentMapStyle;
 
 		public MapStyle CurrentMapStyle
@@ -362,6 +375,16 @@ namespace MapBoxQs
 				}
 			}
 			ShowingTool = obj;
+		}
+
+		ICommand _FocusUserLocationCommand;
+		public ICommand FocusUserLocationCommand
+		{
+			get { return (_FocusUserLocationCommand = _FocusUserLocationCommand ?? new Command<object>(ExecuteFocusUserLocationCommand, CanExecuteFocusUserLocationCommand)); }
+		}
+		bool CanExecuteFocusUserLocationCommand(object parameter) { return true; }
+		void ExecuteFocusUserLocationCommand(object parameter) {
+			CenterLocation = UserLocation;
 		}
 
 		#region Custom locations

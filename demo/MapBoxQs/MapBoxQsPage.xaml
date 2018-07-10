@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
     xmlns:local="clr-namespace:MapBoxQs"
+    x:Name="root"
     x:Class="MapBoxQs.MapBoxQsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -43,6 +44,9 @@
                     Command="{Binding SwitchToolCommand}"
                     CommandParameter="{x:Static local:MapTools.Offline}"
                     Text="Offline storage" />
+                 <Button
+                    Command="{Binding FocusUserLocationCommand}"
+                    Text="My Location" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
@@ -57,6 +61,7 @@
             MapStyle="{Binding CurrentMapStyle}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
+            UserLocation="{Binding UserLocation}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
