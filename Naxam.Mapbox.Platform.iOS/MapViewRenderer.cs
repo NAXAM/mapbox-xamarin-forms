@@ -181,7 +181,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     ShowsUserLocation = Element.ShowUserLocation,
                     WeakDelegate = this,
                     PitchEnabled = Element.PitchEnabled,
-                    RotateEnabled = Element.RotateEnabled
+                    RotateEnabled = Element.RotateEnabled,
+                    UserTrackingMode = MGLUserTrackingMode.FollowWithHeading
                 };
                 MapView.ZoomLevel = Element.ZoomLevel;
                 UpdateMapStyle();
@@ -1112,10 +1113,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 fullyRendered);
         }
 
-        [Export("mapView:didUpdateUserLocation:"),]
-        void DidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
+        [Export("mapView:didUpdateUserLocation:")]
+        public void MapViewDidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
         {
-            if (userLocation != null)
+                if (userLocation != null)
             {
                 Element.UserLocation = new Position(
                     userLocation.Location.Coordinate.Latitude,
@@ -1123,6 +1124,18 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 );
             }
         }
+
+        //[Export("mapView:didUpdateUserLocation:"),]
+        //void DidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
+        //{
+        //    if (userLocation != null)
+        //    {
+        //        Element.UserLocation = new Position(
+        //            userLocation.Location.Coordinate.Latitude,
+        //            userLocation.Location.Coordinate.Longitude
+        //        );
+        //    }
+        //}
 
         [Export("mapView:didFinishLoadingStyle:"),]
         void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
