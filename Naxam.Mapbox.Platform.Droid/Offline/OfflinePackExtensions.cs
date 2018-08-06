@@ -16,6 +16,7 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             {
                 Handle = mbRegion.Handle
             };
+            output.Id = mbRegion.ID;
             var definition = mbRegion.Definition;
             if (definition is OfflineTilePyramidRegionDefinition def) {
                 output.Region = def.ToFormsRegion();
