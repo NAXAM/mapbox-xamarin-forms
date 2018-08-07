@@ -10,11 +10,8 @@ namespace Naxam.Controls.Mapbox.Forms
         {
         }
 
-        //public Position[] Coordinates
-        //{
-        //	get;
-        //	set;
-        //}
+        public int Width { get; set; }
+        public string HexColor { get; set; }
 
         public static readonly BindableProperty CoordinatesProperty = BindableProperty.Create(
                     nameof(Coordinates),

@@ -331,8 +331,21 @@
 
             <Button
                 Grid.Row="2"
-                Text="Add polyline"
-                Margin="1,1,2,1" />
+                Text="Stop Add polyline"
+                Margin="1,1,2,1" 
+                Command="{Binding ToggleCurrentActionCommand}"
+                CommandParameter="{x:Static local:ActionState.AddPolyline}">
+                <Button.Triggers>
+                    <DataTrigger
+                        TargetType="Button"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.None}">
+                        <Setter
+                            Property="Text"
+                            Value="Add polyline" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button> 
 
             <Label
                 Grid.Row="3"
