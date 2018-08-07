@@ -184,6 +184,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomInfoWindowAdapter.cs" />
+    <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="MapViewRenderer_MapEvents.cs" />
     <Compile Include="MapViewRenderer_StyleLayer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="Offline\ListOfflineRegionsCallback.cs" />
     <Compile Include="Offline\OfflineRegionDeleteCallback.cs" />
     <Compile Include="Offline\OfflineRegionObserver.cs" />
+    <Compile Include="ViewGroupContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
