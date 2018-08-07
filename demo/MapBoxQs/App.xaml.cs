@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-[assembly:Xamarin.Forms.Xaml.XamlCompilation(Xamarin.Forms.Xaml.XamlCompilationOptions.Compile)]
+[assembly: Xamarin.Forms.Xaml.XamlCompilation(Xamarin.Forms.Xaml.XamlCompilationOptions.Compile)]
 namespace MapBoxQs
 {
     public partial class App : Application
@@ -9,7 +9,7 @@ namespace MapBoxQs
         {
             InitializeComponent();
 
-            MainPage = new MapBoxQsPage();
+            MainPage = new NavigationPage(new MapBoxQsPage());
         }
 
         protected override void OnStart()

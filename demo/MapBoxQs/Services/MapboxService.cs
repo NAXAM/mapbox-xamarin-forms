@@ -5,6 +5,7 @@ using ModernHttpClient;
 using Naxam.Controls.Mapbox.Forms;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using MapBoxQs.Dtos;
 
 namespace MapBoxQs.Services
 {
@@ -62,9 +63,9 @@ namespace MapBoxQs.Services
 				System.Diagnostics.Debug.WriteLine(content);
 				try
 				{
-                    var output = JsonConvert.DeserializeObject<MapStyle>(content);
-					return output;
-				}
+                    var output = JsonConvert.DeserializeObject<MapStyleDto>(content).DtoToModel();
+                    return output;
+                }
 				catch (Exception ex)
 				{
 					System.Diagnostics.Debug.WriteLine("[EXCEPTION] " + ex.Message);
@@ -72,5 +73,5 @@ namespace MapBoxQs.Services
 			}
 			return null;
 		}
-	}
+    }
 }

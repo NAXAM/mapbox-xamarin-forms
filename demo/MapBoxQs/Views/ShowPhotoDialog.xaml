@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MapBoxQs.Views.ShowPhotoDialog"
+    NavigationPage.HasNavigationBar="False"
+    BackgroundColor="Black"
+    >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image
+        x:Name="demoImage"
+        Margin="32"/>
+        <Button
+            Grid.Row="1"
+            Text="Dismiss"
+            Clicked="DismissView"
+            TextColor="White"
+            BackgroundColor="Red"
+        />
+    </Grid>
+
+</ContentPage>

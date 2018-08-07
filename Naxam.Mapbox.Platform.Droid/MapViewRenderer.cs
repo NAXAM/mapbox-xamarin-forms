@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Support.V7.App;
@@ -17,6 +18,7 @@ using Naxam.Controls.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
 using Annotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Mapbox.Forms.MapView;
@@ -27,7 +29,7 @@ using View = Android.Views.View;
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
-        : ViewRenderer<MapView, View>, MapboxMap.ISnapshotReadyCallback, IOnMapReadyCallback
+        : ViewRenderer<MapView, View>, IOnMapReadyCallback
     {
         MapboxMap map;
 
@@ -38,9 +40,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
             new Dictionary<string, Sdk.Annotations.Annotation>();
 
-        public MapViewRenderer(Context context): base(context)
+        public MapViewRenderer(Context context) : base(context)
         {
-            
+
         }
 
         protected override void OnElementChanged(
@@ -52,8 +54,17 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
-                if (map != null) {
+                if (map != null)
+                {
                     RemoveMapEvents();
+                }
+
+                if (e.OldElement.Annotations != null)
+                {
+                    if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection)
+                    {
+                        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                    }
                 }
             }
 
@@ -68,26 +79,32 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     Id = GenerateViewId()
                 };
 
-	            SetNativeControl(view);
+                SetNativeControl(view);
 
-	            fragment = new MapViewFragment();
+                fragment = new MapViewFragment();
 
-	            activity.SupportFragmentManager.BeginTransaction()
-	                .Replace(view.Id, fragment)
-	                .Commit();
-                
+                activity.SupportFragmentManager.BeginTransaction()
+                    .Replace(view.Id, fragment)
+                    .Commit();
+
 
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
+                if (Element.Annotations != null)
+                {
+                    AddAnnotations(Element.Annotations.ToArray());
+                    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
+                }
             }
         }
 
         public void SetupFunctions()
         {
-
             Element.TakeSnapshotFunc += TakeMapSnapshot;
             Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
-
             Element.ResetPositionAction = () =>
             {
                 //TODO handle reset position call
@@ -102,8 +119,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var layer = map.GetLayer(layerIdStr);
                     if (layer != null)
                     {
-                        layer.SetProperties(layer.Visibility, 
-                                            isVisible ? Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.Visible) 
+                        layer.SetProperties(layer.Visibility,
+                                            isVisible ? Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.Visible)
                                             : Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.None));
 
                         if (IsCustom && Element.MapStyle.CustomLayers != null)
@@ -132,11 +149,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var source = map.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
                     if (source != null)
                     {
-						Device.BeginInvokeOnMainThread(() =>
-						{
-							source.SetGeoJson(shape);
-						});
-                        if (Element.MapStyle.CustomSources?.FirstOrDefault( (arg) => arg.Id == sourceId) is ShapeSource ss) {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            source.SetGeoJson(shape);
+                        });
+                        if (Element.MapStyle.CustomSources?.FirstOrDefault((arg) => arg.Id == sourceId) is ShapeSource ss)
+                        {
                             ss.Shape = annotation;
                         }
                         //if (Element.MapStyle.CustomSources != null)
@@ -157,12 +175,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 return false;
             };
 
-            Element.ReloadStyleAction = () => {
+            Element.ReloadStyleAction = () =>
+            {
                 //https://github.com/mapbox/mapbox-gl-native/issues/9511
-				map.SetStyleUrl(map.StyleUrl, null);
+                map.SetStyleUrl(map.StyleUrl, null);
             };
 
-            Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) => {
+            Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) =>
+            {
                 var newPosition = new CameraPosition.Builder()
                                                     .Bearing(bearing ?? map.CameraPosition.Bearing)
                                                     .Target(centerLocation?.ToLatLng() ?? map.CameraPosition.Target)
@@ -174,21 +194,51 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     CancelHandler = completionHandler
                 };
                 var update = CameraUpdateFactory.NewCameraPosition(newPosition);
-                if (animated) {
-					map.AnimateCamera(update, callback);
+                if (animated)
+                {
+                    map.AnimateCamera(update, callback);
                 }
-                else {
-					map.MoveCamera(update, callback);
-				}
+                else
+                {
+                    map.MoveCamera(update, callback);
+                }
             };
 
             Element.GetStyleImageFunc += GetStyleImage;
+
+            Element.GetStyleLayerFunc = GetStyleLayer;
+
+            Element.SelectAnnotationAction = (Tuple<string, bool> obj) =>
+            {
+                if (obj == null || map == null || map.Annotations == null) return;
+                foreach (var item in map.Annotations)
+                {
+
+                    if (item is Marker marker && marker.Id.ToString() == obj.Item1)
+                    {
+                        map.SelectMarker(marker);
+                    }
+                }
+            };
+
+            Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
+            {
+                if (obj == null || map == null || map.Annotations == null) return;
+                foreach (var item in map.Annotations)
+                {
+                    if (item is Marker marker && marker.Id.ToString() == obj.Item1)
+                    {
+                        map.DeselectMarker(marker);
+                    }
+                }
+            };
         }
 
         private byte[] GetStyleImage(string imageName)
         {
             var img = map.GetImage(imageName);
-            if (img != null) {
+            if (img != null)
+            {
                 var stream = new MemoryStream();
                 img.Compress(Bitmap.CompressFormat.Png, 100, stream);
                 return stream.ToArray();
@@ -196,11 +246,56 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return null;
         }
 
-        byte[] TakeMapSnapshot()
+        private StyleLayer GetStyleLayer(string layerId, bool isCustomLayer)
+        {
+            var layer = map.GetLayer(isCustomLayer ? layerId.Prefix() : layerId);
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.BackgroundLayer background)
+            {
+                return background.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.CircleLayer circle)
+            {
+                return circle.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.LineLayer line)
+            {
+                return line.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.FillLayer fill)
+            {
+                return fill.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.SymbolLayer symbol)
+            {
+                return symbol.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.RasterLayer raster)
+            {
+                return raster.ToForms();
+            }
+            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.UnknownLayer unknown)
+            {
+                return null;
+            }
+            return null;
+        }
+
+        TaskCompletionSource<byte[]> tcs;
+        Task<byte[]> TakeMapSnapshot()
         {
             //TODO
-            map.Snapshot(this);
-            return result;
+            if (tcs != null && tcs.Task.IsCompleted == false)
+                return tcs.Task;
+            tcs = new TaskCompletionSource<byte[]>();
+
+            map.Snapshot(new SnapshotReadyCallback((bmp) =>
+            {
+                MemoryStream stream = new MemoryStream();
+                bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
+                var result = stream.ToArray();
+                tcs.TrySetResult(result);
+            }));
+            return tcs.Task;
         }
 
         IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
@@ -254,6 +349,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
+            System.Diagnostics.Debug.WriteLine("MapViewRenderer:" + e.PropertyName);
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
                 if (!ReferenceEquals(Element.Center, currentCamera))
@@ -284,7 +380,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
                 }
             }
-            else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName) {
+            else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName)
+            {
                 map?.SetBearing(Element.RotatedDegree);
             }
             else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
@@ -300,11 +397,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     }
                 }
             }
-            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null) {
+            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
+            {
                 var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
                 System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
-                if (dif >= 0.01) {
-                    System.Diagnostics.Debug.WriteLine("Updating zoom level");  
+                if (dif >= 0.01)
+                {
+                    System.Diagnostics.Debug.WriteLine("Updating zoom level");
                     map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
                 }
             }
@@ -377,12 +476,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 var sources = map.Sources;
                 foreach (var s in sources)
-				{
-					if (s.Id.HasPrefix())
-					{
+                {
+                    if (s.Id.HasPrefix())
+                    {
                         map.RemoveSource(s);
-					}
-				}
+                    }
+                }
             }
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
@@ -402,7 +501,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 if (ms.Id != null)
                 {
-                    if (ms is ShapeSource ss && ss.Shape != null) {
+                    if (ms is ShapeSource ss && ss.Shape != null)
+                    {
                         var shape = ss.Shape.ToFeatureCollection();
 
                         var source = map.GetSource(ss.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
@@ -417,8 +517,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             source.SetGeoJson(shape);
                         }
                     }
-                    else {
-                        //TODO handle RasterSource
+                    else if (ms is RasterSource rs)
+                    {
+                        var source = map.GetSource(rs.Id);
+                        if (source == null)
+                        {
+                            Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
+                            map.AddSource(rasterSource);
+                        }
                     }
                 }
             }
@@ -485,7 +591,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        void AddLayers(List<Layer> layers)
+        void AddLayers(List<Naxam.Controls.Mapbox.Forms.Layer> layers)
         {
             if (layers == null)
             {
@@ -517,6 +623,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var cross = (LineLayer)layer;
 
                     var source = map.GetSource(cross.SourceId.Prefix());
+                    if (source == null)
+                    {
+                        continue;
+                    }
+
+                    map.AddLayer(cross.ToNative());
+                } else if(layer is RasterLayer cross)
+                {
+                    var source = map.GetSource(cross.SourceId);
                     if (source == null)
                     {
                         continue;
@@ -608,6 +723,20 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 marker.SetTitle(at.Title);
                 marker.SetSnippet(at.Title);
                 marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
+                var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
+                if (output?.Item2 is string imgName)
+                {
+                    try
+                    {
+                        IconFactory iconFactory = IconFactory.GetInstance(Context);
+                        Icon icon = iconFactory.FromResource(Context.Resources.GetIdentifier(imgName, "drawable", Context.PackageName));
+                        marker.SetIcon(icon);
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
+                    }
+                }
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -705,14 +834,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        private byte[] result;
-        void MapboxMap.ISnapshotReadyCallback.OnSnapshotReady(Bitmap bmp)
-        {
-            MemoryStream stream = new MemoryStream();
-            bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
-            result = stream.ToArray();
-        }
-
         public void OnMapReady(MapboxMap p0)
         {
             map = p0;
@@ -720,33 +841,77 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
-            if (Element.Center != null) {
-				map.CameraPosition = new CameraPosition.Builder()
+            if (Element.Center != null)
+            {
+                map.CameraPosition = new CameraPosition.Builder()
                     .Target(Element.Center.ToLatLng())
-			   .Zoom(Element.ZoomLevel)
+               .Zoom(Element.ZoomLevel)
                     .Tilt(Element.Pitch)
                     .Bearing(Element.RotatedDegree)
-			   .Build();
+               .Build();
             }
-            else {
-				map.CameraPosition = new CameraPosition.Builder()
+            else
+            {
+                map.CameraPosition = new CameraPosition.Builder()
                     .Target(map.CameraPosition.Target)
-			   .Zoom(Element.ZoomLevel)
+               .Zoom(Element.ZoomLevel)
                     .Tilt(Element.Pitch)
                     .Bearing(Element.RotatedDegree)
-			   .Build();
+               .Build();
             }
 
             AddMapEvents();
             SetupFunctions();
-            if (Element.MapStyle == null) {
-                if (map.StyleUrl != null) {
+            if (Element.MapStyle == null)
+            {
+                if (map.StyleUrl != null)
+                {
                     Element.MapStyle = new MapStyle(map.StyleUrl);
                 }
             }
-            else {
+            else
+            {
                 UpdateMapStyle();
             }
+        }
+    }
+
+    class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback
+    {
+        public Action<Bitmap> SnapshotReady { get; set; }
+        public SnapshotReadyCallback(Action<Bitmap> SnapshotReady)
+        {
+            this.SnapshotReady = SnapshotReady;
+        }
+
+        public void OnSnapshotReady(Bitmap p0)
+        {
+            SnapshotReady?.Invoke(p0);
+        }
+    }
+
+    public static class StringExtensions
+    {
+        static string CustomPrefix = "NXCustom_";
+        public static string ToCustomId(this string str)
+        {
+            if (str == null) return null;
+            return CustomPrefix + str;
+        }
+
+        public static bool IsCustomId(this string str)
+        {
+            if (str == null) return false;
+            return str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string TrimCustomId(this string str)
+        {
+            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return str.Substring(CustomPrefix.Length);
+            }
+            return str;
         }
     }
 }

@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxQs.Droid", "demo\Droi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxQs.iOS", "demo\iOS\MapBoxQs.iOS.csproj", "{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxQs", "demo\MapBoxQs\MapBoxQs.csproj", "{85E7EE45-A434-481B-8777-B6AC6F986F24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapBoxQs", "demo\MapBoxQs\MapBoxQs.csproj", "{85E7EE45-A434-481B-8777-B6AC6F986F24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +88,7 @@ Global
 		{BE104097-5ADB-4739-92CC-8FD300E12E8E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{BE104097-5ADB-4739-92CC-8FD300E12E8E}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Debug|Any CPU.ActiveCfg = Debug|iPhone
+		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Debug|Any CPU.Build.0 = Debug|iPhone
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Debug|iPhone.Build.0 = Debug|iPhone
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
