@@ -34,7 +34,9 @@ namespace Naxam.Mapbox.Platform.Droid
         {
             Xamarin.Forms.View formsView = null;
             ViewGroup _container = new LinearLayout(_context);
-            _container.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            layoutParams.SetMargins(0,0,10,10);
+            _container.LayoutParameters = layoutParams;
             object bindingContext = null;
             _map.ItemsSource = new List<Marker> { marker};
             var source = _map.ItemsSource?.Cast<object>();
@@ -64,10 +66,10 @@ namespace Naxam.Mapbox.Platform.Droid
                             cell.BindingContext = bindingContext;
                             var output = new ViewGroupContainer(_container.Context, _container, cell.View);
                             _container.AddView(output);
-                            return output;
+                            return _container;
                         }
                         else
-                        formsView = content as Xamarin.Forms.View;
+                            formsView = content as Xamarin.Forms.View;
                     }
                 }
                 if (formsView != null)

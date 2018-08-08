@@ -31,18 +31,14 @@ namespace Naxam.Mapbox.Platform.Droid
         public ViewGroupContainer(Context context, Android.Views.View parent, VisualElement visualElement) : base(context)
         {
             _context = context;
-            LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
             _visualElement = visualElement;
             _parent = parent;
             _renderer = Xamarin.Forms.Platform.Android.Platform.CreateRendererWithContext(_visualElement, context);
             Xamarin.Forms.Platform.Android.Platform.SetRenderer(_visualElement, _renderer);
             _view = _renderer.View;
-            AddView(_view);
+            AddView(_view,new LayoutParams(-2,-2));
+            //LayoutParameters = new LayoutParams(100, 100);
 
-        }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
         protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
         {
@@ -55,7 +51,11 @@ namespace Naxam.Mapbox.Platform.Droid
         }
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+            int width = MeasureSpec.GetSize(widthMeasureSpec);
+            int height = MeasureSpec.GetSize(heightMeasureSpec);
+            var x = _renderer.Element;
+            SetMeasuredDimension(width, height);
+            System.Diagnostics.Debug.WriteLine($"{nameof(OnMeasure)}: {width}x{height}");
         }
     }
 }

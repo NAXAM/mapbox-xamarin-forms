@@ -1,4 +1,5 @@
 ﻿
+using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -317,5 +318,24 @@ namespace Naxam.Controls.Mapbox.Forms
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
+        public static readonly BindableProperty MapRegionProperty = BindableProperty.Create(
+            propertyName: nameof(MapRegion),
+            returnType: typeof(MapRegion),
+            declaringType: typeof(MapView),
+            defaultValue: default(MapRegion),
+            defaultBindingMode: BindingMode.TwoWay);
+
+        public MapRegion MapRegion
+        {
+            get
+            {
+                return (MapRegion)GetValue(CenterProperty);
+            }
+            set
+            {
+                SetValue(CenterProperty, (MapRegion)value);
+            }
+        }
+
     }
 }
