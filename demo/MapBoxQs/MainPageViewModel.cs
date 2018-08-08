@@ -738,26 +738,21 @@ namespace MapBoxQs
                 switch (state)
                 {
                     case ActionState.AddPolyline:
-                        polyline = new PolylineAnnotation
-                        {
-                            HexColor = "#ff1234",
-                            Width = 1
-                        };
                         break;
                 }
-               
+
             }
             else
             {
                 switch (state)
                 {
                     case ActionState.AddPolyline:
-                        Annotations.Add(polyline);
+                        polyline = null;
                         break;
                 }
-                
+
                 CurrentAction = ActionState.None;
-            } 
+            }
         }
 
         ICommand _DidTapOnMapCommand;
@@ -788,7 +783,10 @@ namespace MapBoxQs
                         Width = 1
                     };
                 if (polyline.Coordinates == null)
+                {
                     polyline.Coordinates = new ObservableCollection<Position> { obj.Item1 };
+                    Annotations.Add(polyline);
+                }
                 else
                     (polyline.Coordinates as ObservableCollection<Position>).Add(obj.Item1);
             }
