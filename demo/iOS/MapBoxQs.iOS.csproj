@@ -123,7 +123,7 @@
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\..\packages\Naxam.Mapbox.iOS.4.1.1\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <HintPath>..\..\packages\Naxam.Mapbox.iOS.4.2.0\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
