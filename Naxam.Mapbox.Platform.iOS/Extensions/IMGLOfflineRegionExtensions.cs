@@ -14,8 +14,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
             {
                 output.Bounds = new CoordinateBounds()
                 {
-                    SouthWest = TypeConverter.FromCoordinateToPosition(tpoRegion.Bounds.Sw),
-                    NorthEast = TypeConverter.FromCoordinateToPosition(tpoRegion.Bounds.Ne),
+                    SouthWest = TypeConverter.FromCoordinateToPosition(tpoRegion.Bounds.sw),
+                    NorthEast = TypeConverter.FromCoordinateToPosition(tpoRegion.Bounds.ne),
                 };
                 output.MaximumZoomLevel = tpoRegion.MaximumZoomLevel;
                 output.MinimumZoomLevel = tpoRegion.MinimumZoomLevel;
@@ -34,8 +34,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
 
             output.Bounds = new CoordinateBounds()
             {
-                SouthWest = TypeConverter.FromCoordinateToPosition(region.Bounds.Sw),
-                NorthEast = TypeConverter.FromCoordinateToPosition(region.Bounds.Ne),
+                SouthWest = TypeConverter.FromCoordinateToPosition(region.Bounds.sw),
+                NorthEast = TypeConverter.FromCoordinateToPosition(region.Bounds.ne),
             };
             output.MaximumZoomLevel = region.MaximumZoomLevel;
             output.MinimumZoomLevel = region.MinimumZoomLevel;

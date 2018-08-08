@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
@@ -44,7 +45,19 @@ namespace Naxam.Controls.Mapbox.Forms
             set { SetValue(IsMarkerClickedProperty, value); }
         }
 
-        public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
+		public static readonly BindableProperty DragFinishedCommandProperty = BindableProperty.Create(
+			nameof(DragFinishedCommand),
+			typeof(ICommand),
+			typeof(MapView),
+			default(ICommand),
+			BindingMode.OneWay);
+		public ICommand DragFinishedCommand
+		{
+			get { return (ICommand)GetValue(DragFinishedCommandProperty); }
+			set { SetValue(DragFinishedCommandProperty, value); }
+		}
+
+		public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
             nameof(FocusPosition),
            typeof(bool),
            typeof(MapView),
@@ -172,6 +185,18 @@ namespace Naxam.Controls.Mapbox.Forms
             {
                 SetValue(PitchEnabledProperty, value);
             }
+        }
+
+        public static readonly BindableProperty ScrollEnabledProperty = BindableProperty.Create(
+            nameof(ScrollEnabled),
+            typeof(bool),
+            typeof(MapView),
+            default(bool),
+            BindingMode.OneWay);
+        public bool ScrollEnabled
+        {
+            get { return (bool)GetValue(ScrollEnabledProperty); }
+            set { SetValue(ScrollEnabledProperty, value); }
         }
 
         public static readonly BindableProperty RotateEnabledProperty = BindableProperty.Create(

@@ -9,7 +9,7 @@ namespace Naxam.Controls.Mapbox.Forms
         {
 
         }
-
+        public long Id { get; set; }
         public OfflinePackRegion Region
         {
             get;

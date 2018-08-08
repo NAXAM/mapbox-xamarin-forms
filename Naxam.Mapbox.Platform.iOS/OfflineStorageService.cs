@@ -122,8 +122,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 new NSUrl(formsRegion.StyleURL),
                 new MGLCoordinateBounds()
                 {
-                    Sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
-                    Ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
+                sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
+                ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
                 },
                 formsRegion.MinimumZoomLevel,
                 formsRegion.MaximumZoomLevel);
@@ -139,7 +139,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 context = NSKeyedArchiver.ArchivedDataWithRootObject(userInfo);
             }
 
-            MGLOfflineStorage.SharedOfflineStorage().AddPackForRegion(region, context, (pack, error) =>
+            MGLOfflineStorage.SharedOfflineStorage.AddPackForRegion(region, context, (pack, error) =>
             {
                 if (error != null) {
                     System.Diagnostics.Debug.WriteLine("Couldn't create offline pack: " + error.LocalizedFailureReason);
@@ -161,7 +161,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public Task<OfflinePack[]> GetPacks()
         {
             var tsc = new TaskCompletionSource<OfflinePack[]>();
-            var sharedStorage = MGLOfflineStorage.SharedOfflineStorage();
+            var sharedStorage = MGLOfflineStorage.SharedOfflineStorage;
             var packs = sharedStorage.Packs;
             if (packs == null) {
                 /*
@@ -195,7 +195,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             var tsc = new TaskCompletionSource<bool>();
             try {
                 var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
-                MGLOfflineStorage.SharedOfflineStorage().RemovePack(mbPack, (error) =>
+                MGLOfflineStorage.SharedOfflineStorage.RemovePack(mbPack, (error) =>
                 {
                     if (error == null) {
                         tsc.TrySetResult(true);

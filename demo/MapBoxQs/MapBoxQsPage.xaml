@@ -4,8 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
     xmlns:local="clr-namespace:MapBoxQs"
-    x:Class="MapBoxQs.MapBoxQsPage"
-    NavigationPage.HasNavigationBar="False">
+    x:Name="root"
+    x:Class="MapBoxQs.MapBoxQsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style
@@ -52,19 +52,24 @@
                     Command="{Binding SwitchToolCommand}"
                     CommandParameter="{x:Static local:MapTools.Misc}"
                     Text="Others" />
+                 <Button
+                    Command="{Binding FocusUserLocationCommand}"
+                    Text="My Location" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            DragFinishedCommand="{Binding DragFinishedCommand}"
             ShowUserLocation="true"
-            Center="{Binding CenterLocation, Mode=OneWayToSource}"
+            Center="{Binding CenterLocation}"
             VerticalOptions="FillAndExpand"
+            Annotations="{Binding Annotations}"
             MapStyle="{Binding CurrentMapStyle}"
-            Annotations="{Binding Annotations,Mode=OneWay}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
+            UserLocation="{Binding UserLocation}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"

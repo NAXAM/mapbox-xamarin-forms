@@ -2,63 +2,50 @@
 using System.Collections.Generic;
 using Foundation;
 using Mapbox;
+using Naxam.Mapbox.Platform.iOS;
 using Naxam.Controls.Mapbox.Forms;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
+using System.Diagnostics;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public partial class MapViewRenderer
     {
-		private NSObject GetValueFromCameraStyleFunction(MGLCameraStyleFunction csFunc)
-		{
-			if (csFunc.Stops == null || csFunc.Stops.Count == 0) return null;
-			MGLStyleValue output = null;
-			switch (csFunc.InterpolationMode)
-			{
-				case MGLInterpolationMode.Identity:
-					nuint i = 0;
-					while (i < csFunc.Stops.Count)
-					{
-						var key = csFunc.Stops.Keys[i];
-						var zoomLevel = (key as NSNumber).DoubleValue;
-                        if (zoomLevel < MapView.ZoomLevel)
-						{
-							output = csFunc.Stops[key];
-						}
-						else
-						{
-							break;
-						}
-						i++;
-					}
-					break;
-				default: break;
-			}
-			if (output == null)
-			{
-				output = csFunc.Stops.Values[0];
-			}
-			return GetObjectFromStyleValue(output);
-		}
-
-		private NSObject GetObjectFromStyleValue(MGLStyleValue value)
-		{
-			if (value is MGLConstantStyleValue cValue)
-			{
-				return cValue.RawValue;
-			}
-			if (value is MGLCameraStyleFunction csFunc)
-			{
-				return GetValueFromCameraStyleFunction(csFunc);
-			}
-			if (value != null && value.RespondsToSelector(new ObjCRuntime.Selector("rawValue")))
-			{
-				return value.ValueForKey((NSString)"rawValue");
-			}
-			return value;
-		}
+        public T GetValueFromExpression<T>(NSExpression expr) where T : NSObject
+        {
+            if (expr == null) return default(T);
+            switch (expr.ExpressionType)
+            {
+                case NSExpressionType.ConstantValue:
+                    return expr.ConstantValue as T;
+                case NSExpressionType.NSAggregate:
+                    if (expr.Collection is T)
+                        return expr.Collection as T;
+                    if (expr.Collection is NSArray array
+                        && array.Count != 0)
+                    {
+                        var first = array.GetItem<T>(0);
+                        if (first is NSExpression innerExpr)
+                        {
+                            return GetValueFromExpression<T>(innerExpr);
+                        }
+                        return first;
+                    }
+                    return default(T);
+                case NSExpressionType.Function:
+                    //TODO
+                    var function = expr.Function; //"mgl_interpolate:withCurveType:parameters:stops:"
+                    if (expr.Arguments is NSExpression[] args)// $zoomLevel, exponential, 1.299999, {{ 13 = "0.5", 20 = 2;}}
+                    {
+                        //TODO
+                    }
+                    return default(T);
+                default:
+                    return default(T);
+            }
+        }      
 
         private MGLStyleLayer GetStyleLayer(StyleLayer styleLayer, NSString id)
 		{
@@ -75,17 +62,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			}
 			if (styleLayer is CircleLayer circleLayer)
 			{
-				var newLayer = new MGLCircleStyleLayer(id, source)
-				{
-					CircleColor = MGLStyleValue.ValueWithRawValue(circleLayer.CircleColor.ToUIColor()),
-					CircleOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.CircleOpacity)),
-					CircleRadius = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.CircleRadius))
+                var newLayer = new MGLCircleStyleLayer(id, source)
+                {
+                    CircleColor = NSExpression.FromConstant(circleLayer.CircleColor.ToUIColor()),
+                    CircleOpacity = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.CircleOpacity)),
+                    CircleRadius = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.CircleRadius))
 				};
 				if (circleLayer.StrokeColor is Color strokeColor)
 				{
-					newLayer.CircleStrokeColor = MGLStyleValue.ValueWithRawValue(strokeColor.ToUIColor());
-					newLayer.CircleStrokeOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.StrokeOpacity));
-					newLayer.CircleStrokeWidth = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(circleLayer.StrokeWidth));
+                    newLayer.CircleStrokeColor = NSExpression.FromConstant(strokeColor.ToUIColor());
+                    newLayer.CircleStrokeOpacity = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.StrokeOpacity));
+                    newLayer.CircleStrokeWidth = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.StrokeWidth));
 				}
 				return newLayer;
 			}
@@ -94,8 +81,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			{
 				var newLayer = new MGLLineStyleLayer(id, source)
 				{
-					LineWidth = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(lineLayer.LineWidth)),
-					LineColor = MGLStyleValue.ValueWithRawValue(lineLayer.LineColor.ToUIColor())
+                    LineWidth = NSExpression.FromConstant(NSNumber.FromDouble(lineLayer.LineWidth)),
+                    LineColor = NSExpression.FromConstant(lineLayer.LineColor.ToUIColor())
 				};
 				if (lineLayer.Dashes != null && lineLayer.Dashes.Length != 0)
 				{
@@ -104,7 +91,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 					{
 						arr.Add(NSNumber.FromDouble(dash));
 					}
-					newLayer.LineDashPattern = MGLStyleValue.ValueWithRawValue(arr);
+                    newLayer.LineDashPattern = NSExpression.FromConstant(arr);
 				}
 				//TODO lineCap
 				return newLayer;
@@ -114,8 +101,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			{
 				var newLayer = new MGLFillStyleLayer(id, source)
 				{
-					FillColor = MGLStyleValue.ValueWithRawValue(fl.FillColor.ToUIColor()),
-					FillOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(fl.FillOpacity))
+                    FillColor = NSExpression.FromConstant(fl.FillColor.ToUIColor()),
+                    FillOpacity = NSExpression.FromConstant(NSNumber.FromDouble(fl.FillOpacity))
 				};
 				return newLayer;
 			}
@@ -124,8 +111,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			{
 				var newLayer = new MGLSymbolStyleLayer(id, source)
 				{
-					IconImageName = MGLConstantStyleValue.ValueWithRawValue((NSString)sl.IconImageName),
-					IconOpacity = MGLStyleValue.ValueWithRawValue(NSNumber.FromDouble(sl.IconOpacity))
+                    IconImageName = NSExpression.FromConstant(new NSString(sl.IconImageName)),
+                    IconOpacity = NSExpression.FromConstant(NSNumber.FromDouble(sl.IconOpacity))
 				};
 				return newLayer;
 			}
@@ -139,13 +126,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			return null;
 		}
 
-        StyleLayer CreateStyleLayer(MGLVectorStyleLayer vectorLayer, string layerId = null) {
-            if (vectorLayer is MGLSymbolStyleLayer sl && sl.IconImageName != null)
+        StyleLayer CreateStyleLayer(MGLVectorStyleLayer vectorLayer, string layerId = null) 
+        {
+            if (vectorLayer is MGLSymbolStyleLayer sl )
 			{
                 var newLayer = new SymbolLayer(layerId ?? vectorLayer.Identifier, vectorLayer.SourceIdentifier.TrimCustomId());
-				if (sl.IconImageName is MGLCameraStyleFunction csFunc)
+                if (sl.IconImageName is NSExpression csFunc)
 				{
-					var imgName = GetValueFromCameraStyleFunction(csFunc);
+                    var imgName = GetValueFromExpression<NSString>(sl.IconImageName);
 					if (imgName != null)
 					{
                         newLayer.IconImageName = imgName.ToString();
@@ -153,7 +141,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 				}
 				else
 				{
-					var imgName = GetObjectFromStyleValue(sl.IconImageName);
+                    var imgName = GetValueFromExpression<NSString>(sl.IconImageName);
 					if (imgName != null)
 					{
 						newLayer.IconImageName = imgName.ToString();
@@ -164,21 +152,34 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 		
             if (vectorLayer is MGLLineStyleLayer ll)
 			{
-				var newLayer = new LineLayer(layerId ?? vectorLayer.Identifier, vectorLayer.SourceIdentifier.TrimCustomId())
+                var newLayer = new LineLayer(layerId ?? vectorLayer.Identifier, vectorLayer.SourceIdentifier.TrimCustomId())
 				{
-                    LineColor = (GetObjectFromStyleValue(ll.LineColor) as UIColor).ToColor()
+                    LineColor = (GetValueFromExpression<UIColor>(ll.LineColor) as UIColor).ToColor()
 				};
 
 				if (ll.LineDashPattern != null)
 				{
 
-					if (GetObjectFromStyleValue(ll.LineDashPattern) is NSArray arr && arr.Count != 0)
+                    if (GetValueFromExpression<NSArray>(ll.LineDashPattern) is NSArray arr && arr.Count != 0)
 					{
 						var dash = new List<double>();
-						for (nuint i = 0; i < arr.Count; i++)
+                        for (nuint i = 0; i < arr.Count; i++)
 						{
-							var obj = arr.GetItem<NSNumber>(i);
-							dash.Add(obj.DoubleValue);
+                            var obj = arr.GetItem<NSObject>(i);
+                            switch (obj)
+                            {
+                                case NSExpression expression:
+                                    if(expression.ExpressionType==NSExpressionType.ConstantValue){
+                                        var number = GetValueFromExpression<NSNumber>(expression);
+                                        dash.Add(number.DoubleValue);
+                                    }
+                                    break;
+                                case NSNumber number:
+                                    dash.Add(number.DoubleValue);
+                                    break;
+                                default:
+                                    break;
+                            }
 						}
 						newLayer.Dashes = dash.ToArray();
 					}
@@ -194,7 +195,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			{
 				var newLayer = new CircleLayer(layerId ?? vectorLayer.Identifier, vectorLayer.SourceIdentifier.TrimCustomId())
 				{
-                    CircleColor = (GetObjectFromStyleValue(cl.CircleColor) as UIColor)?.ToColor() ?? Color.Transparent
+                    CircleColor = (GetValueFromExpression<UIColor>(cl.CircleColor) as UIColor)?.ToColor() ?? Color.Transparent
 				};
                 //TODO stroke, opacity ...
                 return newLayer;
@@ -204,7 +205,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			{
                 var newLayer = new FillLayer(layerId ?? vectorLayer.Identifier, vectorLayer.SourceIdentifier.TrimCustomId())
 				{
-                    FillColor = (GetObjectFromStyleValue(fl.FillColor) as UIColor)?.ToColor() ?? Color.Transparent
+                    FillColor = (GetValueFromExpression<UIColor>(fl.FillColor) as UIColor)?.ToColor() ?? Color.Transparent
 				};
                 return newLayer;
 			}

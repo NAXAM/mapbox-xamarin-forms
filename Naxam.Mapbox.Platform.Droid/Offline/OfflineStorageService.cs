@@ -103,6 +103,23 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return tcs.Task;
         }
 
+        Task<OfflineRegion[]> GetRegions()
+        {
+            var tcs = new TaskCompletionSource<OfflineRegion[]>();
+            offlineManager.ListOfflineRegions(new ListOfflineRegionsCallback()
+            {
+                OnErrorHandle = ((msg) =>
+                {
+                    System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't get offline packs: " + msg);
+                    tcs.TrySetResult(null);
+                }),
+                OnListHandle = ((regs) =>
+                { 
+                    tcs.TrySetResult(regs);
+                })
+            });
+            return tcs.Task;
+        }
 
         public Task<bool> RemovePack(OfflinePack pack)
         {
@@ -124,14 +141,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return tcs.Task;
         }
 
-        public void RequestPackProgress(OfflinePack pack)
-        {
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
-            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
-            region?.SetObserver(new OfflineRegionObserver(
+        public async void RequestPackProgress(OfflinePack pack)
+        { 
+            var regions = await GetRegions();
+            var region = regions.FirstOrDefault(d => d.ID == pack.Id);
+            if (region == null)
+                return;
+            region.SetDownloadState(OfflineRegion.StateActive);
+            region.SetObserver(new OfflineRegionObserver(
                 (status) =>
                 {
-                
                     pack.Progress = new OfflinePackProgress()
                     {
                         CountOfResourcesExpected = (ulong)status.RequiredResourceCount,
