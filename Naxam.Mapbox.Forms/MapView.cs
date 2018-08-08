@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -91,6 +92,7 @@ namespace Naxam.Controls.Mapbox.Forms
                 SetValue(CenterProperty, (Position)value);
             }
         }
+        
 
         public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
             nameof(UserLocation),
@@ -118,13 +120,13 @@ namespace Naxam.Controls.Mapbox.Forms
             defaultValue: default(bool),
             defaultBindingMode: BindingMode.OneWay
         );
-
+        
         public bool ShowUserLocation
         {
             get { return (bool)GetValue(ShowUserLocationProperty); }
             set { SetValue(ShowUserLocationProperty, value); }
         }
-
+        
         public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(
             nameof(ZoomLevel),
             typeof(double),
@@ -289,6 +291,31 @@ namespace Naxam.Controls.Mapbox.Forms
                 SetValue(AnnotationsProperty, (IEnumerable<Annotation>)value);
             }
         }
+        public static BindableProperty InfoWindowTemplateProperty = BindableProperty.Create(
+            propertyName: nameof(InfoWindowTemplate),
+            returnType: typeof(DataTemplate),
+            declaringType: typeof(MapView),
+            defaultValue: default(DataTemplate),
+            defaultBindingMode: BindingMode.OneWay
+        );
+        public DataTemplate InfoWindowTemplate
+        {
+            get { return (DataTemplate)GetValue(InfoWindowTemplateProperty); }
+            set { SetValue(InfoWindowTemplateProperty, value); }
+        }
+        
+        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(
+            propertyName: nameof(ItemsSource),
+            returnType: typeof(IEnumerable),
+            declaringType: typeof(MapView),
+            defaultValue: default(IEnumerable),
+            defaultBindingMode: BindingMode.OneWay
+        );
 
+        public IEnumerable ItemsSource
+        {
+            get { return (IEnumerable)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
     }
 }
