@@ -66,7 +66,7 @@ namespace Naxam.Mapbox.Platform.Droid
                         if (content is ViewCell cell)
                         {
                             cell.BindingContext = bindingContext;
-                            var output = new ViewGroupContainer(_container.Context, _container, cell.View);
+                            var output = new ViewGroupContainer(_container.Context, _container, cell);
                             _container.AddView(output);
                             return _container;
                         }

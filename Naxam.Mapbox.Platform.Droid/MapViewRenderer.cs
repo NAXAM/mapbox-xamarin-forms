@@ -33,7 +33,7 @@ using View = Android.Views.View;
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
-        : ViewRenderer<MapView, View>, IOnMapReadyCallback,IOnMapChangedListener
+        : ViewRenderer<MapView, View>, IOnMapReadyCallback
     {
         MapboxMap map;
 
@@ -54,30 +54,30 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             base.OnElementChanged(e);
 
-            if (e.OldElement != null)
-            {
-                e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
-                e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
-                if (map != null)
-                {
-                    RemoveMapEvents();
-                }
+            //if (e.OldElement != null)
+            //{
+            //    e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
+            //    e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
+            //    if (map != null)
+            //    {
+            //        RemoveMapEvents();
+            //    }
 
-                if (e.OldElement.Annotations != null)
-                {
-                    if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection)
-                    {
-                        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                    }
-                }
-            }
+            //    if (e.OldElement.Annotations != null)
+            //    {
+            //        if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection)
+            //        {
+            //            notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+            //        }
+            //    }
+            //}
 
             if (e.NewElement == null)
                 return;
 
             if (Control == null)
             {
-                var activity =Context;
+                var activity =(AppCompatActivity)Context;
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
@@ -88,9 +88,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 fragment = new MapViewFragment();
                 activity.SupportFragmentManager.BeginTransaction()
                     .Replace(view.Id, fragment)
-                    .Commit();
+                    .CommitAllowingStateLoss();
 
-                
+
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
                 if (Element.Annotations != null)
@@ -742,7 +742,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     }
                 }
                 marker.Marker.SetInfoWindowAnchor(-1, -1);
-                // marker.InfoWindowAnchor(-1, -1);
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -839,7 +838,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.RemoveAnnotations(map.Annotations);
             }
         }
+        
+        public override void AddOnLayoutChangeListener(IOnLayoutChangeListener listener)
+        {
+            base.AddOnLayoutChangeListener(listener);
 
+        }
+        
         public void OnMapReady(MapboxMap p0)
         {
             map = p0;
@@ -880,12 +885,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
-            
+           
             if(Element.InfoWindowTemplate !=null)
             {
-                map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
+                var info= new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
+                map.InfoWindowAdapter =info;
             }
-           
+
         }
 
     }
