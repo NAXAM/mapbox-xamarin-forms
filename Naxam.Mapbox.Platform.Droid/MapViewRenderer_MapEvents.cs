@@ -81,6 +81,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public void OnMapChanged(int p0)
         {
+            ComputeVerticalScrollOffset();
+
             switch (p0)
             {
                 case MapView.DidFinishLoadingStyle:

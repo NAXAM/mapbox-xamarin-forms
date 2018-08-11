@@ -301,6 +301,7 @@ namespace Naxam.Controls.Mapbox.Forms
         );
         public DataTemplate InfoWindowTemplate
         {
+            
             get { return (DataTemplate)GetValue(InfoWindowTemplateProperty); }
             set { SetValue(InfoWindowTemplateProperty, value); }
         }

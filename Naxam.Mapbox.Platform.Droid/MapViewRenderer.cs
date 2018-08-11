@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Support.V7.App;
+using Android.Views;
+using Android.Widget;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
@@ -20,6 +22,7 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
+using static Com.Mapbox.Mapboxsdk.Maps.MapView;
 using Annotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Mapbox.Forms.MapView;
@@ -30,7 +33,7 @@ using View = Android.Views.View;
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
-        : ViewRenderer<MapView, View>, IOnMapReadyCallback
+        : ViewRenderer<MapView, View>, IOnMapReadyCallback,IOnMapChangedListener
     {
         MapboxMap map;
 
@@ -74,7 +77,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (Control == null)
             {
-                var activity = (AppCompatActivity)Context;
+                var activity =Context;
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
@@ -83,12 +86,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 SetNativeControl(view);
 
                 fragment = new MapViewFragment();
-
                 activity.SupportFragmentManager.BeginTransaction()
                     .Replace(view.Id, fragment)
                     .Commit();
 
-
+                
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
                 if (Element.Annotations != null)
@@ -101,7 +103,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 }
             }
         }
-
+        
         public void SetupFunctions()
         {
             Element.TakeSnapshotFunc += TakeMapSnapshot;
@@ -720,10 +722,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             Sdk.Annotations.Annotation options = null;
             if (at is PointAnnotation)
             {
-                var marker = new MarkerOptions();
-                marker.SetTitle(at.Title);
-                marker.SetSnippet(at.Title);
-                marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
+                var marker = new MarkerViewOptions();
+                
+                marker.InvokeTitle(at.Title);
+                marker.InvokeSnippet(at.Title);
+                marker.InvokePosition(((PointAnnotation)at).Coordinate.ToLatLng());
                 var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
                 if (output?.Item2 is string imgName)
                 {
@@ -731,13 +734,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     {
                         IconFactory iconFactory = IconFactory.GetInstance(Context);
                         Icon icon = iconFactory.FromResource(Context.Resources.GetIdentifier(imgName, "drawable", Context.PackageName));
-                        marker.SetIcon(icon);
+                        marker.InvokeIcon(icon);
                     }
                     catch (Exception e)
                     {
                         System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
                     }
                 }
+                marker.Marker.SetInfoWindowAnchor(-1, -1);
+                // marker.InfoWindowAnchor(-1, -1);
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -838,6 +843,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void OnMapReady(MapboxMap p0)
         {
             map = p0;
+
             //map.MyLocationEnabled = true;
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
@@ -874,12 +880,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
+            
             if(Element.InfoWindowTemplate !=null)
-            map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate,Element);
+            {
+                map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
+            }
+           
         }
 
     }
-
+   
     class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback
     {
         public Action<Bitmap> SnapshotReady { get; set; }

@@ -79,8 +79,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <Grid 
-                            VerticalOptions="Start"
                             HorizontalOptions="Start"
+                              VerticalOptions="Start"
                             BackgroundColor="Aqua">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />
@@ -91,7 +91,7 @@
                             </Grid.ColumnDefinitions>
                             <Image 
                                    Grid.Column="0"
-                                   Source="http://bit.ly/2MsAzEn" />
+                                   Source="icon.png" />
                             <Label Grid.Column="1"
                                    Text="{Binding Title}" />
 

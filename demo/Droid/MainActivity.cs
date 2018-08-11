@@ -30,17 +30,20 @@ namespace MapBoxQs.Droid
 
             Com.Mapbox.Mapboxsdk.Mapbox.GetInstance(this, MapBoxQs.Services.MapBoxService.AccessToken);
 
-            //Acr.UserDialogs.UserDialogs.Init(() => this);
+            Acr.UserDialogs.UserDialogs.Init(() => this);
 
-            //global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            //System.Diagnostics.Debug.WriteLine("Mapbox version: " + Com.Mapbox.Mapboxsdk.BuildConfig.MapboxVersionString);
+            System.Diagnostics.Debug.WriteLine("Mapbox version: " + Com.Mapbox.Mapboxsdk.BuildConfig.MapboxVersionString);
 
-            //LoadApplication(new App());
-            SetContentView(Resource.Layout.activity_main);
-            mapView = (MapView)FindViewById(Resource.Id.mapView);
-            mapView.OnCreate(savedInstanceState);
-            mapView.GetMapAsync(new MapReady(this));
+            LoadApplication(new App());
+            //SetContentView(Resource.Layout.activity_main);
+            //mapView = (MapView)FindViewById(Resource.Id.mapView);
+            //mapView.OnCreate(savedInstanceState);
+            //mapView.GetMapAsync(new MapReady(this));
+            //mapView.OffsetTopAndBottom(0);
+
+
         }
         public class MapReady : Java.Lang.Object, IOnMapReadyCallback
         {
@@ -61,6 +64,7 @@ namespace MapBoxQs.Droid
                 mapboxMap.AddMarker(new Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions().SetPosition(new LatLng(26.794531, 29.781524)).SetTitle("egypt"));
                 mapboxMap.AddMarker(new Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions().SetPosition(new LatLng(50.981488, 10.384677)).SetTitle("germany"));
                 mapboxMap.InfoWindowAdapter = new InfoWindowAdapter(_context);
+                
             }
         }
         public class InfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
@@ -88,17 +92,17 @@ namespace MapBoxQs.Droid
                     case "spain":
                         txtTittle.SetText(marker.Title, TextView.BufferType.Normal);
                         countryFlagImage.SetImageDrawable(ContextCompat.GetDrawable(
-                          _context, Resource.Drawable.pin));
+                          _context, Resource.Drawable.icon));
                         break;
                     case "egypt":
                         txtTittle.SetText(marker.Title, TextView.BufferType.Normal);
                         countryFlagImage.SetImageDrawable(ContextCompat.GetDrawable(
-                           _context, Resource.Drawable.pin));
+                           _context, Resource.Drawable.icon));
                         break;
                     default:
                         txtTittle.SetText(marker.Title, TextView.BufferType.Normal);
                         countryFlagImage.SetImageDrawable(ContextCompat.GetDrawable(
-                         _context, Resource.Drawable.pin));
+                         _context, Resource.Drawable.icon));
                         break;
                 }
                 countryFlagImage.LayoutParameters = (new Android.Views.ViewGroup.LayoutParams(150, 100));
