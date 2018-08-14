@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Naxam.Controls.Mapbox.Forms;
+using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using Xamarin.Forms;
 
 namespace MapBoxQs
@@ -39,7 +40,16 @@ namespace MapBoxQs
 		IOfflineStorageService offlineService;
 
         private ObservableCollection<Annotation> _Annotations = new ObservableCollection<Annotation>();
-
+        private MapRegion _MapRegionDefault;
+        public MapRegion MapRegionDefault
+        {
+            get { return _MapRegionDefault; }
+            set
+            {
+                _MapRegionDefault = value;
+                OnPropertyChanged("MapRegionDefault");
+            }
+        }
         public ObservableCollection<Annotation> Annotations
         {
             get { return _Annotations; }
@@ -169,6 +179,9 @@ namespace MapBoxQs
                 //SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
                 //System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
             });
+            MapRegionDefault = new MapRegion(
+            new Position(52.545226f, 13.430601f),
+            new Position(52.493820f, 13.309461f));
         }
 
         private Position _UserLocation;

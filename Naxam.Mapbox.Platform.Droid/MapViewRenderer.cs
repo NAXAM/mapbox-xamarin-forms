@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
+using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -17,6 +18,7 @@ using Com.Mapbox.Mapboxsdk.Maps;
 using Java.Util;
 using Naxam.Controls.Mapbox.Forms;
 using Naxam.Controls.Mapbox.Platform.Droid;
+using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using Naxam.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -40,6 +42,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
+        private const int TimeMapAnimation = 3000;
 
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
             new Dictionary<string, Sdk.Annotations.Annotation>();
@@ -360,6 +363,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     if (Element.Center == null) return;
                     FocustoLocation(Element.Center.ToLatLng());
                 }
+            }
+            if (e.PropertyName == MapView.MapRegionProperty.PropertyName)
+            {
+                if (Element.Center == null) return;
+                NotifyRegionChanged();
             }
             else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
             {
@@ -891,7 +899,33 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 var info= new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter =info;
             }
+            NotifyRegionChanged();
+        }
+        void NotifyRegionChanged()
+        {
+            if (Looper.MainLooper == Looper.MyLooper())
+            {
+                ChangeRegion();
+            }
+            else
+            {
+                var h = new Handler(Looper.MainLooper);
+                h.Post(() => ChangeRegion());
+            }
 
+            void ChangeRegion()
+            {
+                if (Element.MapRegion != MapRegion.Empty)
+                {
+                    map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
+                        Com.Mapbox.Mapboxsdk.Geometry.LatLngBounds.From(
+                            Element.MapRegion.NorthEast.Lat,
+                            Element.MapRegion.NorthEast.Long,
+                            Element.MapRegion.SouthWest.Lat,
+                            Element.MapRegion.SouthWest.Long
+                        ), 0), TimeMapAnimation);
+                }
+            }
         }
 
     }

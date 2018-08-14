@@ -52,7 +52,7 @@
                           VerticalOptions="FillAndExpand"
                           Annotations="{Binding Annotations}"
                           MapStyle="{Binding CurrentMapStyle}"
-                          ReloadStyleAction="{Binding ReloadStyleAction}"
+                          ReloadStyleAction="13.309461f"
                           ZoomLevel="{Binding ZoomLevel}"
                           UserLocation="{Binding UserLocation}"
                           ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
@@ -69,7 +69,8 @@
                           SelectAnnotationAction="{Binding SelectAnnotationAction}"
                           DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
                           DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
-                          DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
+                          DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}"
+                          MapRegion="{Binding MapRegionDefault}">
             <controls:MapView.Center>
                 <controls:Position Lat="21.028511"
                                    Long="105.804817" />

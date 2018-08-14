@@ -330,13 +330,14 @@ namespace Naxam.Controls.Mapbox.Forms
         {
             get
             {
-                return (MapRegion)GetValue(CenterProperty);
+                return (MapRegion)GetValue(MapRegionProperty);
             }
             set
             {
-                SetValue(CenterProperty, (MapRegion)value);
+                SetValue(MapRegionProperty, (MapRegion)value);
             }
         }
+
 
     }
 }
