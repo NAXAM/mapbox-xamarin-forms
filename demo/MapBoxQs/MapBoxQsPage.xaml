@@ -69,8 +69,7 @@
                           SelectAnnotationAction="{Binding SelectAnnotationAction}"
                           DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
                           DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
-                          DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}"
-                          MapRegion="{Binding MapRegionDefault}">
+                          DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
             <controls:MapView.Center>
                 <controls:Position Lat="21.028511"
                                    Long="105.804817" />
@@ -88,7 +87,7 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="60" />
                             </Grid.ColumnDefinitions>
                             <Image 
                                    Grid.Column="0"

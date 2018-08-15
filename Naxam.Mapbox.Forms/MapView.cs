@@ -319,25 +319,5 @@ namespace Naxam.Controls.Mapbox.Forms
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
-        public static readonly BindableProperty MapRegionProperty = BindableProperty.Create(
-            propertyName: nameof(MapRegion),
-            returnType: typeof(MapRegion),
-            declaringType: typeof(MapView),
-            defaultValue: default(MapRegion),
-            defaultBindingMode: BindingMode.TwoWay);
-
-        public MapRegion MapRegion
-        {
-            get
-            {
-                return (MapRegion)GetValue(MapRegionProperty);
-            }
-            set
-            {
-                SetValue(MapRegionProperty, (MapRegion)value);
-            }
-        }
-
-
     }
 }

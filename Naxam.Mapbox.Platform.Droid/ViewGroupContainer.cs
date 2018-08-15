@@ -28,7 +28,7 @@ namespace Naxam.Mapbox.Platform.Droid
         {
             _viewCell = viewCell;
             _parent = parent;
-            _renderer = Platform.CreateRendererWithContext(_viewCell.View, context);
+            _renderer = Platform.CreateRendererWithContext(_viewCell.View,context);
             Platform.SetRenderer(_viewCell.View, _renderer);
             //var width = (int)Context.ToPixels(_renderer.Element.WidthRequest);
             //if (width <= 0)
@@ -69,11 +69,8 @@ namespace Naxam.Mapbox.Platform.Droid
         {
             double width = Context.FromPixels(r - l);
             double height = Context.FromPixels(b - t);
-
-            _renderer.Element.Layout(new Rectangle(0, 0, width, height));
-
+            Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_renderer.Element, new Rectangle(0, 0, width, height));
             _renderer.UpdateLayout();
-
             System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {r - l}x{b - t}");
         }
 
@@ -95,6 +92,6 @@ namespace Naxam.Mapbox.Platform.Droid
             int heightSpec = MeasureSpec.MakeMeasureSpec(height, MeasureSpec.GetMode(heightMeasureSpec));
             base.SetMeasuredDimension(width, height);
         }
- 
+
     }
 }

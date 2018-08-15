@@ -364,11 +364,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     FocustoLocation(Element.Center.ToLatLng());
                 }
             }
-            if (e.PropertyName == MapView.MapRegionProperty.PropertyName)
-            {
-                if (Element.Center == null) return;
-                NotifyRegionChanged();
-            }
             else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
             {
                 UpdateMapStyle();
@@ -899,34 +894,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 var info= new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter =info;
             }
-            NotifyRegionChanged();
         }
-        void NotifyRegionChanged()
-        {
-            if (Looper.MainLooper == Looper.MyLooper())
-            {
-                ChangeRegion();
-            }
-            else
-            {
-                var h = new Handler(Looper.MainLooper);
-                h.Post(() => ChangeRegion());
-            }
-
-            void ChangeRegion()
-            {
-                if (Element.MapRegion != MapRegion.Empty)
-                {
-                    map.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
-                        Com.Mapbox.Mapboxsdk.Geometry.LatLngBounds.From(
-                            Element.MapRegion.NorthEast.Lat,
-                            Element.MapRegion.NorthEast.Long,
-                            Element.MapRegion.SouthWest.Lat,
-                            Element.MapRegion.SouthWest.Long
-                        ), 0), TimeMapAnimation);
-                }
-            }
-        }
+        
 
     }
    

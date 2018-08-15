@@ -67,7 +67,7 @@ namespace Naxam.Mapbox.Platform.Droid
                         {
                             cell.BindingContext = bindingContext;
                             var output = new ViewGroupContainer(_container.Context, _container, cell);
-                            _container.AddView(output);
+                            _container.AddView(output,new ViewGroup.LayoutParams(-2,-2));
                             return _container;
                         }
                     else
