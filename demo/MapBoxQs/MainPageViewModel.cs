@@ -33,10 +33,10 @@ namespace MapBoxQs
         readonly MapBoxQs.Services.IMapBoxService MBService = new MapBoxQs.Services.MapBoxService();
         private readonly INavigation navigation;
 
-		public event PropertyChangedEventHandler PropertyChanged;
-		bool _IsScaleBarShown = false;
-		OfflinePackRegion forcedRegion;
-		IOfflineStorageService offlineService;
+        public event PropertyChangedEventHandler PropertyChanged;
+        bool _IsScaleBarShown = false;
+        OfflinePackRegion forcedRegion;
+        IOfflineStorageService offlineService;
 
         private ObservableCollection<Annotation> _Annotations = new ObservableCollection<Annotation>();
 
@@ -164,7 +164,7 @@ namespace MapBoxQs
                // UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
             });
 
-            DidTapOnMarkerCommand = new Command<string>((markerId) =>
+            DidTapOnMarkerCommand = new Command<object>((markerId) =>
             {
                 //SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
                 //System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
@@ -173,15 +173,15 @@ namespace MapBoxQs
 
         private Position _UserLocation;
 
-		public Position UserLocation
+        public Position UserLocation
         {
-			get { return _UserLocation; }
+            get { return _UserLocation; }
             set
             {
-				_UserLocation = value;
-				OnPropertyChanged("UserLocation");
+                _UserLocation = value;
+                OnPropertyChanged("UserLocation");
             }
-        } 
+        }
 
         public ICommand DidFinishLoadingStyleCommand
         {
@@ -194,25 +194,25 @@ namespace MapBoxQs
             get;
             set;
         }
-		 
+
         public ICommand DidTapOnMarkerCommand
         {
             get;
             set;
-        } 
+        }
 
-		public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
-		{
-			get;
-			set;
-		}
+        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
+        {
+            get;
+            set;
+        }
 
-		public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
-		{
-			get;
-			set;
-		} 
-         
+        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
+        {
+            get;
+            set;
+        }
+
         private Action<Tuple<string, bool>> _SelectAnnotationAction;
         public Action<Tuple<string, bool>> SelectAnnotationAction
         {
@@ -235,52 +235,52 @@ namespace MapBoxQs
             }
         }
 
-         
-		#region Zoom
-		private ICommand _ZoomCommand;
 
-		public ICommand ZoomCommand
-		{
-			get
-			{
-				return _ZoomCommand = _ZoomCommand
-						?? new Command<int>((int step) => ZoomLevel += step);
-			}
-			set
-			{
-				_ZoomCommand = value;
-				OnPropertyChanged("ZoomLevel");
-			}
-		}
+        #region Zoom
+        private ICommand _ZoomCommand;
 
-		private double _ZoomLevel = 16;
+        public ICommand ZoomCommand
+        {
+            get
+            {
+                return _ZoomCommand = _ZoomCommand
+                        ?? new Command<int>((int step) => ZoomLevel += step);
+            }
+            set
+            {
+                _ZoomCommand = value;
+                OnPropertyChanged("ZoomLevel");
+            }
+        }
 
-		public double ZoomLevel
-		{
-			get { return _ZoomLevel; }
-			set
-			{
-				_ZoomLevel = value;
-				OnPropertyChanged("ZoomLevel");
-				var scale = GetMapScaleReciprocalFunc?.Invoke();
-				System.Diagnostics.Debug.WriteLine($"Zoom level: {value}");
-				System.Diagnostics.Debug.WriteLine($"Scale: 1 : {scale}");
-			}
-		}
-		#endregion
+        private double _ZoomLevel = 16;
 
-		private void OnPropertyChanged(string propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public double ZoomLevel
+        {
+            get { return _ZoomLevel; }
+            set
+            {
+                _ZoomLevel = value;
+                OnPropertyChanged("ZoomLevel");
+                var scale = GetMapScaleReciprocalFunc?.Invoke();
+                System.Diagnostics.Debug.WriteLine($"Zoom level: {value}");
+                System.Diagnostics.Debug.WriteLine($"Scale: 1 : {scale}");
+            }
+        }
+        #endregion
 
-		}
+        private void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-		public Func<double> GetMapScaleReciprocalFunc
-		{
-			get; set;
-		}
+        }
 
-		private Func<bool, bool> _ToggleScaleBarFunc;
+        public Func<double> GetMapScaleReciprocalFunc
+        {
+            get; set;
+        }
+
+        private Func<bool, bool> _ToggleScaleBarFunc;
 
         public Func<bool, bool> ToggleScaleBarFunc
         {
@@ -307,17 +307,17 @@ namespace MapBoxQs
 
         private Position _centerLocation;
 
-		public Position CenterLocation
-		{
-			get { return _centerLocation; }
-			set
-			{
-				_centerLocation = value;
-				OnPropertyChanged("CenterLocation");
-			}
-		}
+        public Position CenterLocation
+        {
+            get { return _centerLocation; }
+            set
+            {
+                _centerLocation = value;
+                OnPropertyChanged("CenterLocation");
+            }
+        }
 
-		public ICommand DidFinishRenderingCommand { get; set; }
+        public ICommand DidFinishRenderingCommand { get; set; }
 
 
         private ICommand _DownloadCommand;
@@ -369,39 +369,39 @@ namespace MapBoxQs
             }
         }
 
-		private ICommand _ClearOfflinePacksCommand;
-		public ICommand ClearOfflinePacksCommand
-		{
-			get { return _ClearOfflinePacksCommand = _ClearOfflinePacksCommand ?? new Command<object>(ClearOfflinePacks); }
-			set
-			{
-				_ClearOfflinePacksCommand = value;
-				OnPropertyChanged("ClearOfflinePacksCommand");
-			}
-		}
+        private ICommand _ClearOfflinePacksCommand;
+        public ICommand ClearOfflinePacksCommand
+        {
+            get { return _ClearOfflinePacksCommand = _ClearOfflinePacksCommand ?? new Command<object>(ClearOfflinePacks); }
+            set
+            {
+                _ClearOfflinePacksCommand = value;
+                OnPropertyChanged("ClearOfflinePacksCommand");
+            }
+        }
 
-		private async void ClearOfflinePacks(object obj)
-		{
-			var packs = await offlineService.GetPacks();
-			if (packs != null)
-			{
-				foreach (OfflinePack pack in packs)
-				{
-					await offlineService.RemovePack(pack);
-				}
-			}
-		}
+        private async void ClearOfflinePacks(object obj)
+        {
+            var packs = await offlineService.GetPacks();
+            if (packs != null)
+            {
+                foreach (OfflinePack pack in packs)
+                {
+                    await offlineService.RemovePack(pack);
+                }
+            }
+        }
 
-		private ICommand _LoadOfflinePackCommand;
-		public ICommand LoadOfflinePackCommand
-		{
-			get { return _LoadOfflinePackCommand = _LoadOfflinePackCommand ?? new Command<object>(LoadOfflinePack); }
-			set
-			{
-				_LoadOfflinePackCommand = value;
-				OnPropertyChanged("LoadOfflinePackCommand");
-			}
-		}
+        private ICommand _LoadOfflinePackCommand;
+        public ICommand LoadOfflinePackCommand
+        {
+            get { return _LoadOfflinePackCommand = _LoadOfflinePackCommand ?? new Command<object>(LoadOfflinePack); }
+            set
+            {
+                _LoadOfflinePackCommand = value;
+                OnPropertyChanged("LoadOfflinePackCommand");
+            }
+        }
 
         private async void LoadOfflinePack(object obj)
         {
@@ -449,101 +449,102 @@ namespace MapBoxQs
             }
         }
 
-		private MapTools _ShowingTool = MapTools.None;
-		public MapTools ShowingTool
-		{
-			get { return _ShowingTool; }
-			set
-			{
-				if (_ShowingTool != value)
-				{
-					_ShowingTool = value;
-					OnPropertyChanged("ShowingTool");
-				}
-			}
-		}
+        private MapTools _ShowingTool = MapTools.None;
+        public MapTools ShowingTool
+        {
+            get { return _ShowingTool; }
+            set
+            {
+                if (_ShowingTool != value)
+                {
+                    _ShowingTool = value;
+                    OnPropertyChanged("ShowingTool");
+                }
+            }
+        }
 
-		ICommand _SwitchToolCommand;
-		public ICommand SwitchToolCommand
-		{
-			get { return (_SwitchToolCommand = _SwitchToolCommand ?? new Command<MapTools>(ExecuteSwitchToolCommand, CanExecuteSwitchToolCommand)); }
-		}
-		bool CanExecuteSwitchToolCommand(MapTools obj) { return true; }
-		void ExecuteSwitchToolCommand(MapTools obj)
-		{
-			if (ShowingTool == obj)
-			{
-				ShowingTool = MapTools.None;
-				return;
-			}
-			if (obj == MapTools.CustomLocation)
-			{
-				if (CenterLocation != null
-					&& (Math.Abs(CenterLocation.Lat - positions[0].Lat) > 0.01)
-					|| Math.Abs(CenterLocation.Long - positions[0].Long) > 0.01)
-				{
-					CustomLatitude = positions[0].Lat.ToString();
-					CustomLongitude = positions[0].Long.ToString();
-				}
-				else
-				{
-					CustomLatitude = positions[1].Lat.ToString();
-					CustomLongitude = positions[1].Long.ToString();
-				}
-			}
-			ShowingTool = obj;
-		}
+        ICommand _SwitchToolCommand;
+        public ICommand SwitchToolCommand
+        {
+            get { return (_SwitchToolCommand = _SwitchToolCommand ?? new Command<MapTools>(ExecuteSwitchToolCommand, CanExecuteSwitchToolCommand)); }
+        }
+        bool CanExecuteSwitchToolCommand(MapTools obj) { return true; }
+        void ExecuteSwitchToolCommand(MapTools obj)
+        {
+            if (ShowingTool == obj)
+            {
+                ShowingTool = MapTools.None;
+                return;
+            }
+            if (obj == MapTools.CustomLocation)
+            {
+                if (CenterLocation != null
+                    && (Math.Abs(CenterLocation.Lat - positions[0].Lat) > 0.01)
+                    || Math.Abs(CenterLocation.Long - positions[0].Long) > 0.01)
+                {
+                    CustomLatitude = positions[0].Lat.ToString();
+                    CustomLongitude = positions[0].Long.ToString();
+                }
+                else
+                {
+                    CustomLatitude = positions[1].Lat.ToString();
+                    CustomLongitude = positions[1].Long.ToString();
+                }
+            }
+            ShowingTool = obj;
+        }
 
-		ICommand _FocusUserLocationCommand;
-		public ICommand FocusUserLocationCommand
-		{
-			get { return (_FocusUserLocationCommand = _FocusUserLocationCommand ?? new Command<object>(ExecuteFocusUserLocationCommand, CanExecuteFocusUserLocationCommand)); }
-		}
-		bool CanExecuteFocusUserLocationCommand(object parameter) { return true; }
-		void ExecuteFocusUserLocationCommand(object parameter) {
-			CenterLocation = UserLocation;
-		}
+        ICommand _FocusUserLocationCommand;
+        public ICommand FocusUserLocationCommand
+        {
+            get { return (_FocusUserLocationCommand = _FocusUserLocationCommand ?? new Command<object>(ExecuteFocusUserLocationCommand, CanExecuteFocusUserLocationCommand)); }
+        }
+        bool CanExecuteFocusUserLocationCommand(object parameter) { return true; }
+        void ExecuteFocusUserLocationCommand(object parameter)
+        {
+            CenterLocation = UserLocation;
+        }
 
-		#region Custom locations
-		Position[] positions = new[] {
-			 new Position {
-			  Lat = 21.0333,
-			  Long = 105.8500
-					 },
-			  new Position {
-							Lat = 55.75719563,
-							Long = 8.93032908
-			  }
-		 };
+        #region Custom locations
+        Position[] positions = new[] {
+             new Position {
+              Lat = 21.0333,
+              Long = 105.8500
+                     },
+              new Position {
+                            Lat = 55.75719563,
+                            Long = 8.93032908
+              }
+         };
 
-		 
-		private string _CustomLatitude;
-		public string CustomLatitude
-		{
-			get { return _CustomLatitude; }
-			set
-			{
-				if (_CustomLatitude != value)
-				{
-					_CustomLatitude = value;
-					OnPropertyChanged("CustomLatitude");
-				}
-			}
-		}
 
-		private string _CustomLongitude;
-		public string CustomLongitude
-		{
-			get { return _CustomLongitude; }
-			set
-			{
-				if (_CustomLongitude != value)
-				{
-					_CustomLongitude = value;
-					OnPropertyChanged("CustomLongitude");
-				}
-			}
-		}
+        private string _CustomLatitude;
+        public string CustomLatitude
+        {
+            get { return _CustomLatitude; }
+            set
+            {
+                if (_CustomLatitude != value)
+                {
+                    _CustomLatitude = value;
+                    OnPropertyChanged("CustomLatitude");
+                }
+            }
+        }
+
+        private string _CustomLongitude;
+        public string CustomLongitude
+        {
+            get { return _CustomLongitude; }
+            set
+            {
+                if (_CustomLongitude != value)
+                {
+                    _CustomLongitude = value;
+                    OnPropertyChanged("CustomLongitude");
+                }
+            }
+        }
 
         ICommand _ChangeLocationCommand;
         public ICommand ChangeLocationCommand
@@ -562,72 +563,73 @@ namespace MapBoxQs
 
         #endregion
 
-		ICommand _DragFinishedCommand;
-		public ICommand DragFinishedCommand
-		{
-			get { return (_DragFinishedCommand = _DragFinishedCommand ?? new Command<object>(ExecuteDragFinishedCommand, CanExecuteDragFinishedCommand)); }
-		}
-		bool CanExecuteDragFinishedCommand(object parameter) { return true; }
-		void ExecuteDragFinishedCommand(object parameter) {
-		    
-		}
+        ICommand _DragFinishedCommand;
+        public ICommand DragFinishedCommand
+        {
+            get { return (_DragFinishedCommand = _DragFinishedCommand ?? new Command<object>(ExecuteDragFinishedCommand, CanExecuteDragFinishedCommand)); }
+        }
+        bool CanExecuteDragFinishedCommand(object parameter) { return true; }
+        void ExecuteDragFinishedCommand(object parameter)
+        {
 
-		#region Styles
-		public Action ReloadStyleAction
-		{
-			get;
-			set;
-		}
+        }
 
-		private MapStyle[] Styles
-		{
-			get;
-			set;
-		}
+        #region Styles
+        public Action ReloadStyleAction
+        {
+            get;
+            set;
+        }
 
-		ICommand _ShowStylePickerCommand;
-		public ICommand ShowStylePickerCommand
-		{
-			get { return (_ShowStylePickerCommand = _ShowStylePickerCommand ?? new Command<object>(ExecuteShowStylePickerCommand, CanExecuteShowStylePickerCommand)); }
-		}
-		bool CanExecuteShowStylePickerCommand(object obj) { return true; }
-		async void ExecuteShowStylePickerCommand(object obj)
-		{
-			if (Styles == null)
-			{
-				if (false == await GetAllStyles())
-				{
-					return;
-				}
-			}
-			var buttons = Styles.Select((arg) => arg.Name).ToArray();
-			var choice = await UserDialogs.Instance.ActionSheetAsync("Change style", "Cancel", "Reload current style", buttons: buttons);
-			if (choice == "Reload current style")
-			{
-				ReloadStyleAction?.Invoke();
-			}
-			else if (buttons.Contains(choice))
-			{
-				CurrentMapStyle = Styles.FirstOrDefault((arg) => arg.Name == choice);
-			}
-		}
+        private MapStyle[] Styles
+        {
+            get;
+            set;
+        }
 
-		private async Task<bool> GetAllStyles()
-		{
-			UserDialogs.Instance.ShowLoading();
-			try
-			{
-				Styles = await MBService.GetAllStyles();
-				UserDialogs.Instance.HideLoading();
-				return Styles != null;
-			}
-			catch (Exception ex)
-			{
-				UserDialogs.Instance.HideLoading();
-				await UserDialogs.Instance.AlertAsync(ex.Message);
-				return false;
-			}
-		}
+        ICommand _ShowStylePickerCommand;
+        public ICommand ShowStylePickerCommand
+        {
+            get { return (_ShowStylePickerCommand = _ShowStylePickerCommand ?? new Command<object>(ExecuteShowStylePickerCommand, CanExecuteShowStylePickerCommand)); }
+        }
+        bool CanExecuteShowStylePickerCommand(object obj) { return true; }
+        async void ExecuteShowStylePickerCommand(object obj)
+        {
+            if (Styles == null)
+            {
+                if (false == await GetAllStyles())
+                {
+                    return;
+                }
+            }
+            var buttons = Styles.Select((arg) => arg.Name).ToArray();
+            var choice = await UserDialogs.Instance.ActionSheetAsync("Change style", "Cancel", "Reload current style", buttons: buttons);
+            if (choice == "Reload current style")
+            {
+                ReloadStyleAction?.Invoke();
+            }
+            else if (buttons.Contains(choice))
+            {
+                CurrentMapStyle = Styles.FirstOrDefault((arg) => arg.Name == choice);
+            }
+        }
+
+        private async Task<bool> GetAllStyles()
+        {
+            UserDialogs.Instance.ShowLoading();
+            try
+            {
+                Styles = await MBService.GetAllStyles();
+                UserDialogs.Instance.HideLoading();
+                return Styles != null;
+            }
+            catch (Exception ex)
+            {
+                UserDialogs.Instance.HideLoading();
+                await UserDialogs.Instance.AlertAsync(ex.Message);
+                return false;
+            }
+        }
 
         #endregion
         #region Rotation
@@ -654,42 +656,42 @@ namespace MapBoxQs
             }
         }
 
-		private void RotateMap(int obj)
-		{
-			if (obj == 0)
-			{
-				RotatedDegree = 0;
-			}
-			else
-			{
-				RotatedDegree += obj;
-			}
-		}
-		#endregion
-		#region Pitch
-		private double _Pitch;
-		public double Pitch
-		{
-			get { return _Pitch; }
-			set
-			{
-				if (Math.Abs(_Pitch - value) > 0.001)
-				{
-					_Pitch = value;
-					OnPropertyChanged("Pitch");
-				}
-			}
-		}
+        private void RotateMap(int obj)
+        {
+            if (obj == 0)
+            {
+                RotatedDegree = 0;
+            }
+            else
+            {
+                RotatedDegree += obj;
+            }
+        }
+        #endregion
+        #region Pitch
+        private double _Pitch;
+        public double Pitch
+        {
+            get { return _Pitch; }
+            set
+            {
+                if (Math.Abs(_Pitch - value) > 0.001)
+                {
+                    _Pitch = value;
+                    OnPropertyChanged("Pitch");
+                }
+            }
+        }
 
-		private ICommand _TiltCommand;
-		public ICommand TiltCommand
-		{
-			get
-			{
-				return _TiltCommand = _TiltCommand
-						?? new Command<int>(TiltMap);
-			}
-		}
+        private ICommand _TiltCommand;
+        public ICommand TiltCommand
+        {
+            get
+            {
+                return _TiltCommand = _TiltCommand
+                        ?? new Command<int>(TiltMap);
+            }
+        }
 
 
         private void TiltMap(int obj)
@@ -720,6 +722,7 @@ namespace MapBoxQs
             }
         }
 
+        PolylineAnnotation polyline;
         ICommand _ToggleCurrentActionCommand;
         public ICommand ToggleCurrentActionCommand
         {
@@ -732,9 +735,22 @@ namespace MapBoxQs
             {
                 CurrentAction = state;
                 Annotations.Clear();
+                switch (state)
+                {
+                    case ActionState.AddPolyline:
+                        break;
+                }
+
             }
             else
             {
+                switch (state)
+                {
+                    case ActionState.AddPolyline:
+                        polyline = null;
+                        break;
+                }
+
                 CurrentAction = ActionState.None;
             }
         }
@@ -753,13 +769,28 @@ namespace MapBoxQs
             {
                 var annot = new PointAnnotation()
                 {
-                    Id = i.ToString(),
                     Coordinate = obj.Item1
                 };
                 annot.Title = "PointAnnot." + annot.Id;
                 Annotations.Add(annot);
                 OnPropertyChanged("Annotations");
                 i = i + 1;
+            }
+            if (CurrentAction == ActionState.AddPolyline)
+            {
+                if (polyline == null)
+                    polyline = new PolylineAnnotation
+                    {
+                        HexColor = "#ff1234",
+                        Width = 1
+                    };
+                if (polyline.Coordinates == null)
+                {
+                    polyline.Coordinates = new ObservableCollection<Position> { obj.Item1 };
+                    Annotations.Add(polyline);
+                }
+                else
+                    (polyline.Coordinates as ObservableCollection<Position>).Add(obj.Item1);
             }
         }
 

@@ -3,12 +3,32 @@ using Geojson = Com.Mapbox.Services.Commons.Geojson;
 
 using System.Collections.Generic;
 using System.Linq;
+using Com.Mapbox.Mapboxsdk.Annotations;
+using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
+using MAnnotation = Com.Mapbox.Mapboxsdk.Annotations.Annotation;
+
+using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
+using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
+
+using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
+using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
+using System;
+using Android.Content;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class AnnotationExtensions
     {
-        public static Geojson.FeatureCollection ToFeatureCollection(this Annotation annotation)
+        public static Icon GetIconFromResource(this Context context, string name)
+        {
+            var resId = context.Resources.GetIdentifier(name, "drawable", context.PackageName);
+            if (resId == 0)
+                return null;
+            IconFactory iconFactory = IconFactory.GetInstance(context);
+            return iconFactory.FromResource(resId);
+        }
+
+        public static Geojson.FeatureCollection ToFeatureCollection(this FAnnotation annotation)
         {
             var list = new List<Geojson.Feature>();
 
