@@ -233,11 +233,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.expandedTitleTextAppearance = global::MapBoxQs.Droid.Resource.Attribute.expandedTitleTextAppearance;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.externalRouteEnabledDrawable = global::MapBoxQs.Droid.Resource.Attribute.externalRouteEnabledDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fabSize = global::MapBoxQs.Droid.Resource.Attribute.fabSize;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fastScrollEnabled = global::MapBoxQs.Droid.Resource.Attribute.fastScrollEnabled;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fastScrollHorizontalThumbDrawable = global::MapBoxQs.Droid.Resource.Attribute.fastScrollHorizontalThumbDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fastScrollHorizontalTrackDrawable = global::MapBoxQs.Droid.Resource.Attribute.fastScrollHorizontalTrackDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fastScrollVerticalThumbDrawable = global::MapBoxQs.Droid.Resource.Attribute.fastScrollVerticalThumbDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fastScrollVerticalTrackDrawable = global::MapBoxQs.Droid.Resource.Attribute.fastScrollVerticalTrackDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.font = global::MapBoxQs.Droid.Resource.Attribute.font;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fontFamily = global::MapBoxQs.Droid.Resource.Attribute.fontFamily;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.fontProviderAuthority = global::MapBoxQs.Droid.Resource.Attribute.fontProviderAuthority;
@@ -761,9 +756,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.design_tab_text_size_2line = global::MapBoxQs.Droid.Resource.Dimension.design_tab_text_size_2line;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.disabled_alpha_material_dark = global::MapBoxQs.Droid.Resource.Dimension.disabled_alpha_material_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.disabled_alpha_material_light = global::MapBoxQs.Droid.Resource.Dimension.disabled_alpha_material_light;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.fastscroll_default_thickness = global::MapBoxQs.Droid.Resource.Dimension.fastscroll_default_thickness;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.fastscroll_margin = global::MapBoxQs.Droid.Resource.Dimension.fastscroll_margin;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.fastscroll_minimum_range = global::MapBoxQs.Droid.Resource.Dimension.fastscroll_minimum_range;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.highlight_alpha_material_colored = global::MapBoxQs.Droid.Resource.Dimension.highlight_alpha_material_colored;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.highlight_alpha_material_dark = global::MapBoxQs.Droid.Resource.Dimension.highlight_alpha_material_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.highlight_alpha_material_light = global::MapBoxQs.Droid.Resource.Dimension.highlight_alpha_material_light;
@@ -1208,7 +1200,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.fill_vertical = global::MapBoxQs.Droid.Resource.Id.fill_vertical;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.@fixed = global::MapBoxQs.Droid.Resource.Id.@fixed;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.forever = global::MapBoxQs.Droid.Resource.Id.forever;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.ghost_view = global::MapBoxQs.Droid.Resource.Id.ghost_view;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.home = global::MapBoxQs.Droid.Resource.Id.home;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.homeAsUp = global::MapBoxQs.Droid.Resource.Id.homeAsUp;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.icon = global::MapBoxQs.Droid.Resource.Id.icon;
@@ -1273,7 +1264,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.notification_main_column_container = global::MapBoxQs.Droid.Resource.Id.notification_main_column_container;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.parallax = global::MapBoxQs.Droid.Resource.Id.parallax;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.parentPanel = global::MapBoxQs.Droid.Resource.Id.parentPanel;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.parent_matrix = global::MapBoxQs.Droid.Resource.Id.parent_matrix;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.pin = global::MapBoxQs.Droid.Resource.Id.pin;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.progress_circular = global::MapBoxQs.Droid.Resource.Id.progress_circular;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.progress_horizontal = global::MapBoxQs.Droid.Resource.Id.progress_horizontal;
@@ -1281,9 +1271,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.right = global::MapBoxQs.Droid.Resource.Id.right;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.right_icon = global::MapBoxQs.Droid.Resource.Id.right_icon;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.right_side = global::MapBoxQs.Droid.Resource.Id.right_side;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.save_image_matrix = global::MapBoxQs.Droid.Resource.Id.save_image_matrix;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.save_non_transition_alpha = global::MapBoxQs.Droid.Resource.Id.save_non_transition_alpha;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.save_scale_type = global::MapBoxQs.Droid.Resource.Id.save_scale_type;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.screen = global::MapBoxQs.Droid.Resource.Id.screen;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.scroll = global::MapBoxQs.Droid.Resource.Id.scroll;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.scrollIndicatorDown = global::MapBoxQs.Droid.Resource.Id.scrollIndicatorDown;
@@ -1336,10 +1323,7 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.topPanel = global::MapBoxQs.Droid.Resource.Id.topPanel;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.touch_outside = global::MapBoxQs.Droid.Resource.Id.touch_outside;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.transition_current_scene = global::MapBoxQs.Droid.Resource.Id.transition_current_scene;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.transition_layout_save = global::MapBoxQs.Droid.Resource.Id.transition_layout_save;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.transition_position = global::MapBoxQs.Droid.Resource.Id.transition_position;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.transition_scene_layoutid_cache = global::MapBoxQs.Droid.Resource.Id.transition_scene_layoutid_cache;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.transition_transform = global::MapBoxQs.Droid.Resource.Id.transition_transform;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.uniform = global::MapBoxQs.Droid.Resource.Id.uniform;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.up = global::MapBoxQs.Droid.Resource.Id.up;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.useLogo = global::MapBoxQs.Droid.Resource.Id.useLogo;
@@ -1470,6 +1454,7 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.app_name = global::MapBoxQs.Droid.Resource.String.app_name;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.appbar_scrolling_view_behavior = global::MapBoxQs.Droid.Resource.String.appbar_scrolling_view_behavior;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.bottom_sheet_behavior = global::MapBoxQs.Droid.Resource.String.bottom_sheet_behavior;
+			global::Naxam.Mapbox.Platform.Droid.Resource.String.cancel = global::MapBoxQs.Droid.Resource.String.cancel;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.character_counter_pattern = global::MapBoxQs.Droid.Resource.String.character_counter_pattern;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.common_google_play_services_enable_button = global::MapBoxQs.Droid.Resource.String.common_google_play_services_enable_button;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.common_google_play_services_enable_text = global::MapBoxQs.Droid.Resource.String.common_google_play_services_enable_text;
@@ -1534,12 +1519,14 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_user_route_category_name = global::MapBoxQs.Droid.Resource.String.mr_user_route_category_name;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mz_attribution = global::MapBoxQs.Droid.Resource.String.mz_attribution;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mz_find_me = global::MapBoxQs.Droid.Resource.String.mz_find_me;
+			global::Naxam.Mapbox.Platform.Droid.Resource.String.ok = global::MapBoxQs.Droid.Resource.String.ok;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.password_toggle_content_description = global::MapBoxQs.Droid.Resource.String.password_toggle_content_description;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_eye = global::MapBoxQs.Droid.Resource.String.path_password_eye;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_eye_mask_strike_through = global::MapBoxQs.Droid.Resource.String.path_password_eye_mask_strike_through;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_eye_mask_visible = global::MapBoxQs.Droid.Resource.String.path_password_eye_mask_visible;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_strike_through = global::MapBoxQs.Droid.Resource.String.path_password_strike_through;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.search_menu_title = global::MapBoxQs.Droid.Resource.String.search_menu_title;
+			global::Naxam.Mapbox.Platform.Droid.Resource.String.settings_alert_title = global::MapBoxQs.Droid.Resource.String.settings_alert_title;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.status_bar_notification_info_overflow = global::MapBoxQs.Droid.Resource.String.status_bar_notification_info_overflow;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.tangram_version = global::MapBoxQs.Droid.Resource.String.tangram_version;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.AlertDialog_AppCompat = global::MapBoxQs.Droid.Resource.Style.AlertDialog_AppCompat;
@@ -1630,13 +1617,11 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V11_ThemeOverlay_AppCompat_Dialog = global::MapBoxQs.Droid.Resource.Style.Base_V11_ThemeOverlay_AppCompat_Dialog;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V12_Widget_AppCompat_AutoCompleteTextView = global::MapBoxQs.Droid.Resource.Style.Base_V12_Widget_AppCompat_AutoCompleteTextView;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V12_Widget_AppCompat_EditText = global::MapBoxQs.Droid.Resource.Style.Base_V12_Widget_AppCompat_EditText;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V14_Widget_Design_AppBarLayout = global::MapBoxQs.Droid.Resource.Style.Base_V14_Widget_Design_AppBarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V21_Theme_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_V21_Theme_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V21_Theme_AppCompat_Dialog = global::MapBoxQs.Droid.Resource.Style.Base_V21_Theme_AppCompat_Dialog;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog = global::MapBoxQs.Droid.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog = global::MapBoxQs.Droid.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V21_Widget_Design_AppBarLayout = global::MapBoxQs.Droid.Resource.Style.Base_V21_Widget_Design_AppBarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V22_Theme_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_V22_Theme_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V22_Theme_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.Base_V22_Theme_AppCompat_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V23_Theme_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_V23_Theme_AppCompat;
@@ -1644,7 +1629,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V26_Theme_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_V26_Theme_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V26_Theme_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.Base_V26_Theme_AppCompat_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V26_Widget_AppCompat_Toolbar = global::MapBoxQs.Droid.Resource.Style.Base_V26_Widget_AppCompat_Toolbar;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V26_Widget_Design_AppBarLayout = global::MapBoxQs.Droid.Resource.Style.Base_V26_Widget_Design_AppBarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V7_Theme_AppCompat = global::MapBoxQs.Droid.Resource.Style.Base_V7_Theme_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V7_Theme_AppCompat_Dialog = global::MapBoxQs.Droid.Resource.Style.Base_V7_Theme_AppCompat_Dialog;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Base_V7_Theme_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.Base_V7_Theme_AppCompat_Light;
@@ -1996,8 +1980,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AlertDialog_singleChoiceItemLayout = global::MapBoxQs.Droid.Resource.Styleable.AlertDialog_singleChoiceItemLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayout = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayout_android_background = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayout_android_background;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayout_android_keyboardNavigationCluster = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayout_android_keyboardNavigationCluster;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayout_android_touchscreenBlocksFocus = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayout_android_touchscreenBlocksFocus;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayout_elevation = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayout_elevation;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayout_expanded = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayout_expanded;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.AppBarLayoutStates = global::MapBoxQs.Droid.Resource.Styleable.AppBarLayoutStates;
@@ -2351,11 +2333,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_android_descendantFocusability = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_android_descendantFocusability;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_android_orientation = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_android_orientation;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_fastScrollEnabled = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_fastScrollEnabled;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_fastScrollHorizontalThumbDrawable = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_fastScrollHorizontalThumbDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_fastScrollHorizontalTrackDrawable = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_fastScrollHorizontalTrackDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_fastScrollVerticalThumbDrawable = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_fastScrollVerticalThumbDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_fastScrollVerticalTrackDrawable = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_fastScrollVerticalTrackDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_layoutManager = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_layoutManager;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_reverseLayout = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_reverseLayout;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.RecyclerView_spanCount = global::MapBoxQs.Droid.Resource.Styleable.RecyclerView_spanCount;

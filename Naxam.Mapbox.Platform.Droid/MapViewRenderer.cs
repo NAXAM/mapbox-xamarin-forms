@@ -15,6 +15,7 @@ using Com.Mapbox.Mapboxsdk.Maps;
 using Java.Util;
 using Naxam.Controls.Mapbox.Forms;
 using Naxam.Controls.Mapbox.Platform.Droid;
+using Naxam.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -990,7 +991,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
+            if(Element.InfoWindowTemplate !=null)
+            map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate,Element);
         }
+
     }
 
     class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback

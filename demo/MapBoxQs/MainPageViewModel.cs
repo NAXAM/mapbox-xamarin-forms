@@ -161,13 +161,13 @@ namespace MapBoxQs
 
             DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
             {
-                UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
+               // UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
             });
 
             DidTapOnMarkerCommand = new Command<object>((markerId) =>
             {
-                SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
-                System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
+                //SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
+                //System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
             });
         }
 
@@ -761,6 +761,7 @@ namespace MapBoxQs
             get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand, CanExecuteDidTapOnMapCommand)); }
         }
         bool CanExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { return true; }
+        int i = 1;
         void ExecuteDidTapOnMapCommand(Tuple<Position, Point> obj)
         {
             Annotations = Annotations ?? new ObservableCollection<Annotation>();
@@ -773,6 +774,7 @@ namespace MapBoxQs
                 annot.Title = "PointAnnot." + annot.Id;
                 Annotations.Add(annot);
                 OnPropertyChanged("Annotations");
+                i = i + 1;
             }
             if (CurrentAction == ActionState.AddPolyline)
             {
