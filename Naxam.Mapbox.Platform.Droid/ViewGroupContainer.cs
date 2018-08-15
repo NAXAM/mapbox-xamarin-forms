@@ -30,14 +30,7 @@ namespace Naxam.Mapbox.Platform.Droid
             _parent = parent;
             _renderer = Platform.CreateRendererWithContext(_viewCell.View,context);
             Platform.SetRenderer(_viewCell.View, _renderer);
-            //var width = (int)Context.ToPixels(_renderer.Element.WidthRequest);
-            //if (width <= 0)
-            //    width = (int)Context.ToPixels(20);
-            //var height = (int)Context.ToPixels(_renderer.Element.HeightRequest);
-            //if (height <= 0)
-            //    height = (int)Context.ToPixels(20);
             var view = _renderer.View;
-            //view.Measure((int)MeasureSpecMode.AtMost, (int)MeasureSpecMode.AtMost);
             LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
             AddView(view);
             UpdateIsEnabled();
@@ -74,16 +67,6 @@ namespace Naxam.Mapbox.Platform.Droid
             System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {r - l}x{b - t}");
         }
 
-        //protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
-        //{
-        //    int width = MeasureSpec.GetSize(widthMeasureSpec);
-        //    int height = MeasureSpec.GetSize(heightMeasureSpec);
-        //    var x = _renderer.Element;
-
-        //    SetMeasuredDimension(width, height);
-
-        //    System.Diagnostics.Debug.WriteLine($"{nameof(OnMeasure)}: {width}x{height}");
-        //}
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
             int width = MeasureSpec.GetSize(widthMeasureSpec);
@@ -92,6 +75,6 @@ namespace Naxam.Mapbox.Platform.Droid
             int heightSpec = MeasureSpec.MakeMeasureSpec(height, MeasureSpec.GetMode(heightMeasureSpec));
             base.SetMeasuredDimension(width, height);
         }
-
+        
     }
 }

@@ -23,13 +23,13 @@ namespace Naxam.Mapbox.Platform.Droid
         private Context _context;
         private DataTemplate _dataTemPlate;
         private Naxam.Controls.Mapbox.Forms.MapView _map;
-        private MapboxMap mapboxMap;
-        public CustomInfoWindowAdapter(Context context, DataTemplate dataTemplate, Naxam.Controls.Mapbox.Forms.MapView map,MapboxMap mapboxMap)
+        private MapboxMap _mapboxMap;
+        public CustomInfoWindowAdapter(Context context, DataTemplate dataTemplate, Naxam.Controls.Mapbox.Forms.MapView map, MapboxMap mapboxMap)
         {
             _context = context;
             _dataTemPlate = dataTemplate;
             this._map = map;
-            this.mapboxMap = mapboxMap;
+            this._mapboxMap = mapboxMap;
         }
         public Android.Views.View GetInfoWindow(Marker marker)
         {
@@ -40,15 +40,15 @@ namespace Naxam.Mapbox.Platform.Droid
             _container.Orientation = Orientation.Vertical;
             _container.LayoutParameters = layoutParams;
             object bindingContext = null;
-            _map.ItemsSource = new List<Marker> { marker};
+            _map.ItemsSource = new List<Marker> { marker };
             var source = _map.ItemsSource?.Cast<object>();
             if (source != null)
                 bindingContext = source.ElementAt(0);
             var dt = bindingContext as DataTemplate;
             var view = bindingContext as Xamarin.Forms.View;
 
-            if (dt!=null)
-                formsView= (Xamarin.Forms.View)dt.CreateContent();
+            if (dt != null)
+                formsView = (Xamarin.Forms.View)dt.CreateContent();
             else
             {
                 if (view != null)
@@ -67,13 +67,13 @@ namespace Naxam.Mapbox.Platform.Droid
                         {
                             cell.BindingContext = bindingContext;
                             var output = new ViewGroupContainer(_container.Context, _container, cell);
-                            _container.AddView(output,new ViewGroup.LayoutParams(-2,-2));
+                            _container.AddView(output, new ViewGroup.LayoutParams(-2, -2));
                             return _container;
                         }
-                    else
-                        formsView = content as Xamarin.Forms.View;
+                        else
+                            formsView = content as Xamarin.Forms.View;
+                    }
                 }
-            }
             }
             if (formsView != null)
             {
@@ -83,6 +83,5 @@ namespace Naxam.Mapbox.Platform.Droid
 
             return _container;
         }
-
     }
 }

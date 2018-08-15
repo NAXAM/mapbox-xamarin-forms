@@ -888,12 +888,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
-           
-            if(Element.InfoWindowTemplate !=null)
+            Element.DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
             {
-                map.Clear();
-                var info= new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
-                map.InfoWindowAdapter =info;
+                map.DeselectMarkers();
+            });
+            if (Element.InfoWindowTemplate != null)
+            {
+                var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
+                map.InfoWindowAdapter = info;
             }
         }
         
