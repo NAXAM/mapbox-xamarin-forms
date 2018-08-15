@@ -744,7 +744,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
                     }
                 }
-                marker.Marker.SetInfoWindowAnchor(-1, -1);
+                marker.InfoWindowAnchor(-1, -1);
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -891,6 +891,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
            
             if(Element.InfoWindowTemplate !=null)
             {
+                map.Clear();
                 var info= new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter =info;
             }
