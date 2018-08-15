@@ -50,7 +50,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //var mStream = new MemoryStream();
                 //binFormatter.Serialize(mStream, packInfo);
                 //metadata = mStream.ToArray();
-                try {
+                try
+                {
                     JsonObject jsonObject = new JsonObject();
 
                     foreach (KeyValuePair<string, string> pair in packInfo)
@@ -61,7 +62,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     metadata = json.GetBytes(JSON_CHARSET);
                     System.Diagnostics.Debug.WriteLine("Encoding metadata succeeded: " + metadata.Length.ToString());
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     System.Diagnostics.Debug.WriteLine("Failed to encode metadata: " + ex.Message);
                 }
             }
@@ -114,7 +116,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     tcs.TrySetResult(null);
                 }),
                 OnListHandle = ((regs) =>
-                { 
+                {
                     tcs.TrySetResult(regs);
                 })
             });
@@ -124,9 +126,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public Task<bool> RemovePack(OfflinePack pack)
         {
             var tcs = new TaskCompletionSource<bool>();
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
-            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
-            if (region == null) {
+            var region =  GetRegionByPack(pack).Result;
+            if (region == null)
+            {
                 tcs.TrySetResult(false);
 
             }
@@ -141,8 +143,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return tcs.Task;
         }
 
+        private async Task<OfflineRegion> GetRegionByPack(OfflinePack pack)
+        {
+            var regions = await GetRegions();
+            var region = regions.FirstOrDefault(d => d.ID == pack.Id);
+            return region;
+        }
+
         public async void RequestPackProgress(OfflinePack pack)
-        { 
+        {
             var regions = await GetRegions();
             var region = regions.FirstOrDefault(d => d.ID == pack.Id);
             if (region == null)
@@ -198,19 +207,17 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             ));
         }
 
-        public bool Resume(OfflinePack pack)
-        { 
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
-            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
+        public async Task<bool> Resume(OfflinePack pack)
+        {
+            var region = await GetRegionByPack(pack);
             if (region == null) return false;
             region.SetDownloadState(OfflineRegion.StateActive);
             return true;
         }
 
-        public bool SuspendPack(OfflinePack pack)
+        public async Task<bool> SuspendPack(OfflinePack pack)
         {
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
-            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
+            var region = await GetRegionByPack(pack);
             if (region == null) return false;
             region.SetDownloadState(OfflineRegion.StateInactive);
             return true;
