@@ -161,7 +161,7 @@ namespace MapBoxQs
 
             DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
             {
-               // UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
+                // UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
             });
 
             DidTapOnMarkerCommand = new Command<object>((markerId) =>
@@ -332,41 +332,40 @@ namespace MapBoxQs
         }
         private async void DownloadMap(object obj)
         {
-            if (offlineService != null)
+            if (offlineService == null || CenterLocation == null) return;
+            var region = new OfflinePackRegion()
             {
-                var region = new OfflinePackRegion()
+                StyleURL = CurrentMapStyle.UrlString,
+                MaximumZoomLevel = 14,
+                MinimumZoomLevel = 1,
+                Bounds = new CoordinateBounds()
                 {
-                    StyleURL = CurrentMapStyle.UrlString,
-                    MaximumZoomLevel = 14,
-                    MinimumZoomLevel = 1,
-                    Bounds = new CoordinateBounds()
+                    NorthEast = new Position()
                     {
-                        NorthEast = new Position()
-                        {
-                            Lat = CenterLocation.Lat - 0.01,
-                            Long = CenterLocation.Long + 0.005
-                        },
-                        SouthWest = new Position()
-                        {
-                            Lat = CenterLocation.Lat + 0.01,
-                            Long = CenterLocation.Long - 0.005
-                        }
+                        Lat = CenterLocation.Lat - 0.01,
+                        Long = CenterLocation.Long + 0.005
+                    },
+                    SouthWest = new Position()
+                    {
+                        Lat = CenterLocation.Lat + 0.01,
+                        Long = CenterLocation.Long - 0.005
                     }
-                };
-                UserDialogs.Instance.ShowLoading();
-                var pack = await offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
+                }
+            };
+            UserDialogs.Instance.ShowLoading();
+            var pack = await offlineService.DownloadMap(region, new System.Collections.Generic.Dictionary<string, string>() {
                     {"name", "test"},
                     {"started_at", DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")}
                 });
-                if (pack != null)
-                {
-                    offlineService.RequestPackProgress(pack);
-                }
-                else
-                {
-                    UserDialogs.Instance.HideLoading();
-                }
+            if (pack != null)
+            {
+                offlineService.RequestPackProgress(pack);
             }
+            else
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+
         }
 
         private ICommand _ClearOfflinePacksCommand;

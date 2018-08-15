@@ -126,7 +126,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public Task<bool> RemovePack(OfflinePack pack)
         {
             var tcs = new TaskCompletionSource<bool>();
-            var region =  GetRegionByPack(pack).Result;
+            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
+            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
             if (region == null)
             {
                 tcs.TrySetResult(false);
