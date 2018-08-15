@@ -123,15 +123,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return tcs.Task;
         }
 
-        public Task<bool> RemovePack(OfflinePack pack)
+        public async Task<bool> RemovePack(OfflinePack pack)
         {
             var tcs = new TaskCompletionSource<bool>();
-            var obj = new Java.Lang.Object(pack.Handle, Android.Runtime.JniHandleOwnership.TransferGlobalRef);
-            var region = Android.Runtime.Extensions.JavaCast<OfflineRegion>(obj);
+            var region = await GetRegionByPack(pack);
             if (region == null)
             {
                 tcs.TrySetResult(false);
-
             }
             else region.Delete(new OfflineRegionDeleteCallback(
                 () => tcs.TrySetResult(true),
@@ -141,7 +139,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     tcs.TrySetResult(false);
                 }
             ));
-            return tcs.Task;
+            return await tcs.Task;
         }
 
         private async Task<OfflineRegion> GetRegionByPack(OfflinePack pack)

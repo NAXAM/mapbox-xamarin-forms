@@ -11,8 +11,6 @@ using ObjCRuntime;
 [assembly: Xamarin.Forms.Dependency(typeof(Naxam.Controls.Mapbox.Platform.iOS.OfflineStorageService))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
-    
-
     public class OfflineStorageService : NSObject, IOfflineStorageService
     {
         Dictionary<nuint, OfflinePack> tempPacks;
