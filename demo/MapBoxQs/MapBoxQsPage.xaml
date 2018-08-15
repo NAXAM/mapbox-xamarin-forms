@@ -69,6 +69,7 @@
             MapStyle="{Binding CurrentMapStyle}"
             ReloadStyleAction="{Binding ReloadStyleAction}"
             ZoomLevel="{Binding ZoomLevel}"
+            Region="{Binding Region}"
             UserLocation="{Binding UserLocation}"
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"

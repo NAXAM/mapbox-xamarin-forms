@@ -1,4 +1,5 @@
 ﻿
+using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -315,5 +316,20 @@ namespace Naxam.Controls.Mapbox.Forms
             get => (IEnumerable<PolylineAnnotation>)GetValue(PolylinesProperty);
             set => SetValue(PolylinesProperty, value);
         }
+
+
+        public static BindableProperty RegionProperty = BindableProperty.Create(
+           propertyName: nameof(Region),
+           returnType: typeof(MapRegion),
+           declaringType: typeof(MapView),
+           defaultValue: MapRegion.Empty,
+           defaultBindingMode: BindingMode.TwoWay
+           );
+        public MapRegion Region
+        {
+            get => (MapRegion)GetValue(RegionProperty);
+            set => SetValue(RegionProperty, value);
+        }
+
     }
 }

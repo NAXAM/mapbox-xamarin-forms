@@ -5,12 +5,15 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CoreGraphics;
+using CoreLocation;
 using Foundation;
 using Mapbox;
 using Naxam.Controls.Mapbox.Forms;
 using Naxam.Controls.Mapbox.Platform.iOS;
+using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using Naxam.Mapbox.Platform.iOS;
 using UIKit;
 using Xamarin.Forms;
@@ -39,8 +42,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 {
                     SetupUserInterface();
                     SetupEventHandlers();
-					SetupFunctions();
-                    SetNativeControl(MapView);               
+                    SetupFunctions();
+                    SetNativeControl(MapView);
                 }
             }
             catch (Exception ex)
@@ -57,7 +60,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 return;
             }
-
+            if (e.PropertyName == FormsMap.RegionProperty.PropertyName)
+            {
+                UpdateRegion();
+            }
             if (e.PropertyName == FormsMap.CenterProperty.PropertyName)
             {
                 UpdateCenter();
@@ -127,7 +133,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                                                               (nfloat)Element.RotatedDegree);
                 MapView.SetCamera(newCamera, true);
             }
-            else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName) {
+            else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName)
+            {
                 MapView.ShowsUserLocation = Element.ShowUserLocation;
             }
         }
@@ -191,6 +198,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(@"          ERROR: ", ex.Message);
+            }
+        }
+        void UpdateRegion()
+        {
+            if (Element?.Region != MapRegion.Empty)
+            {
+                var ne = new CLLocationCoordinate2D(Element.Region.NorthEast.Lat, Element.Region.NorthEast.Long);
+                var sw = new CLLocationCoordinate2D(Element.Region.SouthWest.Lat, Element.Region.SouthWest.Long);
+                var bounds = new MGLCoordinateBounds() { ne = ne, sw = sw };
+                MapView.SetVisibleCoordinateBounds(bounds, true);
             }
         }
 
@@ -298,7 +315,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                                             imgByteArray,
                                                             0,
                                                             Convert.ToInt32(imageData.Length));
-                return imgByteArray;
+                return Task.FromResult(imgByteArray);
             };
 
             Element.GetFeaturesAroundPointFunc = GetFeaturesArroundPoint;
@@ -414,9 +431,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     || MapView.Style == null) return null;
                 NSString layerIdStr = isCustom ? layerId.ToCustomId() : (NSString)layerId;
                 var layer = MapView.Style.LayerWithIdentifier(layerIdStr);
-                if (layer is MGLVectorStyleLayer vLayer) 
+                if (layer is MGLVectorStyleLayer vLayer)
                 {
-                    return CreateStyleLayer(vLayer, layerId);   
+                    return CreateStyleLayer(vLayer, layerId);
                 }
 
                 return null;
@@ -526,7 +543,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     NSArray coorArr = null;
                     if (geoData.TryGetValue((NSString)"geometry", out NSObject geometryObj)
                         && geometryObj is NSDictionary geometry
-                        && geometry.TryGetValue((NSString)"coordinates", out NSObject coordinates)) {
+                        && geometry.TryGetValue((NSString)"coordinates", out NSObject coordinates))
+                    {
                         coorArr = coordinates as NSArray;
                     }
                     if (feature is MGLPolylineFeature)
@@ -618,6 +636,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             if (shape != null)
             {
                 MapView.AddAnnotation(shape);
+                annotation.Id = shape.Handle.ToInt64().ToString();
             }
         }
 
@@ -643,7 +662,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             var annotationView = mapView.DequeueReusableAnnotationViewWithIdentifier("draggablePoint");
             if (annotationView != null) return annotationView;
             var view = new DraggableAnnotationView(reuseIdentifier: "draggablePoint", size: 24);
-            view.DragFinished += (sender, e) => {
+            view.DragFinished += (sender, e) =>
+            {
                 var point = new PointAnnotation();
                 point.HandleId = annotation.Handle.ToString();
                 point.Coordinate = TypeConverter.FromCoordinateToPosition(annotation.Coordinate);
@@ -665,7 +685,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 foreach (NSObject curAnnot in currentAnnotations)
                 {
-                    if (curAnnot is MGLShape shape) 
+                    if (curAnnot is MGLShape shape)
                     {
                         if (string.IsNullOrEmpty(shape.Id()))
                         {
@@ -690,7 +710,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-       
+
 
         private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -1017,11 +1037,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         MGLShape ShapeFromAnnotation(FormsMB.Annotation annotation)
         {
             MGLShape shape = null;
-			if (annotation is PointAnnotation pointAnnotation)
+            if (annotation is PointAnnotation pointAnnotation)
             {
                 shape = new MGLPointAnnotation()
                 {
-					Coordinate = pointAnnotation.Coordinate.ToCLCoordinate()
+                    Coordinate = pointAnnotation.Coordinate.ToCLCoordinate()
                 };
             }
             else if (annotation is PolylineAnnotation)
@@ -1080,7 +1100,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 {
                     shape.SetId(annotation.Id);
                 }
-                
+
                 annotation.HandleId = shape.Handle.ToString();
             }
 
@@ -1116,7 +1136,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         [Export("mapView:didUpdateUserLocation:")]
         public void MapViewDidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
         {
-                if (userLocation != null)
+            if (userLocation != null)
             {
                 Element.UserLocation = new Position(
                     userLocation.Location.Coordinate.Latitude,
@@ -1267,7 +1287,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             foreach (NSString key in fromDict.Keys)
             {
                 var value = fromDict[key];
-                switch (value) {
+                switch (value)
+                {
                     case NSString str:
                         if (str == "<NULL>")
                         {

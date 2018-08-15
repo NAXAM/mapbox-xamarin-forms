@@ -44,13 +44,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public override void OnResume()
         {
             base.OnResume();
-            StateSaved = false;
+           //StateSaved = false;
         }
+
+        
 
         public override void OnSaveInstanceState(Bundle outState)
         {
-            base.OnSaveInstanceState(outState);
-            StateSaved = true;
+            base.OnSaveInstanceState(outState); 
+            //StateSaved = true;
         }
     }
 }

@@ -164,7 +164,7 @@ namespace MapBoxQs
                 UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
             });
 
-            DidTapOnMarkerCommand = new Command<string>((markerId) =>
+            DidTapOnMarkerCommand = new Command<object>((markerId) =>
             {
                 SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
                 System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
