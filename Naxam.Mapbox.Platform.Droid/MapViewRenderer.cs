@@ -35,7 +35,7 @@ using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using MAnnotation = Com.Mapbox.Mapboxsdk.Annotations.Annotation;
 
 using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
-using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
+using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerViewOptions;
 
 using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
 using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
@@ -725,7 +725,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             AddPolylines(annotations.Where(d => d is FPolyline).Cast<FPolyline>().ToList());
         }
 
-        IList<Marker> AddMakers(IList<FMarker> markers)
+        IList<Sdk.Annotations.Annotation> AddMakers(IList<FMarker> markers)
         {
             if (markers == null || markers.Count == 0)
                 return null;
@@ -734,22 +734,23 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             for (int i = 0; i < markers.Count; i++)
             {
                 var at = markers[i];
-                var marker = new MarkerOptions();
-                marker.SetTitle(at.Title);
-                marker.SetSnippet(at.SubTitle);
-                marker.SetPosition(at.Coordinate.ToLatLng());
+                var marker = new MMarker();
+                marker.InfoWindowAnchor(-1, -1);
+                marker.InvokeTitle(at.Title);
+                marker.InvokeSnippet(at.SubTitle);
+                marker.InvokePosition(at.Coordinate.ToLatLng());
                 if (string.IsNullOrEmpty(at.Icon) == false)
                 {
                     if (iconSource.ContainsKey(at.Icon))
                     {
-                        marker.SetIcon(iconSource[at.Icon]);
+                        marker.InvokeIcon(iconSource[at.Icon]);
                     }
                     else
                     {
                         var icon = Context.GetIconFromResource(at.Icon);
                         if (icon != null)
                         {
-                            marker.SetIcon(icon);
+                            marker.InvokeIcon(icon);
                             iconSource.Add(at.Icon, icon);
                         }
                     }
@@ -757,8 +758,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 markerOptions.Add(marker);
             }
-            var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList());
-            for (int i = 0; i < options.Count; i++)
+            var options =markerOptions.Select(x => map.AddMarker(x)).ToArray();
+            for (int i = 0; i < options.Length; i++)
             {
                 markers[i].Id = options[i].Id.ToString();
             }
