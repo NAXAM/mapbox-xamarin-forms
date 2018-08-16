@@ -837,7 +837,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 marker.SetTitle(at.Title);
                 marker.SetSnippet(at.Title);
                 marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
-                marker.InfoWindowAnchor(-1, -1);
                 var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
                 if (output?.Item2 is string imgName)
                 {
