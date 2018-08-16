@@ -93,7 +93,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 currentCamera = new Position();
                 if (Element.Annotations != null)
                 {
-                    AddAnnotations(Element.Annotations.ToArray());
                     if (Element.Annotations is INotifyCollectionChanged notifyCollection)
                     {
                         notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
@@ -952,7 +951,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             //map.MyLocationEnabled = true;
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
-
+            AddAnnotations(Element.Annotations.ToArray());
+            OnMapRegionChanged();
             if (Element.Center != null)
             {
                 FocustoLocation(Element.Center.ToLatLng());
