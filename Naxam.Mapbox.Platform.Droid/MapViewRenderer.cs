@@ -43,27 +43,22 @@ using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    public partial class MapViewRenderer
-        : ViewRenderer<MapView, View>, IOnMapReadyCallback
+    public partial class MapViewRenderer : ViewRenderer<MapView, View>, IOnMapReadyCallback
     {
         MapboxMap map;
-
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
         bool mapReady;
-        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
-            new Dictionary<string, Sdk.Annotations.Annotation>();
+        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();
 
         public MapViewRenderer(Context context) : base(context)
         {
-
         }
-        protected override void OnElementChanged(
-            ElementChangedEventArgs<MapView> e)
+
+        protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
-
             if (e.OldElement != null)
             {
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
@@ -100,7 +95,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
-                if (Element.Annotations != null && mapReady)
+                if (Element.Annotations != null)
                 {
                     AddAnnotations(Element.Annotations.ToArray());
                     if (Element.Annotations is INotifyCollectionChanged notifyCollection)
@@ -371,6 +366,20 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 OnMapRegionChanged();
                 return;
             }
+            if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
+            {
+                RemoveAllAnnotations();
+                if (Element.Annotations != null)
+                {
+                    AddAnnotations(Element.Annotations.ToArray());
+                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
+                    if (notifyCollection != null)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
+                }
+                return;
+            }
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
 
@@ -403,20 +412,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 map?.SetBearing(Element.RotatedDegree);
             }
-            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
-            {
-                RemoveAllAnnotations();
-                if (Element.Annotations != null)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
-                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-                    if (notifyCollection != null)
-                    {
-                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    }
-                }
-            }
-            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
+            else  if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
                 var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
                 System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
@@ -837,11 +833,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             Sdk.Annotations.Annotation options = null;
             if (at is PointAnnotation)
             {
-                var marker = new MarkerViewOptions();
+                var marker = new MarkerOptions();
+                marker.SetTitle(at.Title);
+                marker.SetSnippet(at.Title);
+                marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
                 marker.InfoWindowAnchor(-1, -1);
-                marker.InvokeTitle(at.Title);
-                marker.InvokeSnippet(at.Title);
-                marker.InvokePosition(((PointAnnotation)at).Coordinate.ToLatLng());
                 var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
                 if (output?.Item2 is string imgName)
                 {
@@ -849,13 +845,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     {
                         IconFactory iconFactory = IconFactory.GetInstance(Context);
                         Icon icon = iconFactory.FromResource(Context.Resources.GetIdentifier(imgName, "drawable", Context.PackageName));
-                        marker.InvokeIcon(icon);
+                        marker.SetIcon(icon);
                     }
                     catch (Exception e)
                     {
                         System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
                     }
                 }
+
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)

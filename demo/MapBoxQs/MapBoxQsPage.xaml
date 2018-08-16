@@ -19,28 +19,37 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Top tools -->
-        <ScrollView Orientation="Horizontal">
-            <StackLayout Orientation="Horizontal"
-                         VerticalOptions="Center">
-                <Button Command="{Binding SwitchToolCommand}"
-                        CommandParameter="{x:Static local:MapTools.CustomLocation}"
-                        Text="Change location" />
-                <Button Command="{Binding ShowStylePickerCommand}"
-                        Text="Change style" />
-                <Button Command="{Binding SwitchToolCommand}"
-                        CommandParameter="{x:Static local:MapTools.Camera}"
-                        Text="Change camera" />
-                <Button Command="{Binding SwitchToolCommand}"
-                        CommandParameter="{x:Static local:MapTools.Offline}"
-                        Text="Offline storage" />
-                <Button Command="{Binding SwitchToolCommand}"
-                        CommandParameter="{x:Static local:MapTools.Annotations}"
-                        Text="Annotations" />
-                <Button Command="{Binding SwitchToolCommand}"
-                        CommandParameter="{x:Static local:MapTools.Misc}"
-                        Text="Others" />
-                <Button Command="{Binding FocusUserLocationCommand}"
-                        Text="My Location" />
+        <ScrollView
+            Orientation="Horizontal">
+            <StackLayout
+                Orientation="Horizontal"
+                VerticalOptions="Center">
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.CustomLocation}"
+                    Text="Change location" />
+                <Button
+                    Command="{Binding ShowStylePickerCommand}"
+                    Text="Change style" />
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Camera}"
+                    Text="Change camera" />
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Offline}"
+                    Text="Offline storage" />
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Annotations}"
+                    Text="Annotations" />
+                <Button
+                    Command="{Binding SwitchToolCommand}"
+                    CommandParameter="{x:Static local:MapTools.Misc}"
+                    Text="Others" />
+                <Button
+                    Command="{Binding FocusUserLocationCommand}"
+                    Text="My Location" />
             </StackLayout>
         </ScrollView>
         <!-- Main -->
@@ -77,7 +86,6 @@
                     Lat="21.028511"
                     Long="105.804817" />
             </controls:MapView.Center>
-
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -315,7 +323,7 @@
                             Value="Add polyline" />
                     </DataTrigger>
                 </Button.Triggers>
-            </Button> 
+            </Button>
 
             <Label Grid.Row="3"
                    Grid.ColumnSpan="2"

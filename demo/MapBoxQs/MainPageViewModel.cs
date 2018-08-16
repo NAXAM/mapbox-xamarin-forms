@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Naxam.Controls.Mapbox.Forms;
-using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using Xamarin.Forms;
 
 namespace MapBoxQs
@@ -39,17 +38,7 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
-        private ObservableCollection<Annotation> _Annotations = new ObservableCollection<Annotation>();
-        private MapRegion _MapRegionDefault;
-        public MapRegion MapRegionDefault
-        {
-            get { return _MapRegionDefault; }
-            set
-            {
-                _MapRegionDefault = value;
-                OnPropertyChanged("MapRegionDefault");
-            }
-        }
+        private ObservableCollection<Annotation> _Annotations;
         public ObservableCollection<Annotation> Annotations
         {
             get { return _Annotations; }
@@ -59,7 +48,6 @@ namespace MapBoxQs
                 OnPropertyChanged("Annotations");
             }
         }
-
 
         Annotation _SelectedAnnotation;
         public Annotation SelectedAnnotation
@@ -109,6 +97,7 @@ namespace MapBoxQs
         public MainPageViewModel(INavigation navigation)
         {
 
+            Annotations = new ObservableCollection<Annotation>();
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (_IsScaleBarShown == false && CenterLocation != null)
@@ -179,9 +168,6 @@ namespace MapBoxQs
                 //SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
                 //System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
             });
-            MapRegionDefault = new MapRegion(
-            new Position(52.545226f, 13.430601f),
-            new Position(52.493820f, 13.309461f));
         }
 
         private Position _UserLocation;
@@ -248,7 +234,6 @@ namespace MapBoxQs
             }
         }
 
-
         #region Zoom
         private ICommand _ZoomCommand;
 
@@ -285,7 +270,6 @@ namespace MapBoxQs
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
         }
 
         public Func<double> GetMapScaleReciprocalFunc
@@ -770,21 +754,26 @@ namespace MapBoxQs
         ICommand _DidTapOnMapCommand;
         public ICommand DidTapOnMapCommand
         {
-            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand, CanExecuteDidTapOnMapCommand)); }
+            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand)); }
         }
-        bool CanExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { return true; }
+
         int i = 1;
-        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> obj)
+        string colorPolyline = "#ff1234";
+        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> currentTap)
         {
-            Annotations = Annotations ?? new ObservableCollection<Annotation>();
+            if (Annotations == null || currentTap == null) return;
+            var currentPosition = currentTap.Item1;
+            var currentPoint = currentTap.Item2;
+
             if (CurrentAction == ActionState.AddPointAnnotation)
             {
-                var annot = new PointAnnotation()
+                var annotation = new PointAnnotation()
                 {
-                    Coordinate = obj.Item1
+                    Coordinate = currentPosition,
+                    Icon = "pin"
                 };
-                annot.Title = "PointAnnot." + annot.Id;
-                Annotations.Add(annot);
+                annotation.Title = "PointAnnot." + annotation.Id;
+                Annotations.Add(annotation);
                 OnPropertyChanged("Annotations");
                 i = i + 1;
             }
@@ -793,16 +782,16 @@ namespace MapBoxQs
                 if (polyline == null)
                     polyline = new PolylineAnnotation
                     {
-                        HexColor = "#ff1234",
+                        HexColor = colorPolyline,
                         Width = 1
                     };
                 if (polyline.Coordinates == null)
                 {
-                    polyline.Coordinates = new ObservableCollection<Position> { obj.Item1 };
+                    polyline.Coordinates = new ObservableCollection<Position> { currentPosition };
                     Annotations.Add(polyline);
                 }
                 else
-                    (polyline.Coordinates as ObservableCollection<Position>).Add(obj.Item1);
+                    (polyline.Coordinates as ObservableCollection<Position>).Add(currentPosition);
             }
         }
 
