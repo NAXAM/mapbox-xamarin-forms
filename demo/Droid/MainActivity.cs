@@ -43,7 +43,6 @@ namespace MapBoxQs.Droid
             //mapView.GetMapAsync(new MapReady(this));
             //mapView.OffsetTopAndBottom(0);
 
-
         }
         public class MapReady : Java.Lang.Object, IOnMapReadyCallback
         {

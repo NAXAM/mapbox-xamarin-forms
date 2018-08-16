@@ -5,6 +5,8 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -37,7 +39,6 @@ namespace Naxam.Mapbox.Platform.Droid
             LinearLayout _container = new LinearLayout(_context);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
             layoutParams.Gravity = GravityFlags.Top;
-            _container.Orientation = Orientation.Vertical;
             _container.LayoutParameters = layoutParams;
             object bindingContext = null;
             _map.ItemsSource = new List<Marker> { marker };
@@ -83,5 +84,6 @@ namespace Naxam.Mapbox.Platform.Droid
 
             return _container;
         }
+        
     }
 }

@@ -51,7 +51,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
 
         }
-
         protected override void OnElementChanged(
             ElementChangedEventArgs<MapView> e)
         {
@@ -726,7 +725,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (at is PointAnnotation)
             {
                 var marker = new MarkerViewOptions();
-                
+                marker.InfoWindowAnchor(-1, -1);
                 marker.InvokeTitle(at.Title);
                 marker.InvokeSnippet(at.Title);
                 marker.InvokePosition(((PointAnnotation)at).Coordinate.ToLatLng());
@@ -744,7 +743,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
                     }
                 }
-                marker.InfoWindowAnchor(-1, -1);
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -896,9 +894,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter = info;
+                
             }
         }
-        
+
 
     }
    

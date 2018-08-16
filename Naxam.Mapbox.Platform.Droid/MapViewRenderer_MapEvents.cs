@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
+using Android.Graphics;
+using Android.Views;
 using Com.Mapbox.Mapboxsdk.Annotations;
+using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Mapbox.Forms;
+using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
 using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
 
-    public partial class MapViewRenderer : MapView.IOnMapChangedListener
+    public partial class MapViewRenderer : MapView.IOnMapChangedListener 
     {
         void AddMapEvents()
         {
@@ -81,8 +85,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public void OnMapChanged(int p0)
         {
-            ComputeVerticalScrollOffset();
-
+            if (map.SelectedMarkers.Count >0)
+            {
+                map.DeselectMarkers();
+            }
             switch (p0)
             {
                 case MapView.DidFinishLoadingStyle:
@@ -135,5 +141,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     break;
             }
         }
+
+        
     }
 }
