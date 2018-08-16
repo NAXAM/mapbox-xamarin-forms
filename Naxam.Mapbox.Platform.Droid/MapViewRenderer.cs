@@ -38,46 +38,37 @@ using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    public partial class MapViewRenderer
-        : ViewRenderer<MapView, View>, IOnMapReadyCallback
+    public partial class MapViewRenderer : ViewRenderer<MapView, View>, IOnMapReadyCallback
     {
         MapboxMap map;
-
         MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
         bool mapReady;
-        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries =
-            new Dictionary<string, Sdk.Annotations.Annotation>();
+        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries;
 
         public MapViewRenderer(Context context) : base(context)
         {
-
+            _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();
         }
 
-        protected override void OnElementChanged(
-            ElementChangedEventArgs<MapView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
-
             if (e.OldElement != null)
             {
+                e.OldElement.AnnotationChanged -= Element_AnnotationChanged;
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
                 if (map != null)
                 {
                     RemoveMapEvents();
                 }
-
-                if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
-                {
-                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                }
             }
 
             if (e.NewElement == null)
                 return;
-
+            e.NewElement.AnnotationChanged += Element_AnnotationChanged;
             if (Control == null)
             {
                 var activity = (AppCompatActivity)Context;
@@ -97,18 +88,33 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
-                if (Element.Annotations != null && mapReady)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
-                    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
-                    {
-                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    }
-                }
+
                 if (mapReady)
                 {
                     OnMapRegionChanged();
                 }
+                if (e.NewElement.Annotations != null && e.NewElement.Annotations is INotifyCollectionChanged newCollection)
+                {
+                    newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                }
+            }
+        }
+
+        private void Element_AnnotationChanged(object sender, AnnotationChangeEventArgs e)
+        {
+            if (e.OldAnnotation is INotifyCollectionChanged oldCollection)
+            {
+                oldCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+            }
+
+            if (e.NewAnnotation is INotifyCollectionChanged newCollection)
+            {
+                newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+            }
+            if (mapReady)
+            {
+                RemoveAllAnnotations();
+                AddAnnotations(Element?.Annotations?.ToArray());
             }
         }
 
@@ -294,7 +300,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         TaskCompletionSource<byte[]> tcs;
         Task<byte[]> TakeMapSnapshot()
         {
-            //TODO
             if (tcs != null && tcs.Task.IsCompleted == false)
                 return tcs.Task;
             tcs = new TaskCompletionSource<byte[]>();
@@ -368,6 +373,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 OnMapRegionChanged();
                 return;
             }
+
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
 
@@ -399,19 +405,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName)
             {
                 map?.SetBearing(Element.RotatedDegree);
-            }
-            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
-            {
-                RemoveAllAnnotations();
-                if (Element.Annotations != null)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
-                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
-                    if (notifyCollection != null)
-                    {
-                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    }
-                }
             }
             else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
@@ -948,16 +941,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        public void OnMapReady(MapboxMap p0)
+        public void OnMapReady(MapboxMap mapBox)
         {
-            map = p0;
+            map = mapBox;
             map.SetStyle("mapbox://styles/mapbox/streets-v9");
             mapReady = true;
             OnMapRegionChanged();
             //map.MyLocationEnabled = true;
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
-
+            RemoveAllAnnotations();
+            AddAnnotations(Element?.Annotations?.ToArray());
+            OnMapRegionChanged();
             if (Element.Center != null)
             {
                 FocustoLocation(Element.Center.ToLatLng());
@@ -991,8 +986,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
-            if(Element.InfoWindowTemplate !=null)
-            map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate,Element);
+            if (Element.InfoWindowTemplate != null)
+                map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element);
         }
 
     }
