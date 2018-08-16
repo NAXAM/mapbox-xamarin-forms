@@ -14,14 +14,9 @@ namespace Naxam.Controls.Mapbox.Forms
     {
         public IEnumerable<Annotation> OldAnnotation { get; set; }
         public IEnumerable<Annotation> NewAnnotation { get; set; }
-
-
-
     }
     public class PositionChangeEventArgs : EventArgs
     {
-        //private Position _newPosition;
-
         public PositionChangeEventArgs(Position newPosition)
         {
             NewPosition = newPosition;
@@ -45,7 +40,7 @@ namespace Naxam.Controls.Mapbox.Forms
           typeof(bool),
           typeof(MapView),
           default(bool),
-       BindingMode.TwoWay
+          BindingMode.TwoWay
       );
 
         public bool IsMarkerClicked
@@ -71,9 +66,9 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
             nameof(FocusPosition),
-           typeof(bool),
-           typeof(MapView),
-           default(bool),
+            typeof(bool),
+            typeof(MapView),
+            default(bool),
             BindingMode.OneWay);
 
 
@@ -249,24 +244,6 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        //public static readonly BindableProperty StyleUrlProperty = BindableProperty.Create(
-        //	nameof(StyleUrl),
-        //	typeof(string),
-        //	typeof(MapView),
-        //	default(string));
-
-        //public string StyleUrl
-        //{
-        //	get
-        //	{
-        //		return (string)GetValue(StyleUrlProperty);
-        //	}
-        //	set
-        //	{
-        //		SetValue(StyleUrlProperty, (string)value);
-        //	}
-        //}
-
         public static readonly BindableProperty MapStyleProperty = BindableProperty.Create(
         nameof(MapStyle),
         typeof(MapStyle),
@@ -387,7 +364,6 @@ namespace Naxam.Controls.Mapbox.Forms
                 OldAnnotation = oldAnnotation,
                 NewAnnotation = newAnnotation
             });
-
         }
     }
 }

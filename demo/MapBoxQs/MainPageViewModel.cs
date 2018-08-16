@@ -187,21 +187,11 @@ namespace MapBoxQs
         public ICommand DidTapOnCalloutViewCommand { get; set; }
 
         public ICommand DidTapOnMarkerCommand { get; set; }
-       
 
-        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
-        {
-            get;
-            set;
-        }
+        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction { get; set; }
+        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc { get; set; }
 
-        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
-        {
-            get;
-            set;
-        }
-
-        private Action<Tuple<string, bool>> _SelectAnnotationAction;
+        Action<Tuple<string, bool>> _SelectAnnotationAction;
         public Action<Tuple<string, bool>> SelectAnnotationAction
         {
             get { return _SelectAnnotationAction; }
@@ -212,7 +202,7 @@ namespace MapBoxQs
             }
         }
 
-        private Action<Tuple<string, bool>> _DeselectAnnotationAction;
+        Action<Tuple<string, bool>> _DeselectAnnotationAction;
         public Action<Tuple<string, bool>> DeselectAnnotationAction
         {
             get { return _DeselectAnnotationAction; }
@@ -261,10 +251,7 @@ namespace MapBoxQs
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Func<double> GetMapScaleReciprocalFunc
-        {
-            get; set;
-        }
+        public Func<double> GetMapScaleReciprocalFunc { get; set; }
 
         private Func<bool, bool> _ToggleScaleBarFunc;
 
@@ -495,7 +482,7 @@ namespace MapBoxQs
              new Position {
               Lat = 21.0333,
               Long = 105.8500
-                     },
+             },
               new Position {
                             Lat = 55.75719563,
                             Long = 8.93032908
@@ -560,17 +547,9 @@ namespace MapBoxQs
         }
 
         #region Styles
-        public Action ReloadStyleAction
-        {
-            get;
-            set;
-        }
+        public Action ReloadStyleAction { get; set; }
 
-        private MapStyle[] Styles
-        {
-            get;
-            set;
-        }
+        private MapStyle[] Styles { get; set; }
 
         ICommand _ShowStylePickerCommand;
         public ICommand ShowStylePickerCommand

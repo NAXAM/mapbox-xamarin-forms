@@ -23,7 +23,6 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             }
             if (mbRegion.GetMetadata() is byte[] metadata) {
                 String json = new String(metadata, OfflineStorageService.JSON_CHARSET);
-
                 try
                 {
                     JsonObject jsonObject = (JsonObject)new Gson().FromJson(json.ToString(), Java.Lang.Class.FromType(typeof(JsonObject)));
