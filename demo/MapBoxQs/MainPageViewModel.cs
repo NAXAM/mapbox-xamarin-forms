@@ -38,8 +38,7 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
 
-        private ObservableCollection<Annotation> _Annotations = new ObservableCollection<Annotation>();
-
+        private ObservableCollection<Annotation> _Annotations;
         public ObservableCollection<Annotation> Annotations
         {
             get { return _Annotations; }
@@ -49,7 +48,6 @@ namespace MapBoxQs
                 OnPropertyChanged("Annotations");
             }
         }
-
 
         Annotation _SelectedAnnotation;
         public Annotation SelectedAnnotation
@@ -99,6 +97,7 @@ namespace MapBoxQs
         public MainPageViewModel(INavigation navigation)
         {
 
+            Annotations = new ObservableCollection<Annotation>();
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (_IsScaleBarShown == false && CenterLocation != null)
@@ -235,7 +234,6 @@ namespace MapBoxQs
             }
         }
 
-
         #region Zoom
         private ICommand _ZoomCommand;
 
@@ -272,7 +270,6 @@ namespace MapBoxQs
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
         }
 
         public Func<double> GetMapScaleReciprocalFunc
@@ -757,21 +754,26 @@ namespace MapBoxQs
         ICommand _DidTapOnMapCommand;
         public ICommand DidTapOnMapCommand
         {
-            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand, CanExecuteDidTapOnMapCommand)); }
+            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand)); }
         }
-        bool CanExecuteDidTapOnMapCommand(Tuple<Position, Point> obj) { return true; }
+
         int i = 1;
-        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> obj)
+        string colorPolyline = "#ff1234";
+        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> currentTap)
         {
-            Annotations = Annotations ?? new ObservableCollection<Annotation>();
+            if (Annotations == null || currentTap == null) return;
+            var currentPosition = currentTap.Item1;
+            var currentPoint = currentTap.Item2;
+
             if (CurrentAction == ActionState.AddPointAnnotation)
             {
-                var annot = new PointAnnotation()
+                var annotation = new PointAnnotation()
                 {
-                    Coordinate = obj.Item1
+                    Coordinate = currentPosition,
+                    Icon = "pin"
                 };
-                annot.Title = "PointAnnot." + annot.Id;
-                Annotations.Add(annot);
+                annotation.Title = "PointAnnot." + annotation.Id;
+                Annotations.Add(annotation);
                 OnPropertyChanged("Annotations");
                 i = i + 1;
             }
@@ -780,16 +782,16 @@ namespace MapBoxQs
                 if (polyline == null)
                     polyline = new PolylineAnnotation
                     {
-                        HexColor = "#ff1234",
+                        HexColor = colorPolyline,
                         Width = 1
                     };
                 if (polyline.Coordinates == null)
                 {
-                    polyline.Coordinates = new ObservableCollection<Position> { obj.Item1 };
+                    polyline.Coordinates = new ObservableCollection<Position> { currentPosition };
                     Annotations.Add(polyline);
                 }
                 else
-                    (polyline.Coordinates as ObservableCollection<Position>).Add(obj.Item1);
+                    (polyline.Coordinates as ObservableCollection<Position>).Add(currentPosition);
             }
         }
 
