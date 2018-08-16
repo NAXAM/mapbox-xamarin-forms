@@ -30,15 +30,14 @@ namespace MapBoxQs
 
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        readonly MapBoxQs.Services.IMapBoxService MBService = new MapBoxQs.Services.MapBoxService();
-        private readonly INavigation navigation;
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        readonly MapBoxQs.Services.IMapBoxService MBService;
+        readonly INavigation navigation;
         bool _IsScaleBarShown = false;
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private ObservableCollection<Annotation> _Annotations;
+        ObservableCollection<Annotation> _Annotations;
         public ObservableCollection<Annotation> Annotations
         {
             get { return _Annotations; }
@@ -61,7 +60,7 @@ namespace MapBoxQs
         }
 
         #region MapStyle Layer
-        private ObservableCollection<Layer> _ListLayers;
+        ObservableCollection<Layer> _ListLayers;
         public ObservableCollection<Layer> ListLayers
         {
             get { return _ListLayers; }
@@ -83,7 +82,7 @@ namespace MapBoxQs
             }
         }
         #endregion
-        private MapStyle _CurrentMapStyle;
+        MapStyle _CurrentMapStyle;
         public MapStyle CurrentMapStyle
         {
             get { return _CurrentMapStyle; }
@@ -96,7 +95,7 @@ namespace MapBoxQs
 
         public MainPageViewModel(INavigation navigation)
         {
-
+            MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
             DidFinishRenderingCommand = new Command((obj) =>
             {
@@ -182,23 +181,13 @@ namespace MapBoxQs
             }
         }
 
-        public ICommand DidFinishLoadingStyleCommand
-        {
-            get;
-            set;
-        }
 
-        public ICommand DidTapOnCalloutViewCommand
-        {
-            get;
-            set;
-        }
+        public ICommand DidFinishLoadingStyleCommand { get; set; }
 
-        public ICommand DidTapOnMarkerCommand
-        {
-            get;
-            set;
-        }
+        public ICommand DidTapOnCalloutViewCommand { get; set; }
+
+        public ICommand DidTapOnMarkerCommand { get; set; }
+       
 
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
         {
