@@ -46,19 +46,19 @@ namespace Naxam.Controls.Mapbox.Forms
             set { SetValue(IsMarkerClickedProperty, value); }
         }
 
-		public static readonly BindableProperty DragFinishedCommandProperty = BindableProperty.Create(
-			nameof(DragFinishedCommand),
-			typeof(ICommand),
-			typeof(MapView),
-			default(ICommand),
-			BindingMode.OneWay);
-		public ICommand DragFinishedCommand
-		{
-			get { return (ICommand)GetValue(DragFinishedCommandProperty); }
-			set { SetValue(DragFinishedCommandProperty, value); }
-		}
+        public static readonly BindableProperty DragFinishedCommandProperty = BindableProperty.Create(
+            nameof(DragFinishedCommand),
+            typeof(ICommand),
+            typeof(MapView),
+            default(ICommand),
+            BindingMode.OneWay);
+        public ICommand DragFinishedCommand
+        {
+            get { return (ICommand)GetValue(DragFinishedCommandProperty); }
+            set { SetValue(DragFinishedCommandProperty, value); }
+        }
 
-		public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
+        public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
             nameof(FocusPosition),
            typeof(bool),
            typeof(MapView),
@@ -292,6 +292,47 @@ namespace Naxam.Controls.Mapbox.Forms
                 SetValue(AnnotationsProperty, (IEnumerable<Annotation>)value);
             }
         }
+
+        public static BindableProperty MarkersProperty = BindableProperty.Create(
+           propertyName: nameof(Markers),
+           returnType: typeof(IEnumerable<PointAnnotation>),
+           declaringType: typeof(MapView),
+           defaultValue: default(IEnumerable<PointAnnotation>),
+           defaultBindingMode: BindingMode.OneWay
+           );
+        public IEnumerable<PointAnnotation> Markers
+        {
+            get => (IEnumerable<PointAnnotation>)GetValue(MarkersProperty);
+            set => SetValue(MarkersProperty, value);
+        }
+
+        public static BindableProperty PolylinesProperty = BindableProperty.Create(
+           propertyName: nameof(Polylines),
+           returnType: typeof(IEnumerable<PolylineAnnotation>),
+           declaringType: typeof(MapView),
+           defaultValue: default(IEnumerable<PolylineAnnotation>),
+           defaultBindingMode: BindingMode.OneWay
+           );
+        public IEnumerable<PolylineAnnotation> Polylines
+        {
+            get => (IEnumerable<PolylineAnnotation>)GetValue(PolylinesProperty);
+            set => SetValue(PolylinesProperty, value);
+        }
+
+
+        public static BindableProperty RegionProperty = BindableProperty.Create(
+           propertyName: nameof(Region),
+           returnType: typeof(MapRegion),
+           declaringType: typeof(MapView),
+           defaultValue: MapRegion.Empty,
+           defaultBindingMode: BindingMode.TwoWay
+           );
+        public MapRegion Region
+        {
+            get => (MapRegion)GetValue(RegionProperty);
+            set => SetValue(RegionProperty, value);
+        }
+
         public static BindableProperty InfoWindowTemplateProperty = BindableProperty.Create(
             propertyName: nameof(InfoWindowTemplate),
             returnType: typeof(DataTemplate),

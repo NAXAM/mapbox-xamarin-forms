@@ -14,5 +14,6 @@ namespace Naxam.Controls.Mapbox.Forms
 			get;
 			set;
 		}
-	}
+        public string Icon { get; set; }
+    }
 }

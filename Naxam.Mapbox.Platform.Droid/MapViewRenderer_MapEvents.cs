@@ -15,6 +15,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
     public partial class MapViewRenderer : MapView.IOnMapChangedListener 
     {
+        bool cameraBusy;
         void AddMapEvents()
         {
             map.MarkerClick += MarkerClicked;
@@ -22,6 +23,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.MapClick += MapClicked;
             map.MyLocationChange += MyLocationChanged;
             map.CameraIdle += OnCameraIdle;
+            map.CameraChange += Map_CameraChange;
+            map.CameraMoveStarted += Map_CameraMoveStarted;
+            map.CameraMoveCancel += Map_CameraMoveCancel;
+            map.CameraMove += Map_CameraMove;
             fragment.OnMapChangedListener = (this);
         }
 
@@ -32,12 +37,36 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.MapClick -= MapClicked;
             map.MyLocationChange -= MyLocationChanged;
             map.CameraIdle -= OnCameraIdle;
-
+            map.CameraChange -= Map_CameraChange;
+            map.CameraMoveStarted -= Map_CameraMoveStarted;
+            map.CameraMoveCancel -= Map_CameraMoveCancel;
+            map.CameraMove -= Map_CameraMove;
             fragment.OnMapChangedListener = null;
+        }
+
+        private void Map_CameraMove(object sender, EventArgs e)
+        {
+            cameraBusy = true;
+        }
+
+        private void Map_CameraMoveCancel(object sender, EventArgs e)
+        {
+            cameraBusy = false;
+        }
+
+        private void Map_CameraMoveStarted(object sender, MapboxMap.CameraMoveStartedEventArgs e)
+        {
+            cameraBusy = true;
+        }
+
+        private void Map_CameraChange(object sender, MapboxMap.CameraChangeEventArgs e)
+        {
+            cameraBusy = true;
         }
 
         private void OnCameraIdle(object sender, EventArgs e)
         {
+            cameraBusy = false;
             currentCamera.Lat = map.CameraPosition.Target.Latitude;
             currentCamera.Long = map.CameraPosition.Target.Longitude;
             Element.ZoomLevel = map.CameraPosition.Zoom;
@@ -72,7 +101,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (!marker.IsInfoWindowShown) map.SelectMarker(marker);
                 else map.DeselectMarker(marker);
             }
-            Element.DidTapOnMarkerCommand?.Execute(args.P0.Id.ToString());
+            if (Element?.Annotations?.Count() > 0)
+            {
+                var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
+                if (fm == null)
+                    return;
+                Element.DidTapOnMarkerCommand?.Execute(fm);
+            }
         }
 
         void InfoWindowClick(object s, MapboxMap.InfoWindowClickEventArgs e)

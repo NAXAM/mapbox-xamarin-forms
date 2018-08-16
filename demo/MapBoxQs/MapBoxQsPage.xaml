@@ -44,35 +44,38 @@
             </StackLayout>
         </ScrollView>
         <!-- Main -->
-        <controls:MapView x:Name="Map"
-                          Grid.Row="1"
-                          DragFinishedCommand="{Binding DragFinishedCommand}"
-                          ShowUserLocation="true"
-                          Center="{Binding CenterLocation}"
-                          VerticalOptions="FillAndExpand"
-                          Annotations="{Binding Annotations}"
-                          MapStyle="{Binding CurrentMapStyle}"
-                          ReloadStyleAction="13.309461f"
-                          ZoomLevel="{Binding ZoomLevel}"
-                          UserLocation="{Binding UserLocation}"
-                          ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
-                          UpdateViewPortAction="{Binding UpdateViewPortAction}"
-                          InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
-                          Pitch="{Binding Pitch}"
-                          RotatedDegree="{Binding RotatedDegree}"
-                          TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
-                          GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
-                          GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
-                          DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
-                          GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
-                          DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
-                          SelectAnnotationAction="{Binding SelectAnnotationAction}"
-                          DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
-                          DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
-                          DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
+        <controls:MapView
+            x:Name="Map"
+            Grid.Row="1"
+            DragFinishedCommand="{Binding DragFinishedCommand}"
+            ShowUserLocation="true"
+            Center="{Binding CenterLocation}"
+            VerticalOptions="FillAndExpand"
+            Annotations="{Binding Annotations}"
+            MapStyle="{Binding CurrentMapStyle}"
+            ReloadStyleAction="{Binding ReloadStyleAction}"
+            ZoomLevel="{Binding ZoomLevel}"
+            Region="{Binding Region}"
+            UserLocation="{Binding UserLocation}"
+            ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
+            UpdateViewPortAction="{Binding UpdateViewPortAction}"
+            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
+            Pitch="{Binding Pitch}"
+            RotatedDegree="{Binding RotatedDegree}"
+            TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
+            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
+            GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
+            DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
+            GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
+            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
+            SelectAnnotationAction="{Binding SelectAnnotationAction}"
+            DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
+            DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
+            DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
             <controls:MapView.Center>
-                <controls:Position Lat="21.028511"
-                                   Long="105.804817" />
+                <controls:Position
+                    Lat="21.028511"
+                    Long="105.804817" />
             </controls:MapView.Center>
 
             <controls:MapView.InfoWindowTemplate>
@@ -296,9 +299,23 @@
                     Text="Deselect Annotation"
                     Margin="2,1,1,1" />
 
-            <Button Grid.Row="2"
-                    Text="Add polyline"
-                    Margin="1,1,2,1" />
+            <Button
+                Grid.Row="2"
+                Text="Stop Add polyline"
+                Margin="1,1,2,1" 
+                Command="{Binding ToggleCurrentActionCommand}"
+                CommandParameter="{x:Static local:ActionState.AddPolyline}">
+                <Button.Triggers>
+                    <DataTrigger
+                        TargetType="Button"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.None}">
+                        <Setter
+                            Property="Text"
+                            Value="Add polyline" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button> 
 
             <Label Grid.Row="3"
                    Grid.ColumnSpan="2"
