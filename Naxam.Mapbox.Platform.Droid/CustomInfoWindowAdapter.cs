@@ -22,68 +22,55 @@ namespace Naxam.Mapbox.Platform.Droid
 {
     public class CustomInfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
     {
-        private Context _context;
-        private DataTemplate _dataTemPlate;
-        private Naxam.Controls.Mapbox.Forms.MapView _map;
-        private MapboxMap _mapboxMap;
-        public CustomInfoWindowAdapter(Context context, DataTemplate dataTemplate, Naxam.Controls.Mapbox.Forms.MapView map, MapboxMap mapboxMap)
+        Context _context;
+        Naxam.Controls.Mapbox.Forms.MapView _map;
+        readonly MapboxMap mapBox;
+        private readonly MapView mv;
+
+        public CustomInfoWindowAdapter(Context context, Naxam.Controls.Mapbox.Forms.MapView map, MapboxMap mapBox, Com.Mapbox.Mapboxsdk.Maps.MapView mv)
         {
             _context = context;
-            _dataTemPlate = dataTemplate;
-            this._map = map;
-            this._mapboxMap = mapboxMap;
+            _map = map;
+            this.mapBox = mapBox;
+            this.mv = mv;
         }
         public Android.Views.View GetInfoWindow(Marker marker)
         {
-            Xamarin.Forms.View formsView = null;
-            LinearLayout _container = new LinearLayout(_context);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-            layoutParams.Gravity = GravityFlags.Top;
-            _container.LayoutParameters = layoutParams;
-            object bindingContext = null;
-            _map.ItemsSource = new List<Marker> { marker };
-            var source = _map.ItemsSource?.Cast<object>();
-            if (source != null)
-                bindingContext = source.ElementAt(0);
-            var dt = bindingContext as DataTemplate;
-            var view = bindingContext as Xamarin.Forms.View;
 
-            if (dt != null)
-                formsView = (Xamarin.Forms.View)dt.CreateContent();
+            if (marker?.InfoWindow?.View != null)
+            {
+                return marker.InfoWindow.View;
+            }
+
+            var bindingContext = _map.Annotations.FirstOrDefault(d => d.Id == marker.Id.ToString());
+
+            var dt = _map.InfoWindowTemplate;
+            object content;
+            if (_map.InfoWindowTemplate is DataTemplateSelector ds)
+            {
+                content = ds.SelectTemplate(bindingContext, _map).CreateContent();
+            }
             else
             {
-                if (view != null)
-                {
-                    formsView = view;
-                }
-                else
-                {
-                    var selector = _map.InfoWindowTemplate as DataTemplateSelector;
-                    if (selector != null)
-                        formsView = (Xamarin.Forms.View)selector.SelectTemplate(bindingContext, _map).CreateContent();
-                    else
-                    {
-                        var content = _map.InfoWindowTemplate.CreateContent();
-                        if (content is ViewCell cell)
-                        {
-                            cell.BindingContext = bindingContext;
-                            var output = new ViewGroupContainer(_container.Context, _container, cell);
-                            _container.AddView(output, new ViewGroup.LayoutParams(-2, -2));
-                            return _container;
-                        }
-                        else
-                            formsView = content as Xamarin.Forms.View;
-                    }
-                }
-            }
-            if (formsView != null)
-            {
-                formsView.BindingContext = bindingContext;
-                _container.AddView(formsView.ToAndroid());
+                content = dt.CreateContent();
             }
 
-            return _container;
+            if (content is Xamarin.Forms.View fView)
+            {
+                fView.BindingContext = bindingContext;
+                fView.Parent = _map;
+                var output = new ViewGroupContainer(_context, fView);
+                return output;
+            }
+
+            if (content is ViewCell cell)
+            {
+                cell.BindingContext = bindingContext;
+                cell.View.Parent = _map;
+                var output = new ViewGroupContainer(_context, cell);
+                return output;
+            }
+            return null;
         }
-        
     }
 }
