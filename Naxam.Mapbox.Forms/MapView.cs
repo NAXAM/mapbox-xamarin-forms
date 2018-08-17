@@ -9,19 +9,9 @@ using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
 {
-
-    public class AnnotationChangeEventArgs : EventArgs
-    {
-        public IEnumerable<Annotation> OldAnnotation { get; set; }
-        public IEnumerable<Annotation> NewAnnotation { get; set; }
-
-
-
-    }
     public class PositionChangeEventArgs : EventArgs
     {
         //private Position _newPosition;
-
         public PositionChangeEventArgs(Position newPosition)
         {
             NewPosition = newPosition;
@@ -38,8 +28,6 @@ namespace Naxam.Controls.Mapbox.Forms
 
     public partial class MapView : View
     {
-
-        public event EventHandler<AnnotationChangeEventArgs> AnnotationChanged;
         public static readonly BindableProperty IsMarkerClickedProperty = BindableProperty.Create(
           nameof(IsMarkerClicked),
           typeof(bool),
@@ -104,7 +92,7 @@ namespace Naxam.Controls.Mapbox.Forms
                 SetValue(CenterProperty, (Position)value);
             }
         }
-
+        
 
         public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
             nameof(UserLocation),
@@ -132,13 +120,13 @@ namespace Naxam.Controls.Mapbox.Forms
             defaultValue: default(bool),
             defaultBindingMode: BindingMode.OneWay
         );
-
+        
         public bool ShowUserLocation
         {
             get { return (bool)GetValue(ShowUserLocationProperty); }
             set { SetValue(ShowUserLocationProperty, value); }
         }
-
+        
         public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(
             nameof(ZoomLevel),
             typeof(double),
@@ -290,17 +278,7 @@ namespace Naxam.Controls.Mapbox.Forms
             typeof(IEnumerable<Annotation>),
             typeof(MapView),
             default(IEnumerable<Annotation>),
-            BindingMode.TwoWay,
-          propertyChanged: OnAnnotationChanged
-            );
-
-        private static void OnAnnotationChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (bindable is MapView control)
-            {
-                control.OnAnnotationChanged((IEnumerable<Annotation>)oldValue, (IEnumerable<Annotation>)newValue);
-            }
-        }
+            BindingMode.TwoWay);
 
         public IEnumerable<Annotation> Annotations
         {
@@ -363,10 +341,11 @@ namespace Naxam.Controls.Mapbox.Forms
         );
         public DataTemplate InfoWindowTemplate
         {
+            
             get { return (DataTemplate)GetValue(InfoWindowTemplateProperty); }
             set { SetValue(InfoWindowTemplateProperty, value); }
         }
-
+        
         public static BindableProperty ItemsSourceProperty = BindableProperty.Create(
             propertyName: nameof(ItemsSource),
             returnType: typeof(IEnumerable),
@@ -379,15 +358,6 @@ namespace Naxam.Controls.Mapbox.Forms
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
-        }
-        void OnAnnotationChanged(IEnumerable<Annotation> oldAnnotation, IEnumerable<Annotation> newAnnotation)
-        {
-            AnnotationChanged?.Invoke(this, new AnnotationChangeEventArgs
-            {
-                OldAnnotation = oldAnnotation,
-                NewAnnotation = newAnnotation
-            });
-
         }
     }
 }
