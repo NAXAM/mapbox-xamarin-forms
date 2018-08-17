@@ -38,7 +38,6 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
         public event PropertyChangedEventHandler PropertyChanged;
-
         ObservableCollection<Annotation> _Annotations;
         public ObservableCollection<Annotation> Annotations
         {
@@ -49,7 +48,6 @@ namespace MapBoxQs
                 OnPropertyChanged("Annotations");
             }
         }
-
         Annotation _SelectedAnnotation;
         public Annotation SelectedAnnotation
         {
