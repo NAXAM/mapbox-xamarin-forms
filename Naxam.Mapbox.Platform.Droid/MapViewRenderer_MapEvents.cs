@@ -2,18 +2,20 @@
 using System.Collections.Specialized;
 using System.Linq;
 using Android.Graphics;
+using Android.Support.V4.Widget;
 using Android.Views;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Mapbox.Forms;
+using static Android.Support.V4.Widget.NestedScrollView;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
 using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
 
-    public partial class MapViewRenderer : MapView.IOnMapChangedListener 
+    public partial class MapViewRenderer : MapView.IOnMapChangedListener
     {
         bool cameraBusy;
         void AddMapEvents()
@@ -61,9 +63,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private void Map_CameraChange(object sender, MapboxMap.CameraChangeEventArgs e)
         {
+            CameraChange();
             cameraBusy = true;
         }
-
+        private void CameraChange()
+        {
+            if(map.SelectedMarkers.Count>0)
+                map.DeselectMarkers();
+        }
         private void OnCameraIdle(object sender, EventArgs e)
         {
             cameraBusy = false;
@@ -120,10 +127,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public void OnMapChanged(int p0)
         {
-            if (map.SelectedMarkers.Count >0)
-            {
-                map.DeselectMarkers();
-            }
+            Element.ScrollEnabled = true;
+            CameraChange();
             switch (p0)
             {
                 case MapView.DidFinishLoadingStyle:
@@ -176,7 +181,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     break;
             }
         }
-
         
+        public override bool OnInterceptTouchEvent(MotionEvent ev)
+        {
+            CameraChange();
+            return base.OnInterceptTouchEvent(ev);
+        }
     }
 }
