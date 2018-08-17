@@ -211,32 +211,32 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return tsc.Task;
         }
 
-        public bool Resume(OfflinePack pack)
+        public Task<bool> Resume(OfflinePack pack)
         {
             try
             {
                 var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
                 mbPack.Resume();
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("[Exception]: " + ex.Message);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
-        public bool SuspendPack(OfflinePack pack)
+        public Task<bool> SuspendPack(OfflinePack pack)
         {
             try
             {
                 var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
                 mbPack.Suspend();
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex) {
                 System.Diagnostics.Debug.WriteLine("[Naxam.Mapbox] Suspend offline pack failed: " + ex.Message);
-                return false;
+                return Task.FromResult(false);
             }
         }
 

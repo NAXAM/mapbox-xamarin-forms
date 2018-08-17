@@ -716,16 +716,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
-                var annots = new List<MGLShape>();
-                foreach (Annotation annot in e.NewItems)
+                var annotations = new List<MGLShape>();
+                foreach (Annotation annotation in e.NewItems)
                 {
-                    var shape = ShapeFromAnnotation(annot);
+                    var shape = ShapeFromAnnotation(annotation);
                     if (shape != null)
                     {
-                        annots.Add(shape);
+                        annotations.Add(shape);
                     }
                 }
-                MapView.AddAnnotations(annots.ToArray());
+                MapView.AddAnnotations(annotations.ToArray());
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
@@ -743,15 +743,15 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
                 var itemsToRemove = new List<Annotation>();
-                foreach (Annotation annot in e.OldItems)
+                foreach (Annotation annotation in e.OldItems)
                 {
-                    itemsToRemove.Add(annot);
+                    itemsToRemove.Add(annotation);
                 }
                 RemoveAnnotations(itemsToRemove.ToArray());
                 var annots = new List<MGLShape>();
-                foreach (Annotation annot in e.NewItems)
+                foreach (Annotation annotation in e.NewItems)
                 {
-                    var shape = ShapeFromAnnotation(annot);
+                    var shape = ShapeFromAnnotation(annotation);
                     if (shape != null)
                     {
                         annots.Add(shape);
@@ -797,7 +797,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     RemoveLayers(e.OldItems);
-
                     AddLayers(e.NewItems);
                     break;
                 default:
@@ -1200,8 +1199,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             newStyle.OriginalLayers = style.Layers.Select((MGLStyleLayer arg) => new Layer(arg.Identifier)
             {
                 IsVisible = arg.Visible
-            }
-                                                         ).ToArray();
+            }).ToArray();
             newStyle.Name = style.Name;
             Element.DidFinishLoadingStyleCommand?.Execute(newStyle);
         }
@@ -1244,7 +1242,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        [Export("mapView:imageForAnnotation:")]
         MGLAnnotationImage MapView_ImageForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
             if (annotation is MGLShape shape)

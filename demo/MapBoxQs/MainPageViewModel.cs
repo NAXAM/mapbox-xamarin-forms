@@ -32,7 +32,9 @@ namespace MapBoxQs
     {
         readonly MapBoxQs.Services.IMapBoxService MBService;
         readonly INavigation navigation;
-        bool _IsScaleBarShown = false;
+        bool isScaleBarShown = false;
+        int i = 1;
+        string colorPolyline = "#ff1234";
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -99,9 +101,9 @@ namespace MapBoxQs
             Annotations = new ObservableCollection<Annotation>();
             DidFinishRenderingCommand = new Command((obj) =>
             {
-                if (_IsScaleBarShown == false && CenterLocation != null)
+                if (isScaleBarShown == false && CenterLocation != null)
                 {
-                    _IsScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
+                    isScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
                     System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
                 }
                 if (forcedRegion != null)
@@ -702,7 +704,7 @@ namespace MapBoxQs
                 switch (state)
                 {
                     case ActionState.AddPolyline:
-                        break;
+                    break;
                 }
 
             }
@@ -714,7 +716,6 @@ namespace MapBoxQs
                         polyline = null;
                         break;
                 }
-
                 CurrentAction = ActionState.None;
             }
         }
@@ -725,8 +726,6 @@ namespace MapBoxQs
             get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand)); }
         }
 
-        int i = 1;
-        string colorPolyline = "#ff1234";
         void ExecuteDidTapOnMapCommand(Tuple<Position, Point> currentTap)
         {
             if (Annotations == null || currentTap == null) return;

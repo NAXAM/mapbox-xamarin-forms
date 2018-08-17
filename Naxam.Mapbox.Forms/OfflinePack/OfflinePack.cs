@@ -10,34 +10,14 @@ namespace Naxam.Controls.Mapbox.Forms
 
         }
         public long Id { get; set; }
-        public OfflinePackRegion Region
-        {
-            get;
-            set;
-        }
+        public OfflinePackRegion Region { get; set; }
 
-        public Dictionary<string, string> Info
-        {
-            get;
-            set;
-        }
+        public Dictionary<string, string> Info { get; set; }
 
-        public OfflinePackProgress Progress
-        {
-            get;
-            set;
-        }
+        public OfflinePackProgress Progress { get; set; }
 
-        public OfflinePackState State
-        {
-            get;
-            set;
-        }
+        public OfflinePackState State { get; set; }
 
-        public IntPtr Handle
-        {
-            get;
-            set;
-        }
+        public IntPtr Handle { get; set; }
     }
 }
