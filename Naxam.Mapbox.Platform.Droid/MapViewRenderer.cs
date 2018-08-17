@@ -46,7 +46,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         private Position currentCamera;
         bool mapReady;
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries;
-
         public MapViewRenderer(Context context) : base(context)
         {
             _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();

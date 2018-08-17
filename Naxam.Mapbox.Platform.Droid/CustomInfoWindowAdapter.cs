@@ -36,15 +36,14 @@ namespace Naxam.Mapbox.Platform.Droid
             ViewGroup _container = new LinearLayout(_context);
             _container.LayoutParameters = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
             object bindingContext = null;
-            _map.ItemsSource = new List<Marker> { marker};
+            _map.ItemsSource = new List<Marker> { marker };
             var source = _map.ItemsSource?.Cast<object>();
             if (source != null)
                 bindingContext = source.ElementAt(0);
-            var dt = bindingContext as DataTemplate;
+            var dataTemplate = bindingContext as DataTemplate;
             var view = bindingContext as Xamarin.Forms.View;
-            
-            if(dt!=null)
-                formsView= (Xamarin.Forms.View)dt.CreateContent();
+            if (dataTemplate != null)
+                formsView = (Xamarin.Forms.View)dataTemplate.CreateContent();
             else
             {
                 if (view != null)
@@ -54,8 +53,8 @@ namespace Naxam.Mapbox.Platform.Droid
                 else
                 {
                     var selector = _map.InfoWindowTemplate as DataTemplateSelector;
-                    if(selector!=null)
-                    formsView= (Xamarin.Forms.View)selector.SelectTemplate(bindingContext, _map).CreateContent();
+                    if (selector != null)
+                        formsView = (Xamarin.Forms.View)selector.SelectTemplate(bindingContext, _map).CreateContent();
                     else
                     {
                         var content = _map.InfoWindowTemplate.CreateContent();
@@ -67,7 +66,7 @@ namespace Naxam.Mapbox.Platform.Droid
                             return output;
                         }
                         else
-                        formsView = content as Xamarin.Forms.View;
+                            formsView = content as Xamarin.Forms.View;
                     }
                 }
                 if (formsView != null)
@@ -79,6 +78,5 @@ namespace Naxam.Mapbox.Platform.Droid
             }
             return _container;
         }
-
     }
 }

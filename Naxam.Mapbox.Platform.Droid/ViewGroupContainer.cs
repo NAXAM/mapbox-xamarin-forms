@@ -51,7 +51,6 @@ namespace Naxam.Mapbox.Platform.Droid
             Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_renderer.Element, new Rectangle(0, 0, width, height));
             _renderer.UpdateLayout();
             System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {right - left}x{bottom - top}");
-
         }
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {

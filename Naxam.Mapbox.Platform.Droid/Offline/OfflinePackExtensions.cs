@@ -18,10 +18,12 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             };
             output.Id = mbRegion.ID;
             var definition = mbRegion.Definition;
-            if (definition is OfflineTilePyramidRegionDefinition def) {
+            if (definition is OfflineTilePyramidRegionDefinition def)
+            {
                 output.Region = def.ToFormsRegion();
             }
-            if (mbRegion.GetMetadata() is byte[] metadata) {
+            if (mbRegion.GetMetadata() is byte[] metadata)
+            {
                 String json = new String(metadata, OfflineStorageService.JSON_CHARSET);
                 try
                 {
@@ -35,18 +37,21 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
                             output.Info.Add(key, jsonObject.Get(key).AsString);
                         }
                     }
-                }                
-                catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     System.Diagnostics.Debug.WriteLine("Failed to decode offline region metadata: " + ex.Message);
                 }
             }
             return output;
         }
 
-        public static OfflinePackRegion ToFormsRegion(this OfflineTilePyramidRegionDefinition definition) {
+        public static OfflinePackRegion ToFormsRegion(this OfflineTilePyramidRegionDefinition definition)
+        {
             return new OfflinePackRegion()
             {
-                Bounds = new CoordinateBounds() {
+                Bounds = new CoordinateBounds()
+                {
                     NorthEast = new Position(definition.Bounds.NorthEast.Latitude, definition.Bounds.NorthEast.Longitude),
                     SouthWest = new Position(definition.Bounds.SouthWest.Latitude, definition.Bounds.SouthWest.Longitude)
                 },

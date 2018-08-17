@@ -10,22 +10,19 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
     {
         private MapView mapView;
         public MapView.IOnMapChangedListener OnMapChangedListener { get; set; }
-
         public bool StateSaved { get; private set; }
-
-        public MapViewFragment (IntPtr javaReference, JniHandleOwnership transfer)
-            : base (javaReference, transfer)
+        public MapViewFragment(IntPtr javaReference, JniHandleOwnership transfer)
+            : base(javaReference, transfer)
         {
         }
 
-        public MapViewFragment () : base ()
+        public MapViewFragment() : base()
         {
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
-
             mapView = view as MapView;
             mapView?.AddOnMapChangedListener(this);
         }
@@ -44,14 +41,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public override void OnResume()
         {
             base.OnResume();
-           //StateSaved = false;
+            //StateSaved = false;
         }
-
-        
 
         public override void OnSaveInstanceState(Bundle outState)
         {
-            base.OnSaveInstanceState(outState); 
+            base.OnSaveInstanceState(outState);
             //StateSaved = true;
         }
     }

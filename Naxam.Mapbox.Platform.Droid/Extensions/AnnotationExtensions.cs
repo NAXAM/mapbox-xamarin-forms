@@ -61,22 +61,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public static Geojson.Feature ToFeature(this PolylineAnnotation annotation)
         {
-            var coords = annotation.Coordinates
-                                   .Select(position => ToCoords(position))
-                                  .ToArray();
-
+            var coords = annotation.Coordinates.Select(position => ToCoords(position)).ToArray();
             var geometry = Geojson.LineString.FromCoordinates(coords);
             return Geojson.Feature.FromGeometry(geometry);
         }
 
         public static Geojson.Feature ToFeature(this MultiPolylineAnnotation annotation)
         {
-            var coords = annotation.Coordinates
-                                   .Select(pp => pp.Select(position => ToCoords(position)).ToArray())
-                                   .ToArray();
-
+            var coords = annotation.Coordinates.Select(pp => pp.Select(position => ToCoords(position)).ToArray()).ToArray();
             var geometry = Geojson.MultiLineString.FromCoordinates(coords);
-
             return Geojson.Feature.FromGeometry(geometry);
         }
 
