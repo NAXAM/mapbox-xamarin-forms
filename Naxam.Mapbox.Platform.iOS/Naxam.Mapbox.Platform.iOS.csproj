@@ -104,7 +104,7 @@
       <HintPath>..\..\xforms-app\packages\Xamarin.Forms.2.5.0.280555\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
     <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\packages\Naxam.Mapbox.iOS.4.2.0\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.iOS.4.3.0\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
