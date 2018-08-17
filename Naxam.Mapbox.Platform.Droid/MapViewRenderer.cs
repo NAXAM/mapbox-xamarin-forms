@@ -758,7 +758,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 markerOptions.Add(marker);
             }
-            var options =markerOptions.Select(x => map.AddMarker(x)).ToArray();
+            var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList()).ToArray(); 
             for (int i = 0; i < options.Length; i++)
             {
                 markers[i].Id = options[i].Id.ToString();
