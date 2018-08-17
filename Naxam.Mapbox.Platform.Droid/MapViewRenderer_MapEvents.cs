@@ -184,7 +184,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
-            CameraChange();
+            switch (ev.Action)
+            {
+                case MotionEventActions.Down:
+                    CameraChange();
+                    break;
+                default:
+                    break;
+            }
             return base.OnInterceptTouchEvent(ev);
         }
     }
