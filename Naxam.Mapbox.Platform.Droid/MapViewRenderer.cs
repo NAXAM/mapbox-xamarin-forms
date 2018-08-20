@@ -7,7 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
+using Android.OS;
 using Android.Support.V7.App;
+using Android.Views;
+using Android.Widget;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
@@ -15,11 +18,13 @@ using Com.Mapbox.Mapboxsdk.Maps;
 using Java.Util;
 using Naxam.Controls.Mapbox.Forms;
 using Naxam.Controls.Mapbox.Platform.Droid;
+using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using Naxam.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
+using static Com.Mapbox.Mapboxsdk.Maps.MapView;
 using Annotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Mapbox.Forms.MapView;
@@ -30,7 +35,7 @@ using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using MAnnotation = Com.Mapbox.Mapboxsdk.Annotations.Annotation;
 
 using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
-using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
+using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerViewOptions;
 
 using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
 using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
@@ -45,11 +50,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
         bool mapReady;
-        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries;
+        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();
 
         public MapViewRenderer(Context context) : base(context)
         {
-            _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
@@ -57,21 +61,25 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             base.OnElementChanged(e);
             if (e.OldElement != null)
             {
-                e.OldElement.AnnotationChanged -= Element_AnnotationChanged;
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
                 if (map != null)
                 {
                     RemoveMapEvents();
                 }
+
+                if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
+                {
+                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                }
             }
 
             if (e.NewElement == null)
                 return;
-            e.NewElement.AnnotationChanged += Element_AnnotationChanged;
+
             if (Control == null)
             {
-                var activity = (AppCompatActivity)Context;
+                var activity =(AppCompatActivity)Context;
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
@@ -80,7 +88,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 SetNativeControl(view);
 
                 fragment = new MapViewFragment();
-
                 activity.SupportFragmentManager.BeginTransaction()
                 .Replace(view.Id, fragment)
                 .CommitAllowingStateLoss();
@@ -88,33 +95,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
-
+                if (Element.Annotations != null)
+                {
+                    AddAnnotations(Element.Annotations.ToArray());
+                    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
+                }
                 if (mapReady)
                 {
                     OnMapRegionChanged();
                 }
-                if (e.NewElement.Annotations != null && e.NewElement.Annotations is INotifyCollectionChanged newCollection)
-                {
-                    newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                }
-            }
-        }
-
-        private void Element_AnnotationChanged(object sender, AnnotationChangeEventArgs e)
-        {
-            if (e.OldAnnotation is INotifyCollectionChanged oldCollection)
-            {
-                oldCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-            }
-
-            if (e.NewAnnotation is INotifyCollectionChanged newCollection)
-            {
-                newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-            }
-            if (mapReady)
-            {
-                RemoveAllAnnotations();
-                AddAnnotations(Element?.Annotations?.ToArray());
             }
         }
 
@@ -300,6 +292,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         TaskCompletionSource<byte[]> tcs;
         Task<byte[]> TakeMapSnapshot()
         {
+            //TODO
             if (tcs != null && tcs.Task.IsCompleted == false)
                 return tcs.Task;
             tcs = new TaskCompletionSource<byte[]>();
@@ -373,7 +366,20 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 OnMapRegionChanged();
                 return;
             }
-
+            if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
+            {
+                RemoveAllAnnotations();
+                if (Element.Annotations != null)
+                {
+                    AddAnnotations(Element.Annotations.ToArray());
+                    var notifyCollection = Element.Annotations as INotifyCollectionChanged;
+                    if (notifyCollection != null)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
+                }
+                return;
+            }
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
 
@@ -406,7 +412,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 map?.SetBearing(Element.RotatedDegree);
             }
-            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
+            else  if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
                 var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
                 System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
@@ -719,7 +725,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             AddPolylines(annotations.Where(d => d is FPolyline).Cast<FPolyline>().ToList());
         }
 
-        IList<Marker> AddMakers(IList<FMarker> markers)
+        IList<Sdk.Annotations.Annotation> AddMakers(IList<FMarker> markers)
         {
             if (markers == null || markers.Count == 0)
                 return null;
@@ -728,22 +734,23 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             for (int i = 0; i < markers.Count; i++)
             {
                 var at = markers[i];
-                var marker = new MarkerOptions();
-                marker.SetTitle(at.Title);
-                marker.SetSnippet(at.SubTitle);
-                marker.SetPosition(at.Coordinate.ToLatLng());
+                var marker = new MMarker();
+                marker.InfoWindowAnchor(-1, -1);
+                marker.InvokeTitle(at.Title);
+                marker.InvokeSnippet(at.SubTitle);
+                marker.InvokePosition(at.Coordinate.ToLatLng());
                 if (string.IsNullOrEmpty(at.Icon) == false)
                 {
                     if (iconSource.ContainsKey(at.Icon))
                     {
-                        marker.SetIcon(iconSource[at.Icon]);
+                        marker.InvokeIcon(iconSource[at.Icon]);
                     }
                     else
                     {
                         var icon = Context.GetIconFromResource(at.Icon);
                         if (icon != null)
                         {
-                            marker.SetIcon(icon);
+                            marker.InvokeIcon(icon);
                             iconSource.Add(at.Icon, icon);
                         }
                     }
@@ -751,8 +758,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 markerOptions.Add(marker);
             }
-            var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList());
-            for (int i = 0; i < options.Count; i++)
+            var options =markerOptions.Select(x => map.AddMarker(x)).ToArray();
+            for (int i = 0; i < options.Length; i++)
             {
                 markers[i].Id = options[i].Id.ToString();
             }
@@ -831,7 +838,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 marker.SetTitle(at.Title);
                 marker.SetSnippet(at.Title);
                 marker.SetPosition(((PointAnnotation)at).Coordinate.ToLatLng());
-                var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id.ToString());
+                var output = Element.GetImageForAnnotationFunc?.Invoke(at.Id);
                 if (output?.Item2 is string imgName)
                 {
                     try
@@ -845,6 +852,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         System.Diagnostics.Debug.WriteLine("MapRendererAndroid:" + e.Message);
                     }
                 }
+
                 options = map.AddMarker(marker);
             }
             else if (at is PolylineAnnotation)
@@ -940,19 +948,23 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.RemoveAnnotations(map.Annotations);
             }
         }
-
-        public void OnMapReady(MapboxMap mapBox)
+        
+        public override void AddOnLayoutChangeListener(IOnLayoutChangeListener listener)
         {
-            map = mapBox;
+            base.AddOnLayoutChangeListener(listener);
+
+        }
+        
+        public void OnMapReady(MapboxMap p0)
+        {
+            map = p0;
             map.SetStyle("mapbox://styles/mapbox/streets-v9");
             mapReady = true;
             OnMapRegionChanged();
             //map.MyLocationEnabled = true;
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
-            RemoveAllAnnotations();
-            AddAnnotations(Element?.Annotations?.ToArray());
-            OnMapRegionChanged();
+
             if (Element.Center != null)
             {
                 FocustoLocation(Element.Center.ToLatLng());
@@ -986,12 +998,21 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
+            Element.DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
+            {
+                map.DeselectMarkers();
+            });
             if (Element.InfoWindowTemplate != null)
-                map.InfoWindowAdapter = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element);
+            {
+                var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
+                map.InfoWindowAdapter = info;
+                
+            }
         }
 
-    }
 
+    }
+   
     class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback
     {
         public Action<Bitmap> SnapshotReady { get; set; }
