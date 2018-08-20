@@ -252,5 +252,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 System.Diagnostics.Debug.WriteLine("[Naxam.Mapbox] Request progress of offline pack failed: " + ex.Message);
             }
         }
+
+
+        // must handle here
+        Task<bool> IOfflineStorageService.Resume(OfflinePack pack)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<bool> IOfflineStorageService.SuspendPack(OfflinePack pack)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
