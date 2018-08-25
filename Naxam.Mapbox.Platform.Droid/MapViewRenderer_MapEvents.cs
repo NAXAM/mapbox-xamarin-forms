@@ -23,7 +23,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.MarkerClick += MarkerClicked;
             map.InfoWindowClick += InfoWindowClick;
             map.MapClick += MapClicked;
-            map.MyLocationChange += MyLocationChanged;
             map.CameraIdle += OnCameraIdle;
             map.CameraChange += Map_CameraChange;
             map.CameraMoveStarted += Map_CameraMoveStarted;
@@ -37,7 +36,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.MarkerClick -= MarkerClicked;
             map.InfoWindowClick -= InfoWindowClick;
             map.MapClick -= MapClicked;
-            map.MyLocationChange -= MyLocationChanged;
             map.CameraIdle -= OnCameraIdle;
             map.CameraChange -= Map_CameraChange;
             map.CameraMoveStarted -= Map_CameraMoveStarted;
@@ -78,16 +76,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             currentCamera.Long = map.CameraPosition.Target.Longitude;
             Element.ZoomLevel = map.CameraPosition.Zoom;
             Element.Center = currentCamera;
-        }
-
-
-        void MyLocationChanged(object o, MapboxMap.MyLocationChangeEventArgs args)
-        {
-            if (Element.UserLocation == null)
-                Element.UserLocation = new Position();
-
-            Element.UserLocation.Lat = args.P0.Latitude;
-            Element.UserLocation.Long = args.P0.Longitude;
         }
 
         void MapClicked(object o, MapboxMap.MapClickEventArgs args)

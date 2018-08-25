@@ -399,7 +399,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.PitchProperty.PropertyName)
             {
-                map?.SetTilt(Element.Pitch);
+                // TODO Change to use camera update https://github.com/mapbox/mapbox-android-demo/blob/master/MapboxAndroidDemo/src/main/java/com/mapbox/mapboxandroiddemo/examples/camera/AnimateMapCameraActivity.java
+                //map?.SetTilt(Element.Pitch);
             }
             else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
             {
@@ -410,7 +411,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName)
             {
-                map?.SetBearing(Element.RotatedDegree);
+                //TODO Change to use CameraUpdate (https://github.com/mapbox/mapbox-android-demo/blob/master/MapboxAndroidDemo/src/main/java/com/mapbox/mapboxandroiddemo/examples/camera/AnimateMapCameraActivity.java)
+                //map?.SetBearing(Element.RotatedDegree);
             }
             else  if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
