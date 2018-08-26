@@ -7,10 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
-using Android.OS;
 using Android.Support.V7.App;
-using Android.Views;
-using Android.Widget;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
@@ -24,7 +21,6 @@ using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
-using static Com.Mapbox.Mapboxsdk.Maps.MapView;
 using Annotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Mapbox.Forms.MapView;
@@ -32,14 +28,12 @@ using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
 using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
-using MAnnotation = Com.Mapbox.Mapboxsdk.Annotations.Annotation;
 
 using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
 using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerViewOptions;
 
 using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
 using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
-using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -79,8 +73,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (Control == null)
             {
-                var activity =(AppCompatActivity)Context;
-                var view = new Android.Widget.FrameLayout(activity)
+                var activity = (AppCompatActivity)Context;
+                var view = new Android.Widget.FrameLayout(Context)
                 {
                     Id = GenerateViewId()
                 };
@@ -166,18 +160,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         {
                             ss.Shape = annotation;
                         }
-                        //if (Element.MapStyle.CustomSources != null)
-                        //{
-                        //    var count = Element.MapStyle.CustomSources.Count();
-                        //    for (var i = 0; i < count; i++)
-                        //    {
-                        //        if (Element.MapStyle.CustomSources.ElementAt(i).Id == sourceId)
-                        //        {
-                        //            Element.MapStyle.CustomSources.ElementAt(i).Shape = annotation;
-                        //            break;
-                        //        }
-                        //    }
-                        //}
                         return true;
                     }
                 }
@@ -352,7 +334,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (map == null || mapReady == false) { return; }
             CameraPosition position = new CameraPosition.Builder()
                 .Target(latLng)
-                .Zoom(Element.ZoomLevel == 0 ? SIZE_ZOOM : Element.ZoomLevel)
+                .Zoom(Math.Abs(Element.ZoomLevel - 0) < 0.01 ? SIZE_ZOOM : Element.ZoomLevel)
                 .Build();
             map.AnimateCamera(CameraUpdateFactory.NewCameraPosition(position), 1000);
         }
@@ -382,8 +364,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
-
                 if (Element.Center == null) return;
+
                 FocustoLocation(Element.Center.ToLatLng());
             }
             else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
@@ -399,8 +381,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.PitchProperty.PropertyName)
             {
-                // TODO Change to use camera update https://github.com/mapbox/mapbox-android-demo/blob/master/MapboxAndroidDemo/src/main/java/com/mapbox/mapboxandroiddemo/examples/camera/AnimateMapCameraActivity.java
-                //map?.SetTilt(Element.Pitch);
+                map?.AnimateCamera(CameraUpdateFactory.TiltTo(Element.Pitch));
             }
             else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
             {
@@ -411,10 +392,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName)
             {
-                //TODO Change to use CameraUpdate (https://github.com/mapbox/mapbox-android-demo/blob/master/MapboxAndroidDemo/src/main/java/com/mapbox/mapboxandroiddemo/examples/camera/AnimateMapCameraActivity.java)
-                //map?.SetBearing(Element.RotatedDegree);
+                map?.AnimateCamera(CameraUpdateFactory.BearingTo(Element.RotatedDegree));
             }
-            else  if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
+            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
                 var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
                 System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
@@ -760,7 +740,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 markerOptions.Add(marker);
             }
-            var options =markerOptions.Select(x => map.AddMarker(x)).ToArray();
+            var options = markerOptions.Select(x => map.AddMarker(x)).ToArray();
             for (int i = 0; i < options.Length; i++)
             {
                 markers[i].Id = options[i].Id.ToString();
@@ -950,41 +930,29 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.RemoveAnnotations(map.Annotations);
             }
         }
-        
+
         public override void AddOnLayoutChangeListener(IOnLayoutChangeListener listener)
         {
             base.AddOnLayoutChangeListener(listener);
 
         }
-        
+
         public void OnMapReady(MapboxMap p0)
         {
             map = p0;
             map.SetStyle("mapbox://styles/mapbox/streets-v9");
             mapReady = true;
             OnMapRegionChanged();
-            //map.MyLocationEnabled = true;
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
 
             if (Element.Center != null)
             {
                 FocustoLocation(Element.Center.ToLatLng());
-                // map.CameraPosition = new CameraPosition.Builder()
-                //     .Target(Element.Center.ToLatLng())
-                //.Zoom(Element.ZoomLevel)
-                //     .Tilt(Element.Pitch)
-                //     .Bearing(Element.RotatedDegree)
-                //.Build();
             }
             else
             {
-                // map.CameraPosition = new CameraPosition.Builder()
-                //     .Target(map.CameraPosition.Target)
-                //.Zoom(Element.ZoomLevel)
-                //     .Tilt(Element.Pitch)
-                //     .Bearing(Element.RotatedDegree)
-                //.Build();
+                FocustoLocation(new LatLng(21.0278, 105.8342));
             }
 
             AddMapEvents();
@@ -1008,13 +976,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter = info;
-                
+
             }
         }
 
 
     }
-   
+
     class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback
     {
         public Action<Bitmap> SnapshotReady { get; set; }
