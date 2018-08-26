@@ -27,26 +27,30 @@ namespace Naxam.Controls.Mapbox.Forms
             }
         }
 
-        public Color? StrokeColor;
+        public Color? StrokeColor { get; set; }
 
         private double strokeWidth = 0.0;
-        public double StrokeWidth {
+        public double StrokeWidth
+        {
             get => strokeWidth;
-            set {
+            set
+            {
                 strokeWidth = Math.Max(value, 0.0);
             }
         }
 
         private double strokeOpacity = 1.0;
-		public double StrokeOpacity {
+        public double StrokeOpacity
+        {
             get => strokeOpacity;
-            set {
+            set
+            {
                 strokeOpacity = Math.Min(1.0, Math.Max(value, 0.0));
             }
         }
 
-        public CircleLayer (string id, string sourceId): base(id, sourceId)
+        public CircleLayer(string id, string sourceId) : base(id, sourceId)
         {
-		}
+        }
     }
 }

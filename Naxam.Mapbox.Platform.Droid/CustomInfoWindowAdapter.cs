@@ -17,22 +17,24 @@ using Naxam.Mapbox.Platform.Droid.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
+using FMapView = Naxam.Controls.Mapbox.Forms.MapView;
 
 namespace Naxam.Mapbox.Platform.Droid
 {
     public class CustomInfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
     {
-        private Context _context;
-        private DataTemplate _dataTemPlate;
-        private Naxam.Controls.Mapbox.Forms.MapView _map;
-        private MapboxMap _mapboxMap;
-        public CustomInfoWindowAdapter(Context context, DataTemplate dataTemplate, Naxam.Controls.Mapbox.Forms.MapView map, MapboxMap mapboxMap)
+        Context _context;
+        DataTemplate _dataTemPlate;
+        FMapView _map;
+        MapboxMap _mapboxMap;
+        public CustomInfoWindowAdapter(Context context, DataTemplate dataTemplate, FMapView map, MapboxMap mapboxMap)
         {
             _context = context;
             _dataTemPlate = dataTemplate;
             this._map = map;
             this._mapboxMap = mapboxMap;
         }
+
         public Android.Views.View GetInfoWindow(Marker marker)
         {
             Xamarin.Forms.View formsView = null;
@@ -40,11 +42,8 @@ namespace Naxam.Mapbox.Platform.Droid
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
             layoutParams.Gravity = GravityFlags.Top;
             _container.LayoutParameters = layoutParams;
-            object bindingContext = null;
-            _map.ItemsSource = new List<Marker> { marker };
-            var source = _map.ItemsSource?.Cast<object>();
-            if (source != null)
-                bindingContext = source.ElementAt(0);
+            object bindingContext = marker;
+
             var dt = bindingContext as DataTemplate;
             var view = bindingContext as Xamarin.Forms.View;
 
@@ -84,6 +83,6 @@ namespace Naxam.Mapbox.Platform.Droid
 
             return _container;
         }
-        
+
     }
 }

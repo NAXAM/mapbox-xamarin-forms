@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 namespace Naxam.Controls.Mapbox.Forms
 {
-    public enum TileSourceOption {
+    public enum TileSourceOption
+    {
         MinimumZoomLevel,
         MaximumZoomLevel,
         AttributionHTMLString,
@@ -10,13 +10,16 @@ namespace Naxam.Controls.Mapbox.Forms
         TileCoordinateSystem,
     }
 
-    public enum TileCoordinateSystem {
+    public enum TileCoordinateSystem
+    {
         TileCoordinateSystemXYZ = 0,
         TileCoordinateSystemTMS
     }
 
-    public class AttributionInfo {
-        public AttributionInfo(string title, string url) {
+    public class AttributionInfo
+    {
+        public AttributionInfo(string title, string url)
+        {
             Title = title;
             Url = url;
         }
@@ -34,9 +37,9 @@ namespace Naxam.Controls.Mapbox.Forms
         }
     }
 
-    public class RasterSource: MapSource
+    public class RasterSource : MapSource
     {
-        public RasterSource(string id, string configurationURL, double tileSize = -1): base(id)
+        public RasterSource(string id, string configurationURL, double tileSize = -1) : base(id)
         {
             ConfigurationURL = configurationURL;
             TileSize = tileSize;

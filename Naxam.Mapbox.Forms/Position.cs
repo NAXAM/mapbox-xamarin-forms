@@ -17,6 +17,7 @@ namespace Naxam.Controls.Mapbox.Forms
             Lat = lat;
             Long = lon;
         }
+
         public double DistanceTo (Position targetCoordinates)
         {
             return DistanceTo (targetCoordinates, UnitOfLength.Kilometers);
