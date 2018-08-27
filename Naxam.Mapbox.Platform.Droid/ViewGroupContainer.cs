@@ -17,45 +17,28 @@ namespace Naxam.Mapbox.Platform.Droid
 {
     using Platform = Xamarin.Forms.Platform.Android.Platform;
 
-    public class ViewGroupContainer : ViewGroup, INativeElementView
+    public class ViewGroupContainer : BubbleLayout
     {
-        readonly Android.Views.View _parent;
         IVisualElementRenderer _renderer;
         ViewCell _viewCell;
         public ViewGroupContainer(Context context,
-                                 Android.Views.View parent,
                                  ViewCell viewCell) : base(context)
         {
             _viewCell = viewCell;
-            _parent = parent;
-            _renderer = Platform.CreateRendererWithContext(_viewCell.View,context);
+            _renderer = Platform.CreateRendererWithContext(_viewCell.View, context);
             Platform.SetRenderer(_viewCell.View, _renderer);
             var view = _renderer.View;
-            LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
-            AddView(view);
-            UpdateIsEnabled();
+            LayoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(_viewCell.View.WidthRequest)), (int)Math.Round(context.ToPixels(_viewCell.View.HeightRequest)));
+            AddView(view, LayoutParameters);
         }
 
-        public void Update(object data)
+        public ViewGroupContainer(Context context, Xamarin.Forms.View fview) : base(context)
         {
-            _viewCell.BindingContext = data;
-        }
-
-        public Element Element
-        {
-            get { return _viewCell; }
-        }
-
-        public override bool OnInterceptTouchEvent(MotionEvent ev)
-        {
-            if (!Enabled)
-                return true;
-            return base.OnInterceptTouchEvent(ev);
-        }
-
-        public void UpdateIsEnabled()
-        {
-            Enabled = _viewCell.IsEnabled;
+            _renderer = Platform.CreateRendererWithContext(fview, context);
+            Platform.SetRenderer(fview, _renderer);
+            var view = _renderer.View;
+            LayoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(fview.WidthRequest)), (int)Math.Round(context.ToPixels(fview.HeightRequest)));
+            AddView(view, LayoutParameters);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
@@ -64,7 +47,8 @@ namespace Naxam.Mapbox.Platform.Droid
             double height = Context.FromPixels(b - t);
             Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_renderer.Element, new Rectangle(0, 0, width, height));
             _renderer.UpdateLayout();
-            System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {r - l}x{b - t}");
+            
+            base.OnLayout(changed, l, t, r, b);
         }
 
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -73,8 +57,9 @@ namespace Naxam.Mapbox.Platform.Droid
             int height = MeasureSpec.GetSize(heightMeasureSpec);
             int widthSpec = MeasureSpec.MakeMeasureSpec(width, MeasureSpec.GetMode(widthMeasureSpec));
             int heightSpec = MeasureSpec.MakeMeasureSpec(height, MeasureSpec.GetMode(heightMeasureSpec));
-            base.SetMeasuredDimension(width, height);
+         //   base.SetMeasuredDimension(width, height);
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
         }
-        
+
     }
 }
