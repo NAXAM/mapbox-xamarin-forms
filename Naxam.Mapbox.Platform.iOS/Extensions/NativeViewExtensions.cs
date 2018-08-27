@@ -10,7 +10,6 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
     {
         public static UIView FormsToNative(this Xamarin.Forms.View formView)
         {
-            var xxx = formView.Width;
             if (formView == null) return null;
             var renderer = RendererFactory.GetRenderer(formView);
             var frame = new CGRect
