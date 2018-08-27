@@ -9,6 +9,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
     public class MapViewFragment : SupportMapFragment, MapView.IOnMapChangedListener
     {
         private MapView mapView;
+        public MapView MapView => mapView;
         public MapView.IOnMapChangedListener OnMapChangedListener { get; set; }
 
         public bool StateSaved { get; private set; }
@@ -19,16 +20,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         }
 
         public MapViewFragment () : base ()
-        {
+        { 
+
         }
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            mapView = view as MapView;
+            mapView = view as MapView; 
             mapView?.AddOnMapChangedListener(this);
         }
+         
 
         public override void OnDestroyView()
         {
