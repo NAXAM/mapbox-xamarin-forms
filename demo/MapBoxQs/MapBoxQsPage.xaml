@@ -89,9 +89,9 @@
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid 
-                            HorizontalOptions="Start"
-                              VerticalOptions="Start"
+                        <Grid
+                            HeightRequest="80"
+                            WidthRequest="200"
                             BackgroundColor="Aqua">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30" />

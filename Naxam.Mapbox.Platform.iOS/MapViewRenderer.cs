@@ -20,6 +20,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
 using FormsMB = Naxam.Controls.Mapbox.Forms;
+using Naxam.Mapbox.Platform.iOS.Extensions;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(Naxam.Controls.Mapbox.Forms.MapView), typeof(MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
@@ -136,6 +137,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName)
             {
                 MapView.ShowsUserLocation = Element.ShowUserLocation;
+            } else if(e.PropertyName == FormsMap.InfoWindowTemplateProperty.PropertyName)
+            {
             }
         }
 
@@ -654,6 +657,21 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 annots.Add(shape);
             }
             MapView.AddAnnotations(annots.ToArray());
+        }
+
+        [Export("mapView:calloutViewForAnnotation:")]
+        public IMGLCalloutView MapView_CalloutViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
+        {
+            var frame = new CGRect
+            {
+                X = 0,
+                Y = 0,
+                Height = 30,
+                Width = 80
+            };
+            UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView();
+            calloutContent.Frame = frame;
+            return new MGLCustomCalloutView(null, calloutContent);
         }
 
         [Export("mapView:viewForAnnotation:")]

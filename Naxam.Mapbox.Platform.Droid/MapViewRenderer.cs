@@ -1006,11 +1006,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter = info;
-                
             }
         }
-
-
     }
    
     class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback

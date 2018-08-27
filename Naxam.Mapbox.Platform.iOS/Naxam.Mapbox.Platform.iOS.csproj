@@ -124,6 +124,8 @@
     <Compile Include="Extensions\MGLOfflinePackProgressExtensions.cs" />
     <Compile Include="OfflineStorageService.cs" />
     <Compile Include="DraggableAnnotationView.cs" />
+    <Compile Include="MGLCustomCalloutView.cs" />
+    <Compile Include="Extensions\NativeViewExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
