@@ -98,11 +98,11 @@
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image 
                                    Grid.Column="0"
-                                   Source="icon.png" />
+                                   Source="icon" />
                             <Label Grid.Column="1"
                                    Text="{Binding Title}" />
 

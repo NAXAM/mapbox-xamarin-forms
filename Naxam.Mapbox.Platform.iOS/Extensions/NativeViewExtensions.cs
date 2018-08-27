@@ -17,9 +17,10 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             {
                 X = 0,
                 Y = 0,
-                Width = renderer.NativeView.IntrinsicContentSize.Width,
-                Height = renderer.NativeView.IntrinsicContentSize.Height
+                Width = (nfloat)formView.WidthRequest,
+                Height = (nfloat)formView.HeightRequest
             };
+
             renderer.NativeView.Frame = frame;
             renderer.NativeView.AutoresizingMask = UIViewAutoresizing.All;
             renderer.NativeView.ContentMode = UIViewContentMode.ScaleToFill;

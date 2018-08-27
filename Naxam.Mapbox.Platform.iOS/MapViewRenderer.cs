@@ -662,15 +662,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         [Export("mapView:calloutViewForAnnotation:")]
         public IMGLCalloutView MapView_CalloutViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
-            var frame = new CGRect
-            {
-                X = 0,
-                Y = 0,
-                Height = 30,
-                Width = 80
-            };
+            var id = annotation.Handle.ToInt64().ToString();
+            //var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
             UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView();
-            calloutContent.Frame = frame;
             return new MGLCustomCalloutView(null, calloutContent);
         }
 

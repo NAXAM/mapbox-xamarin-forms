@@ -770,7 +770,7 @@ namespace MapBoxQs
                 var annotation = new PointAnnotation()
                 {
                     Coordinate = currentPosition,
-                    Icon = "pin"
+                    //Icon = "pin"
                 };
                 annotation.Title = "PointAnnot." + annotation.Id;
                 Annotations.Add(annotation);

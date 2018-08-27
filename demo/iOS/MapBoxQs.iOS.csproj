@@ -239,9 +239,16 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-50x50%402x.png">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\icon.imageset\icon.png" />
+    <ImageAsset Include="Assets.xcassets\pin.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\pin.imageset\pin.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />
+    <Folder Include="Assets.xcassets\Icon.imageset\" />
+    <Folder Include="Assets.xcassets\icon.imageset\" />
+    <Folder Include="Assets.xcassets\pin.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
