@@ -30,15 +30,15 @@ namespace MapBoxQs
 
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        readonly MapBoxQs.Services.IMapBoxService MBService = new MapBoxQs.Services.MapBoxService();
-        private readonly INavigation navigation;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        bool _IsScaleBarShown = false;
+        readonly MapBoxQs.Services.IMapBoxService MBService;
+        readonly INavigation navigation;
+        bool isScaleBarShown = false;
+        int i = 1;
+        string colorPolyline = "#ff1234";
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
-
-        private ObservableCollection<Annotation> _Annotations;
+        public event PropertyChangedEventHandler PropertyChanged;
+        ObservableCollection<Annotation> _Annotations;
         public ObservableCollection<Annotation> Annotations
         {
             get { return _Annotations; }
@@ -48,7 +48,6 @@ namespace MapBoxQs
                 OnPropertyChanged("Annotations");
             }
         }
-
         Annotation _SelectedAnnotation;
         public Annotation SelectedAnnotation
         {
@@ -61,7 +60,7 @@ namespace MapBoxQs
         }
 
         #region MapStyle Layer
-        private ObservableCollection<Layer> _ListLayers;
+        ObservableCollection<Layer> _ListLayers;
         public ObservableCollection<Layer> ListLayers
         {
             get { return _ListLayers; }
@@ -83,7 +82,7 @@ namespace MapBoxQs
             }
         }
         #endregion
-        private MapStyle _CurrentMapStyle;
+        MapStyle _CurrentMapStyle;
         public MapStyle CurrentMapStyle
         {
             get { return _CurrentMapStyle; }
@@ -96,13 +95,13 @@ namespace MapBoxQs
 
         public MainPageViewModel(INavigation navigation)
         {
-
+            MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
             DidFinishRenderingCommand = new Command((obj) =>
             {
-                if (_IsScaleBarShown == false && CenterLocation != null)
+                if (isScaleBarShown == false && CenterLocation != null)
                 {
-                    _IsScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
+                    isScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
                     System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
                 }
                 if (forcedRegion != null)
@@ -182,37 +181,17 @@ namespace MapBoxQs
             }
         }
 
-        public ICommand DidFinishLoadingStyleCommand
-        {
-            get;
-            set;
-        }
 
-        public ICommand DidTapOnCalloutViewCommand
-        {
-            get;
-            set;
-        }
+        public ICommand DidFinishLoadingStyleCommand { get; set; }
 
-        public ICommand DidTapOnMarkerCommand
-        {
-            get;
-            set;
-        }
+        public ICommand DidTapOnCalloutViewCommand { get; set; }
 
-        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
-        {
-            get;
-            set;
-        }
+        public ICommand DidTapOnMarkerCommand { get; set; }
 
-        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc
-        {
-            get;
-            set;
-        }
+        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction { get; set; }
+        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc { get; set; }
 
-        private Action<Tuple<string, bool>> _SelectAnnotationAction;
+        Action<Tuple<string, bool>> _SelectAnnotationAction;
         public Action<Tuple<string, bool>> SelectAnnotationAction
         {
             get { return _SelectAnnotationAction; }
@@ -223,7 +202,7 @@ namespace MapBoxQs
             }
         }
 
-        private Action<Tuple<string, bool>> _DeselectAnnotationAction;
+        Action<Tuple<string, bool>> _DeselectAnnotationAction;
         public Action<Tuple<string, bool>> DeselectAnnotationAction
         {
             get { return _DeselectAnnotationAction; }
@@ -272,10 +251,7 @@ namespace MapBoxQs
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Func<double> GetMapScaleReciprocalFunc
-        {
-            get; set;
-        }
+        public Func<double> GetMapScaleReciprocalFunc { get; set; }
 
         private Func<bool, bool> _ToggleScaleBarFunc;
 
@@ -506,7 +482,7 @@ namespace MapBoxQs
              new Position {
               Lat = 21.0333,
               Long = 105.8500
-                     },
+             },
               new Position {
                             Lat = 55.75719563,
                             Long = 8.93032908
@@ -571,17 +547,9 @@ namespace MapBoxQs
         }
 
         #region Styles
-        public Action ReloadStyleAction
-        {
-            get;
-            set;
-        }
+        public Action ReloadStyleAction { get; set; }
 
-        private MapStyle[] Styles
-        {
-            get;
-            set;
-        }
+        private MapStyle[] Styles { get; set; }
 
         ICommand _ShowStylePickerCommand;
         public ICommand ShowStylePickerCommand
@@ -734,7 +702,7 @@ namespace MapBoxQs
                 switch (state)
                 {
                     case ActionState.AddPolyline:
-                        break;
+                    break;
                 }
 
             }
@@ -746,7 +714,6 @@ namespace MapBoxQs
                         polyline = null;
                         break;
                 }
-
                 CurrentAction = ActionState.None;
             }
         }
@@ -757,8 +724,6 @@ namespace MapBoxQs
             get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand)); }
         }
 
-        int i = 1;
-        string colorPolyline = "#ff1234";
         void ExecuteDidTapOnMapCommand(Tuple<Position, Point> currentTap)
         {
             if (Annotations == null || currentTap == null) return;

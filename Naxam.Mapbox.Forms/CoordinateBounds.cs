@@ -7,16 +7,8 @@ namespace Naxam.Controls.Mapbox.Forms
         {
         }
 
-        public Position SouthWest
-        {
-            get;
-            set;
-        }
+        public Position SouthWest { get; set; }
 
-        public Position NorthEast
-        {
-            get;
-            set;
-        }
+        public Position NorthEast  { get; set;}
     }
 }

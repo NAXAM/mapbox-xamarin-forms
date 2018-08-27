@@ -6,18 +6,18 @@ namespace Naxam.Controls.Mapbox.Forms
         // It is unknown whether the pack is inactive, active, or complete.
         // This is the initial state of a pack.
         // An invalid pack always has a state of Invalid
-        Unknown = 0,
+        Unknown,
 
         // The pack is incomplete and is not currently downloading.
-        Inactive = 1,
+        Inactive,
 
         // The pack is incomplete and is currently downloading.
-        Active = 2,
+        Active,
 
         // The pack has downloaded to completion.
-        Completed = 3,
+        Completed,
 
         // The pack has been removed
-        Invalid = 4
+        Invalid
     }
 }
