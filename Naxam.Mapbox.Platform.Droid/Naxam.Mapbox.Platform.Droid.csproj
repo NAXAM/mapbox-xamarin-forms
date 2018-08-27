@@ -101,6 +101,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat">
       <Version>27.0.2.1</Version>
     </PackageReference>
+    <PackageReference Include="Naxam.Mapbox.MapboxJavaGeojson">
+      <Version>2.2.10</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomInfoWindowAdapter.cs" />

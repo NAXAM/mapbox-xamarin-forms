@@ -32,10 +32,15 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
-            if (e.OldElement != null || Element == null)
+            if (e.OldElement != null)
             {
-                return;
+                if(e.OldElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
+                {
+                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                }
             }
+
+            if (e.NewElement == null) return;
 
             try
             {
@@ -45,6 +50,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     SetupEventHandlers();
                     SetupFunctions();
                     SetNativeControl(MapView);
+                    if(e.NewElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
                 }
             }
             catch (Exception ex)
@@ -663,7 +672,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public IMGLCalloutView MapView_CalloutViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
             var id = annotation.Handle.ToInt64().ToString();
-            //var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
+            var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
             UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView();
             return new MGLCustomCalloutView(null, calloutContent);
         }
