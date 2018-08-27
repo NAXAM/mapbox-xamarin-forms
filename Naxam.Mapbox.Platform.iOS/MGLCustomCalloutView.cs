@@ -3,6 +3,7 @@ using CoreGraphics;
 using Foundation;
 using Mapbox;
 using UIKit;
+using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Platform.iOS
 {

@@ -30,13 +30,26 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             return nativeView;
         }
 
-        public static UIView DataTemplateToNativeView(this Xamarin.Forms.DataTemplate dt)
+        public static UIView DataTemplateToNativeView(this Xamarin.Forms.DataTemplate dt, object bindingContext, Xamarin.Forms.View rootView)
         {
             if (dt == null) return null;
-            var content = dt.CreateContent();
+            object content = null;
+            if (dt is DataTemplateSelector dts)
+            {
+                content = dts.SelectTemplate(bindingContext, rootView);
+            }
+            else content = dt.CreateContent();
             if (content is ViewCell vc)
             {
-                var view = vc.View;
+                vc.Parent = rootView;
+                vc.BindingContext = bindingContext;
+                var resultView = vc.View;
+                return resultView.FormsToNative();
+            }
+            if (content is View view)
+            {
+                view.Parent = rootView;
+                view.BindingContext = bindingContext;
                 return view.FormsToNative();
             }
             return null;

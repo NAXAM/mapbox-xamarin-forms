@@ -664,7 +664,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         {
             var id = annotation.Handle.ToInt64().ToString();
             var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
-            UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView();
+            UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView(bindingContext, Element);
             return new MGLCustomCalloutView(null, calloutContent);
         }
 

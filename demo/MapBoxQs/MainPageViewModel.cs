@@ -745,7 +745,7 @@ namespace MapBoxQs
                     Coordinate = currentPosition,
                     //Icon = "pin"
                 };
-                annotation.Title = "PointAnnot." + annotation.Id;
+                annotation.Title = "PointAnnot." + i;
                 Annotations.Add(annotation);
                 OnPropertyChanged("Annotations");
                 i = i + 1;
@@ -777,6 +777,7 @@ namespace MapBoxQs
         void ExecuteClearAllAnnotation(object obj)
         {
             Annotations.Clear();
+            i = 1;
         }
 
         #endregion

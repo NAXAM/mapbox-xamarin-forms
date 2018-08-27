@@ -95,8 +95,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <Grid
-                            WidthRequest="320"
-                            HeightRequest="120"
+                            WidthRequest="200"
+                            HeightRequest="30"
                             HorizontalOptions="Start"
                             VerticalOptions="Start"
                             BackgroundColor="Aqua">
@@ -108,7 +108,7 @@
                                 <ColumnDefinition
                                     Width="30" />
                                 <ColumnDefinition
-                                    Width="60" />
+                                    Width="*" />
                             </Grid.ColumnDefinitions>
                             <Image
                                 Grid.Column="0"
