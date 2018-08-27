@@ -319,21 +319,11 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_cameraZoomMin = global::MapBoxQs.Droid.Resource.Attribute.mapbox_cameraZoomMin;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_enableTilePrefetch = global::MapBoxQs.Droid.Resource.Attribute.mapbox_enableTilePrefetch;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_enableZMediaOverlay = global::MapBoxQs.Droid.Resource.Attribute.mapbox_enableZMediaOverlay;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_foregroundLoadColor = global::MapBoxQs.Droid.Resource.Attribute.mapbox_foregroundLoadColor;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_localIdeographFontFamily = global::MapBoxQs.Droid.Resource.Attribute.mapbox_localIdeographFontFamily;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocation = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocation;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationAccuracyAlpha = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationAccuracyAlpha;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationAccuracyThreshold = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationAccuracyThreshold;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationAccuracyTintColor = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationAccuracyTintColor;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBackgroundDrawable = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBackgroundDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginBottom = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginBottom;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginLeft = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginLeft;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginRight = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginRight;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginTop = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBackgroundMarginTop;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBackgroundTintColor = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBackgroundTintColor;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationBearingDrawable = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationBearingDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationDrawable = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_myLocationTintColor = global::MapBoxQs.Droid.Resource.Attribute.mapbox_myLocationTintColor;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_pixelRatio = global::MapBoxQs.Droid.Resource.Attribute.mapbox_pixelRatio;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_renderTextureMode = global::MapBoxQs.Droid.Resource.Attribute.mapbox_renderTextureMode;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_renderTextureTranslucentSurface = global::MapBoxQs.Droid.Resource.Attribute.mapbox_renderTextureTranslucentSurface;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_styleUrl = global::MapBoxQs.Droid.Resource.Attribute.mapbox_styleUrl;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_uiAttribution = global::MapBoxQs.Droid.Resource.Attribute.mapbox_uiAttribution;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Attribute.mapbox_uiAttributionGravity = global::MapBoxQs.Droid.Resource.Attribute.mapbox_uiAttributionGravity;
@@ -611,9 +601,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.material_grey_800 = global::MapBoxQs.Droid.Resource.Color.material_grey_800;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.material_grey_850 = global::MapBoxQs.Droid.Resource.Color.material_grey_850;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.material_grey_900 = global::MapBoxQs.Droid.Resource.Color.material_grey_900;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Color.mz_border_gray = global::MapBoxQs.Droid.Resource.Color.mz_border_gray;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Color.mz_gray = global::MapBoxQs.Droid.Resource.Color.mz_gray;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Color.mz_white = global::MapBoxQs.Droid.Resource.Color.mz_white;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.notification_action_color_filter = global::MapBoxQs.Droid.Resource.Color.notification_action_color_filter;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.notification_icon_bg_color = global::MapBoxQs.Droid.Resource.Color.notification_icon_bg_color;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Color.notification_material_background_media_default_color = global::MapBoxQs.Droid.Resource.Color.notification_material_background_media_default_color;
@@ -774,10 +761,19 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.item_touch_helper_max_drag_scroll_per_frame = global::MapBoxQs.Droid.Resource.Dimension.item_touch_helper_max_drag_scroll_per_frame;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.item_touch_helper_swipe_escape_max_velocity = global::MapBoxQs.Droid.Resource.Dimension.item_touch_helper_swipe_escape_max_velocity;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.item_touch_helper_swipe_escape_velocity = global::MapBoxQs.Droid.Resource.Dimension.item_touch_helper_swipe_escape_velocity;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_defaultMultiTapMovementThreshold = global::MapBoxQs.Droid.Resource.Dimension.mapbox_defaultMultiTapMovementThreshold;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_defaultMutliFingerSpanThreshold = global::MapBoxQs.Droid.Resource.Dimension.mapbox_defaultMutliFingerSpanThreshold;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_defaultScaleSpanSinceStartThreshold = global::MapBoxQs.Droid.Resource.Dimension.mapbox_defaultScaleSpanSinceStartThreshold;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_defaultShovePixelThreshold = global::MapBoxQs.Droid.Resource.Dimension.mapbox_defaultShovePixelThreshold;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_eight_dp = global::MapBoxQs.Droid.Resource.Dimension.mapbox_eight_dp;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_four_dp = global::MapBoxQs.Droid.Resource.Dimension.mapbox_four_dp;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_infowindow_margin = global::MapBoxQs.Droid.Resource.Dimension.mapbox_infowindow_margin;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_infowindow_tipview_width = global::MapBoxQs.Droid.Resource.Dimension.mapbox_infowindow_tipview_width;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_internalScaleMinSpan23 = global::MapBoxQs.Droid.Resource.Dimension.mapbox_internalScaleMinSpan23;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_internalScaleMinSpan24 = global::MapBoxQs.Droid.Resource.Dimension.mapbox_internalScaleMinSpan24;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_minimum_angular_velocity = global::MapBoxQs.Droid.Resource.Dimension.mapbox_minimum_angular_velocity;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_minimum_scale_span_when_rotating = global::MapBoxQs.Droid.Resource.Dimension.mapbox_minimum_scale_span_when_rotating;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_minimum_scale_velocity = global::MapBoxQs.Droid.Resource.Dimension.mapbox_minimum_scale_velocity;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_my_locationview_outer_circle = global::MapBoxQs.Droid.Resource.Dimension.mapbox_my_locationview_outer_circle;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mapbox_ninety_two_dp = global::MapBoxQs.Droid.Resource.Dimension.mapbox_ninety_two_dp;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mr_controller_volume_group_list_item_height = global::MapBoxQs.Droid.Resource.Dimension.mr_controller_volume_group_list_item_height;
@@ -786,13 +782,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mr_controller_volume_group_list_padding_top = global::MapBoxQs.Droid.Resource.Dimension.mr_controller_volume_group_list_padding_top;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mr_dialog_fixed_width_major = global::MapBoxQs.Droid.Resource.Dimension.mr_dialog_fixed_width_major;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mr_dialog_fixed_width_minor = global::MapBoxQs.Droid.Resource.Dimension.mr_dialog_fixed_width_minor;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_attribution_font_size = global::MapBoxQs.Droid.Resource.Dimension.mz_attribution_font_size;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_attribution_margin_bottom = global::MapBoxQs.Droid.Resource.Dimension.mz_attribution_margin_bottom;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_attribution_margin_left = global::MapBoxQs.Droid.Resource.Dimension.mz_attribution_margin_left;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_find_me_button_height = global::MapBoxQs.Droid.Resource.Dimension.mz_find_me_button_height;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_find_me_button_margin_bottom = global::MapBoxQs.Droid.Resource.Dimension.mz_find_me_button_margin_bottom;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_find_me_button_margin_right = global::MapBoxQs.Droid.Resource.Dimension.mz_find_me_button_margin_right;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.mz_find_me_button_width = global::MapBoxQs.Droid.Resource.Dimension.mz_find_me_button_width;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.notification_action_icon_size = global::MapBoxQs.Droid.Resource.Dimension.notification_action_icon_size;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.notification_action_text_size = global::MapBoxQs.Droid.Resource.Dimension.notification_action_text_size;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Dimension.notification_big_circle_margin = global::MapBoxQs.Droid.Resource.Dimension.notification_big_circle_margin;
@@ -1112,11 +1101,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_media_stop_light = global::MapBoxQs.Droid.Resource.Drawable.mr_media_stop_light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_vol_type_audiotrack_dark = global::MapBoxQs.Droid.Resource.Drawable.mr_vol_type_audiotrack_dark;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mr_vol_type_audiotrack_light = global::MapBoxQs.Droid.Resource.Drawable.mr_vol_type_audiotrack_light;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mz_bg_ripple = global::MapBoxQs.Droid.Resource.Drawable.mz_bg_ripple;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mz_bg_white_gray_border = global::MapBoxQs.Droid.Resource.Drawable.mz_bg_white_gray_border;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mz_find_me = global::MapBoxQs.Droid.Resource.Drawable.mz_find_me;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mz_find_me_normal = global::MapBoxQs.Droid.Resource.Drawable.mz_find_me_normal;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.mz_find_me_pressed = global::MapBoxQs.Droid.Resource.Drawable.mz_find_me_pressed;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.navigation_empty_icon = global::MapBoxQs.Droid.Resource.Drawable.navigation_empty_icon;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.notification_action_background = global::MapBoxQs.Droid.Resource.Drawable.notification_action_background;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Drawable.notification_bg = global::MapBoxQs.Droid.Resource.Drawable.notification_bg;
@@ -1261,9 +1245,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_volume_item_icon = global::MapBoxQs.Droid.Resource.Id.mr_volume_item_icon;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mr_volume_slider = global::MapBoxQs.Droid.Resource.Id.mr_volume_slider;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.multiply = global::MapBoxQs.Droid.Resource.Id.multiply;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mz_attribution = global::MapBoxQs.Droid.Resource.Id.mz_attribution;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mz_find_me = global::MapBoxQs.Droid.Resource.Id.mz_find_me;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.mz_tangram_map = global::MapBoxQs.Droid.Resource.Id.mz_tangram_map;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.navigation_header_container = global::MapBoxQs.Droid.Resource.Id.navigation_header_container;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.never = global::MapBoxQs.Droid.Resource.Id.never;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.none = global::MapBoxQs.Droid.Resource.Id.none;
@@ -1343,7 +1324,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.uniform = global::MapBoxQs.Droid.Resource.Id.uniform;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.up = global::MapBoxQs.Droid.Resource.Id.up;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.useLogo = global::MapBoxQs.Droid.Resource.Id.useLogo;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Id.userLocationView = global::MapBoxQs.Droid.Resource.Id.userLocationView;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.view_offset_helper = global::MapBoxQs.Droid.Resource.Id.view_offset_helper;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.visible = global::MapBoxQs.Droid.Resource.Id.visible;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Id.volume_item_container = global::MapBoxQs.Droid.Resource.Id.volume_item_container;
@@ -1416,8 +1396,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.mr_controller_volume_item = global::MapBoxQs.Droid.Resource.Layout.mr_controller_volume_item;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.mr_playback_control = global::MapBoxQs.Droid.Resource.Layout.mr_playback_control;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.mr_volume_control = global::MapBoxQs.Droid.Resource.Layout.mr_volume_control;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.mz_fragment_map = global::MapBoxQs.Droid.Resource.Layout.mz_fragment_map;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.mz_view_map = global::MapBoxQs.Droid.Resource.Layout.mz_view_map;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.notification_action = global::MapBoxQs.Droid.Resource.Layout.notification_action;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.notification_action_tombstone = global::MapBoxQs.Droid.Resource.Layout.notification_action_tombstone;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Layout.notification_media_action = global::MapBoxQs.Droid.Resource.Layout.notification_media_action;
@@ -1532,8 +1510,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_controller_volume_slider = global::MapBoxQs.Droid.Resource.String.mr_controller_volume_slider;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_system_route_name = global::MapBoxQs.Droid.Resource.String.mr_system_route_name;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.mr_user_route_category_name = global::MapBoxQs.Droid.Resource.String.mr_user_route_category_name;
-			global::Naxam.Mapbox.Platform.Droid.Resource.String.mz_attribution = global::MapBoxQs.Droid.Resource.String.mz_attribution;
-			global::Naxam.Mapbox.Platform.Droid.Resource.String.mz_find_me = global::MapBoxQs.Droid.Resource.String.mz_find_me;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.password_toggle_content_description = global::MapBoxQs.Droid.Resource.String.password_toggle_content_description;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_eye = global::MapBoxQs.Droid.Resource.String.path_password_eye;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_eye_mask_strike_through = global::MapBoxQs.Droid.Resource.String.path_password_eye_mask_strike_through;
@@ -1541,7 +1517,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.path_password_strike_through = global::MapBoxQs.Droid.Resource.String.path_password_strike_through;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.search_menu_title = global::MapBoxQs.Droid.Resource.String.search_menu_title;
 			global::Naxam.Mapbox.Platform.Droid.Resource.String.status_bar_notification_info_overflow = global::MapBoxQs.Droid.Resource.String.status_bar_notification_info_overflow;
-			global::Naxam.Mapbox.Platform.Droid.Resource.String.tangram_version = global::MapBoxQs.Droid.Resource.String.tangram_version;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.AlertDialog_AppCompat = global::MapBoxQs.Droid.Resource.Style.AlertDialog_AppCompat;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.AlertDialog_AppCompat_Light = global::MapBoxQs.Droid.Resource.Style.AlertDialog_AppCompat_Light;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Style.Animation_AppCompat_Dialog = global::MapBoxQs.Droid.Resource.Style.Animation_AppCompat_Dialog;
@@ -2527,21 +2502,11 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_cameraZoomMin = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_cameraZoomMin;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_enableTilePrefetch = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_enableTilePrefetch;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_enableZMediaOverlay = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_enableZMediaOverlay;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_foregroundLoadColor = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_foregroundLoadColor;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_localIdeographFontFamily = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_localIdeographFontFamily;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocation = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocation;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationAccuracyAlpha = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationAccuracyAlpha;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationAccuracyThreshold = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationAccuracyThreshold;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationAccuracyTintColor = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationAccuracyTintColor;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundDrawable = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginBottom = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginBottom;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginLeft = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginLeft;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginRight = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginRight;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginTop = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundMarginTop;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundTintColor = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBackgroundTintColor;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBearingDrawable = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationBearingDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationDrawable = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationDrawable;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationTintColor = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_myLocationTintColor;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_pixelRatio = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_pixelRatio;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_renderTextureMode = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_renderTextureMode;
+			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_renderTextureTranslucentSurface = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_renderTextureTranslucentSurface;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_styleUrl = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_styleUrl;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_uiAttribution = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_uiAttribution;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.mapbox_MapView_mapbox_uiAttributionGravity = global::MapBoxQs.Droid.Resource.Styleable.mapbox_MapView_mapbox_uiAttributionGravity;
@@ -2756,41 +2721,41 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f010093
 			public const int activityChooserViewStyle = 2130772115;
 			
-			// aapt resource value: 0x7f0101b8
-			public const int ahBarColor = 2130772408;
-			
-			// aapt resource value: 0x7f0101c0
-			public const int ahBarLength = 2130772416;
-			
-			// aapt resource value: 0x7f0101bf
-			public const int ahBarWidth = 2130772415;
-			
-			// aapt resource value: 0x7f0101bd
-			public const int ahCircleColor = 2130772413;
-			
-			// aapt resource value: 0x7f0101bc
-			public const int ahDelayMillis = 2130772412;
-			
-			// aapt resource value: 0x7f0101be
-			public const int ahRadius = 2130772414;
-			
-			// aapt resource value: 0x7f0101b9
-			public const int ahRimColor = 2130772409;
-			
-			// aapt resource value: 0x7f0101ba
-			public const int ahRimWidth = 2130772410;
-			
-			// aapt resource value: 0x7f0101bb
-			public const int ahSpinSpeed = 2130772411;
-			
-			// aapt resource value: 0x7f0101b5
-			public const int ahText = 2130772405;
+			// aapt resource value: 0x7f0101ae
+			public const int ahBarColor = 2130772398;
 			
 			// aapt resource value: 0x7f0101b6
-			public const int ahTextColor = 2130772406;
+			public const int ahBarLength = 2130772406;
 			
-			// aapt resource value: 0x7f0101b7
-			public const int ahTextSize = 2130772407;
+			// aapt resource value: 0x7f0101b5
+			public const int ahBarWidth = 2130772405;
+			
+			// aapt resource value: 0x7f0101b3
+			public const int ahCircleColor = 2130772403;
+			
+			// aapt resource value: 0x7f0101b2
+			public const int ahDelayMillis = 2130772402;
+			
+			// aapt resource value: 0x7f0101b4
+			public const int ahRadius = 2130772404;
+			
+			// aapt resource value: 0x7f0101af
+			public const int ahRimColor = 2130772399;
+			
+			// aapt resource value: 0x7f0101b0
+			public const int ahRimWidth = 2130772400;
+			
+			// aapt resource value: 0x7f0101b1
+			public const int ahSpinSpeed = 2130772401;
+			
+			// aapt resource value: 0x7f0101ab
+			public const int ahText = 2130772395;
+			
+			// aapt resource value: 0x7f0101ac
+			public const int ahTextColor = 2130772396;
+			
+			// aapt resource value: 0x7f0101ad
+			public const int ahTextSize = 2130772397;
 			
 			// aapt resource value: 0x7f0100b8
 			public const int alertDialogButtonGroupStyle = 2130772152;
@@ -3398,125 +3363,95 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f010189
 			public const int mapbox_cameraZoomMin = 2130772361;
 			
-			// aapt resource value: 0x7f0101b3
-			public const int mapbox_enableTilePrefetch = 2130772403;
+			// aapt resource value: 0x7f0101a8
+			public const int mapbox_enableTilePrefetch = 2130772392;
 			
-			// aapt resource value: 0x7f0101b4
-			public const int mapbox_enableZMediaOverlay = 2130772404;
+			// aapt resource value: 0x7f0101a9
+			public const int mapbox_enableZMediaOverlay = 2130772393;
+			
+			// aapt resource value: 0x7f0101a7
+			public const int mapbox_foregroundLoadColor = 2130772391;
 			
 			// aapt resource value: 0x7f010182
 			public const int mapbox_localIdeographFontFamily = 2130772354;
 			
-			// aapt resource value: 0x7f010190
-			public const int mapbox_myLocation = 2130772368;
+			// aapt resource value: 0x7f0101aa
+			public const int mapbox_pixelRatio = 2130772394;
 			
-			// aapt resource value: 0x7f01019b
-			public const int mapbox_myLocationAccuracyAlpha = 2130772379;
+			// aapt resource value: 0x7f0101a5
+			public const int mapbox_renderTextureMode = 2130772389;
 			
-			// aapt resource value: 0x7f01019c
-			public const int mapbox_myLocationAccuracyThreshold = 2130772380;
-			
-			// aapt resource value: 0x7f01019a
-			public const int mapbox_myLocationAccuracyTintColor = 2130772378;
-			
-			// aapt resource value: 0x7f010194
-			public const int mapbox_myLocationBackgroundDrawable = 2130772372;
-			
-			// aapt resource value: 0x7f010199
-			public const int mapbox_myLocationBackgroundMarginBottom = 2130772377;
-			
-			// aapt resource value: 0x7f010196
-			public const int mapbox_myLocationBackgroundMarginLeft = 2130772374;
-			
-			// aapt resource value: 0x7f010198
-			public const int mapbox_myLocationBackgroundMarginRight = 2130772376;
-			
-			// aapt resource value: 0x7f010197
-			public const int mapbox_myLocationBackgroundMarginTop = 2130772375;
-			
-			// aapt resource value: 0x7f010195
-			public const int mapbox_myLocationBackgroundTintColor = 2130772373;
-			
-			// aapt resource value: 0x7f010193
-			public const int mapbox_myLocationBearingDrawable = 2130772371;
-			
-			// aapt resource value: 0x7f010192
-			public const int mapbox_myLocationDrawable = 2130772370;
-			
-			// aapt resource value: 0x7f010191
-			public const int mapbox_myLocationTintColor = 2130772369;
-			
-			// aapt resource value: 0x7f0101b2
-			public const int mapbox_renderTextureMode = 2130772402;
+			// aapt resource value: 0x7f0101a6
+			public const int mapbox_renderTextureTranslucentSurface = 2130772390;
 			
 			// aapt resource value: 0x7f010180
 			public const int mapbox_styleUrl = 2130772352;
 			
-			// aapt resource value: 0x7f0101ab
-			public const int mapbox_uiAttribution = 2130772395;
-			
-			// aapt resource value: 0x7f0101ac
-			public const int mapbox_uiAttributionGravity = 2130772396;
-			
-			// aapt resource value: 0x7f0101b0
-			public const int mapbox_uiAttributionMarginBottom = 2130772400;
-			
-			// aapt resource value: 0x7f0101ad
-			public const int mapbox_uiAttributionMarginLeft = 2130772397;
-			
-			// aapt resource value: 0x7f0101af
-			public const int mapbox_uiAttributionMarginRight = 2130772399;
-			
-			// aapt resource value: 0x7f0101ae
-			public const int mapbox_uiAttributionMarginTop = 2130772398;
-			
-			// aapt resource value: 0x7f0101b1
-			public const int mapbox_uiAttributionTintColor = 2130772401;
-			
-			// aapt resource value: 0x7f01019d
-			public const int mapbox_uiCompass = 2130772381;
-			
-			// aapt resource value: 0x7f0101a4
-			public const int mapbox_uiCompassDrawable = 2130772388;
-			
-			// aapt resource value: 0x7f0101a3
-			public const int mapbox_uiCompassFadeFacingNorth = 2130772387;
-			
 			// aapt resource value: 0x7f01019e
-			public const int mapbox_uiCompassGravity = 2130772382;
-			
-			// aapt resource value: 0x7f0101a2
-			public const int mapbox_uiCompassMarginBottom = 2130772386;
+			public const int mapbox_uiAttribution = 2130772382;
 			
 			// aapt resource value: 0x7f01019f
-			public const int mapbox_uiCompassMarginLeft = 2130772383;
+			public const int mapbox_uiAttributionGravity = 2130772383;
 			
-			// aapt resource value: 0x7f0101a1
-			public const int mapbox_uiCompassMarginRight = 2130772385;
+			// aapt resource value: 0x7f0101a3
+			public const int mapbox_uiAttributionMarginBottom = 2130772387;
 			
 			// aapt resource value: 0x7f0101a0
-			public const int mapbox_uiCompassMarginTop = 2130772384;
+			public const int mapbox_uiAttributionMarginLeft = 2130772384;
+			
+			// aapt resource value: 0x7f0101a2
+			public const int mapbox_uiAttributionMarginRight = 2130772386;
+			
+			// aapt resource value: 0x7f0101a1
+			public const int mapbox_uiAttributionMarginTop = 2130772385;
+			
+			// aapt resource value: 0x7f0101a4
+			public const int mapbox_uiAttributionTintColor = 2130772388;
+			
+			// aapt resource value: 0x7f010190
+			public const int mapbox_uiCompass = 2130772368;
+			
+			// aapt resource value: 0x7f010197
+			public const int mapbox_uiCompassDrawable = 2130772375;
+			
+			// aapt resource value: 0x7f010196
+			public const int mapbox_uiCompassFadeFacingNorth = 2130772374;
+			
+			// aapt resource value: 0x7f010191
+			public const int mapbox_uiCompassGravity = 2130772369;
+			
+			// aapt resource value: 0x7f010195
+			public const int mapbox_uiCompassMarginBottom = 2130772373;
+			
+			// aapt resource value: 0x7f010192
+			public const int mapbox_uiCompassMarginLeft = 2130772370;
+			
+			// aapt resource value: 0x7f010194
+			public const int mapbox_uiCompassMarginRight = 2130772372;
+			
+			// aapt resource value: 0x7f010193
+			public const int mapbox_uiCompassMarginTop = 2130772371;
 			
 			// aapt resource value: 0x7f01018e
 			public const int mapbox_uiDoubleTapGestures = 2130772366;
 			
-			// aapt resource value: 0x7f0101a5
-			public const int mapbox_uiLogo = 2130772389;
+			// aapt resource value: 0x7f010198
+			public const int mapbox_uiLogo = 2130772376;
 			
-			// aapt resource value: 0x7f0101a6
-			public const int mapbox_uiLogoGravity = 2130772390;
+			// aapt resource value: 0x7f010199
+			public const int mapbox_uiLogoGravity = 2130772377;
 			
-			// aapt resource value: 0x7f0101aa
-			public const int mapbox_uiLogoMarginBottom = 2130772394;
+			// aapt resource value: 0x7f01019d
+			public const int mapbox_uiLogoMarginBottom = 2130772381;
 			
-			// aapt resource value: 0x7f0101a7
-			public const int mapbox_uiLogoMarginLeft = 2130772391;
+			// aapt resource value: 0x7f01019a
+			public const int mapbox_uiLogoMarginLeft = 2130772378;
 			
-			// aapt resource value: 0x7f0101a9
-			public const int mapbox_uiLogoMarginRight = 2130772393;
+			// aapt resource value: 0x7f01019c
+			public const int mapbox_uiLogoMarginRight = 2130772380;
 			
-			// aapt resource value: 0x7f0101a8
-			public const int mapbox_uiLogoMarginTop = 2130772392;
+			// aapt resource value: 0x7f01019b
+			public const int mapbox_uiLogoMarginTop = 2130772379;
 			
 			// aapt resource value: 0x7f01018c
 			public const int mapbox_uiRotateGestures = 2130772364;
@@ -4042,44 +3977,44 @@ namespace MapBoxQs.Droid
 		public partial class Color
 		{
 			
+			// aapt resource value: 0x7f0a0057
+			public const int abc_background_cache_hint_selector_material_dark = 2131361879;
+			
+			// aapt resource value: 0x7f0a0058
+			public const int abc_background_cache_hint_selector_material_light = 2131361880;
+			
+			// aapt resource value: 0x7f0a0059
+			public const int abc_btn_colored_borderless_text_material = 2131361881;
+			
 			// aapt resource value: 0x7f0a005a
-			public const int abc_background_cache_hint_selector_material_dark = 2131361882;
+			public const int abc_btn_colored_text_material = 2131361882;
 			
 			// aapt resource value: 0x7f0a005b
-			public const int abc_background_cache_hint_selector_material_light = 2131361883;
+			public const int abc_color_highlight_material = 2131361883;
 			
 			// aapt resource value: 0x7f0a005c
-			public const int abc_btn_colored_borderless_text_material = 2131361884;
+			public const int abc_hint_foreground_material_dark = 2131361884;
 			
 			// aapt resource value: 0x7f0a005d
-			public const int abc_btn_colored_text_material = 2131361885;
-			
-			// aapt resource value: 0x7f0a005e
-			public const int abc_color_highlight_material = 2131361886;
-			
-			// aapt resource value: 0x7f0a005f
-			public const int abc_hint_foreground_material_dark = 2131361887;
-			
-			// aapt resource value: 0x7f0a0060
-			public const int abc_hint_foreground_material_light = 2131361888;
+			public const int abc_hint_foreground_material_light = 2131361885;
 			
 			// aapt resource value: 0x7f0a000c
 			public const int abc_input_method_navigation_guard = 2131361804;
 			
+			// aapt resource value: 0x7f0a005e
+			public const int abc_primary_text_disable_only_material_dark = 2131361886;
+			
+			// aapt resource value: 0x7f0a005f
+			public const int abc_primary_text_disable_only_material_light = 2131361887;
+			
+			// aapt resource value: 0x7f0a0060
+			public const int abc_primary_text_material_dark = 2131361888;
+			
 			// aapt resource value: 0x7f0a0061
-			public const int abc_primary_text_disable_only_material_dark = 2131361889;
+			public const int abc_primary_text_material_light = 2131361889;
 			
 			// aapt resource value: 0x7f0a0062
-			public const int abc_primary_text_disable_only_material_light = 2131361890;
-			
-			// aapt resource value: 0x7f0a0063
-			public const int abc_primary_text_material_dark = 2131361891;
-			
-			// aapt resource value: 0x7f0a0064
-			public const int abc_primary_text_material_light = 2131361892;
-			
-			// aapt resource value: 0x7f0a0065
-			public const int abc_search_url_text = 2131361893;
+			public const int abc_search_url_text = 2131361890;
 			
 			// aapt resource value: 0x7f0a000d
 			public const int abc_search_url_text_normal = 2131361805;
@@ -4090,29 +4025,29 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a000f
 			public const int abc_search_url_text_selected = 2131361807;
 			
+			// aapt resource value: 0x7f0a0063
+			public const int abc_secondary_text_material_dark = 2131361891;
+			
+			// aapt resource value: 0x7f0a0064
+			public const int abc_secondary_text_material_light = 2131361892;
+			
+			// aapt resource value: 0x7f0a0065
+			public const int abc_tint_btn_checkable = 2131361893;
+			
 			// aapt resource value: 0x7f0a0066
-			public const int abc_secondary_text_material_dark = 2131361894;
+			public const int abc_tint_default = 2131361894;
 			
 			// aapt resource value: 0x7f0a0067
-			public const int abc_secondary_text_material_light = 2131361895;
+			public const int abc_tint_edittext = 2131361895;
 			
 			// aapt resource value: 0x7f0a0068
-			public const int abc_tint_btn_checkable = 2131361896;
+			public const int abc_tint_seek_thumb = 2131361896;
 			
 			// aapt resource value: 0x7f0a0069
-			public const int abc_tint_default = 2131361897;
+			public const int abc_tint_spinner = 2131361897;
 			
 			// aapt resource value: 0x7f0a006a
-			public const int abc_tint_edittext = 2131361898;
-			
-			// aapt resource value: 0x7f0a006b
-			public const int abc_tint_seek_thumb = 2131361899;
-			
-			// aapt resource value: 0x7f0a006c
-			public const int abc_tint_spinner = 2131361900;
-			
-			// aapt resource value: 0x7f0a006d
-			public const int abc_tint_switch_track = 2131361901;
+			public const int abc_tint_switch_track = 2131361898;
 			
 			// aapt resource value: 0x7f0a0010
 			public const int accent_material_dark = 2131361808;
@@ -4168,11 +4103,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a000b
 			public const int cardview_shadow_start_color = 2131361803;
 			
-			// aapt resource value: 0x7f0a0059
-			public const int colorPrimary = 2131361881;
+			// aapt resource value: 0x7f0a0056
+			public const int colorPrimary = 2131361878;
 			
-			// aapt resource value: 0x7f0a006e
-			public const int common_google_signin_btn_text_dark = 2131361902;
+			// aapt resource value: 0x7f0a006b
+			public const int common_google_signin_btn_text_dark = 2131361899;
 			
 			// aapt resource value: 0x7f0a0000
 			public const int common_google_signin_btn_text_dark_default = 2131361792;
@@ -4186,8 +4121,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a0003
 			public const int common_google_signin_btn_text_dark_pressed = 2131361795;
 			
-			// aapt resource value: 0x7f0a006f
-			public const int common_google_signin_btn_text_light = 2131361903;
+			// aapt resource value: 0x7f0a006c
+			public const int common_google_signin_btn_text_light = 2131361900;
 			
 			// aapt resource value: 0x7f0a0004
 			public const int common_google_signin_btn_text_light_default = 2131361796;
@@ -4201,14 +4136,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a0007
 			public const int common_google_signin_btn_text_light_pressed = 2131361799;
 			
-			// aapt resource value: 0x7f0a0070
-			public const int common_google_signin_btn_tint = 2131361904;
+			// aapt resource value: 0x7f0a006d
+			public const int common_google_signin_btn_tint = 2131361901;
 			
 			// aapt resource value: 0x7f0a0048
 			public const int design_bottom_navigation_shadow_color = 2131361864;
 			
-			// aapt resource value: 0x7f0a0071
-			public const int design_error = 2131361905;
+			// aapt resource value: 0x7f0a006e
+			public const int design_error = 2131361902;
 			
 			// aapt resource value: 0x7f0a0049
 			public const int design_fab_shadow_end_color = 2131361865;
@@ -4234,8 +4169,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a0050
 			public const int design_snackbar_background_color = 2131361872;
 			
-			// aapt resource value: 0x7f0a0072
-			public const int design_tint_password_toggle = 2131361906;
+			// aapt resource value: 0x7f0a006f
+			public const int design_tint_password_toggle = 2131361903;
 			
 			// aapt resource value: 0x7f0a001e
 			public const int dim_foreground_disabled_material_dark = 2131361822;
@@ -4264,14 +4199,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a0026
 			public const int highlighted_text_material_light = 2131361830;
 			
-			// aapt resource value: 0x7f0a0056
-			public const int mapbox_blue = 2131361878;
+			// aapt resource value: 0x7f0a0053
+			public const int mapbox_blue = 2131361875;
 			
-			// aapt resource value: 0x7f0a0057
-			public const int mapbox_gray = 2131361879;
+			// aapt resource value: 0x7f0a0054
+			public const int mapbox_gray = 2131361876;
 			
-			// aapt resource value: 0x7f0a0058
-			public const int mapbox_gray_dark = 2131361880;
+			// aapt resource value: 0x7f0a0055
+			public const int mapbox_gray_dark = 2131361877;
 			
 			// aapt resource value: 0x7f0a0027
 			public const int material_blue_grey_800 = 2131361831;
@@ -4308,15 +4243,6 @@ namespace MapBoxQs.Droid
 			
 			// aapt resource value: 0x7f0a0032
 			public const int material_grey_900 = 2131361842;
-			
-			// aapt resource value: 0x7f0a0053
-			public const int mz_border_gray = 2131361875;
-			
-			// aapt resource value: 0x7f0a0054
-			public const int mz_gray = 2131361876;
-			
-			// aapt resource value: 0x7f0a0055
-			public const int mz_white = 2131361877;
 			
 			// aapt resource value: 0x7f0a0051
 			public const int notification_action_color_filter = 2131361873;
@@ -4375,11 +4301,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0a0042
 			public const int switch_thumb_disabled_material_light = 2131361858;
 			
-			// aapt resource value: 0x7f0a0073
-			public const int switch_thumb_material_dark = 2131361907;
+			// aapt resource value: 0x7f0a0070
+			public const int switch_thumb_material_dark = 2131361904;
 			
-			// aapt resource value: 0x7f0a0074
-			public const int switch_thumb_material_light = 2131361908;
+			// aapt resource value: 0x7f0a0071
+			public const int switch_thumb_material_light = 2131361905;
 			
 			// aapt resource value: 0x7f0a0043
 			public const int switch_thumb_normal_material_dark = 2131361859;
@@ -4628,11 +4554,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0b0013
 			public const int abc_text_size_title_material_toolbar = 2131427347;
 			
-			// aapt resource value: 0x7f0b00b1
-			public const int activity_horizontal_margin = 2131427505;
+			// aapt resource value: 0x7f0b00b3
+			public const int activity_horizontal_margin = 2131427507;
 			
-			// aapt resource value: 0x7f0b00b2
-			public const int activity_vertical_margin = 2131427506;
+			// aapt resource value: 0x7f0b00b4
+			public const int activity_vertical_margin = 2131427508;
 			
 			// aapt resource value: 0x7f0b000c
 			public const int cardview_compat_inset_shadow = 2131427340;
@@ -4817,23 +4743,50 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0b0005
 			public const int item_touch_helper_swipe_escape_velocity = 2131427333;
 			
+			// aapt resource value: 0x7f0b00a4
+			public const int mapbox_defaultMultiTapMovementThreshold = 2131427492;
+			
+			// aapt resource value: 0x7f0b00a5
+			public const int mapbox_defaultMutliFingerSpanThreshold = 2131427493;
+			
+			// aapt resource value: 0x7f0b00a6
+			public const int mapbox_defaultScaleSpanSinceStartThreshold = 2131427494;
+			
+			// aapt resource value: 0x7f0b00a7
+			public const int mapbox_defaultShovePixelThreshold = 2131427495;
+			
+			// aapt resource value: 0x7f0b00aa
+			public const int mapbox_eight_dp = 2131427498;
+			
 			// aapt resource value: 0x7f0b00ab
-			public const int mapbox_eight_dp = 2131427499;
+			public const int mapbox_four_dp = 2131427499;
 			
 			// aapt resource value: 0x7f0b00ac
-			public const int mapbox_four_dp = 2131427500;
+			public const int mapbox_infowindow_margin = 2131427500;
 			
 			// aapt resource value: 0x7f0b00ad
-			public const int mapbox_infowindow_margin = 2131427501;
+			public const int mapbox_infowindow_tipview_width = 2131427501;
+			
+			// aapt resource value: 0x7f0b00a8
+			public const int mapbox_internalScaleMinSpan23 = 2131427496;
+			
+			// aapt resource value: 0x7f0b00a9
+			public const int mapbox_internalScaleMinSpan24 = 2131427497;
 			
 			// aapt resource value: 0x7f0b00ae
-			public const int mapbox_infowindow_tipview_width = 2131427502;
+			public const int mapbox_minimum_angular_velocity = 2131427502;
 			
 			// aapt resource value: 0x7f0b00af
-			public const int mapbox_my_locationview_outer_circle = 2131427503;
+			public const int mapbox_minimum_scale_span_when_rotating = 2131427503;
 			
 			// aapt resource value: 0x7f0b00b0
-			public const int mapbox_ninety_two_dp = 2131427504;
+			public const int mapbox_minimum_scale_velocity = 2131427504;
+			
+			// aapt resource value: 0x7f0b00b1
+			public const int mapbox_my_locationview_outer_circle = 2131427505;
+			
+			// aapt resource value: 0x7f0b00b2
+			public const int mapbox_ninety_two_dp = 2131427506;
 			
 			// aapt resource value: 0x7f0b0006
 			public const int mr_controller_volume_group_list_item_height = 2131427334;
@@ -4852,27 +4805,6 @@ namespace MapBoxQs.Droid
 			
 			// aapt resource value: 0x7f0b000a
 			public const int mr_dialog_fixed_width_minor = 2131427338;
-			
-			// aapt resource value: 0x7f0b00a4
-			public const int mz_attribution_font_size = 2131427492;
-			
-			// aapt resource value: 0x7f0b00a5
-			public const int mz_attribution_margin_bottom = 2131427493;
-			
-			// aapt resource value: 0x7f0b00a6
-			public const int mz_attribution_margin_left = 2131427494;
-			
-			// aapt resource value: 0x7f0b00a7
-			public const int mz_find_me_button_height = 2131427495;
-			
-			// aapt resource value: 0x7f0b00a8
-			public const int mz_find_me_button_margin_bottom = 2131427496;
-			
-			// aapt resource value: 0x7f0b00a9
-			public const int mz_find_me_button_margin_right = 2131427497;
-			
-			// aapt resource value: 0x7f0b00aa
-			public const int mz_find_me_button_width = 2131427498;
 			
 			// aapt resource value: 0x7f0b0099
 			public const int notification_action_icon_size = 2131427481;
@@ -5208,26 +5140,26 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f02013e
-			public const int avd_hide_password_1 = 2130837822;
+			// aapt resource value: 0x7f020138
+			public const int avd_hide_password_1 = 2130837816;
 			
-			// aapt resource value: 0x7f02013f
-			public const int avd_hide_password_2 = 2130837823;
+			// aapt resource value: 0x7f020139
+			public const int avd_hide_password_2 = 2130837817;
 			
-			// aapt resource value: 0x7f020140
-			public const int avd_hide_password_3 = 2130837824;
+			// aapt resource value: 0x7f02013a
+			public const int avd_hide_password_3 = 2130837818;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f020141
-			public const int avd_show_password_1 = 2130837825;
+			// aapt resource value: 0x7f02013b
+			public const int avd_show_password_1 = 2130837819;
 			
-			// aapt resource value: 0x7f020142
-			public const int avd_show_password_2 = 2130837826;
+			// aapt resource value: 0x7f02013c
+			public const int avd_show_password_2 = 2130837820;
 			
-			// aapt resource value: 0x7f020143
-			public const int avd_show_password_3 = 2130837827;
+			// aapt resource value: 0x7f02013d
+			public const int avd_show_password_3 = 2130837821;
 			
 			// aapt resource value: 0x7f020055
 			public const int bg_splash = 2130837589;
@@ -5857,76 +5789,58 @@ namespace MapBoxQs.Droid
 			public const int mr_vol_type_audiotrack_light = 2130837797;
 			
 			// aapt resource value: 0x7f020126
-			public const int mz_bg_ripple = 2130837798;
+			public const int navigation_empty_icon = 2130837798;
 			
 			// aapt resource value: 0x7f020127
-			public const int mz_bg_white_gray_border = 2130837799;
+			public const int naxam_copyright = 2130837799;
 			
 			// aapt resource value: 0x7f020128
-			public const int mz_find_me = 2130837800;
+			public const int notification_action_background = 2130837800;
 			
 			// aapt resource value: 0x7f020129
-			public const int mz_find_me_normal = 2130837801;
+			public const int notification_bg = 2130837801;
 			
 			// aapt resource value: 0x7f02012a
-			public const int mz_find_me_pressed = 2130837802;
+			public const int notification_bg_low = 2130837802;
 			
 			// aapt resource value: 0x7f02012b
-			public const int navigation_empty_icon = 2130837803;
+			public const int notification_bg_low_normal = 2130837803;
 			
 			// aapt resource value: 0x7f02012c
-			public const int naxam_copyright = 2130837804;
+			public const int notification_bg_low_pressed = 2130837804;
 			
 			// aapt resource value: 0x7f02012d
-			public const int notification_action_background = 2130837805;
+			public const int notification_bg_normal = 2130837805;
 			
 			// aapt resource value: 0x7f02012e
-			public const int notification_bg = 2130837806;
+			public const int notification_bg_normal_pressed = 2130837806;
 			
 			// aapt resource value: 0x7f02012f
-			public const int notification_bg_low = 2130837807;
-			
-			// aapt resource value: 0x7f020130
-			public const int notification_bg_low_normal = 2130837808;
-			
-			// aapt resource value: 0x7f020131
-			public const int notification_bg_low_pressed = 2130837809;
-			
-			// aapt resource value: 0x7f020132
-			public const int notification_bg_normal = 2130837810;
-			
-			// aapt resource value: 0x7f020133
-			public const int notification_bg_normal_pressed = 2130837811;
-			
-			// aapt resource value: 0x7f020134
-			public const int notification_icon_background = 2130837812;
-			
-			// aapt resource value: 0x7f02013c
-			public const int notification_template_icon_bg = 2130837820;
-			
-			// aapt resource value: 0x7f02013d
-			public const int notification_template_icon_low_bg = 2130837821;
-			
-			// aapt resource value: 0x7f020135
-			public const int notification_tile_bg = 2130837813;
+			public const int notification_icon_background = 2130837807;
 			
 			// aapt resource value: 0x7f020136
-			public const int notify_panel_notification_icon_bg = 2130837814;
+			public const int notification_template_icon_bg = 2130837814;
 			
 			// aapt resource value: 0x7f020137
-			public const int pin = 2130837815;
+			public const int notification_template_icon_low_bg = 2130837815;
 			
-			// aapt resource value: 0x7f020138
-			public const int roundedbg = 2130837816;
+			// aapt resource value: 0x7f020130
+			public const int notification_tile_bg = 2130837808;
 			
-			// aapt resource value: 0x7f020139
-			public const int roundedbgdark = 2130837817;
+			// aapt resource value: 0x7f020131
+			public const int notify_panel_notification_icon_bg = 2130837809;
 			
-			// aapt resource value: 0x7f02013a
-			public const int tooltip_frame_dark = 2130837818;
+			// aapt resource value: 0x7f020132
+			public const int roundedbg = 2130837810;
 			
-			// aapt resource value: 0x7f02013b
-			public const int tooltip_frame_light = 2130837819;
+			// aapt resource value: 0x7f020133
+			public const int roundedbgdark = 2130837811;
+			
+			// aapt resource value: 0x7f020134
+			public const int tooltip_frame_dark = 2130837812;
+			
+			// aapt resource value: 0x7f020135
+			public const int tooltip_frame_light = 2130837813;
 			
 			static Drawable()
 			{
@@ -5959,8 +5873,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c003f
 			public const int SYM = 2131492927;
 			
-			// aapt resource value: 0x7f0c00cb
-			public const int action0 = 2131493067;
+			// aapt resource value: 0x7f0c00c8
+			public const int action0 = 2131493064;
 			
 			// aapt resource value: 0x7f0c0083
 			public const int action_bar = 2131492995;
@@ -5983,17 +5897,17 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0061
 			public const int action_bar_title = 2131492961;
 			
-			// aapt resource value: 0x7f0c00c8
-			public const int action_container = 2131493064;
+			// aapt resource value: 0x7f0c00c5
+			public const int action_container = 2131493061;
 			
 			// aapt resource value: 0x7f0c0084
 			public const int action_context_bar = 2131492996;
 			
-			// aapt resource value: 0x7f0c00cf
-			public const int action_divider = 2131493071;
+			// aapt resource value: 0x7f0c00cc
+			public const int action_divider = 2131493068;
 			
-			// aapt resource value: 0x7f0c00c9
-			public const int action_image = 2131493065;
+			// aapt resource value: 0x7f0c00c6
+			public const int action_image = 2131493062;
 			
 			// aapt resource value: 0x7f0c0003
 			public const int action_menu_divider = 2131492867;
@@ -6010,11 +5924,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0063
 			public const int action_mode_close_button = 2131492963;
 			
-			// aapt resource value: 0x7f0c00ca
-			public const int action_text = 2131493066;
+			// aapt resource value: 0x7f0c00c7
+			public const int action_text = 2131493063;
 			
-			// aapt resource value: 0x7f0c00d8
-			public const int actions = 2131493080;
+			// aapt resource value: 0x7f0c00d5
+			public const int actions = 2131493077;
 			
 			// aapt resource value: 0x7f0c0064
 			public const int activity_chooser_view_content = 2131492964;
@@ -6058,8 +5972,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c006a
 			public const int buttonPanel = 2131492970;
 			
-			// aapt resource value: 0x7f0c00cc
-			public const int cancel_action = 2131493068;
+			// aapt resource value: 0x7f0c00c9
+			public const int cancel_action = 2131493065;
 			
 			// aapt resource value: 0x7f0c004c
 			public const int center = 2131492940;
@@ -6073,8 +5987,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c007a
 			public const int checkbox = 2131492986;
 			
-			// aapt resource value: 0x7f0c00d4
-			public const int chronometer = 2131493076;
+			// aapt resource value: 0x7f0c00d1
+			public const int chronometer = 2131493073;
 			
 			// aapt resource value: 0x7f0c0055
 			public const int clip_horizontal = 2131492949;
@@ -6088,14 +6002,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c00a8
 			public const int compassView = 2131493032;
 			
-			// aapt resource value: 0x7f0c0094
-			public const int container = 2131493012;
+			// aapt resource value: 0x7f0c0095
+			public const int container = 2131493013;
 			
 			// aapt resource value: 0x7f0c006d
 			public const int contentPanel = 2131492973;
 			
-			// aapt resource value: 0x7f0c0095
-			public const int coordinator = 2131493013;
+			// aapt resource value: 0x7f0c0096
+			public const int coordinator = 2131493014;
 			
 			// aapt resource value: 0x7f0c0074
 			public const int custom = 2131492980;
@@ -6112,20 +6026,20 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0067
 			public const int default_activity_button = 2131492967;
 			
-			// aapt resource value: 0x7f0c0097
-			public const int design_bottom_sheet = 2131493015;
+			// aapt resource value: 0x7f0c0098
+			public const int design_bottom_sheet = 2131493016;
+			
+			// aapt resource value: 0x7f0c009f
+			public const int design_menu_item_action_area = 2131493023;
 			
 			// aapt resource value: 0x7f0c009e
-			public const int design_menu_item_action_area = 2131493022;
+			public const int design_menu_item_action_area_stub = 2131493022;
 			
 			// aapt resource value: 0x7f0c009d
-			public const int design_menu_item_action_area_stub = 2131493021;
+			public const int design_menu_item_text = 2131493021;
 			
 			// aapt resource value: 0x7f0c009c
-			public const int design_menu_item_text = 2131493020;
-			
-			// aapt resource value: 0x7f0c009b
-			public const int design_navigation_view = 2131493019;
+			public const int design_navigation_view = 2131493020;
 			
 			// aapt resource value: 0x7f0c0029
 			public const int disableHome = 2131492905;
@@ -6136,8 +6050,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0038
 			public const int end = 2131492920;
 			
-			// aapt resource value: 0x7f0c00da
-			public const int end_padder = 2131493082;
+			// aapt resource value: 0x7f0c00d7
+			public const int end_padder = 2131493079;
 			
 			// aapt resource value: 0x7f0c0047
 			public const int enterAlways = 2131492935;
@@ -6181,8 +6095,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0069
 			public const int icon = 2131492969;
 			
-			// aapt resource value: 0x7f0c00d9
-			public const int icon_group = 2131493081;
+			// aapt resource value: 0x7f0c00d6
+			public const int icon_group = 2131493078;
 			
 			// aapt resource value: 0x7f0c0020
 			public const int icon_only = 2131492896;
@@ -6193,14 +6107,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0066
 			public const int image = 2131492966;
 			
-			// aapt resource value: 0x7f0c00d5
-			public const int info = 2131493077;
+			// aapt resource value: 0x7f0c00d2
+			public const int info = 2131493074;
+			
+			// aapt resource value: 0x7f0c00a6
+			public const int infowindow_description = 2131493030;
 			
 			// aapt resource value: 0x7f0c00a5
-			public const int infowindow_description = 2131493029;
-			
-			// aapt resource value: 0x7f0c00a4
-			public const int infowindow_title = 2131493028;
+			public const int infowindow_title = 2131493029;
 			
 			// aapt resource value: 0x7f0c0060
 			public const int italic = 2131492960;
@@ -6208,8 +6122,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0000
 			public const int item_touch_helper_previous_elevation = 2131492864;
 			
-			// aapt resource value: 0x7f0c0093
-			public const int largeLabel = 2131493011;
+			// aapt resource value: 0x7f0c0094
+			public const int largeLabel = 2131493012;
 			
 			// aapt resource value: 0x7f0c0050
 			public const int left = 2131492944;
@@ -6229,29 +6143,32 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0068
 			public const int list_item = 2131492968;
 			
-			// aapt resource value: 0x7f0c00a2
-			public const int loadingImage = 2131493026;
-			
-			// aapt resource value: 0x7f0c00a0
-			public const int loadingProgressBar = 2131493024;
-			
 			// aapt resource value: 0x7f0c00a3
-			public const int loadingProgressWheel = 2131493027;
+			public const int loadingImage = 2131493027;
+			
+			// aapt resource value: 0x7f0c00a1
+			public const int loadingProgressBar = 2131493025;
+			
+			// aapt resource value: 0x7f0c00a4
+			public const int loadingProgressWheel = 2131493028;
 			
 			// aapt resource value: 0x7f0c00a9
 			public const int logoView = 2131493033;
 			
-			// aapt resource value: 0x7f0c00a6
-			public const int markerViewContainer = 2131493030;
+			// aapt resource value: 0x7f0c0092
+			public const int mapView = 2131493010;
 			
-			// aapt resource value: 0x7f0c00df
-			public const int masked = 2131493087;
+			// aapt resource value: 0x7f0c00a7
+			public const int markerViewContainer = 2131493031;
 			
-			// aapt resource value: 0x7f0c00ce
-			public const int media_actions = 2131493070;
+			// aapt resource value: 0x7f0c00dc
+			public const int masked = 2131493084;
 			
-			// aapt resource value: 0x7f0c00dd
-			public const int message = 2131493085;
+			// aapt resource value: 0x7f0c00cb
+			public const int media_actions = 2131493067;
+			
+			// aapt resource value: 0x7f0c00da
+			public const int message = 2131493082;
 			
 			// aapt resource value: 0x7f0c0039
 			public const int middle = 2131492921;
@@ -6337,17 +6254,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0030
 			public const int multiply = 2131492912;
 			
-			// aapt resource value: 0x7f0c00c7
-			public const int mz_attribution = 2131493063;
-			
-			// aapt resource value: 0x7f0c00c6
-			public const int mz_find_me = 2131493062;
-			
-			// aapt resource value: 0x7f0c00c5
-			public const int mz_tangram_map = 2131493061;
-			
-			// aapt resource value: 0x7f0c009a
-			public const int navigation_header_container = 2131493018;
+			// aapt resource value: 0x7f0c009b
+			public const int navigation_header_container = 2131493019;
 			
 			// aapt resource value: 0x7f0c0043
 			public const int never = 2131492931;
@@ -6358,14 +6266,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0027
 			public const int normal = 2131492903;
 			
-			// aapt resource value: 0x7f0c00d7
-			public const int notification_background = 2131493079;
+			// aapt resource value: 0x7f0c00d4
+			public const int notification_background = 2131493076;
 			
-			// aapt resource value: 0x7f0c00d1
-			public const int notification_main_column = 2131493073;
+			// aapt resource value: 0x7f0c00ce
+			public const int notification_main_column = 2131493070;
 			
-			// aapt resource value: 0x7f0c00d0
-			public const int notification_main_column_container = 2131493072;
+			// aapt resource value: 0x7f0c00cd
+			public const int notification_main_column_container = 2131493069;
 			
 			// aapt resource value: 0x7f0c0053
 			public const int parallax = 2131492947;
@@ -6391,11 +6299,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0051
 			public const int right = 2131492945;
 			
-			// aapt resource value: 0x7f0c00d6
-			public const int right_icon = 2131493078;
+			// aapt resource value: 0x7f0c00d3
+			public const int right_icon = 2131493075;
 			
-			// aapt resource value: 0x7f0c00d2
-			public const int right_side = 2131493074;
+			// aapt resource value: 0x7f0c00cf
+			public const int right_side = 2131493071;
 			
 			// aapt resource value: 0x7f0c000c
 			public const int save_image_matrix = 2131492876;
@@ -6469,17 +6377,17 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c002d
 			public const int showTitle = 2131492909;
 			
-			// aapt resource value: 0x7f0c00db
-			public const int sliding_tabs = 2131493083;
+			// aapt resource value: 0x7f0c00d8
+			public const int sliding_tabs = 2131493080;
 			
-			// aapt resource value: 0x7f0c0092
-			public const int smallLabel = 2131493010;
+			// aapt resource value: 0x7f0c0093
+			public const int smallLabel = 2131493011;
+			
+			// aapt resource value: 0x7f0c009a
+			public const int snackbar_action = 2131493018;
 			
 			// aapt resource value: 0x7f0c0099
-			public const int snackbar_action = 2131493017;
-			
-			// aapt resource value: 0x7f0c0098
-			public const int snackbar_text = 2131493016;
+			public const int snackbar_text = 2131493017;
 			
 			// aapt resource value: 0x7f0c004b
 			public const int snap = 2131492939;
@@ -6505,8 +6413,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0052
 			public const int start = 2131492946;
 			
-			// aapt resource value: 0x7f0c00cd
-			public const int status_bar_latest_event_content = 2131493069;
+			// aapt resource value: 0x7f0c00ca
+			public const int status_bar_latest_event_content = 2131493066;
 			
 			// aapt resource value: 0x7f0c007d
 			public const int submenuarrow = 2131492989;
@@ -6532,11 +6440,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0070
 			public const int textSpacerNoTitle = 2131492976;
 			
-			// aapt resource value: 0x7f0c00a1
-			public const int textViewStatus = 2131493025;
+			// aapt resource value: 0x7f0c00a2
+			public const int textViewStatus = 2131493026;
 			
-			// aapt resource value: 0x7f0c009f
-			public const int text_input_password_toggle = 2131493023;
+			// aapt resource value: 0x7f0c00a0
+			public const int text_input_password_toggle = 2131493024;
 			
 			// aapt resource value: 0x7f0c0014
 			public const int textinput_counter = 2131492884;
@@ -6544,8 +6452,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0015
 			public const int textinput_error = 2131492885;
 			
-			// aapt resource value: 0x7f0c00d3
-			public const int time = 2131493075;
+			// aapt resource value: 0x7f0c00d0
+			public const int time = 2131493072;
 			
 			// aapt resource value: 0x7f0c001c
 			public const int title = 2131492892;
@@ -6556,8 +6464,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0076
 			public const int title_template = 2131492982;
 			
-			// aapt resource value: 0x7f0c00dc
-			public const int toolbar = 2131493084;
+			// aapt resource value: 0x7f0c00d9
+			public const int toolbar = 2131493081;
 			
 			// aapt resource value: 0x7f0c0046
 			public const int top = 2131492934;
@@ -6565,8 +6473,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c0075
 			public const int topPanel = 2131492981;
 			
-			// aapt resource value: 0x7f0c0096
-			public const int touch_outside = 2131493014;
+			// aapt resource value: 0x7f0c0097
+			public const int touch_outside = 2131493015;
 			
 			// aapt resource value: 0x7f0c000f
 			public const int transition_current_scene = 2131492879;
@@ -6592,14 +6500,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f0c002e
 			public const int useLogo = 2131492910;
 			
-			// aapt resource value: 0x7f0c00a7
-			public const int userLocationView = 2131493031;
-			
 			// aapt resource value: 0x7f0c0016
 			public const int view_offset_helper = 2131492886;
 			
-			// aapt resource value: 0x7f0c00de
-			public const int visible = 2131493086;
+			// aapt resource value: 0x7f0c00db
+			public const int visible = 2131493083;
 			
 			// aapt resource value: 0x7f0c00bd
 			public const int volume_item_container = 2131493053;
@@ -6779,157 +6684,154 @@ namespace MapBoxQs.Droid
 			public const int abc_select_dialog_material = 2130968601;
 			
 			// aapt resource value: 0x7f04001a
-			public const int design_bottom_navigation_item = 2130968602;
+			public const int activity_main = 2130968602;
 			
 			// aapt resource value: 0x7f04001b
-			public const int design_bottom_sheet_dialog = 2130968603;
+			public const int design_bottom_navigation_item = 2130968603;
 			
 			// aapt resource value: 0x7f04001c
-			public const int design_layout_snackbar = 2130968604;
+			public const int design_bottom_sheet_dialog = 2130968604;
 			
 			// aapt resource value: 0x7f04001d
-			public const int design_layout_snackbar_include = 2130968605;
+			public const int design_layout_snackbar = 2130968605;
 			
 			// aapt resource value: 0x7f04001e
-			public const int design_layout_tab_icon = 2130968606;
+			public const int design_layout_snackbar_include = 2130968606;
 			
 			// aapt resource value: 0x7f04001f
-			public const int design_layout_tab_text = 2130968607;
+			public const int design_layout_tab_icon = 2130968607;
 			
 			// aapt resource value: 0x7f040020
-			public const int design_menu_item_action_area = 2130968608;
+			public const int design_layout_tab_text = 2130968608;
 			
 			// aapt resource value: 0x7f040021
-			public const int design_navigation_item = 2130968609;
+			public const int design_menu_item_action_area = 2130968609;
 			
 			// aapt resource value: 0x7f040022
-			public const int design_navigation_item_header = 2130968610;
+			public const int design_navigation_item = 2130968610;
 			
 			// aapt resource value: 0x7f040023
-			public const int design_navigation_item_separator = 2130968611;
+			public const int design_navigation_item_header = 2130968611;
 			
 			// aapt resource value: 0x7f040024
-			public const int design_navigation_item_subheader = 2130968612;
+			public const int design_navigation_item_separator = 2130968612;
 			
 			// aapt resource value: 0x7f040025
-			public const int design_navigation_menu = 2130968613;
+			public const int design_navigation_item_subheader = 2130968613;
 			
 			// aapt resource value: 0x7f040026
-			public const int design_navigation_menu_item = 2130968614;
+			public const int design_navigation_menu = 2130968614;
 			
 			// aapt resource value: 0x7f040027
-			public const int design_text_input_password_icon = 2130968615;
+			public const int design_navigation_menu_item = 2130968615;
 			
 			// aapt resource value: 0x7f040028
-			public const int loading = 2130968616;
+			public const int design_text_input_password_icon = 2130968616;
 			
 			// aapt resource value: 0x7f040029
-			public const int loadingimage = 2130968617;
+			public const int loading = 2130968617;
 			
 			// aapt resource value: 0x7f04002a
-			public const int loadingprogress = 2130968618;
+			public const int loadingimage = 2130968618;
 			
 			// aapt resource value: 0x7f04002b
-			public const int mapbox_attribution_list_item = 2130968619;
+			public const int loadingprogress = 2130968619;
 			
 			// aapt resource value: 0x7f04002c
-			public const int mapbox_infowindow_content = 2130968620;
+			public const int mapbox_attribution_list_item = 2130968620;
 			
 			// aapt resource value: 0x7f04002d
-			public const int mapbox_mapview_internal = 2130968621;
+			public const int mapbox_infowindow_content = 2130968621;
 			
 			// aapt resource value: 0x7f04002e
-			public const int mapbox_view_image_marker = 2130968622;
+			public const int mapbox_mapview_internal = 2130968622;
 			
 			// aapt resource value: 0x7f04002f
-			public const int mr_chooser_dialog = 2130968623;
+			public const int mapbox_view_image_marker = 2130968623;
 			
 			// aapt resource value: 0x7f040030
-			public const int mr_chooser_list_item = 2130968624;
+			public const int mr_chooser_dialog = 2130968624;
 			
 			// aapt resource value: 0x7f040031
-			public const int mr_controller_material_dialog_b = 2130968625;
+			public const int mr_chooser_list_item = 2130968625;
 			
 			// aapt resource value: 0x7f040032
-			public const int mr_controller_volume_item = 2130968626;
+			public const int mr_controller_material_dialog_b = 2130968626;
 			
 			// aapt resource value: 0x7f040033
-			public const int mr_playback_control = 2130968627;
+			public const int mr_controller_volume_item = 2130968627;
 			
 			// aapt resource value: 0x7f040034
-			public const int mr_volume_control = 2130968628;
+			public const int mr_playback_control = 2130968628;
 			
 			// aapt resource value: 0x7f040035
-			public const int mz_fragment_map = 2130968629;
+			public const int mr_volume_control = 2130968629;
 			
 			// aapt resource value: 0x7f040036
-			public const int mz_view_map = 2130968630;
+			public const int notification_action = 2130968630;
 			
 			// aapt resource value: 0x7f040037
-			public const int notification_action = 2130968631;
+			public const int notification_action_tombstone = 2130968631;
 			
 			// aapt resource value: 0x7f040038
-			public const int notification_action_tombstone = 2130968632;
+			public const int notification_media_action = 2130968632;
 			
 			// aapt resource value: 0x7f040039
-			public const int notification_media_action = 2130968633;
+			public const int notification_media_cancel_action = 2130968633;
 			
 			// aapt resource value: 0x7f04003a
-			public const int notification_media_cancel_action = 2130968634;
+			public const int notification_template_big_media = 2130968634;
 			
 			// aapt resource value: 0x7f04003b
-			public const int notification_template_big_media = 2130968635;
+			public const int notification_template_big_media_custom = 2130968635;
 			
 			// aapt resource value: 0x7f04003c
-			public const int notification_template_big_media_custom = 2130968636;
+			public const int notification_template_big_media_narrow = 2130968636;
 			
 			// aapt resource value: 0x7f04003d
-			public const int notification_template_big_media_narrow = 2130968637;
+			public const int notification_template_big_media_narrow_custom = 2130968637;
 			
 			// aapt resource value: 0x7f04003e
-			public const int notification_template_big_media_narrow_custom = 2130968638;
+			public const int notification_template_custom_big = 2130968638;
 			
 			// aapt resource value: 0x7f04003f
-			public const int notification_template_custom_big = 2130968639;
+			public const int notification_template_icon_group = 2130968639;
 			
 			// aapt resource value: 0x7f040040
-			public const int notification_template_icon_group = 2130968640;
+			public const int notification_template_lines_media = 2130968640;
 			
 			// aapt resource value: 0x7f040041
-			public const int notification_template_lines_media = 2130968641;
+			public const int notification_template_media = 2130968641;
 			
 			// aapt resource value: 0x7f040042
-			public const int notification_template_media = 2130968642;
+			public const int notification_template_media_custom = 2130968642;
 			
 			// aapt resource value: 0x7f040043
-			public const int notification_template_media_custom = 2130968643;
+			public const int notification_template_part_chronometer = 2130968643;
 			
 			// aapt resource value: 0x7f040044
-			public const int notification_template_part_chronometer = 2130968644;
+			public const int notification_template_part_time = 2130968644;
 			
 			// aapt resource value: 0x7f040045
-			public const int notification_template_part_time = 2130968645;
+			public const int select_dialog_item_material = 2130968645;
 			
 			// aapt resource value: 0x7f040046
-			public const int select_dialog_item_material = 2130968646;
+			public const int select_dialog_multichoice_material = 2130968646;
 			
 			// aapt resource value: 0x7f040047
-			public const int select_dialog_multichoice_material = 2130968647;
+			public const int select_dialog_singlechoice_material = 2130968647;
 			
 			// aapt resource value: 0x7f040048
-			public const int select_dialog_singlechoice_material = 2130968648;
+			public const int support_simple_spinner_dropdown_item = 2130968648;
 			
 			// aapt resource value: 0x7f040049
-			public const int support_simple_spinner_dropdown_item = 2130968649;
+			public const int Tabbar = 2130968649;
 			
 			// aapt resource value: 0x7f04004a
-			public const int Tabbar = 2130968650;
+			public const int Toolbar = 2130968650;
 			
 			// aapt resource value: 0x7f04004b
-			public const int Toolbar = 2130968651;
-			
-			// aapt resource value: 0x7f04004c
-			public const int tooltip = 2130968652;
+			public const int tooltip = 2130968651;
 			
 			static Layout()
 			{
@@ -7047,17 +6949,14 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090036
 			public const int abc_toolbar_collapse_description = 2131296310;
 			
-			// aapt resource value: 0x7f090053
-			public const int app_name = 2131296339;
+			// aapt resource value: 0x7f09004d
+			public const int app_name = 2131296333;
 			
 			// aapt resource value: 0x7f090044
 			public const int appbar_scrolling_view_behavior = 2131296324;
 			
 			// aapt resource value: 0x7f090045
 			public const int bottom_sheet_behavior = 2131296325;
-			
-			// aapt resource value: 0x7f09004d
-			public const int cancel = 2131296333;
 			
 			// aapt resource value: 0x7f090046
 			public const int character_counter_pattern = 2131296326;
@@ -7113,74 +7012,74 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090010
 			public const int common_signin_button_text_long = 2131296272;
 			
-			// aapt resource value: 0x7f090054
-			public const int library_name = 2131296340;
-			
-			// aapt resource value: 0x7f090060
-			public const int mapbox_attributionErrorNoBrowser = 2131296352;
-			
-			// aapt resource value: 0x7f090055
-			public const int mapbox_attributionTelemetryMessage = 2131296341;
-			
-			// aapt resource value: 0x7f090056
-			public const int mapbox_attributionTelemetryNegative = 2131296342;
-			
-			// aapt resource value: 0x7f090057
-			public const int mapbox_attributionTelemetryNeutral = 2131296343;
-			
-			// aapt resource value: 0x7f090058
-			public const int mapbox_attributionTelemetryPositive = 2131296344;
-			
-			// aapt resource value: 0x7f090059
-			public const int mapbox_attributionTelemetryTitle = 2131296345;
+			// aapt resource value: 0x7f09004e
+			public const int library_name = 2131296334;
 			
 			// aapt resource value: 0x7f09005a
-			public const int mapbox_attributionsDialogTitle = 2131296346;
+			public const int mapbox_attributionErrorNoBrowser = 2131296346;
 			
-			// aapt resource value: 0x7f09005b
-			public const int mapbox_attributionsIconContentDescription = 2131296347;
+			// aapt resource value: 0x7f09004f
+			public const int mapbox_attributionTelemetryMessage = 2131296335;
+			
+			// aapt resource value: 0x7f090050
+			public const int mapbox_attributionTelemetryNegative = 2131296336;
+			
+			// aapt resource value: 0x7f090051
+			public const int mapbox_attributionTelemetryNeutral = 2131296337;
+			
+			// aapt resource value: 0x7f090052
+			public const int mapbox_attributionTelemetryPositive = 2131296338;
+			
+			// aapt resource value: 0x7f090053
+			public const int mapbox_attributionTelemetryTitle = 2131296339;
+			
+			// aapt resource value: 0x7f090054
+			public const int mapbox_attributionsDialogTitle = 2131296340;
+			
+			// aapt resource value: 0x7f090055
+			public const int mapbox_attributionsIconContentDescription = 2131296341;
+			
+			// aapt resource value: 0x7f090056
+			public const int mapbox_compassContentDescription = 2131296342;
+			
+			// aapt resource value: 0x7f090057
+			public const int mapbox_mapActionDescription = 2131296343;
+			
+			// aapt resource value: 0x7f090058
+			public const int mapbox_myLocationViewContentDescription = 2131296344;
+			
+			// aapt resource value: 0x7f090059
+			public const int mapbox_offline_error_region_definition_invalid = 2131296345;
 			
 			// aapt resource value: 0x7f09005c
-			public const int mapbox_compassContentDescription = 2131296348;
+			public const int mapbox_style_dark = 2131296348;
 			
 			// aapt resource value: 0x7f09005d
-			public const int mapbox_mapActionDescription = 2131296349;
+			public const int mapbox_style_light = 2131296349;
 			
 			// aapt resource value: 0x7f09005e
-			public const int mapbox_myLocationViewContentDescription = 2131296350;
+			public const int mapbox_style_mapbox_streets = 2131296350;
 			
 			// aapt resource value: 0x7f09005f
-			public const int mapbox_offline_error_region_definition_invalid = 2131296351;
+			public const int mapbox_style_outdoors = 2131296351;
 			
-			// aapt resource value: 0x7f090062
-			public const int mapbox_style_dark = 2131296354;
-			
-			// aapt resource value: 0x7f090063
-			public const int mapbox_style_light = 2131296355;
-			
-			// aapt resource value: 0x7f090064
-			public const int mapbox_style_mapbox_streets = 2131296356;
-			
-			// aapt resource value: 0x7f090065
-			public const int mapbox_style_outdoors = 2131296357;
-			
-			// aapt resource value: 0x7f090066
-			public const int mapbox_style_satellite = 2131296358;
-			
-			// aapt resource value: 0x7f090067
-			public const int mapbox_style_satellite_streets = 2131296359;
-			
-			// aapt resource value: 0x7f090068
-			public const int mapbox_style_traffic_day = 2131296360;
-			
-			// aapt resource value: 0x7f090069
-			public const int mapbox_style_traffic_night = 2131296361;
-			
-			// aapt resource value: 0x7f09006a
-			public const int mapbox_telemetryLink = 2131296362;
+			// aapt resource value: 0x7f090060
+			public const int mapbox_style_satellite = 2131296352;
 			
 			// aapt resource value: 0x7f090061
-			public const int mapbox_telemetrySettings = 2131296353;
+			public const int mapbox_style_satellite_streets = 2131296353;
+			
+			// aapt resource value: 0x7f090062
+			public const int mapbox_style_traffic_day = 2131296354;
+			
+			// aapt resource value: 0x7f090063
+			public const int mapbox_style_traffic_night = 2131296355;
+			
+			// aapt resource value: 0x7f090064
+			public const int mapbox_telemetryLink = 2131296356;
+			
+			// aapt resource value: 0x7f09005b
+			public const int mapbox_telemetrySettings = 2131296347;
 			
 			// aapt resource value: 0x7f090011
 			public const int mr_button_content_description = 2131296273;
@@ -7245,15 +7144,6 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090024
 			public const int mr_user_route_category_name = 2131296292;
 			
-			// aapt resource value: 0x7f090050
-			public const int mz_attribution = 2131296336;
-			
-			// aapt resource value: 0x7f090051
-			public const int mz_find_me = 2131296337;
-			
-			// aapt resource value: 0x7f09004e
-			public const int ok = 2131296334;
-			
 			// aapt resource value: 0x7f090047
 			public const int password_toggle_content_description = 2131296327;
 			
@@ -7272,14 +7162,8 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f090037
 			public const int search_menu_title = 2131296311;
 			
-			// aapt resource value: 0x7f09004f
-			public const int settings_alert_title = 2131296335;
-			
 			// aapt resource value: 0x7f09004c
 			public const int status_bar_notification_info_overflow = 2131296332;
-			
-			// aapt resource value: 0x7f090052
-			public const int tangram_version = 2131296338;
 			
 			static String()
 			{
@@ -10044,18 +9928,18 @@ namespace MapBoxQs.Droid
 			public const int PopupWindowBackgroundState_state_above_anchor = 0;
 			
 			public static int[] ProgressWheel = new int[] {
+					2130772395,
+					2130772396,
+					2130772397,
+					2130772398,
+					2130772399,
+					2130772400,
+					2130772401,
+					2130772402,
+					2130772403,
+					2130772404,
 					2130772405,
-					2130772406,
-					2130772407,
-					2130772408,
-					2130772409,
-					2130772410,
-					2130772411,
-					2130772412,
-					2130772413,
-					2130772414,
-					2130772415,
-					2130772416};
+					2130772406};
 			
 			// aapt resource value: 3
 			public const int ProgressWheel_ahBarColor = 3;
@@ -10784,17 +10668,7 @@ namespace MapBoxQs.Droid
 					2130772391,
 					2130772392,
 					2130772393,
-					2130772394,
-					2130772395,
-					2130772396,
-					2130772397,
-					2130772398,
-					2130772399,
-					2130772400,
-					2130772401,
-					2130772402,
-					2130772403,
-					2130772404};
+					2130772394};
 			
 			// aapt resource value: 1
 			public const int mapbox_MapView_mapbox_apiBaseUrl = 1;
@@ -10820,125 +10694,95 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 9
 			public const int mapbox_MapView_mapbox_cameraZoomMin = 9;
 			
-			// aapt resource value: 51
-			public const int mapbox_MapView_mapbox_enableTilePrefetch = 51;
+			// aapt resource value: 40
+			public const int mapbox_MapView_mapbox_enableTilePrefetch = 40;
 			
-			// aapt resource value: 52
-			public const int mapbox_MapView_mapbox_enableZMediaOverlay = 52;
+			// aapt resource value: 41
+			public const int mapbox_MapView_mapbox_enableZMediaOverlay = 41;
+			
+			// aapt resource value: 39
+			public const int mapbox_MapView_mapbox_foregroundLoadColor = 39;
 			
 			// aapt resource value: 2
 			public const int mapbox_MapView_mapbox_localIdeographFontFamily = 2;
 			
-			// aapt resource value: 16
-			public const int mapbox_MapView_mapbox_myLocation = 16;
+			// aapt resource value: 42
+			public const int mapbox_MapView_mapbox_pixelRatio = 42;
 			
-			// aapt resource value: 27
-			public const int mapbox_MapView_mapbox_myLocationAccuracyAlpha = 27;
+			// aapt resource value: 37
+			public const int mapbox_MapView_mapbox_renderTextureMode = 37;
 			
-			// aapt resource value: 28
-			public const int mapbox_MapView_mapbox_myLocationAccuracyThreshold = 28;
-			
-			// aapt resource value: 26
-			public const int mapbox_MapView_mapbox_myLocationAccuracyTintColor = 26;
-			
-			// aapt resource value: 20
-			public const int mapbox_MapView_mapbox_myLocationBackgroundDrawable = 20;
-			
-			// aapt resource value: 25
-			public const int mapbox_MapView_mapbox_myLocationBackgroundMarginBottom = 25;
-			
-			// aapt resource value: 22
-			public const int mapbox_MapView_mapbox_myLocationBackgroundMarginLeft = 22;
-			
-			// aapt resource value: 24
-			public const int mapbox_MapView_mapbox_myLocationBackgroundMarginRight = 24;
-			
-			// aapt resource value: 23
-			public const int mapbox_MapView_mapbox_myLocationBackgroundMarginTop = 23;
-			
-			// aapt resource value: 21
-			public const int mapbox_MapView_mapbox_myLocationBackgroundTintColor = 21;
-			
-			// aapt resource value: 19
-			public const int mapbox_MapView_mapbox_myLocationBearingDrawable = 19;
-			
-			// aapt resource value: 18
-			public const int mapbox_MapView_mapbox_myLocationDrawable = 18;
-			
-			// aapt resource value: 17
-			public const int mapbox_MapView_mapbox_myLocationTintColor = 17;
-			
-			// aapt resource value: 50
-			public const int mapbox_MapView_mapbox_renderTextureMode = 50;
+			// aapt resource value: 38
+			public const int mapbox_MapView_mapbox_renderTextureTranslucentSurface = 38;
 			
 			// aapt resource value: 0
 			public const int mapbox_MapView_mapbox_styleUrl = 0;
 			
-			// aapt resource value: 43
-			public const int mapbox_MapView_mapbox_uiAttribution = 43;
-			
-			// aapt resource value: 44
-			public const int mapbox_MapView_mapbox_uiAttributionGravity = 44;
-			
-			// aapt resource value: 48
-			public const int mapbox_MapView_mapbox_uiAttributionMarginBottom = 48;
-			
-			// aapt resource value: 45
-			public const int mapbox_MapView_mapbox_uiAttributionMarginLeft = 45;
-			
-			// aapt resource value: 47
-			public const int mapbox_MapView_mapbox_uiAttributionMarginRight = 47;
-			
-			// aapt resource value: 46
-			public const int mapbox_MapView_mapbox_uiAttributionMarginTop = 46;
-			
-			// aapt resource value: 49
-			public const int mapbox_MapView_mapbox_uiAttributionTintColor = 49;
-			
-			// aapt resource value: 29
-			public const int mapbox_MapView_mapbox_uiCompass = 29;
-			
-			// aapt resource value: 36
-			public const int mapbox_MapView_mapbox_uiCompassDrawable = 36;
-			
-			// aapt resource value: 35
-			public const int mapbox_MapView_mapbox_uiCompassFadeFacingNorth = 35;
-			
 			// aapt resource value: 30
-			public const int mapbox_MapView_mapbox_uiCompassGravity = 30;
-			
-			// aapt resource value: 34
-			public const int mapbox_MapView_mapbox_uiCompassMarginBottom = 34;
+			public const int mapbox_MapView_mapbox_uiAttribution = 30;
 			
 			// aapt resource value: 31
-			public const int mapbox_MapView_mapbox_uiCompassMarginLeft = 31;
+			public const int mapbox_MapView_mapbox_uiAttributionGravity = 31;
 			
-			// aapt resource value: 33
-			public const int mapbox_MapView_mapbox_uiCompassMarginRight = 33;
+			// aapt resource value: 35
+			public const int mapbox_MapView_mapbox_uiAttributionMarginBottom = 35;
 			
 			// aapt resource value: 32
-			public const int mapbox_MapView_mapbox_uiCompassMarginTop = 32;
+			public const int mapbox_MapView_mapbox_uiAttributionMarginLeft = 32;
+			
+			// aapt resource value: 34
+			public const int mapbox_MapView_mapbox_uiAttributionMarginRight = 34;
+			
+			// aapt resource value: 33
+			public const int mapbox_MapView_mapbox_uiAttributionMarginTop = 33;
+			
+			// aapt resource value: 36
+			public const int mapbox_MapView_mapbox_uiAttributionTintColor = 36;
+			
+			// aapt resource value: 16
+			public const int mapbox_MapView_mapbox_uiCompass = 16;
+			
+			// aapt resource value: 23
+			public const int mapbox_MapView_mapbox_uiCompassDrawable = 23;
+			
+			// aapt resource value: 22
+			public const int mapbox_MapView_mapbox_uiCompassFadeFacingNorth = 22;
+			
+			// aapt resource value: 17
+			public const int mapbox_MapView_mapbox_uiCompassGravity = 17;
+			
+			// aapt resource value: 21
+			public const int mapbox_MapView_mapbox_uiCompassMarginBottom = 21;
+			
+			// aapt resource value: 18
+			public const int mapbox_MapView_mapbox_uiCompassMarginLeft = 18;
+			
+			// aapt resource value: 20
+			public const int mapbox_MapView_mapbox_uiCompassMarginRight = 20;
+			
+			// aapt resource value: 19
+			public const int mapbox_MapView_mapbox_uiCompassMarginTop = 19;
 			
 			// aapt resource value: 14
 			public const int mapbox_MapView_mapbox_uiDoubleTapGestures = 14;
 			
-			// aapt resource value: 37
-			public const int mapbox_MapView_mapbox_uiLogo = 37;
+			// aapt resource value: 24
+			public const int mapbox_MapView_mapbox_uiLogo = 24;
 			
-			// aapt resource value: 38
-			public const int mapbox_MapView_mapbox_uiLogoGravity = 38;
+			// aapt resource value: 25
+			public const int mapbox_MapView_mapbox_uiLogoGravity = 25;
 			
-			// aapt resource value: 42
-			public const int mapbox_MapView_mapbox_uiLogoMarginBottom = 42;
+			// aapt resource value: 29
+			public const int mapbox_MapView_mapbox_uiLogoMarginBottom = 29;
 			
-			// aapt resource value: 39
-			public const int mapbox_MapView_mapbox_uiLogoMarginLeft = 39;
+			// aapt resource value: 26
+			public const int mapbox_MapView_mapbox_uiLogoMarginLeft = 26;
 			
-			// aapt resource value: 41
-			public const int mapbox_MapView_mapbox_uiLogoMarginRight = 41;
+			// aapt resource value: 28
+			public const int mapbox_MapView_mapbox_uiLogoMarginRight = 28;
 			
-			// aapt resource value: 40
-			public const int mapbox_MapView_mapbox_uiLogoMarginTop = 40;
+			// aapt resource value: 27
+			public const int mapbox_MapView_mapbox_uiLogoMarginTop = 27;
 			
 			// aapt resource value: 12
 			public const int mapbox_MapView_mapbox_uiRotateGestures = 12;

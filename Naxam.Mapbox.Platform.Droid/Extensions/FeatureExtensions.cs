@@ -1,7 +1,6 @@
 ﻿using System;
-using Com.Mapbox.Services.Commons.Geojson;
-using Point = Com.Mapbox.Services.Commons.Geojson.Point;
-using Position = Com.Mapbox.Services.Commons.Models.Position;
+using Com.Mapbox.Geojson;
+using Point = Com.Mapbox.Geojson.Point;
 using Naxam.Controls.Mapbox.Forms;
 using System.Linq;
 using Android.Graphics;
@@ -20,39 +19,47 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             IFeature forms = null;
 
-            if (feature.Geometry is Point)
+            if (feature.Geometry() is Point point)
             {
-                var point = (Point)feature.Geometry;
+                var cords = point.Coordinates();
                 forms = new PointFeature(new PointAnnotation
                 {
-                    Id = feature.Id,
-                    Coordinate = point.Coordinates.ToForms()
+                    Id = feature.Id(),
+                    Coordinate = new Position
+                    {
+                        Lat = cords[0].DoubleValue(),
+                        Long = cords[1].DoubleValue()
+                    }
                 });
             }
-            else if (feature.Geometry is LineString)
+            else if (feature.Geometry() is LineString line)
             {
-                var line = (LineString)feature.Geometry;
-                var coords = line.Coordinates.Select(ToForms).ToArray();
+                var coords = line.Coordinates()
+                                  .Select(ToForms)
+                                  .ToArray();
+
                 forms = new PolylineFeature(new PolylineAnnotation
                 {
-                    Id = feature.Id,
+                    Id = feature.Id(),
                     Coordinates = coords
                 });
             }
-            else if (feature.Geometry is MultiLineString)
+            else if (feature.Geometry() is MultiLineString mline)
             {
-                var line = (MultiLineString)feature.Geometry;
-                var coords = line.Coordinates.Select(x => x.Select(ToForms).ToArray()).ToArray();
+                var coords = mline.Coordinates()
+                                  .Select(x => x.Select(ToForms).ToArray())
+                                  .ToArray();
+
                 forms = new MultiPolylineFeature(new MultiPolylineAnnotation
                 {
-                    Id = feature.Id,
+                    Id = feature.Id(),
                     Coordinates = coords
                 });
             }
 
             if (forms != null)
             {
-                var json = feature.Properties.ToString();
+                var json = feature.Properties().ToString();
 
                 forms.Attributes = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
             }
@@ -60,12 +67,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return forms;
         }
 
-        public static Naxam.Controls.Mapbox.Forms.Position ToForms(this Position position)
+        public static Position ToForms(this Point position)
         {
-            return new Naxam.Controls.Mapbox.Forms.Position
+            return new Position
             {
-                Lat = position.Latitude,
-                Long = position.Longitude
+                Lat = position.Latitude(),
+                Long = position.Longitude()
             };
         }
 

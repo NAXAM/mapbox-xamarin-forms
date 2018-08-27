@@ -15,46 +15,51 @@ using Xamarin.Forms.Platform.Android;
 
 namespace Naxam.Mapbox.Platform.Droid
 {
-    public class ViewGroupContainer : FormsViewGroup
+    using Platform = Xamarin.Forms.Platform.Android.Platform;
+
+    public class ViewGroupContainer : BubbleLayout
     {
         IVisualElementRenderer _renderer;
-        private Context _context;
-        private VisualElement _visualElement;
-        private Android.Views.View _parent;
-        Android.Views.View _view;
-        public Element Element
+        ViewCell _viewCell;
+        public ViewGroupContainer(Context context,
+                                 ViewCell viewCell) : base(context)
         {
-            get { return _visualElement; }
+            _viewCell = viewCell;
+            _renderer = Platform.CreateRendererWithContext(_viewCell.View, context);
+            Platform.SetRenderer(_viewCell.View, _renderer);
+            var view = _renderer.View;
+            LayoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(_viewCell.View.WidthRequest)), (int)Math.Round(context.ToPixels(_viewCell.View.HeightRequest)));
+            AddView(view, LayoutParameters);
         }
 
-
-        public ViewGroupContainer(Context context, Android.Views.View parent, VisualElement visualElement) : base(context)
+        public ViewGroupContainer(Context context, Xamarin.Forms.View fview) : base(context)
         {
-            _context = context;
-            LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
-            _visualElement = visualElement;
-            _parent = parent;
-            _renderer = Xamarin.Forms.Platform.Android.Platform.CreateRendererWithContext(_visualElement, context);
-            Xamarin.Forms.Platform.Android.Platform.SetRenderer(_visualElement, _renderer);
-            _view = _renderer.View;
-            AddView(_view);
-
+            _renderer = Platform.CreateRendererWithContext(fview, context);
+            Platform.SetRenderer(fview, _renderer);
+            var view = _renderer.View;
+            LayoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(fview.WidthRequest)), (int)Math.Round(context.ToPixels(fview.HeightRequest)));
+            AddView(view, LayoutParameters);
         }
-        public void Dispose()
+
+        protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            throw new NotImplementedException();
-        }
-        protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
-        {
-            double width = Context.FromPixels(right - left);
-            double height = Context.FromPixels(bottom - top);
+            double width = Context.FromPixels(r - l);
+            double height = Context.FromPixels(b - t);
             Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_renderer.Element, new Rectangle(0, 0, width, height));
             _renderer.UpdateLayout();
-            System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {right - left}x{bottom - top}");
+            
+            base.OnLayout(changed, l, t, r, b);
         }
+
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+            int width = MeasureSpec.GetSize(widthMeasureSpec);
+            int height = MeasureSpec.GetSize(heightMeasureSpec);
+            int widthSpec = MeasureSpec.MakeMeasureSpec(width, MeasureSpec.GetMode(widthMeasureSpec));
+            int heightSpec = MeasureSpec.MakeMeasureSpec(height, MeasureSpec.GetMode(heightMeasureSpec));
+         //   base.SetMeasuredDimension(width, height);
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
         }
+
     }
 }
