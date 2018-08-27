@@ -97,7 +97,13 @@ namespace MapBoxQs
         public MainPageViewModel(INavigation navigation)
         {
 
-            Annotations = new ObservableCollection<Annotation>();
+            Annotations = new ObservableCollection<Annotation> {
+                new PointAnnotation {
+                    Coordinate = new Position(21.004142f, 105.847607f),
+                    Title = "Naxam Company Limited",
+                    SubTitle = "A software development agency from Hanoi, Vietnam"
+,                }
+            };
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (_IsScaleBarShown == false && CenterLocation != null)

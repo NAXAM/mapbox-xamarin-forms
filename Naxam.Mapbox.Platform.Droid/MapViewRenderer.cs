@@ -89,16 +89,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment.GetMapAsync(this);
                 currentCamera = new Position();
-                if (Element.Annotations != null)
-                {
-                    AddAnnotations(Element.Annotations.ToArray());
-                    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
-                    {
-                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    }
-                }
+
                 if (mapReady)
                 {
+                    if (Element.Annotations != null)
+                    {
+                        AddAnnotations(Element.Annotations.ToArray());
+                        if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+                        {
+                            notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                        }
+                    }
+
                     OnMapRegionChanged();
                 }
             }
@@ -977,6 +979,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
                 map.InfoWindowAdapter = info;
 
+            }
+
+            if (Element.Annotations != null)
+            {
+                AddAnnotations(Element.Annotations.ToArray());
+                if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+                {
+                    notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                }
             }
         }
 
