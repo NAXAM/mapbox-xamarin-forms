@@ -1,21 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using System.Linq;
 using Android.Content;
-using Android.Content.Res;
-using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Com.Mapbox.Mapboxsdk.Annotations;
-using Com.Mapbox.Mapboxsdk.Maps;
-using Naxam.Mapbox.Platform.Droid.Extensions;
 using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
 
 namespace Naxam.Mapbox.Platform.Droid
@@ -52,13 +38,15 @@ namespace Naxam.Mapbox.Platform.Droid
 
             if (content is ViewCell vc)
             {
+                vc.Parent = _mapView;
                 vc.BindingContext = bindingContext;
                 var output = new ViewGroupContainer(_context, vc);
                 return output;
             }
 
-            if (content is Xamarin.Forms.View view)
+            if (content is View view)
             {
+                view.Parent = _mapView;
                 view.BindingContext = bindingContext;
                 var output = new ViewGroupContainer(_context, view);
                 return output;

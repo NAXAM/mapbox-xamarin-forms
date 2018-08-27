@@ -19,15 +19,14 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
         public Action<OfflineRegion> OnCreateHandle { get; set; }
         public Action<string> OnErrorHandle { get; set; }
 
-		public void OnCreate(OfflineRegion p0)
+		public void OnCreate(OfflineRegion offlineRegion)
         {
-            OnCreateHandle?.Invoke(p0);
-
+            OnCreateHandle?.Invoke(offlineRegion);
         }
 
-        public void OnError(string p0)
+        public void OnError(string error)
         {
-            OnErrorHandle?.Invoke(p0);
+            OnErrorHandle?.Invoke(error);
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public class MapViewFragment : SupportMapFragment, MapView.IOnMapChangedListener
     {
-        private MapView mapView;
-        public MapView MapView => mapView;
+        public MapView MapView { get; private set; }
+
         public MapView.IOnMapChangedListener OnMapChangedListener { get; set; }
 
         public bool StateSaved { get; private set; }
@@ -28,15 +28,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            mapView = view as MapView; 
-            mapView?.AddOnMapChangedListener(this);
+            MapView = view as MapView; 
+            MapView?.AddOnMapChangedListener(this);
         }
          
 
         public override void OnDestroyView()
         {
             base.OnDestroyView();
-            mapView?.RemoveOnMapChangedListener(this);
+            MapView?.RemoveOnMapChangedListener(this);
         }
 
         public void OnMapChanged(int p0)

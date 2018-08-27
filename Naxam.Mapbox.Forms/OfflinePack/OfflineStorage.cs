@@ -9,17 +9,18 @@ namespace Naxam.Controls.Mapbox.Forms
         public OfflinePack OfflinePack;
     }
 
-    public class OSSErrorEventArgs: OSSEventArgs
+    public class OSSErrorEventArgs : OSSEventArgs
     {
         public string ErrorMessage;
     }
 
-    public class OSSMaximumMapboxTilesReachedEventArgs: OSSEventArgs
+    public class OSSMaximumMapboxTilesReachedEventArgs : OSSEventArgs
     {
         public ulong MaximumCount;
     }
 
-    public interface IOfflineStorageService {
+    public interface IOfflineStorageService
+    {
 
         event EventHandler<OSSEventArgs> OfflinePackProgressChanged;
         event EventHandler<OSSErrorEventArgs> OfflinePackGotError;
@@ -31,7 +32,5 @@ namespace Naxam.Controls.Mapbox.Forms
         Task<bool> RemovePack(OfflinePack pack);
         Task<bool> SuspendPack(OfflinePack pack);
         void RequestPackProgress(OfflinePack pack);
-
-
     }
 }

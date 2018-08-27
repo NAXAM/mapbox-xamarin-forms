@@ -22,14 +22,14 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             OnMapboxTileCountLimitExceededHandle?.Invoke(p0);
         }
 
-        public void OnError(OfflineRegionError p0)
+        public void OnError(OfflineRegionError offlineRegionError)
         {
-            OnErrorHandle?.Invoke(p0);
+            OnErrorHandle?.Invoke(offlineRegionError);
         }
 
-        public void OnStatusChanged(OfflineRegionStatus p0)
+        public void OnStatusChanged(OfflineRegionStatus offlineRegionStatus)
         {
-            OnStatusChangedHandle?.Invoke(p0);
+            OnStatusChangedHandle?.Invoke(offlineRegionStatus);
         }
     }
 }

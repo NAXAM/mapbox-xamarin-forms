@@ -8,13 +8,12 @@ namespace Naxam.Mapbox.Platform.iOS
 	public class DraggableAnnotationView : MGLAnnotationView
 	{
 		public event EventHandler DragFinished;
-
         public DraggableAnnotationView(string reuseIdentifier, float size) : base(reuseIdentifier)
         {
             Draggable = true;
 
             ScalesWithViewingDistance = false;
-            Frame = new CoreGraphics.CGRect(0, 0, size, size);
+            Frame = new CGRect(0, 0, size, size);
             BackgroundColor = UIColor.Blue;
             Layer.CornerRadius = size / 2;
             Layer.BorderWidth = 1;

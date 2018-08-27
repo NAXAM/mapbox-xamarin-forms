@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
-             xmlns:local="clr-namespace:MapBoxQs"
-             x:Name="root"
-             x:Class="MapBoxQs.MapBoxQsPage">
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
+    xmlns:local="clr-namespace:MapBoxQs"
+    x:Name="root"
+    x:Class="MapBoxQs.MapBoxQsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style TargetType="Button">
-                <Setter Property="FontSize"
-                        Value="14" />
+            <Style
+                TargetType="Button">
+                <Setter
+                    Property="FontSize"
+                    Value="14" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="*" />
+            <RowDefinition
+                Height="40" />
+            <RowDefinition
+                Height="*" />
         </Grid.RowDefinitions>
         <!-- Top tools -->
         <ScrollView
@@ -90,227 +95,280 @@
                 <DataTemplate>
                     <ViewCell>
                         <Grid
-                            HeightRequest="80"
-                            WidthRequest="200"
+                            WidthRequest="320"
+                            HeightRequest="120"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Start"
                             BackgroundColor="Aqua">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
+                                <RowDefinition
+                                    Height="30" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition
+                                    Width="30" />
+                                <ColumnDefinition
+                                    Width="60" />
                             </Grid.ColumnDefinitions>
-                            <Image 
-                                   Grid.Column="0"
-                                   Source="icon" />
-                            <Label Grid.Column="1"
-                                   Text="{Binding Title}" />
-
+                            <Image
+                                Grid.Column="0"
+                                Source="icon.png" />
+                            <Label
+                                Grid.Column="1"
+                                Text="{Binding Title}" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </controls:MapView.InfoWindowTemplate>
         </controls:MapView>
         <!-- Location input -->
-        <Grid Grid.Row="1"
-              IsVisible="false"
-              HeightRequest="40"
-              BackgroundColor="White"
-              VerticalOptions="Start"
-              Padding="8,0">
+        <Grid
+            Grid.Row="1"
+            IsVisible="false"
+            HeightRequest="40"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            Padding="8,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Label Text="Latitude:"
-                   VerticalTextAlignment="Center" />
-            <Entry Grid.Column="1"
-                   Text="{Binding CustomLatitude}"
-                   Keyboard="Numeric"
-                   WidthRequest="50"
-                   VerticalOptions="Center"
-                   FontSize="14" />
-            <Label Grid.Column="2"
-                   Text="Longitude:"
-                   VerticalTextAlignment="Center" />
-            <Entry Grid.Column="3"
-                   Text="{Binding CustomLongitude}"
-                   Keyboard="Numeric"
-                   WidthRequest="50"
-                   VerticalOptions="Center"
-                   FontSize="14" />
-            <Button Grid.Column="4"
-                    Text="Apply"
-                    Command="{Binding ChangeLocationCommand}"
-                    VerticalOptions="Center" />
+            <Label
+                Text="Latitude:"
+                VerticalTextAlignment="Center" />
+            <Entry
+                Grid.Column="1"
+                Text="{Binding CustomLatitude}"
+                Keyboard="Numeric"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                FontSize="14" />
+            <Label
+                Grid.Column="2"
+                Text="Longitude:"
+                VerticalTextAlignment="Center" />
+            <Entry
+                Grid.Column="3"
+                Text="{Binding CustomLongitude}"
+                Keyboard="Numeric"
+                WidthRequest="50"
+                VerticalOptions="Center"
+                FontSize="14" />
+            <Button
+                Grid.Column="4"
+                Text="Apply"
+                Command="{Binding ChangeLocationCommand}"
+                VerticalOptions="Center" />
             <Grid.Triggers>
-                <DataTrigger TargetType="Grid"
-                             Binding="{Binding ShowingTool}"
-                             Value="{x:Static local:MapTools.CustomLocation}">
-                    <Setter Property="IsVisible"
-                            Value="True" />
+                <DataTrigger
+                    TargetType="Grid"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.CustomLocation}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
                 </DataTrigger>
             </Grid.Triggers>
         </Grid>
         <!-- Camera tools -->
-        <StackLayout Orientation="Vertical"
-                     BackgroundColor="White"
-                     Grid.Row="1"
-                     VerticalOptions="Start"
-                     IsVisible="false"
-                     Padding="16,0">
+        <StackLayout
+            Orientation="Vertical"
+            BackgroundColor="White"
+            Grid.Row="1"
+            VerticalOptions="Start"
+            IsVisible="false"
+            Padding="16,0">
             <!-- Zoom -->
-            <StackLayout Orientation="Horizontal"
-                         HeightRequest="40">
-                <Button Command="{Binding ZoomCommand}"
-                        CommandParameter="{x:Int32 1}"
-                        Text="Zoom in"
-                        VerticalOptions="FillAndExpand" />
-                <Button Command="{Binding ZoomCommand}"
-                        CommandParameter="{x:Int32 -1}"
-                        Text="Zoom out"
-                        VerticalOptions="FillAndExpand" />
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40">
+                <Button
+                    Command="{Binding ZoomCommand}"
+                    CommandParameter="{x:Int32 1}"
+                    Text="Zoom in"
+                    VerticalOptions="FillAndExpand" />
+                <Button
+                    Command="{Binding ZoomCommand}"
+                    CommandParameter="{x:Int32 -1}"
+                    Text="Zoom out"
+                    VerticalOptions="FillAndExpand" />
             </StackLayout>
             <!-- Rotate -->
-            <StackLayout Orientation="Horizontal"
-                         HeightRequest="40">
-                <Label Text="Rotation:"
-                       VerticalTextAlignment="Center" />
-                <Switch IsToggled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWayToSource}"
-                        VerticalOptions="Center" />
-                <Button Text="↪️"
-                        IsEnabled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWay}"
-                        Command="{Binding RotateCommand}"
-                        CommandParameter="{x:Int32 1}"
-                        VerticalOptions="FillAndExpand"
-                        WidthRequest="40" />
-                <Button Text="↩️️"
-                        IsEnabled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWay}"
-                        Command="{Binding RotateCommand}"
-                        CommandParameter="{x:Int32 -1}"
-                        VerticalOptions="FillAndExpand"
-                        WidthRequest="40" />
-                <Button Text="Reset"
-                        Command="{Binding RotateCommand}"
-                        CommandParameter="{x:Int32 0}"
-                        VerticalOptions="FillAndExpand" />
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40">
+                <Label
+                    Text="Rotation:"
+                    VerticalTextAlignment="Center" />
+                <Switch
+                    IsToggled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWayToSource}"
+                    VerticalOptions="Center" />
+                <Button
+                    Text="↪️"
+                    IsEnabled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding RotateCommand}"
+                    CommandParameter="{x:Int32 1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="↩️️"
+                    IsEnabled="{Binding RotateEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding RotateCommand}"
+                    CommandParameter="{x:Int32 -1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="Reset"
+                    Command="{Binding RotateCommand}"
+                    CommandParameter="{x:Int32 0}"
+                    VerticalOptions="FillAndExpand" />
             </StackLayout>
             <!-- Tilt / pitch -->
-            <StackLayout Orientation="Horizontal"
-                         HeightRequest="40">
-                <Label Text="Pitch:"
-                       VerticalTextAlignment="Center" />
-                <Switch IsToggled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWayToSource}"
-                        VerticalOptions="Center" />
-                <Button Text="⬆️"
-                        IsEnabled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWay}"
-                        Command="{Binding TiltCommand}"
-                        CommandParameter="{x:Int32 -1}"
-                        VerticalOptions="FillAndExpand"
-                        WidthRequest="40" />
-                <Button Text="⬇️"
-                        IsEnabled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWay}"
-                        Command="{Binding TiltCommand}"
-                        CommandParameter="{x:Int32 1}"
-                        VerticalOptions="FillAndExpand"
-                        WidthRequest="40" />
-                <Button Text="Reset"
-                        Command="{Binding TiltCommand}"
-                        CommandParameter="{x:Int32 0}"
-                        VerticalOptions="FillAndExpand" />
+            <StackLayout
+                Orientation="Horizontal"
+                HeightRequest="40">
+                <Label
+                    Text="Pitch:"
+                    VerticalTextAlignment="Center" />
+                <Switch
+                    IsToggled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWayToSource}"
+                    VerticalOptions="Center" />
+                <Button
+                    Text="⬆️"
+                    IsEnabled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding TiltCommand}"
+                    CommandParameter="{x:Int32 -1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="⬇️"
+                    IsEnabled="{Binding PitchEnabled, Source={Reference Map}, Mode=OneWay}"
+                    Command="{Binding TiltCommand}"
+                    CommandParameter="{x:Int32 1}"
+                    VerticalOptions="FillAndExpand"
+                    WidthRequest="40" />
+                <Button
+                    Text="Reset"
+                    Command="{Binding TiltCommand}"
+                    CommandParameter="{x:Int32 0}"
+                    VerticalOptions="FillAndExpand" />
             </StackLayout>
             <StackLayout.Triggers>
-                <DataTrigger TargetType="StackLayout"
-                             Binding="{Binding ShowingTool}"
-                             Value="{x:Static local:MapTools.Camera}">
-                    <Setter Property="IsVisible"
-                            Value="True" />
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Camera}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
                 </DataTrigger>
             </StackLayout.Triggers>
         </StackLayout>
         <!-- Offline -->
-        <Grid Grid.Row="1"
-              IsVisible="false"
-              HeightRequest="40"
-              BackgroundColor="White"
-              VerticalOptions="Start"
-              Padding="8,0">
+        <Grid
+            Grid.Row="1"
+            IsVisible="false"
+            HeightRequest="40"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            Padding="8,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Text="Download"
-                    Command="{Binding DownloadCommand}" />
-            <Button Grid.Column="1"
-                    Command="{Binding LoadOfflinePackCommand}"
-                    Text="Load" />
-            <Button Grid.Column="2"
-                    Command="{Binding ClearOfflinePacksCommand}"
-                    Text="Clear" />
+            <Button
+                Text="Download"
+                Command="{Binding DownloadCommand}" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding LoadOfflinePackCommand}"
+                Text="Load" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding ClearOfflinePacksCommand}"
+                Text="Clear" />
             <Grid.Triggers>
-                <DataTrigger TargetType="Grid"
-                             Binding="{Binding ShowingTool}"
-                             Value="{x:Static local:MapTools.Offline}">
-                    <Setter Property="IsVisible"
-                            Value="True" />
+                <DataTrigger
+                    TargetType="Grid"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Offline}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
                 </DataTrigger>
             </Grid.Triggers>
         </Grid>
         <!-- Annotations tool -->
-        <Grid Grid.Row="1"
-              IsVisible="False"
-              BackgroundColor="White"
-              VerticalOptions="Start"
-              ColumnSpacing="0"
-              RowSpacing="0">
+        <Grid
+            Grid.Row="1"
+            IsVisible="False"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            ColumnSpacing="0"
+            RowSpacing="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="48" />
-                <RowDefinition Height="48" />
-                <RowDefinition Height="48" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition
+                    Height="48" />
+                <RowDefinition
+                    Height="48" />
+                <RowDefinition
+                    Height="48" />
+                <RowDefinition
+                    Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="*" />
             </Grid.ColumnDefinitions>
-
-            <Button Text="Stop adding annotation"
-                    Command="{Binding ToggleCurrentActionCommand}"
-                    CommandParameter="{x:Static local:ActionState.AddPointAnnotation}">
+            <Button
+                Text="Stop adding annotation"
+                Command="{Binding ToggleCurrentActionCommand}"
+                CommandParameter="{x:Static local:ActionState.AddPointAnnotation}">
                 <Button.Triggers>
-                    <DataTrigger TargetType="Button"
-                                 Binding="{Binding CurrentAction}"
-                                 Value="{x:Static local:ActionState.None}">
-                        <Setter Property="Text"
-                                Value="Start adding point annotation" />
+                    <DataTrigger
+                        TargetType="Button"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.None}">
+                        <Setter
+                            Property="Text"
+                            Value="Start adding point annotation" />
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
-
-            <Button Grid.Column="1"
-                    Text="Clear All Annotations"
-                    Command="{Binding ClearAllAnnotation}"
-                    Margin="2,2,1,1" />
-
-            <Button Grid.Row="1"
-                    Command="{Binding SelectAnnotationCommand}"
-                    Text="Select Annotation"
-                    Margin="1,2,2,1" />
-
-            <Button Grid.Row="1"
-                    Grid.Column="1"
-                    Command="{Binding DeselectAnnotationCommand}"
-                    Text="Deselect Annotation"
-                    Margin="2,1,1,1" />
-
+            <Button
+                Grid.Column="1"
+                Text="Clear All Annotations"
+                Command="{Binding ClearAllAnnotation}"
+                Margin="2,2,1,1" />
+            <Button
+                Grid.Row="1"
+                Command="{Binding SelectAnnotationCommand}"
+                Text="Select Annotation"
+                Margin="1,2,2,1" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Command="{Binding DeselectAnnotationCommand}"
+                Text="Deselect Annotation"
+                Margin="2,1,1,1" />
             <Button
                 Grid.Row="2"
                 Text="Stop Add polyline"
-                Margin="1,1,2,1" 
+                Margin="1,1,2,1"
                 Command="{Binding ToggleCurrentActionCommand}"
                 CommandParameter="{x:Static local:ActionState.AddPolyline}">
                 <Button.Triggers>
@@ -324,62 +382,76 @@
                     </DataTrigger>
                 </Button.Triggers>
             </Button>
-
-            <Label Grid.Row="3"
-                   Grid.ColumnSpan="2"
-                   Margin="2">
+            <Label
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                Margin="2">
                 <Label.Triggers>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding CurrentAction}"
-                                 Value="{x:Static local:ActionState.None}">
-                        <Setter Property="IsVisible"
-                                Value="False" />
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.None}">
+                        <Setter
+                            Property="IsVisible"
+                            Value="False" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding CurrentAction}"
-                                 Value="{x:Static local:ActionState.AddPointAnnotation}">
-                        <Setter Property="Text"
-                                Value="Tap on map to add point annotation" />
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.AddPointAnnotation}">
+                        <Setter
+                            Property="Text"
+                            Value="Tap on map to add point annotation" />
                     </DataTrigger>
-                    <DataTrigger TargetType="Label"
-                                 Binding="{Binding CurrentAction}"
-                                 Value="{x:Static local:ActionState.AddPolyline}">
-                        <Setter Property="Text"
-                                Value="Tap on map to add coordinates into polyline" />
+                    <DataTrigger
+                        TargetType="Label"
+                        Binding="{Binding CurrentAction}"
+                        Value="{x:Static local:ActionState.AddPolyline}">
+                        <Setter
+                            Property="Text"
+                            Value="Tap on map to add coordinates into polyline" />
                     </DataTrigger>
                 </Label.Triggers>
             </Label>
             <Grid.Triggers>
-                <DataTrigger TargetType="Grid"
-                             Binding="{Binding ShowingTool}"
-                             Value="{x:Static local:MapTools.Annotations}">
-                    <Setter Property="IsVisible"
-                            Value="True" />
+                <DataTrigger
+                    TargetType="Grid"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Annotations}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
                 </DataTrigger>
             </Grid.Triggers>
         </Grid>
-
         <!-- Misc -->
-        <StackLayout Orientation="Vertical"
-                     Grid.Row="1"
-                     BackgroundColor="White"
-                     VerticalOptions="Start"
-                     IsVisible="false">
-            <Button Command="{Binding TakeSnapshotCommand}"
-                    CommandParameter="{x:Static local:MapTools.None}"
-                    Text="Take Snapshot" />
-            <Button Command="{Binding GetStyleImageCommand}"
-                    Text="Get Style Image" />
-            <Button Command="{Binding GetStyleLayerCommand}"
-                    Text="Get Style Layer" />
-            <Button Command="{Binding AddSatelliteLayerCommand}"
-                    Text="Add Satellite Layer" />
+        <StackLayout
+            Orientation="Vertical"
+            Grid.Row="1"
+            BackgroundColor="White"
+            VerticalOptions="Start"
+            IsVisible="false">
+            <Button
+                Command="{Binding TakeSnapshotCommand}"
+                CommandParameter="{x:Static local:MapTools.None}"
+                Text="Take Snapshot" />
+            <Button
+                Command="{Binding GetStyleImageCommand}"
+                Text="Get Style Image" />
+            <Button
+                Command="{Binding GetStyleLayerCommand}"
+                Text="Get Style Layer" />
+            <Button
+                Command="{Binding AddSatelliteLayerCommand}"
+                Text="Add Satellite Layer" />
             <StackLayout.Triggers>
-                <DataTrigger TargetType="StackLayout"
-                             Binding="{Binding ShowingTool}"
-                             Value="{x:Static local:MapTools.Misc}">
-                    <Setter Property="IsVisible"
-                            Value="True" />
+                <DataTrigger
+                    TargetType="StackLayout"
+                    Binding="{Binding ShowingTool}"
+                    Value="{x:Static local:MapTools.Misc}">
+                    <Setter
+                        Property="IsVisible"
+                        Value="True" />
                 </DataTrigger>
             </StackLayout.Triggers>
         </StackLayout>

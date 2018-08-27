@@ -24,7 +24,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.InfoWindowClick += InfoWindowClick;
             map.MapClick += MapClicked;
             map.CameraIdle += OnCameraIdle;
-            map.CameraChange += Map_CameraChange;
             map.CameraMoveStarted += Map_CameraMoveStarted;
             map.CameraMoveCancel += Map_CameraMoveCancel;
             map.CameraMove += Map_CameraMove;
@@ -37,7 +36,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.InfoWindowClick -= InfoWindowClick;
             map.MapClick -= MapClicked;
             map.CameraIdle -= OnCameraIdle;
-            map.CameraChange -= Map_CameraChange;
             map.CameraMoveStarted -= Map_CameraMoveStarted;
             map.CameraMoveCancel -= Map_CameraMoveCancel;
             map.CameraMove -= Map_CameraMove;
@@ -59,11 +57,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             cameraBusy = true;
         }
 
-        private void Map_CameraChange(object sender, MapboxMap.CameraChangeEventArgs e)
-        {
-            CameraChange();
-            cameraBusy = true;
-        }
         private void CameraChange()
         {
             if(map.SelectedMarkers.Count>0)

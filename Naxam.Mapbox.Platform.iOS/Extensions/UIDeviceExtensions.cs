@@ -6,8 +6,7 @@ namespace Naxam.Extensions.iOS
 {
     public static class UIDeviceExtensions
     {
-        private const string HardwareProperty = "hw.machine";
-
+        const string HardwareProperty = "hw.machine";
         [DllImport("libc", CallingConvention = CallingConvention.Cdecl)]
         static internal extern int sysctlbyname([MarshalAs(UnmanagedType.LPStr)] string property, IntPtr output, IntPtr oldLen, IntPtr newp, uint newlen);
 

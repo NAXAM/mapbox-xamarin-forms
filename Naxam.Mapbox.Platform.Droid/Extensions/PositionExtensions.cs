@@ -6,7 +6,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class PositionExtensions
     {
-        public static LatLng ToLatLng(this Position pos) {
+        public static LatLng ToLatLng(this Position pos)
+        {
             return new LatLng(pos.Lat, pos.Long);
         }
     }

@@ -31,7 +31,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
         {
             if (region == null) return null;
             var output = new OfflinePackRegion();
-
             output.Bounds = new CoordinateBounds()
             {
                 SouthWest = TypeConverter.FromCoordinateToPosition(region.Bounds.sw),

@@ -4,6 +4,8 @@ namespace Naxam.Controls.Mapbox.Forms
 {
     public class MapSource: BindableObject
     {
+        public string Id { get; set; }
+
         public MapSource()
         {
         }
@@ -12,12 +14,5 @@ namespace Naxam.Controls.Mapbox.Forms
         {
             Id = id;
         }
-
-        public string Id
-        {
-            get;
-            set;
-        }
-
     }
 }

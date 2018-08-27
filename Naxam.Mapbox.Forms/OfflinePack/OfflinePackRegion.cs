@@ -1,34 +1,14 @@
-﻿using System;
+using System;
 namespace Naxam.Controls.Mapbox.Forms
 {
     public class OfflinePackRegion
     {
-        public OfflinePackRegion()
-        {
-        }
+        public string StyleURL { get; set; }
 
-        public string StyleURL
-        {
-            get;
-            set;
-        }
+        public CoordinateBounds Bounds { get; set; }
 
-        public CoordinateBounds Bounds
-        {
-            get;
-            set;
-        }
+        public double MaximumZoomLevel { get; set; }
 
-        public double MaximumZoomLevel
-        {
-            get;
-            set;
-        }
-
-        public double MinimumZoomLevel
-        {
-            get;
-            set;
-        }
+        public double MinimumZoomLevel { get; set; }
     }
 }
