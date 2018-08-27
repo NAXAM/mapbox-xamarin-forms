@@ -15,47 +15,66 @@ using Xamarin.Forms.Platform.Android;
 
 namespace Naxam.Mapbox.Platform.Droid
 {
-    public class ViewGroupContainer : FormsViewGroup
+    using Platform = Xamarin.Forms.Platform.Android.Platform;
+
+    public class ViewGroupContainer : ViewGroup, INativeElementView
     {
+        readonly Android.Views.View _parent;
         IVisualElementRenderer _renderer;
-        private Context _context;
-        private VisualElement _visualElement;
-        private Android.Views.View _parent;
-        Android.Views.View _view;
+        ViewCell _viewCell;
+        public ViewGroupContainer(Context context,
+                                 Android.Views.View parent,
+                                 ViewCell viewCell) : base(context)
+        {
+            _viewCell = viewCell;
+            _parent = parent;
+            _renderer = Platform.CreateRendererWithContext(_viewCell.View,context);
+            Platform.SetRenderer(_viewCell.View, _renderer);
+            var view = _renderer.View;
+            LayoutParameters = new LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
+            AddView(view);
+            UpdateIsEnabled();
+        }
+
+        public void Update(object data)
+        {
+            _viewCell.BindingContext = data;
+        }
+
         public Element Element
         {
-            get { return _visualElement; }
+            get { return _viewCell; }
         }
 
-
-        public ViewGroupContainer(Context context, Android.Views.View parent, VisualElement visualElement) : base(context)
+        public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
-            _context = context;
-            LayoutParameters = new LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
-            _visualElement = visualElement;
-            _parent = parent;
-            _renderer = Xamarin.Forms.Platform.Android.Platform.CreateRendererWithContext(_visualElement, context);
-            Xamarin.Forms.Platform.Android.Platform.SetRenderer(_visualElement, _renderer);
-            _view = _renderer.View;
-            AddView(_view);
-
+            if (!Enabled)
+                return true;
+            return base.OnInterceptTouchEvent(ev);
         }
-        public void Dispose()
+
+        public void UpdateIsEnabled()
         {
-            throw new NotImplementedException();
+            Enabled = _viewCell.IsEnabled;
         }
-        protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
+
+        protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            double width = Context.FromPixels(right - left);
-            double height = Context.FromPixels(bottom - top);
+            double width = Context.FromPixels(r - l);
+            double height = Context.FromPixels(b - t);
             Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_renderer.Element, new Rectangle(0, 0, width, height));
             _renderer.UpdateLayout();
-            System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {right - left}x{bottom - top}");
-
+            System.Diagnostics.Debug.WriteLine($"{nameof(OnLayout)}: {r - l}x{b - t}");
         }
+
         protected override void OnMeasure(int widthMeasureSpec, int heightMeasureSpec)
         {
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
+            int width = MeasureSpec.GetSize(widthMeasureSpec);
+            int height = MeasureSpec.GetSize(heightMeasureSpec);
+            int widthSpec = MeasureSpec.MakeMeasureSpec(width, MeasureSpec.GetMode(widthMeasureSpec));
+            int heightSpec = MeasureSpec.MakeMeasureSpec(height, MeasureSpec.GetMode(heightMeasureSpec));
+            base.SetMeasuredDimension(width, height);
         }
+        
     }
 }
