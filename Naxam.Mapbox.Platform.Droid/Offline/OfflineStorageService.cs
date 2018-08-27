@@ -32,7 +32,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public Task<OfflinePack> DownloadMap(OfflinePackRegion region, Dictionary<string, string> packInfo)
         {
             var tcs = new TaskCompletionSource<OfflinePack>();
-            //RunningTasks.Add(tcs);
             LatLngBounds latLngBounds = new LatLngBounds.Builder()
                                                         .Include(new LatLng(region.Bounds.NorthEast.Lat, region.Bounds.NorthEast.Long)) // Northeast 
                                                         .Include(new LatLng(region.Bounds.SouthWest.Lat, region.Bounds.SouthWest.Long)) // Southwest 

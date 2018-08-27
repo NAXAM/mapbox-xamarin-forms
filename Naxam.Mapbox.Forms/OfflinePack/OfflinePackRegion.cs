@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 namespace Naxam.Controls.Mapbox.Forms
 {
     public class OfflinePackRegion

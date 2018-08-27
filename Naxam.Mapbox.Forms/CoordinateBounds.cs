@@ -1,4 +1,4 @@
-﻿namespace Naxam.Controls.Mapbox.Forms
+namespace Naxam.Controls.Mapbox.Forms
 {
     public class CoordinateBounds
     {
