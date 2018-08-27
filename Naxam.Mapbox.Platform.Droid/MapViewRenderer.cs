@@ -35,7 +35,7 @@ using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
 using MAnnotation = Com.Mapbox.Mapboxsdk.Annotations.Annotation;
 
 using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
-using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerViewOptions;
+using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
 
 using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
 using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
@@ -79,7 +79,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (Control == null)
             {
-                var activity =(AppCompatActivity)Context;
+                var activity = (AppCompatActivity)Context;
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
@@ -399,7 +399,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.PitchProperty.PropertyName)
             {
-                map?.SetTilt(Element.Pitch);
+                // TODO Change to use camera update https://github.com/mapbox/mapbox-android-demo/blob/master/MapboxAndroidDemo/src/main/java/com/mapbox/mapboxandroiddemo/examples/camera/AnimateMapCameraActivity.java
+                //map?.SetTilt(Element.Pitch);
             }
             else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
             {
@@ -410,9 +411,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName)
             {
-                map?.SetBearing(Element.RotatedDegree);
+                //TODO Change to use CameraUpdate (https://github.com/mapbox/mapbox-android-demo/blob/master/MapboxAndroidDemo/src/main/java/com/mapbox/mapboxandroiddemo/examples/camera/AnimateMapCameraActivity.java)
+                //map?.SetBearing(Element.RotatedDegree);
             }
-            else  if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
+            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
                 var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
                 System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
@@ -735,22 +737,22 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 var at = markers[i];
                 var marker = new MMarker();
-                marker.InfoWindowAnchor(-1, -1);
-                marker.InvokeTitle(at.Title);
-                marker.InvokeSnippet(at.SubTitle);
-                marker.InvokePosition(at.Coordinate.ToLatLng());
+                //marker.InfoWindowAnchor(-1, -1);
+                marker.SetTitle(at.Title);
+                marker.SetSnippet(at.SubTitle);
+                marker.SetPosition(at.Coordinate.ToLatLng());
                 if (string.IsNullOrEmpty(at.Icon) == false)
                 {
                     if (iconSource.ContainsKey(at.Icon))
                     {
-                        marker.InvokeIcon(iconSource[at.Icon]);
+                        marker.SetIcon(iconSource[at.Icon]);
                     }
                     else
                     {
                         var icon = Context.GetIconFromResource(at.Icon);
                         if (icon != null)
                         {
-                            marker.InvokeIcon(icon);
+                            marker.SetIcon(icon);
                             iconSource.Add(at.Icon, icon);
                         }
                     }
@@ -758,7 +760,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 markerOptions.Add(marker);
             }
-            var options =markerOptions.Select(x => map.AddMarker(x)).ToArray();
+            var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList()).ToArray();
             for (int i = 0; i < options.Length; i++)
             {
                 markers[i].Id = options[i].Id.ToString();
@@ -948,13 +950,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.RemoveAnnotations(map.Annotations);
             }
         }
-        
+
         public override void AddOnLayoutChangeListener(IOnLayoutChangeListener listener)
         {
             base.AddOnLayoutChangeListener(listener);
 
         }
-        
+
         public void OnMapReady(MapboxMap p0)
         {
             map = p0;
@@ -1004,12 +1006,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             });
             if (Element.InfoWindowTemplate != null)
             {
-                var info = new CustomInfoWindowAdapter(Context, Element.InfoWindowTemplate, Element, map);
+                var info = new CustomInfoWindowAdapter(Context, Element);
                 map.InfoWindowAdapter = info;
             }
         }
     }
-   
+
     class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback
     {
         public Action<Bitmap> SnapshotReady { get; set; }
