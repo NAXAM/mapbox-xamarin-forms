@@ -59,7 +59,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private void CameraChange()
         {
-            if(map.SelectedMarkers.Count>0)
+            if (map == null || map.SelectedMarkers == null) return;
+            if (map.SelectedMarkers.Count > 0)
                 map.DeselectMarkers();
         }
         private void OnCameraIdle(object sender, EventArgs e)
@@ -162,7 +163,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     break;
             }
         }
-        
+
         public override bool OnInterceptTouchEvent(MotionEvent ev)
         {
             switch (ev.Action)
