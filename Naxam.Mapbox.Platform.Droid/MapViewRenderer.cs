@@ -33,6 +33,7 @@ using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
 
 using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
 using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
+using Com.Mapbox.Mapboxsdk.Offline;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -240,6 +241,20 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         map.DeselectMarker(marker);
                     }
                 }
+            };
+
+            Element.ApplyOfflinePackFunc = (offlinePack) =>
+            {
+                var region = offlinePack.Region;
+                OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
+                    region.StyleURL,
+                    latLngBounds,
+                    region.MinimumZoomLevel,
+                    region.MaximumZoomLevel,
+                    Android.App.Application.Context.Resources.DisplayMetrics.Density);
+                //var xxx = new OfflineTilePyramidRegionDefinition(null);
+                //LatLngBounds bounds = ((OfflineTilePyramidRegionDefinition)offlinePack.Region).Bounds();
+                return true;
             };
         }
 

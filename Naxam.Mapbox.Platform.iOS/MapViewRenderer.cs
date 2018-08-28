@@ -20,6 +20,7 @@ using Xamarin.Forms.Platform.iOS;
 using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
 using FormsMB = Naxam.Controls.Mapbox.Forms;
 using Naxam.Mapbox.Platform.iOS.Extensions;
+using ObjCRuntime;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(FormsMap), typeof(MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
@@ -464,6 +465,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 return false;
             };
 
+            Element.ApplyOfflinePackFunc = (mapPack) =>
+            {
+                var pack = Runtime.GetNSObject<MGLOfflinePack>(mapPack.Handle);
+                var region = Runtime.GetNSObject<MGLTilePyramidOfflineRegion>(pack.Region.Handle);
+                MapView.StyleURL = region.StyleURL;
+                MapView.VisibleCoordinateBounds = region.Bounds;
+                MapView.ZoomLevel = Math.Min(MapView.MaximumZoomLevel, Math.Max(MapView.MinimumZoomLevel, MapView.ZoomLevel));
+                return true;
+            };
+
             Element.SelectAnnotationAction = (Tuple<string, bool> obj) =>
             {
                 if (obj == null || MapView == null || MapView.Annotations == null) return;
@@ -663,9 +674,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public IMGLCalloutView MapView_CalloutViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
             var id = annotation.Handle.ToInt64().ToString();
-            var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
-            UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView(bindingContext, Element);
-            return new MGLCustomCalloutView(null, calloutContent);
+            if(mapView.Annotations != null)
+            {
+                var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
+                UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView(bindingContext, Element);
+                return new MGLCustomCalloutView(null, calloutContent);
+            }
+
+            return null;
         }
 
         [Export("mapView:viewForAnnotation:")]

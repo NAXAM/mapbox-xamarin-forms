@@ -121,9 +121,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\..\packages\Naxam.Mapbox.iOS.4.3.0.1\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="SkiaSharp">
       <HintPath>..\..\packages\SkiaSharp.1.60.3\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
     </Reference>
@@ -149,6 +146,9 @@
     </Reference>
     <Reference Include="Rg.Plugins.Popup.IOS">
       <HintPath>..\..\packages\Rg.Plugins.Popup.1.1.4.168\lib\Xamarin.IOS\Rg.Plugins.Popup.IOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Naxam.Mapbox.iOS">
+      <HintPath>..\..\packages\Naxam.Mapbox.iOS.4.3.0.2\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
