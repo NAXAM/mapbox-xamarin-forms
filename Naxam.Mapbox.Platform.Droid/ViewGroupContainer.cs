@@ -20,25 +20,14 @@ namespace Naxam.Mapbox.Platform.Droid
     public class ViewGroupContainer : BubbleLayout
     {
         IVisualElementRenderer _renderer;
-        ViewCell _viewCell;
-        public ViewGroupContainer(Context context,
-                                 ViewCell viewCell) : base(context)
-        {
-            _viewCell = viewCell;
-            _renderer = Platform.CreateRendererWithContext(_viewCell.View, context);
-            Platform.SetRenderer(_viewCell.View, _renderer);
-            var view = _renderer.View;
-            LayoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(_viewCell.View.WidthRequest)), (int)Math.Round(context.ToPixels(_viewCell.View.HeightRequest)));
-            AddView(view, LayoutParameters);
-        }
 
         public ViewGroupContainer(Context context, Xamarin.Forms.View fview) : base(context)
         {
-            _renderer = Platform.CreateRendererWithContext(fview, context);
+            _renderer = Platform.GetRenderer(fview) ?? Platform.CreateRendererWithContext(fview, context);
             Platform.SetRenderer(fview, _renderer);
             var view = _renderer.View;
-            LayoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(fview.WidthRequest)), (int)Math.Round(context.ToPixels(fview.HeightRequest)));
-            AddView(view, LayoutParameters);
+            var layoutParameters = new LayoutParams((int)Math.Round(context.ToPixels(fview.WidthRequest)), (int)Math.Round(context.ToPixels(fview.HeightRequest)));
+            AddView(view, layoutParameters);
         }
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
@@ -47,7 +36,6 @@ namespace Naxam.Mapbox.Platform.Droid
             double height = Context.FromPixels(b - t);
             Xamarin.Forms.Layout.LayoutChildIntoBoundingRegion(_renderer.Element, new Rectangle(0, 0, width, height));
             _renderer.UpdateLayout();
-            
             base.OnLayout(changed, l, t, r, b);
         }
 
@@ -57,8 +45,8 @@ namespace Naxam.Mapbox.Platform.Droid
             int height = MeasureSpec.GetSize(heightMeasureSpec);
             int widthSpec = MeasureSpec.MakeMeasureSpec(width, MeasureSpec.GetMode(widthMeasureSpec));
             int heightSpec = MeasureSpec.MakeMeasureSpec(height, MeasureSpec.GetMode(heightMeasureSpec));
-         //   base.SetMeasuredDimension(width, height);
-            base.OnMeasure(widthMeasureSpec, heightMeasureSpec); 
+            //   base.SetMeasuredDimension(width, height);
+            base.OnMeasure(widthMeasureSpec, heightMeasureSpec);
         }
 
     }

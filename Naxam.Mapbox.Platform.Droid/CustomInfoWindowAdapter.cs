@@ -19,40 +19,33 @@ namespace Naxam.Mapbox.Platform.Droid
         }
         public Android.Views.View GetInfoWindow(Marker marker)
         {
-            marker.SetTopOffsetPixels(-marker.Icon.Bitmap.Height / 2 - 24);
-            marker.SetTopOffsetPixels(-marker.Icon.Bitmap.Width);
-            if (marker.InfoWindow?.View != null)
-                return marker.InfoWindow.View;
             if (_dataTemPlate == null)
                 return null;
-            object content = null;
+
             var bindingContext = _mapView.Annotations?.FirstOrDefault(d => d.Id == marker.Id.ToString());
-            if (_dataTemPlate is DataTemplateSelector dts)
+            var templateContent = (_dataTemPlate is DataTemplateSelector dataTemplateSelector)
+                ? dataTemplateSelector.SelectTemplate(bindingContext, _mapView).CreateContent()
+                : _dataTemPlate.CreateContent();
+
+            View view = null;
+
+            switch (templateContent)
             {
-                content = dts.SelectTemplate(bindingContext, _mapView).CreateContent();
-            }
-            else
-            {
-                content = _dataTemPlate.CreateContent();
+                case ViewCell viewCell:
+                    viewCell.BindingContext = bindingContext;
+                    viewCell.Parent = _mapView;
+                    view = viewCell.View;
+                    break;
+                case View view1:
+                    view1.BindingContext = bindingContext;
+                    view1.Parent = _mapView;
+                    view = view1; break;
+                default:
+                    return null;
             }
 
-            if (content is ViewCell vc)
-            {
-                vc.Parent = _mapView;
-                vc.BindingContext = bindingContext;
-                var output = new ViewGroupContainer(_context, vc);
-                return output;
-            }
-
-            if (content is View view)
-            {
-                view.Parent = _mapView;
-                view.BindingContext = bindingContext;
-                var output = new ViewGroupContainer(_context, view);
-                return output;
-            }
-
-            return null;
+            var output = new ViewGroupContainer(_context, view);
+            return output;
         }
     }
 }
