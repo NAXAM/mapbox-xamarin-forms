@@ -95,7 +95,7 @@
                 <DataTemplate>
                     <Grid
                         WidthRequest="320"
-                        HeightRequest="120"
+                        HeightRequest="30"
                         HorizontalOptions="Start"
                         VerticalOptions="Start"
                         BackgroundColor="Aqua">

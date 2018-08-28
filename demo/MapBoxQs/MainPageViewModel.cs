@@ -458,17 +458,17 @@ namespace MapBoxQs
             }
             if (obj == MapTools.CustomLocation)
             {
-                if (CenterLocation != null
-                    && (Math.Abs(CenterLocation.Lat - positions[0].Lat) > 0.01
-                        || Math.Abs(CenterLocation.Long - positions[0].Long) > 0.01))
-                {
-                    CustomLatitude = positions[0].Lat.ToString();
-                    CustomLongitude = positions[0].Long.ToString();
-                }
-                else
+                if(CenterLocation == null)
                 {
                     CustomLatitude = positions[1].Lat.ToString();
                     CustomLongitude = positions[1].Long.ToString();
+                }
+                else if (CenterLocation != null
+                    && (Math.Abs(CenterLocation.Lat - positions[0].Lat) > 0.01)
+                    || Math.Abs(CenterLocation.Long - positions[0].Long) > 0.01)
+                {
+                    CustomLatitude = positions[0].Lat.ToString();
+                    CustomLongitude = positions[0].Long.ToString();
                 }
             }
             ShowingTool = obj;
@@ -743,9 +743,9 @@ namespace MapBoxQs
                 var annotation = new PointAnnotation()
                 {
                     Coordinate = currentPosition,
-                    Icon = "pin"
+                    //Icon = "pin"
                 };
-                annotation.Title = "PointAnnot." + annotation.Id;
+                annotation.Title = "PointAnnot." + i;
                 Annotations.Add(annotation);
                 OnPropertyChanged("Annotations");
                 i = i + 1;
@@ -777,6 +777,7 @@ namespace MapBoxQs
         void ExecuteClearAllAnnotation(object obj)
         {
             Annotations.Clear();
+            i = 1;
         }
 
         #endregion
