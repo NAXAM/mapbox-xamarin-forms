@@ -19,6 +19,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
 using FormsMB = Naxam.Controls.Mapbox.Forms;
+using Naxam.Mapbox.Platform.iOS.Extensions;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(FormsMap), typeof(MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
@@ -30,10 +31,15 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
-            if (e.OldElement != null || Element == null)
+            if (e.OldElement != null)
             {
-                return;
+                if(e.OldElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
+                {
+                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                }
             }
+
+            if (e.NewElement == null) return;
 
             try
             {
@@ -43,6 +49,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     SetupEventHandlers();
                     SetupFunctions();
                     SetNativeControl(MapView);
+                    if(e.NewElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
+                    {
+                        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    }
                 }
             }
             catch (Exception ex)
@@ -134,6 +144,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else if (e.PropertyName == FormsMap.ShowUserLocationProperty.PropertyName)
             {
                 MapView.ShowsUserLocation = Element.ShowUserLocation;
+            } else if(e.PropertyName == FormsMap.InfoWindowTemplateProperty.PropertyName)
+            {
             }
         }
 
@@ -645,6 +657,15 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 annots.Add(shape);
             }
             MapView.AddAnnotations(annots.ToArray());
+        }
+
+        [Export("mapView:calloutViewForAnnotation:")]
+        public IMGLCalloutView MapView_CalloutViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
+        {
+            var id = annotation.Handle.ToInt64().ToString();
+            var bindingContext = mapView.Annotations.FirstOrDefault(a => a.Handle.ToInt64().ToString() == id);
+            UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView(bindingContext, Element);
+            return new MGLCustomCalloutView(null, calloutContent);
         }
 
         [Export("mapView:viewForAnnotation:")]

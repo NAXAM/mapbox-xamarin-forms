@@ -105,7 +105,7 @@
     </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\packages\Naxam.Mapbox.iOS.4.1.1\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.iOS.4.2.0\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -124,10 +124,12 @@
     <Compile Include="Extensions\MGLOfflinePackProgressExtensions.cs" />
     <Compile Include="OfflineStorageService.cs" />
     <Compile Include="DraggableAnnotationView.cs" />
+    <Compile Include="MGLCustomCalloutView.cs" />
+    <Compile Include="Extensions\NativeViewExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
-      <Project>{5CD2FC83-D004-40CA-B5FE-61D42FA1DDFF}</Project>
+      <Project>{EBB04763-2E36-4D2C-94C9-351FBACE3C83}</Project>
       <Name>Naxam.Mapbox.Forms</Name>
     </ProjectReference>
   </ItemGroup>
