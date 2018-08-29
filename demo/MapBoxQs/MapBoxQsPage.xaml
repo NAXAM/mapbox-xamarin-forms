@@ -94,31 +94,29 @@
             </controls:MapView.Center>
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Grid
-                            WidthRequest="200"
-                            HeightRequest="30"
-                            HorizontalOptions="Start"
-                            VerticalOptions="Start"
-                            BackgroundColor="Aqua">
-                            <Grid.RowDefinitions>
-                                <RowDefinition
-                                    Height="30" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="30" />
-                                <ColumnDefinition
-                                    Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Image
-                                Grid.Column="0"
-                                Source="icon.png" />
-                            <Label
-                                Grid.Column="1"
-                                Text="{Binding Title}" />
-                        </Grid>
-                    </ViewCell>
+                    <Grid
+                        WidthRequest="320"
+                        HeightRequest="30"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"
+                        BackgroundColor="Aqua">
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="30" />
+                            <ColumnDefinition
+                                Width="60" />
+                        </Grid.ColumnDefinitions>
+                        <Image
+                            Grid.Column="0"
+                            Source="icon.png" />
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding Title}" />
+                    </Grid>
                 </DataTemplate>
             </controls:MapView.InfoWindowTemplate>
         </controls:MapView>

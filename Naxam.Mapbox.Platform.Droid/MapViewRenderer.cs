@@ -92,15 +92,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         AddAnnotations(Element.Annotations.ToArray());
                         if (Element.Annotations is INotifyCollectionChanged notifyCollection)
                         {
+                            notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
                             notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                         }
                     }
 
                     OnMapRegionChanged();
-                }
-                if (e.NewElement.Annotations != null && e.NewElement.Annotations is INotifyCollectionChanged newCollection)
-                {
-                    newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                 }
             }
         }
@@ -116,6 +113,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
             }
+
             if (mapReady)
             {
                 RemoveAllAnnotations();
@@ -957,7 +955,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
             RemoveAllAnnotations();
-            AddAnnotations(Element?.Annotations?.ToArray());
             OnMapRegionChanged();
             if (Element.Center != null)
             {
@@ -981,11 +978,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
+
             if (Element.InfoWindowTemplate != null)
             {
                 var info = new CustomInfoWindowAdapter(Context, Element);
                 map.InfoWindowAdapter = info;
-
             }
 
             if (Element.Annotations != null)
@@ -993,6 +990,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 AddAnnotations(Element.Annotations.ToArray());
                 if (Element.Annotations is INotifyCollectionChanged notifyCollection)
                 {
+                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
                     notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                 }
             }
