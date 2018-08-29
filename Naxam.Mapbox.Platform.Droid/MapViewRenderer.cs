@@ -243,15 +243,21 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             Element.ApplyOfflinePackFunc = (offlinePack) =>
             {
-                var region = offlinePack.Region;
-                OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
-                    region.StyleURL,
-                    latLngBounds,
-                    region.MinimumZoomLevel,
-                    region.MaximumZoomLevel,
-                    Android.App.Application.Context.Resources.DisplayMetrics.Density);
+                //var region = offlinePack.Region;
+                //OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
+                //    region.StyleURL,
+                //    LatLngBounds.From(offlinePack.Region.Bounds.NorthEast.Lat, offlinePack.Region.Bounds.NorthEast.Long, offlinePack.Region.Bounds.SouthWest.Lat, offlinePack.Region.Bounds.SouthWest.Long),
+                //    region.MinimumZoomLevel,
+                //    region.MaximumZoomLevel,
+                //    Android.App.Application.Context.Resources.DisplayMetrics.Density);
                 //var xxx = new OfflineTilePyramidRegionDefinition(null);
-                //LatLngBounds bounds = ((OfflineTilePyramidRegionDefinition)offlinePack.Region).Bounds();
+                LatLngBounds bounds = LatLngBounds.From(offlinePack.Region.Bounds.NorthEast.Lat, offlinePack.Region.Bounds.NorthEast.Long, offlinePack.Region.Bounds.SouthWest.Lat, offlinePack.Region.Bounds.SouthWest.Long);
+                double regionZoom = offlinePack.Region.MaximumZoomLevel;
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                  .Target(bounds.Center)
+                  .Zoom(regionZoom)
+                  .Build();
+                map.MoveCamera(CameraUpdateFactory.NewCameraPosition(cameraPosition));
                 return true;
             };
         }
