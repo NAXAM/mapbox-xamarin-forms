@@ -271,14 +271,24 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
 
         // must handle here
-        Task<bool> IOfflineStorageService.Resume(OfflinePack pack)
+        async Task<bool> IOfflineStorageService.Resume(OfflinePack pack)
         {
-            throw new NotImplementedException();
+            if (pack == null) return false;
+            var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
+            if (mbPack.State == MGLOfflinePackState.Invalid || mbPack.State == MGLOfflinePackState.Unknown) return false;
+            mbPack.Resume();
+            if (mbPack.State == MGLOfflinePackState.Active) return true;
+            return true;
         }
 
-        Task<bool> IOfflineStorageService.SuspendPack(OfflinePack pack)
+        async Task<bool> IOfflineStorageService.SuspendPack(OfflinePack pack)
         {
-            throw new NotImplementedException();
+            if (pack == null) return false;
+            var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
+            if (mbPack.State == MGLOfflinePackState.Invalid || mbPack.State == MGLOfflinePackState.Unknown) return false;
+            mbPack.Suspend();
+            if (mbPack.State == MGLOfflinePackState.Inactive) return true;
+            return true;
         }
     }
 }
