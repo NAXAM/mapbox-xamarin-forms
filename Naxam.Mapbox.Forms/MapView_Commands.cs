@@ -257,5 +257,24 @@ namespace Naxam.Controls.Mapbox.Forms
         public static BindableProperty SelectAnnotationActionProperty = BindableProperty.Create(             nameof(SelectAnnotationAction),             typeof(Action<Tuple<string, bool>>),             typeof(MapView),             default(Action<Tuple<string, bool>>),             BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> SelectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(SelectAnnotationActionProperty); }             set { SetValue(SelectAnnotationActionProperty, value); }         } 
         public static BindableProperty DeselectAnnotationActionProperty = BindableProperty.Create(             nameof(DeselectAnnotationAction),             typeof(Action<Tuple<string, bool>>),             typeof(MapView),             default(Action<Tuple<string, bool>>),             BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> DeselectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(DeselectAnnotationActionProperty); }             set { SetValue(DeselectAnnotationActionProperty, value); }         } 
         #endregion
+
+        public static BindableProperty ApplyOfflinePackFuncProperty = BindableProperty.Create(
+            nameof(ApplyOfflinePackFunc),
+            typeof(Func<OfflinePack, bool>),
+            typeof(MapView),
+            default(Func<OfflinePack, bool>),
+            BindingMode.OneWayToSource
+       );
+
+        public Func<OfflinePack, bool> ApplyOfflinePackFunc
+        {
+            get { return (Func<OfflinePack, bool>)GetValue(ApplyOfflinePackFuncProperty); }
+            set { SetValue(ApplyOfflinePackFuncProperty, value); }
+        }
+
+        public bool ApplyOfflinePack(OfflinePack pack)
+        {
+            return ApplyOfflinePackFunc?.Invoke(pack)?? false;
+        }
     }
 }
