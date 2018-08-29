@@ -1,18 +1,9 @@
 ﻿using Naxam.Controls.Mapbox.Forms;
-//using Geojson = Com.Mapbox.Services.Commons.Geojson;
 
 using System.Collections.Generic;
 using System.Linq;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
-using MAnnotation = Com.Mapbox.Mapboxsdk.Annotations.Annotation;
-
-using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
-using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
-
-using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
-using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
-using System;
 using Android.Content;
 using Com.Mapbox.Geojson;
 

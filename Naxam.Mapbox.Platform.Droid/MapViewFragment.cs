@@ -2,6 +2,7 @@ using System;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Maps;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
@@ -14,13 +15,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public bool StateSaved { get; private set; }
 
-        public MapViewFragment (IntPtr javaReference, JniHandleOwnership transfer)
-            : base (javaReference, transfer)
+        public MapViewFragment(IntPtr javaReference, JniHandleOwnership transfer)
+            : base(javaReference, transfer)
         {
         }
 
-        public MapViewFragment () : base ()
-        { 
+        public MapViewFragment() : base()
+        {
 
         }
 
@@ -28,10 +29,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             base.OnViewCreated(view, savedInstanceState);
 
-            MapView = view as MapView; 
+            MapView = view as MapView;
             MapView?.AddOnMapChangedListener(this);
         }
-         
+
 
         public override void OnDestroyView()
         {
@@ -47,15 +48,23 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public override void OnResume()
         {
             base.OnResume();
-           //StateSaved = false;
         }
-
-        
 
         public override void OnSaveInstanceState(Bundle outState)
         {
-            base.OnSaveInstanceState(outState); 
-            //StateSaved = true;
+            base.OnSaveInstanceState(outState);
+        }
+
+        internal void ToggleInfoWindow(MapboxMap mapboxMap, Marker marker)
+        {
+            if (marker.IsInfoWindowShown)
+            {
+                mapboxMap.DeselectMarker(marker);
+            }
+            else
+            {
+                mapboxMap.SelectMarker(marker);
+            }
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private void CameraChange()
         {
-            if(map?.SelectedMarkers.Count>0)
+            if (map?.SelectedMarkers.Count > 0)
                 map.DeselectMarkers();
         }
         private void OnCameraIdle(object sender, EventArgs e)
@@ -84,6 +84,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void MarkerClicked(object o, MapboxMap.MarkerClickEventArgs args)
         {
+            fragment.ToggleInfoWindow(map, args.P0);
+
             if (Element?.Annotations?.Count() > 0)
             {
                 var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
@@ -103,8 +105,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public void OnMapChanged(int p0)
         {
-            Element.ScrollEnabled = true;
-            CameraChange();
             switch (p0)
             {
                 case MapView.DidFinishLoadingStyle:
@@ -156,19 +156,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 default:
                     break;
             }
-        }
-        
-        public override bool OnInterceptTouchEvent(MotionEvent ev)
-        {
-            switch (ev.Action)
-            {
-                case MotionEventActions.Down:
-                    CameraChange();
-                    break;
-                default:
-                    break;
-            }
-            return base.OnInterceptTouchEvent(ev);
         }
     }
 }

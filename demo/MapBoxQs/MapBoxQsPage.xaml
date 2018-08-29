@@ -93,29 +93,29 @@
             </controls:MapView.Center>
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>
-                    <Grid
-                        WidthRequest="320"
-                        HeightRequest="30"
+                    <StackLayout
+                        Orientation="Horizontal"
                         HorizontalOptions="Start"
-                        VerticalOptions="Start"
+                        HeightRequest="56"
+                        Padding="24"
                         BackgroundColor="Aqua">
-                        <Grid.RowDefinitions>
+                        <!--<Grid.RowDefinitions>
                             <RowDefinition
-                                Height="*" />
+                                Height="48" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
                                 Width="30" />
                             <ColumnDefinition
-                                Width="60" />
-                        </Grid.ColumnDefinitions>
+                                Width="*" />
+                        </Grid.ColumnDefinitions>-->
                         <Image
                             Grid.Column="0"
                             Source="icon.png" />
                         <Label
                             Grid.Column="1"
                             Text="{Binding Title}" />
-                    </Grid>
+                    </StackLayout>
                 </DataTemplate>
             </controls:MapView.InfoWindowTemplate>
         </controls:MapView>

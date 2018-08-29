@@ -3,9 +3,12 @@ using Android.Content;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Xamarin.Forms;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
+using Android.Widget;
 
 namespace Naxam.Mapbox.Platform.Droid
 {
+    using Platform = Xamarin.Forms.Platform.Android.Platform;
+
     public class CustomInfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
     {
         Context _context;
@@ -19,6 +22,11 @@ namespace Naxam.Mapbox.Platform.Droid
         }
         public Android.Views.View GetInfoWindow(Marker marker)
         {
+            if (marker.InfoWindow?.View != null)
+            {
+                return marker.InfoWindow.View;
+            }
+
             if (_dataTemPlate == null)
                 return null;
 
@@ -39,12 +47,19 @@ namespace Naxam.Mapbox.Platform.Droid
                 case View view1:
                     view1.BindingContext = bindingContext;
                     view1.Parent = _mapView;
-                    view = view1; break;
+                    view = view1;
+                    break;
                 default:
                     return null;
             }
 
-            var output = new ViewGroupContainer(_context, view);
+            var renderer = Platform.GetRenderer(view) ?? Platform.CreateRendererWithContext(view, _context);
+            Platform.SetRenderer(view, renderer);
+
+            var output = new ViewGroupContainer(_context)
+            {
+                Child = renderer
+            };
             return output;
         }
     }

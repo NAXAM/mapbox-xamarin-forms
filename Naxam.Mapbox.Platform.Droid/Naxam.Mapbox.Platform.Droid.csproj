@@ -81,7 +81,7 @@
       <Version>3.1.0.697729</Version>
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.Droid">
-      <Version>5.5.2</Version>
+      <Version>6.4.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Annotations">
       <Version>27.0.2.1</Version>
@@ -127,6 +127,8 @@
     <Compile Include="Offline\OfflineRegionDeleteCallback.cs" />
     <Compile Include="Offline\OfflineRegionObserver.cs" />
     <Compile Include="ViewGroupContainer.cs" />
+    <Compile Include="Utils\MeasureSpecFactory.cs" />
+    <Compile Include="Utils\ResourceManagerEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -142,6 +144,9 @@
       <Project>{EBB04763-2E36-4D2C-94C9-351FBACE3C83}</Project>
       <Name>Naxam.Mapbox.Forms</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
