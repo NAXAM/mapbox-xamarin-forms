@@ -74,6 +74,7 @@
             ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
             UpdateViewPortAction="{Binding UpdateViewPortAction}"
             InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
+            ApplyOfflinePackFunc="{Binding ApplyOfflinePackFunc}"
             Pitch="{Binding Pitch}"
             RotatedDegree="{Binding RotatedDegree}"
             TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"

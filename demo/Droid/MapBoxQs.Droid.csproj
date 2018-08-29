@@ -61,12 +61,6 @@
     <PackageReference Include="Acr.UserDialogs">
       <Version>7.0.1</Version>
     </PackageReference>
-	<PackageReference Include="Naxam.Mapbox.Services.Android.Telemetry">
-      <Version>3.1.5.3</Version>
-    </PackageReference>
-    <PackageReference Include="Naxam.Mapzen.Lost.Droid">
-      <Version>3.0.4</Version>
-    </PackageReference>
     <PackageReference Include="Ideine.ModernHttpClient">
       <Version>3.2.2</Version>
     </PackageReference>
@@ -75,9 +69,6 @@
     </PackageReference>
     <PackageReference Include="GoogleGson">
       <Version>2.8.1</Version>
-    </PackageReference>
-    <PackageReference Include="Naxam.Mapzen.Droid">
-      <Version>1.2.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Location">
       <Version>60.1142.1</Version>
@@ -89,7 +80,7 @@
       <Version>1.60.3</Version>
     </PackageReference>
     <PackageReference Include="Splat">
-      <Version>5.0.1</Version>
+      <Version>5.0.2</Version>
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.Droid">
       <Version>6.4.0.1</Version>

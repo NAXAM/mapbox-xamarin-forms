@@ -105,7 +105,7 @@
     </Reference>
     <Reference Include="Xamarin.iOS" />
     <Reference Include="Naxam.Mapbox.iOS">
-      <HintPath>..\packages\Naxam.Mapbox.iOS.4.2.0\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
+      <HintPath>..\packages\Naxam.Mapbox.iOS.4.3.0.2\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

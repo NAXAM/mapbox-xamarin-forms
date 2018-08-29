@@ -127,10 +127,6 @@
     <Reference Include="SkiaSharp">
       <HintPath>..\..\packages\SkiaSharp.1.60.3\lib\Xamarin.iOS\SkiaSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Splat">
-      <HintPath>..\..\packages\Splat.5.0.1\lib\xamarinios10\Splat.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\packages\Xamarin.Forms.3.1.0.697729\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
@@ -149,6 +145,10 @@
     </Reference>
     <Reference Include="Rg.Plugins.Popup.IOS">
       <HintPath>..\..\packages\Rg.Plugins.Popup.1.1.4.168\lib\Xamarin.IOS\Rg.Plugins.Popup.IOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Splat">
+      <HintPath>..\..\packages\Splat.5.0.2\lib\xamarinios10\Splat.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -198,7 +198,7 @@ namespace MapBoxQs
 
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction { get; set; }
         public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc { get; set; }
-
+        public Func<OfflinePack, bool> ApplyOfflinePackFunc { get; set; }
         Action<Tuple<string, bool>> _SelectAnnotationAction;
         public Action<Tuple<string, bool>> SelectAnnotationAction
         {
@@ -346,7 +346,6 @@ namespace MapBoxQs
             {
                 UserDialogs.Instance.HideLoading();
             }
-
         }
 
         private ICommand _ClearOfflinePacksCommand;
@@ -403,9 +402,9 @@ namespace MapBoxQs
                 if (chosenIndex >= 0 && chosenIndex < packs.Length)
                 {
                     var chosenPack = packs[chosenIndex];
-                    forcedRegion = chosenPack.Region;
-                    CurrentMapStyle = new MapStyle(chosenPack.Region.StyleURL);
-
+                    //forcedRegion = chosenPack.Region;
+                    //CurrentMapStyle = new MapStyle(chosenPack.Region.StyleURL);
+                    ApplyOfflinePackFunc?.Invoke(chosenPack);
                 }
             }
             else
