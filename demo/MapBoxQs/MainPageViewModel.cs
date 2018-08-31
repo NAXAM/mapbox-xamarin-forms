@@ -93,6 +93,16 @@ namespace MapBoxQs
             }
         }
 
+        ICommand _InfoActionCommand;
+        public ICommand InfoActionCommand
+        {
+            get { return (_InfoActionCommand = _InfoActionCommand ?? new Command<Annotation>(ExecuteInfoActionCommand)); }
+        }
+        void ExecuteInfoActionCommand(Annotation parameter)
+        {
+            System.Diagnostics.Debug.WriteLine($"{parameter.Title}\n{parameter.SubTitle}");
+        }
+
         public MainPageViewModel(INavigation navigation)
         {
             MBService = new MapBoxQs.Services.MapBoxService();
@@ -457,7 +467,7 @@ namespace MapBoxQs
             }
             if (obj == MapTools.CustomLocation)
             {
-                if(CenterLocation == null)
+                if (CenterLocation == null)
                 {
                     CustomLatitude = positions[1].Lat.ToString();
                     CustomLongitude = positions[1].Long.ToString();
@@ -709,7 +719,7 @@ namespace MapBoxQs
                 switch (state)
                 {
                     case ActionState.AddPolyline:
-                    break;
+                        break;
                 }
 
             }
