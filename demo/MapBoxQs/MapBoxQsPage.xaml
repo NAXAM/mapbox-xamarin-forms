@@ -112,7 +112,14 @@
                         </Grid.ColumnDefinitions>-->
                         <Image
                             Grid.Column="0"
-                            Source="icon.png" />
+                            Source="icon.png">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding BindingContext.InfoActionCommand, Source={Reference Map}}"
+                                    CommandParameter="{Binding .}"
+                                />
+                            </Image.GestureRecognizers>
+                        </Image>
                         <Label
                             Grid.Column="1"
                             Text="{Binding Title}" />
