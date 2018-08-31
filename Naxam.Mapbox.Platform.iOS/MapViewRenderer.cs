@@ -478,9 +478,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             Element.SelectAnnotationAction = (Tuple<string, bool> obj) =>
             {
                 if (obj == null || MapView == null || MapView.Annotations == null) return;
-                foreach (NSObject childObj in MapView.Annotations)
+                foreach (var childObj in MapView.Annotations)
                 {
-                    if (childObj is MGLShape shape
+                    var anno = Runtime.GetNSObject<MGLPointAnnotation>(childObj.Handle);
+                    if (anno is MGLShape shape
                         && shape.Handle.ToString() == obj.Item1)
                     {
                         MapView.SelectAnnotation(shape, obj.Item2);
@@ -492,9 +493,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
             {
                 if (obj == null || MapView == null || MapView.Annotations == null) return;
-                foreach (NSObject childObj in MapView.Annotations)
+                foreach (var childObj in MapView.Annotations)
                 {
-                    if (childObj is MGLShape shape
+                    var anno = Runtime.GetNSObject<MGLPointAnnotation>(childObj.Handle);
+                    if (anno is MGLShape shape
                         && shape.Handle.ToString() == obj.Item1)
                     {
                         MapView.DeselectAnnotation(shape, obj.Item2);
