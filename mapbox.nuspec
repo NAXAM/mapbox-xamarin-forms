@@ -9,7 +9,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Mapbox for Xamarin.Forms</title>
         <description>Mapbox for Xamarin.Forms</description>
-        <releaseNotes>Handle pitch and rotated degree, add offline service in Android.</releaseNotes>
+        <releaseNotes>
+        - Custom Pins/Custom InfoWindows
+        - Upgrade to latest Mapbox
+        - Fix issues and .NET Standard
+        </releaseNotes>
         <copyright>Copyright (c) 2018 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>
         <projectUrl>https://github.com/naxam/xf-mapbox</projectUrl>
@@ -20,8 +24,8 @@
                 <dependency id="Xamarin.Forms" version="3.1.0.697729" />
             </group>
             <group targetFramework="MonoAndroid10">
-                <dependency id="Newtonsoft.Json" version="10.0.3" />
-                <dependency id="Naxam.Mapbox.Droid" version="5.5.1.1" />
+                <dependency id="Newtonsoft.Json" version="11.0.2" />
+                <dependency id="Naxam.Mapbox.Droid" version="6.4.0.1" />
             </group>
             <group targetFramework="Xamarin.iOS10">
                 <dependency id="Naxam.Mapbox.iOS" version="4.3.0.3" />
