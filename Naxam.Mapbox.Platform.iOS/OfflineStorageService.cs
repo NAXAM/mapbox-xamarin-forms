@@ -11,8 +11,6 @@ using ObjCRuntime;
 [assembly: Xamarin.Forms.Dependency(typeof(Naxam.Controls.Mapbox.Platform.iOS.OfflineStorageService))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
-    
-
     public class OfflineStorageService : NSObject, IOfflineStorageService
     {
         Dictionary<nuint, OfflinePack> tempPacks;
@@ -67,16 +65,18 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         private void OnMaximumMapboxTilesReached(NSNotification notification)
         {
             MGLOfflinePack pack = notification.Object as MGLOfflinePack;
-          
+
             var maximumCount = notification.UserInfo[MGLOfflinePackKeys.UserInfoKeyMaximumCount] as NSNumber;
             var hash = pack.GetNativeHash();
             OfflinePack formsPack;
-            if (tempPacks.ContainsKey(hash)) {
+            if (tempPacks.ContainsKey(hash))
+            {
                 formsPack = tempPacks[hash];
                 formsPack.State = (OfflinePackState)pack.State;
                 tempPacks.Remove(hash);
             }
-            else {
+            else
+            {
                 formsPack = pack.ToFormsPack();
             }
 
@@ -98,14 +98,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 formsPack = tempPacks[hash];
                 formsPack.Progress = pack.Progress.ToFormsProgress();
                 formsPack.State = (OfflinePackState)pack.State;
-                if (completed) {
+                if (completed)
+                {
                     tempPacks.Remove(hash);
                 }
             }
             else
             {
                 formsPack = pack.ToFormsPack();
-                if (!completed) {
+                if (!completed)
+                {
                     tempPacks.Add(hash, formsPack);
                 }
             }
@@ -122,18 +124,20 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 new NSUrl(formsRegion.StyleURL),
                 new MGLCoordinateBounds()
                 {
-                sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
-                ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
+                    sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
+                    ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
                 },
                 formsRegion.MinimumZoomLevel,
                 formsRegion.MaximumZoomLevel);
             NSData context = null;
-            if (packInfo != null) {
+            if (packInfo != null)
+            {
                 var keys = new List<NSString>();
                 var values = new List<NSString>();
-                foreach (string key in packInfo.Keys) {
-                    keys.Add((NSString) key);
-                    values.Add((NSString) packInfo[key]);
+                foreach (string key in packInfo.Keys)
+                {
+                    keys.Add((NSString)key);
+                    values.Add((NSString)packInfo[key]);
                 }
                 var userInfo = NSDictionary.FromObjectsAndKeys(values.ToArray(), keys.ToArray());
                 context = NSKeyedArchiver.ArchivedDataWithRootObject(userInfo);
@@ -141,11 +145,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
             MGLOfflineStorage.SharedOfflineStorage.AddPackForRegion(region, context, (pack, error) =>
             {
-                if (error != null) {
+                if (error != null)
+                {
                     System.Diagnostics.Debug.WriteLine("Couldn't create offline pack: " + error.LocalizedFailureReason);
                     tsc.TrySetResult(null);
                 }
-                else {
+                else
+                {
                     pack.Resume();
                     var formsPack = pack.ToFormsPack();
                     tempPacks.Add(pack.GetNativeHash(), formsPack);
@@ -163,7 +169,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             var tsc = new TaskCompletionSource<OfflinePack[]>();
             var sharedStorage = MGLOfflineStorage.SharedOfflineStorage;
             var packs = sharedStorage.Packs;
-            if (packs == null) {
+            if (packs == null)
+            {
                 /*
                  * This property is set to nil, indicating that the receiver does not yet know the existing packs, 
                  * for an undefined amount of time starting from the moment the shared offline storage object is initialized 
@@ -176,7 +183,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 packsObservingToken = sharedStorage.AddObserver("packs", NSKeyValueObservingOptions.Initial | NSKeyValueObservingOptions.New, (obj) =>
                 {
                     var allPacks = sharedStorage.Packs;
-                    if (allPacks != null) {
+                    if (allPacks != null)
+                    {
                         getPacksTask?.SetResult(allPacks?.Select((arg) => arg.ToFormsPack()).ToArray());
                         packsObservingToken?.Dispose();
                         packsObservingToken = null;
@@ -184,7 +192,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     }
                 });
             }
-            else {
+            else
+            {
                 tsc.SetResult(packs.Select((arg) => arg.ToFormsPack()).ToArray());
             }
             return tsc.Task;
@@ -193,52 +202,57 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public Task<bool> RemovePack(OfflinePack pack)
         {
             var tsc = new TaskCompletionSource<bool>();
-            try {
+            try
+            {
                 var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
                 MGLOfflineStorage.SharedOfflineStorage.RemovePack(mbPack, (error) =>
                 {
-                    if (error == null) {
+                    if (error == null)
+                    {
                         tsc.TrySetResult(true);
                     }
-                    else {
+                    else
+                    {
                         System.Diagnostics.Debug.WriteLine("Removing offline pack failed: " + error.LocalizedFailureReason);
                         tsc.TrySetResult(false);
                     }
                 });
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.Diagnostics.Debug.WriteLine("[Exception]: " + ex.Message);
                 tsc.TrySetResult(false);
             }
             return tsc.Task;
         }
 
-        public bool Resume(OfflinePack pack)
+        public Task<bool> Resume(OfflinePack pack)
         {
             try
             {
                 var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
                 mbPack.Resume();
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("[Exception]: " + ex.Message);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
-        public bool SuspendPack(OfflinePack pack)
+        public Task<bool> SuspendPack(OfflinePack pack)
         {
             try
             {
                 var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
                 mbPack.Suspend();
-                return true;
+                return Task.FromResult(true);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.Diagnostics.Debug.WriteLine("[Naxam.Mapbox] Suspend offline pack failed: " + ex.Message);
-                return false;
+                return Task.FromResult(false);
             }
         }
 
@@ -253,6 +267,28 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 System.Diagnostics.Debug.WriteLine("[Naxam.Mapbox] Request progress of offline pack failed: " + ex.Message);
             }
+        }
+
+
+        // must handle here
+        async Task<bool> IOfflineStorageService.Resume(OfflinePack pack)
+        {
+            if (pack == null) return false;
+            var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
+            if (mbPack.State == MGLOfflinePackState.Invalid || mbPack.State == MGLOfflinePackState.Unknown) return false;
+            mbPack.Resume();
+            if (mbPack.State == MGLOfflinePackState.Active) return true;
+            return true;
+        }
+
+        async Task<bool> IOfflineStorageService.SuspendPack(OfflinePack pack)
+        {
+            if (pack == null) return false;
+            var mbPack = Runtime.GetNSObject<MGLOfflinePack>(pack.Handle);
+            if (mbPack.State == MGLOfflinePackState.Invalid || mbPack.State == MGLOfflinePackState.Unknown) return false;
+            mbPack.Suspend();
+            if (mbPack.State == MGLOfflinePackState.Inactive) return true;
+            return true;
         }
     }
 }

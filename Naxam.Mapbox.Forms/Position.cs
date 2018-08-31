@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 namespace Naxam.Controls.Mapbox.Forms
 {
     public class Position
@@ -7,22 +7,20 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public double Long { get; set; }
 
-        public Position ()
-        {
+        public Position() { }
 
-        }
-
-        public Position (double lat, double lon)
+        public Position(double lat, double lon)
         {
             Lat = lat;
             Long = lon;
         }
-        public double DistanceTo (Position targetCoordinates)
+
+        public double DistanceTo(Position targetCoordinates)
         {
-            return DistanceTo (targetCoordinates, UnitOfLength.Kilometers);
+            return DistanceTo(targetCoordinates, UnitOfLength.Kilometers);
         }
 
-        public double DistanceTo (Position targetCoordinates, UnitOfLength unitOfLength)
+        public double DistanceTo(Position targetCoordinates, UnitOfLength unitOfLength)
         {
             var baseRad = Math.PI * Lat / 180;
             var targetRad = Math.PI * targetCoordinates.Lat / 180;
@@ -30,31 +28,31 @@ namespace Naxam.Controls.Mapbox.Forms
             var thetaRad = Math.PI * theta / 180;
 
             double dist =
-                Math.Sin (baseRad) * Math.Sin (targetRad) + Math.Cos (baseRad) *
-                Math.Cos (targetRad) * Math.Cos (thetaRad);
-            dist = Math.Acos (dist);
+                Math.Sin(baseRad) * Math.Sin(targetRad) + Math.Cos(baseRad) *
+                Math.Cos(targetRad) * Math.Cos(thetaRad);
+            dist = Math.Acos(dist);
             dist = dist * 180 / Math.PI;
             dist = dist * 60 * 1.1515;
 
-            return unitOfLength.ConvertFromMiles (dist);
+            return unitOfLength.ConvertFromMiles(dist);
         }
     }
 
     public class UnitOfLength
     {
-        public static UnitOfLength Meters = new UnitOfLength (1609.344);
-        public static UnitOfLength Kilometers = new UnitOfLength (1.609344);
-        public static UnitOfLength NauticalMiles = new UnitOfLength (0.8684);
-        public static UnitOfLength Miles = new UnitOfLength (1);
+        public static UnitOfLength Meters = new UnitOfLength(1609.344);
+        public static UnitOfLength Kilometers = new UnitOfLength(1.609344);
+        public static UnitOfLength NauticalMiles = new UnitOfLength(0.8684);
+        public static UnitOfLength Miles = new UnitOfLength(1);
 
         private readonly double _fromMilesFactor;
 
-        private UnitOfLength (double fromMilesFactor)
+        private UnitOfLength(double fromMilesFactor)
         {
             _fromMilesFactor = fromMilesFactor;
         }
 
-        public double ConvertFromMiles (double input)
+        public double ConvertFromMiles(double input)
         {
             return input * _fromMilesFactor;
         }

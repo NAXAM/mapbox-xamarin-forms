@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
@@ -15,39 +16,28 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public Func<string, bool> CanShowCalloutChecker
         {
-            get
-            {
-                return (Func<string, bool>)GetValue(CanShowCalloutCheckerProperty) ?? DefaultCanShowCalloutChecker;
-            }
-            set
-            {
-                SetValue(CanShowCalloutCheckerProperty, value);
-            }
+            get => (Func<string, bool>)GetValue(CanShowCalloutCheckerProperty) ?? DefaultCanShowCalloutChecker;
+            set => SetValue(CanShowCalloutCheckerProperty, value);
         }
 
         public static readonly BindableProperty TakeSnapshotFuncProperty = BindableProperty.Create(
             nameof(TakeSnapshotFunc),
-            typeof(Func<byte[]>),
+            typeof(Func<Task<byte[]>>),
             typeof(MapView),
-            default(Func<byte[]>),
+            default(Func<Task<byte[]>>),
             defaultBindingMode: BindingMode.OneWayToSource);
 
-        public Func<byte[]> TakeSnapshotFunc
+        public Func<Task<byte[]>> TakeSnapshotFunc
         {
-            get
-            {
-                return (Func<byte[]>)GetValue(TakeSnapshotFuncProperty);
-            }
-            set
-            {
-                SetValue(TakeSnapshotFuncProperty, value);
-            }
+            get => (Func<Task<byte[]>>)GetValue(TakeSnapshotFuncProperty);
+            set => SetValue(TakeSnapshotFuncProperty, value);
         }
 
-        public byte[] TakSnapshot()
+        public Task<byte[]> TakSnapshot()
         {
             return TakeSnapshotFunc?.Invoke();
         }
+
 
         public static readonly BindableProperty GetFeaturesAroundPointFuncProperty = BindableProperty.Create(
             nameof(GetFeaturesAroundPointFunc),
@@ -58,14 +48,8 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public Func<Point, double, string[], IFeature[]> GetFeaturesAroundPointFunc
         {
-            get
-            {
-                return ((Func<Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointFuncProperty));
-            }
-            set
-            {
-                SetValue(GetFeaturesAroundPointFuncProperty, value);
-            }
+            get => ((Func<Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointFuncProperty));
+            set => SetValue(GetFeaturesAroundPointFuncProperty, value);
         }
 
         public static readonly BindableProperty ResetPositionActionProperty = BindableProperty.Create(
@@ -126,16 +110,9 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public Func<Annotation, string, bool> UpdateShapeOfSourceFunc
         {
-            get
-            {
-                return ((Func<Annotation, string, bool>)GetValue(UpdateShapeOfSourceFuncProperty));
-            }
-            set
-            {
-                SetValue(UpdateShapeOfSourceFuncProperty, value);
-            }
+            get => (Func<Annotation, string, bool>)GetValue(UpdateShapeOfSourceFuncProperty);
+            set => SetValue(UpdateShapeOfSourceFuncProperty, value);
         }
-
         public bool UpdateShapeOfSource(Annotation shape, string sourceId)
         {
             return UpdateShapeOfSourceFunc?.Invoke(shape, sourceId) ?? false;
@@ -150,20 +127,13 @@ namespace Naxam.Controls.Mapbox.Forms
             typeof(Func<string, bool, bool, bool>),
             typeof(MapView),
             default(Func<string, bool, bool, bool>),
-             BindingMode.OneWayToSource);
+            BindingMode.OneWayToSource);
 
         public Func<string, bool, bool, bool> UpdateLayerFunc
         {
-            get
-            {
-                return ((Func<string, bool, bool, bool>)GetValue(UpdateLayerFuncProperty));
-            }
-            set
-            {
-                SetValue(UpdateLayerFuncProperty, value);
-            }
+            get => ((Func<string, bool, bool, bool>)GetValue(UpdateLayerFuncProperty));
+            set => SetValue(UpdateLayerFuncProperty, value);
         }
-
         public bool UpdateLayer(string layerId, bool isVisible, bool isCustomLayer)
         {
             return UpdateLayerFunc?.Invoke(layerId, isVisible, isCustomLayer) ?? false;
@@ -178,43 +148,18 @@ namespace Naxam.Controls.Mapbox.Forms
             typeof(Action<Position, double?, double?, bool, Action>),
             typeof(MapView),
             default(Action<Position, double?, double?, bool, Action>),
-             BindingMode.OneWayToSource);
+            BindingMode.OneWayToSource);
 
         public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
         {
-            get
-            {
-                return ((Action<Position, double?, double?, bool, Action>)GetValue(UpdateViewPortActionProperty));
-            }
-            set
-            {
-                SetValue(UpdateViewPortActionProperty, value);
-            }
+            get => ((Action<Position, double?, double?, bool, Action>)GetValue(UpdateViewPortActionProperty));
+            set => SetValue(UpdateViewPortActionProperty, value);
         }
 
         public void UpdateViewPort(Position center, double? zoomLevel = null, double? bearing = null, bool animated = false, Action completionHandler = null)
         {
             UpdateViewPortAction?.Invoke(center, zoomLevel, bearing, animated, completionHandler);
         }
-
-        //public static readonly BindableProperty GetMapScaleReciprocalFuncProperty = BindableProperty.Create(
-        //    nameof(GetMapScaleReciprocalFunc),
-        //    typeof(Func<double>),
-        //    typeof(MapView),
-        //    default(Func<double>),
-        //    BindingMode.OneWayToSource);
-
-        //public Func<double> GetMapScaleReciprocalFunc
-        //{
-        //    get
-        //    {
-        //        return ((Func<double>)GetValue(GetMapScaleReciprocalFuncProperty));
-        //    }
-        //    set
-        //    {
-        //        SetValue(GetMapScaleReciprocalFuncProperty, value);
-        //    }
-        //}
 
         /// <summary>
         /// Show/hide scale bar
@@ -230,14 +175,8 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public Func<bool, bool> ToggleScaleBarFunc
         {
-            get
-            {
-                return ((Func<bool, bool>)GetValue(ToggleScaleBarFuncProperty));
-            }
-            set
-            {
-                SetValue(ToggleScaleBarFuncProperty, value);
-            }
+            get => (Func<bool, bool>)GetValue(ToggleScaleBarFuncProperty);
+            set => SetValue(ToggleScaleBarFuncProperty, value);
         }
 
         public bool ToggleScaleBar(bool isVisible)
@@ -254,14 +193,8 @@ namespace Naxam.Controls.Mapbox.Forms
 
         public Func<string, Byte[]> GetStyleImageFunc
         {
-            get
-            {
-                return ((Func<string, Byte[]>)GetValue(GetStyleImageFuncProperty));
-            }
-            set
-            {
-                SetValue(GetStyleImageFuncProperty, value);
-            }
+            get => (Func<string, Byte[]>)GetValue(GetStyleImageFuncProperty);
+            set => SetValue(GetStyleImageFuncProperty, value);
         }
 
         public Byte[] GetStyleImage(string imageName)
@@ -281,7 +214,6 @@ namespace Naxam.Controls.Mapbox.Forms
             defaultBindingMode: BindingMode.OneWayToSource
         );
 
-
         public Func<string, bool, StyleLayer> GetStyleLayerFunc
         {
             get { return (Func<string, bool, StyleLayer>)GetValue(GetStyleLayerFuncProperty); }
@@ -295,11 +227,11 @@ namespace Naxam.Controls.Mapbox.Forms
 
         #region Layers
         public static BindableProperty InsertLayerAboveLayerFuncProperty = BindableProperty.Create(
-            propertyName: nameof(InsertLayerAboveLayerFunc),
-            returnType: typeof(Func<StyleLayer, string, bool>),
-            declaringType: typeof(MapView),
-            defaultValue: default(Func<StyleLayer, string, bool>),
-            defaultBindingMode: BindingMode.OneWayToSource
+            nameof(InsertLayerAboveLayerFunc),
+            typeof(Func<StyleLayer, string, bool>),
+            typeof(MapView),
+            default(Func<StyleLayer, string, bool>),
+            BindingMode.OneWayToSource
         );
 
         public Func<StyleLayer, string, bool> InsertLayerAboveLayerFunc
@@ -313,7 +245,7 @@ namespace Naxam.Controls.Mapbox.Forms
             return InsertLayerAboveLayerFunc?.Invoke(layerToInsert, siblingLayerId) ?? false;
         }
 
-        public static BindableProperty InsertLayerBelowLayerFuncProperty = BindableProperty.Create(             propertyName: nameof(InsertLayerBelowLayerFunc),             returnType: typeof(Func<StyleLayer, string, bool>),             declaringType: typeof(MapView),             defaultValue: default(Func<StyleLayer, string, bool>),             defaultBindingMode: BindingMode.OneWayToSource         );          public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc         {             get { return (Func<StyleLayer, string, bool>)GetValue(InsertLayerBelowLayerFuncProperty); }             set { SetValue(InsertLayerBelowLayerFuncProperty, value); }         }          public bool InsertLayerBelowLayer(StyleLayer layerToInsert, string siblingLayerId)
+        public static BindableProperty InsertLayerBelowLayerFuncProperty = BindableProperty.Create(             nameof(InsertLayerBelowLayerFunc),             typeof(Func<StyleLayer, string, bool>),             typeof(MapView),             default(Func<StyleLayer, string, bool>),             BindingMode.OneWayToSource         );          public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc         {             get { return (Func<StyleLayer, string, bool>)GetValue(InsertLayerBelowLayerFuncProperty); }             set { SetValue(InsertLayerBelowLayerFuncProperty, value); }         }          public bool InsertLayerBelowLayer(StyleLayer layerToInsert, string siblingLayerId)
         {             return InsertLayerBelowLayerFunc?.Invoke(layerToInsert, siblingLayerId) ?? false;         }
         #endregion
 
@@ -322,8 +254,27 @@ namespace Naxam.Controls.Mapbox.Forms
         /// Select an annotation
         /// Params (annotation id, is animated)
         /// </summary>
-        public static BindableProperty SelectAnnotationActionProperty = BindableProperty.Create(             propertyName: nameof(SelectAnnotationAction),             returnType: typeof(Action<Tuple<string, bool>>),             declaringType: typeof(MapView),             defaultValue: default(Action<Tuple<string, bool>>),             defaultBindingMode: BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> SelectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(SelectAnnotationActionProperty); }             set { SetValue(SelectAnnotationActionProperty, value); }         } 
-        public static BindableProperty DeselectAnnotationActionProperty = BindableProperty.Create(             propertyName: nameof(DeselectAnnotationAction),             returnType: typeof(Action<Tuple<string, bool>>),             declaringType: typeof(MapView),             defaultValue: default(Action<Tuple<string, bool>>),             defaultBindingMode: BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> DeselectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(DeselectAnnotationActionProperty); }             set { SetValue(DeselectAnnotationActionProperty, value); }         } 
+        public static BindableProperty SelectAnnotationActionProperty = BindableProperty.Create(             nameof(SelectAnnotationAction),             typeof(Action<Tuple<string, bool>>),             typeof(MapView),             default(Action<Tuple<string, bool>>),             BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> SelectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(SelectAnnotationActionProperty); }             set { SetValue(SelectAnnotationActionProperty, value); }         } 
+        public static BindableProperty DeselectAnnotationActionProperty = BindableProperty.Create(             nameof(DeselectAnnotationAction),             typeof(Action<Tuple<string, bool>>),             typeof(MapView),             default(Action<Tuple<string, bool>>),             BindingMode.OneWayToSource         );          public Action<Tuple<string, bool>> DeselectAnnotationAction         {             get { return (Action<Tuple<string, bool>>)GetValue(DeselectAnnotationActionProperty); }             set { SetValue(DeselectAnnotationActionProperty, value); }         } 
         #endregion
+
+        public static BindableProperty ApplyOfflinePackFuncProperty = BindableProperty.Create(
+            nameof(ApplyOfflinePackFunc),
+            typeof(Func<OfflinePack, bool>),
+            typeof(MapView),
+            default(Func<OfflinePack, bool>),
+            BindingMode.OneWayToSource
+       );
+
+        public Func<OfflinePack, bool> ApplyOfflinePackFunc
+        {
+            get { return (Func<OfflinePack, bool>)GetValue(ApplyOfflinePackFuncProperty); }
+            set { SetValue(ApplyOfflinePackFuncProperty, value); }
+        }
+
+        public bool ApplyOfflinePack(OfflinePack pack)
+        {
+            return ApplyOfflinePackFunc?.Invoke(pack)?? false;
+        }
     }
 }

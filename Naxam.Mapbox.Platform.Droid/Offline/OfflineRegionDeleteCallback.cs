@@ -18,9 +18,9 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             OnDeleteHandle?.Invoke();
         }
 
-        public void OnError(string p0)
+        public void OnError(string error)
         {
-            OnErrorHandle?.Invoke(p0);
+            OnErrorHandle?.Invoke(error);
         }
     }
 }
