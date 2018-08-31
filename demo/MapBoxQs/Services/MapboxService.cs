@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ModernHttpClient;
 using Naxam.Controls.Mapbox.Forms;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using MapBoxQs.Dtos;
 
 namespace MapBoxQs.Services
@@ -23,7 +21,7 @@ namespace MapBoxQs.Services
         public static string Username = "naxamtest";
         public MapBoxService()
         {
-            client = new HttpClient(new NativeMessageHandler())
+            client = new HttpClient()
             {
                 MaxResponseContentBufferSize = 256000
             };

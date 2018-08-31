@@ -63,7 +63,6 @@ namespace MapBoxQs.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahText = global::MapBoxQs.Droid.Resource.Styleable.ProgressWheel_ahText;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::MapBoxQs.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::MapBoxQs.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
-			global::ModernHttpClient.Resource.String.library_name = global::MapBoxQs.Droid.Resource.String.library_name;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Animation.abc_fade_in = global::MapBoxQs.Droid.Resource.Animation.abc_fade_in;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Animation.abc_fade_out = global::MapBoxQs.Droid.Resource.Animation.abc_fade_out;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Animation.abc_grow_fade_in_from_bottom = global::MapBoxQs.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;
