@@ -191,6 +191,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     OfflinePackGotError?.Invoke(pack,
                                                 new OSSErrorEventArgs()
                                                 {
+                                                    PackId = pack.Id,
                                                     ErrorMessage = error.Message
                                                 });
                 },

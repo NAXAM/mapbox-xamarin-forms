@@ -12,6 +12,7 @@ namespace Naxam.Controls.Mapbox.Forms
     public class OSSErrorEventArgs : OSSEventArgs
     {
         public string ErrorMessage;
+        public long PackId;
     }
 
     public class OSSMaximumMapboxTilesReachedEventArgs : OSSEventArgs
