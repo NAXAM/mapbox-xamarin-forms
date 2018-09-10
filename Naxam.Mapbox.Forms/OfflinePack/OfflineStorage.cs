@@ -6,18 +6,17 @@ namespace Naxam.Controls.Mapbox.Forms
 {
     public class OSSEventArgs : EventArgs
     {
-        public OfflinePack OfflinePack;
+        public OfflinePack OfflinePack { get; set; }
     }
 
     public class OSSErrorEventArgs : OSSEventArgs
     {
-        public string ErrorMessage;
-        public long PackId;
+        public string ErrorMessage { get; set; }
     }
 
     public class OSSMaximumMapboxTilesReachedEventArgs : OSSEventArgs
     {
-        public ulong MaximumCount;
+        public ulong MaximumCount { get; set; }
     }
 
     public interface IOfflineStorageService

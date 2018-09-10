@@ -188,10 +188,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 (error) =>
                 {
                     System.Diagnostics.Debug.WriteLine($"[ERROR] {error.Message} {error.Reason}");
-                    OfflinePackGotError?.Invoke(pack,
+                    OfflinePackGotError?.Invoke(this,
                                                 new OSSErrorEventArgs()
                                                 {
-                                                    PackId = pack.Id,
+                                                    OfflinePack = pack,
                                                     ErrorMessage = error.Message
                                                 });
                 },
