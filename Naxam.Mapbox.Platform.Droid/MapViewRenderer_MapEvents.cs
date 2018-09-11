@@ -32,14 +32,21 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void RemoveMapEvents()
         {
-            map.MarkerClick -= MarkerClicked;
-            map.InfoWindowClick -= InfoWindowClick;
-            map.MapClick -= MapClicked;
-            map.CameraIdle -= OnCameraIdle;
-            map.CameraMoveStarted -= Map_CameraMoveStarted;
-            map.CameraMoveCancel -= Map_CameraMoveCancel;
-            map.CameraMove -= Map_CameraMove;
-            fragment.OnMapChangedListener = null;
+            if (map != null)
+            {
+                map.MarkerClick -= MarkerClicked;
+                map.InfoWindowClick -= InfoWindowClick;
+                map.MapClick -= MapClicked;
+                map.CameraIdle -= OnCameraIdle;
+                map.CameraMoveStarted -= Map_CameraMoveStarted;
+                map.CameraMoveCancel -= Map_CameraMoveCancel;
+                map.CameraMove -= Map_CameraMove;
+            }
+
+            if (fragment != null)
+            {
+                fragment.OnMapChangedListener = null;
+            }
         }
 
         private void Map_CameraMove(object sender, EventArgs e)
@@ -84,7 +91,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void MarkerClicked(object o, MapboxMap.MarkerClickEventArgs args)
         {
-            fragment.ToggleInfoWindow(map, args.P0);
+            fragment?.ToggleInfoWindow(map, args.P0);
 
             if (Element?.Annotations?.Count() > 0)
             {

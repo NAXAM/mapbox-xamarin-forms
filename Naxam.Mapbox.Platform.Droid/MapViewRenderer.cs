@@ -337,10 +337,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         protected override void Dispose(bool disposing)
         {
+            RemoveMapEvents();
+
             if (fragment != null)
             {
-                RemoveMapEvents();
-
                 if (fragment.StateSaved)
                 {
                     var activity = (AppCompatActivity)Context;
@@ -350,7 +350,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         .Remove(fragment)
                         .CommitAllowingStateLoss();
                 }
-
 
                 fragment.Dispose();
                 fragment = null;
