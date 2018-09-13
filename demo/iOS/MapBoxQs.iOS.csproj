@@ -145,6 +145,19 @@
       <HintPath>..\..\packages\Naxam.Mapbox.iOS.4.3.0.3\lib\Xamarin.iOS10\Naxam.Mapbox.iOS.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Prism">
+      <HintPath>..\..\packages\Prism.Core.7.0.0.396\lib\netstandard2.0\Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="Autofac">
+      <HintPath>..\..\packages\Autofac.4.6.2\lib\netstandard1.1\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Forms">
+      <HintPath>..\..\packages\Prism.Forms.7.0.0.396\lib\netstandard2.0\Prism.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Prism.Autofac.Forms">
+      <HintPath>..\..\packages\Prism.Autofac.Forms.7.0.0.396\lib\netstandard2.0\Prism.Autofac.Forms.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

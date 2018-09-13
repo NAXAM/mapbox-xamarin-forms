@@ -3,16 +3,14 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Mapbox.Forms</id>
-       <version>1.0.5.2</version>
+       <version>1.0.5.3</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Mapbox for Xamarin.Forms</title>
         <description>Mapbox for Xamarin.Forms</description>
         <releaseNotes>
-        - Custom Pins/Custom InfoWindows
-        - Upgrade to latest Mapbox
-        - Fix issues and .NET Standard
+        - Disposing objects for Android MapViewRenderer
         </releaseNotes>
         <copyright>Copyright (c) 2018 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>

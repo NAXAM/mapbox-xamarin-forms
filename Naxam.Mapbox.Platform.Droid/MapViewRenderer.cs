@@ -44,7 +44,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
         bool mapReady;
+
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries;
+
         public MapViewRenderer(Context context) : base(context)
         {
             _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();
@@ -58,15 +60,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 e.OldElement.AnnotationChanged -= Element_AnnotationChanged;
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
-                if (map != null)
-                {
-                    RemoveMapEvents();
-                }
+            }
+
+            if (map != null)
+            {
+                RemoveMapEvents();
             }
 
             if (e.NewElement == null)
                 return;
+
             e.NewElement.AnnotationChanged += Element_AnnotationChanged;
+
             if (Control == null)
             {
                 var activity = (AppCompatActivity)Context;
@@ -92,8 +97,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         AddAnnotations(Element.Annotations.ToArray());
                         if (Element.Annotations is INotifyCollectionChanged notifyCollection)
                         {
-                            notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                            notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                           notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                           notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                         }
                     }
 
@@ -212,7 +217,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 }
             };
 
-            Element.GetStyleImageFunc += GetStyleImage;
+            Element.GetStyleImageFunc = GetStyleImage;
 
             Element.GetStyleLayerFunc = GetStyleLayer;
 
@@ -339,6 +344,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             RemoveMapEvents();
 
+            if (_annotationDictionaries != null)
+            {
+                foreach (var item in _annotationDictionaries.Values)
+                {
+                    item?.Dispose();
+                }
+                _annotationDictionaries.Clear();
+                _annotationDictionaries = null;
+            }
+
             if (fragment != null)
             {
                 if (fragment.StateSaved)
@@ -353,6 +368,36 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment.Dispose();
                 fragment = null;
+            }
+
+            if (map != null)
+            {
+                map.Clear();
+                map.RemoveAnnotations();
+                map.Dispose();
+                map = null;
+            }
+
+            if (Element != null)
+            {
+                if (Element.Annotations is INotifyCollectionChanged notifyCollectionChanged)
+                {
+                   notifyCollectionChanged.CollectionChanged -= OnAnnotationsCollectionChanged;
+                }
+
+                Element.AnnotationChanged -= Element_AnnotationChanged;
+                Element.TakeSnapshotFunc -= TakeMapSnapshot;
+                Element.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
+                Element.UpdateLayerFunc = null;
+                Element.GetStyleImageFunc = null;
+                Element.GetStyleLayerFunc = null;
+                Element.ToggleScaleBarFunc = null;
+                Element.ApplyOfflinePackFunc = null;
+                Element.UpdateShapeOfSourceFunc = null;
+                Element.GetImageForAnnotationFunc = null;
+                Element.InsertLayerAboveLayerFunc = null;
+                Element.InsertLayerBelowLayerFunc = null;
+                Element.GetFeaturesAroundPointFunc = null;
             }
 
             base.Dispose(disposing);
@@ -425,6 +470,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     System.Diagnostics.Debug.WriteLine("Updating zoom level");
                     map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
                 }
+            }
+            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName && map != null)
+            {
+
             }
         }
 
@@ -723,7 +772,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void AddAnnotations(IList<Annotation> annotations)
         {
-            if (map == null)
+            if (map == null || annotations == null)
                 return;
             AddMakers(annotations.Where(d => d is FMarker).Cast<FMarker>().ToList());
             AddPolylines(annotations.Where(d => d is FPolyline).Cast<FPolyline>().ToList());
@@ -794,6 +843,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 if (notifyCollection != null)
                 {
+                    //TODO Have to remove
                     notifyCollection.CollectionChanged += (s, e) =>
                     {
                         switch (e.Action)
@@ -947,7 +997,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (map?.Annotations != null)
             {
-                map.RemoveAnnotations(map.Annotations);
+                map.RemoveAnnotations();
             }
         }
 
@@ -995,8 +1045,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 AddAnnotations(Element.Annotations.ToArray());
                 if (Element.Annotations is INotifyCollectionChanged notifyCollection)
                 {
-                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                    notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                   notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                   notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                 }
             }
         }

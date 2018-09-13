@@ -1,6 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MapBoxQs.App">
-    <Application.Resources>
+<?xml version="1.0" encoding="utf-8"?>
+<p:PrismApplication
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:p="clr-namespace:Prism.Autofac;assembly=Prism.Autofac;"
+    x:Class="MapBoxQs.App">
+    <p:PrismApplication.Resources>
         <!-- Application resource dictionary -->
-    </Application.Resources>
-</Application>
+    </p:PrismApplication.Resources>
+</p:PrismApplication>

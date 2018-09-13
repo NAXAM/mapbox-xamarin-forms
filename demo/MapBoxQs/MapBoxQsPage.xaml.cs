@@ -16,9 +16,7 @@ namespace MapBoxQs
 
         public MapBoxQsPage()
         {
-            var viewModel = new MainPageViewModel(Navigation);
             On<iOS>().SetUseSafeArea(true);
-            BindingContext = viewModel;
             InitializeComponent();
         }
     }

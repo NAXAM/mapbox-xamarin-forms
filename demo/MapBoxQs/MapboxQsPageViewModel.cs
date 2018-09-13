@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Acr.UserDialogs;
 using Naxam.Controls.Mapbox.Forms;
 using Xamarin.Forms;
+using Prism.Navigation;
 
 namespace MapBoxQs
 {
@@ -28,7 +29,7 @@ namespace MapBoxQs
         AddPolyline
     }
 
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MapboxQsPageViewModel : INotifyPropertyChanged
     {
         readonly MapBoxQs.Services.IMapBoxService MBService;
         readonly INavigation navigation;
@@ -103,10 +104,9 @@ namespace MapBoxQs
             System.Diagnostics.Debug.WriteLine($"{parameter.Title}\n{parameter.SubTitle}");
         }
 
-        public MainPageViewModel(INavigation navigation)
+        public MapboxQsPageViewModel()
         {
             MBService = new MapBoxQs.Services.MapBoxService();
-            Annotations = new ObservableCollection<Annotation>();
 
             Annotations = new ObservableCollection<Annotation> {
                 new PointAnnotation {
@@ -936,6 +936,7 @@ namespace MapBoxQs
             if (SelectedAnnotation != null)
                 DeselectAnnotationAction?.Invoke(new Tuple<string, bool>(SelectedAnnotation.Id, false));
         }
+
         #endregion
     }
 }
