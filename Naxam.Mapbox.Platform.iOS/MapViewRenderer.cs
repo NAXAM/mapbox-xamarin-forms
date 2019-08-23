@@ -1183,7 +1183,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         [Export("mapView:didUpdateUserLocation:")]
         public void MapViewDidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
         {
-            if (userLocation != null)
+            if (userLocation?.Location?.Coordinate != null)
             {
                 Element.UserLocation = new Position(
                     userLocation.Location.Coordinate.Latitude,
