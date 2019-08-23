@@ -39,8 +39,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer : ViewRenderer<MapView, View>, IOnMapReadyCallback
     {
-        MapboxMap map;
-        MapViewFragment fragment;
+        protected MapboxMap map;
+        protected MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
         private Position currentCamera;
         bool mapReady;
@@ -121,7 +121,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        public void SetupFunctions()
+        public virtual void SetupFunctions()
         {
             Element.TakeSnapshotFunc += TakeMapSnapshot;
             Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
@@ -428,7 +428,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        void UpdateMapStyle()
+        protected virtual void UpdateMapStyle()
         {
             if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
             {

@@ -18,7 +18,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
     public partial class MapViewRenderer : MapView.IOnMapChangedListener
     {
         bool cameraBusy;
-        void AddMapEvents()
+        protected virtual void AddMapEvents()
         {
             map.MarkerClick += MarkerClicked;
             map.InfoWindowClick += InfoWindowClick;
@@ -30,7 +30,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             fragment.OnMapChangedListener = (this);
         }
 
-        void RemoveMapEvents()
+        protected virtual void RemoveMapEvents()
         {
             if (map != null)
             {
@@ -78,7 +78,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             Element.Center = currentCamera;
         }
 
-        void MapClicked(object o, MapboxMap.MapClickEventArgs args)
+        protected virtual void MapClicked(object o, MapboxMap.MapClickEventArgs args)
         {
             Element.FocusPosition = false;
 
@@ -110,7 +110,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        public void OnMapChanged(int p0)
+        public virtual void OnMapChanged(int p0)
         {
             switch (p0)
             {

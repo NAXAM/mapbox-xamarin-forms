@@ -27,7 +27,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public partial class MapViewRenderer : ViewRenderer<Naxam.Controls.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
     {
-        MGLMapView MapView { get; set; }
+        protected MGLMapView MapView { get; set; }
 
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
         {
@@ -150,7 +150,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void OnElementPropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        protected void OnElementPropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             if (Element == null) return;
             if (e.PropertyName == FormsMap.AnnotationsProperty.PropertyName
@@ -189,7 +189,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void SetupUserInterface()
+        protected virtual void SetupUserInterface()
         {
             try
             {
@@ -221,7 +221,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void UpdateCenter()
+        protected virtual void UpdateCenter()
         {
             if (Element.Center != null && MapView != null
                 && (!Element.Center.Lat.Equals(MapView.CenterCoordinate.Latitude) || !Element.Center.Long.Equals(MapView.CenterCoordinate.Longitude)))
@@ -230,7 +230,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void UpdateMapStyle()
+        protected virtual void UpdateMapStyle()
         {
             if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
             {
@@ -287,7 +287,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void SetupEventHandlers()
+        protected virtual void SetupEventHandlers()
         {
             var tapGest = new UITapGestureRecognizer();
             tapGest.NumberOfTapsRequired = 1;
@@ -309,7 +309,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             Element.PropertyChanging += OnElementPropertyChanging;
         }
 
-        protected void SetupFunctions()
+        protected virtual void SetupFunctions()
         {
             Element.TakeSnapshotFunc = () =>
             {
@@ -1253,13 +1253,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         }
 
         [Export("mapViewRegionIsChanging:"),]
-        void RegionIsChanging(MGLMapView mapView)
+        protected virtual void RegionIsChanging(MGLMapView mapView)
         {
             Element.Center = new Position(mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
         }
 
         [Export("mapView:regionDidChangeAnimated:"),]
-        void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
+        protected virtual void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
         {
             Element.ZoomLevel = mapView.ZoomLevel;
             Element.Pitch = (double)mapView.Camera.Pitch;
@@ -1268,7 +1268,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         }
 
         [Export("mapView:annotationCanShowCallout:"),]
-        bool AnnotationCanShowCallout(MGLMapView mapView, NSObject annotation)
+        protected virtual bool AnnotationCanShowCallout(MGLMapView mapView, NSObject annotation)
         {
             if (annotation is MGLShape && Element.CanShowCalloutChecker != null)
             {
@@ -1278,7 +1278,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         }
 
         [Export("mapView:tapOnCalloutForAnnotation:")]
-        void MapView_TapOnCalloutForAnnotation(MGLMapView mapView, NSObject annotation)
+        protected virtual void MapView_TapOnCalloutForAnnotation(MGLMapView mapView, NSObject annotation)
         {
             if (annotation is MGLShape shape)
             {
@@ -1290,7 +1290,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
         [Export("mapView:imageForAnnotation:")]
-        public MGLAnnotationImage MapView_ImageForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
+        protected virtual MGLAnnotationImage MapView_ImageForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
             if (annotation is MGLShape shape)
             {
