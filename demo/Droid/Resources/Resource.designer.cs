@@ -2282,7 +2282,6 @@ namespace MapBoxQs.Droid
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MediaRouteButton = global::MapBoxQs.Droid.Resource.Styleable.MediaRouteButton;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MediaRouteButton_android_minHeight = global::MapBoxQs.Droid.Resource.Styleable.MediaRouteButton_android_minHeight;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MediaRouteButton_android_minWidth = global::MapBoxQs.Droid.Resource.Styleable.MediaRouteButton_android_minWidth;
-			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MediaRouteButton_buttonTint = global::MapBoxQs.Droid.Resource.Styleable.MediaRouteButton_buttonTint;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MediaRouteButton_externalRouteEnabledDrawable = global::MapBoxQs.Droid.Resource.Styleable.MediaRouteButton_externalRouteEnabledDrawable;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MenuGroup = global::MapBoxQs.Droid.Resource.Styleable.MenuGroup;
 			global::Naxam.Mapbox.Platform.Droid.Resource.Styleable.MenuGroup_android_checkableBehavior = global::MapBoxQs.Droid.Resource.Styleable.MenuGroup_android_checkableBehavior;
