@@ -15,7 +15,7 @@ using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
 
-    public partial class MapViewRenderer : MapView.IOnMapChangedListener
+    public partial class MapViewRenderer
     {
         bool cameraBusy;
         protected virtual void AddMapEvents()
@@ -27,7 +27,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.CameraMoveStarted += Map_CameraMoveStarted;
             map.CameraMoveCancel += Map_CameraMoveCancel;
             map.CameraMove += Map_CameraMove;
-            fragment.OnMapChangedListener = (this);
         }
 
         protected virtual void RemoveMapEvents()
@@ -41,11 +40,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.CameraMoveStarted -= Map_CameraMoveStarted;
                 map.CameraMoveCancel -= Map_CameraMoveCancel;
                 map.CameraMove -= Map_CameraMove;
-            }
-
-            if (fragment != null)
-            {
-                fragment.OnMapChangedListener = null;
             }
         }
 
@@ -110,59 +104,59 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        public virtual void OnMapChanged(int p0)
-        {
-            switch (p0)
-            {
-                case MapView.DidFinishLoadingStyle:
-                    var mapStyle = Element.MapStyle;
-                    if (mapStyle == null
-                        || (!string.IsNullOrEmpty(map.StyleUrl) && mapStyle.UrlString != map.StyleUrl))
-                    {
-                        mapStyle = new MapStyle(map.StyleUrl);
+        //public virtual void OnMapChanged(int p0)
+        //{
+        //    switch (p0)
+        //    {
+        //        case MapView.DidFinishLoadingStyle:
+        //            var mapStyle = Element.MapStyle;
+        //            if (mapStyle == null
+        //                || (!string.IsNullOrEmpty(map.StyleUrl) && mapStyle.UrlString != map.StyleUrl))
+        //            {
+        //                mapStyle = new MapStyle(map.StyleUrl);
 
-                    }
-                    if (mapStyle.CustomSources != null)
-                    {
-                        var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
-                        if (notifiyCollection != null)
-                        {
-                            notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
-                        }
+        //            }
+        //            if (mapStyle.CustomSources != null)
+        //            {
+        //                var notifiyCollection = Element.MapStyle.CustomSources as INotifyCollectionChanged;
+        //                if (notifiyCollection != null)
+        //                {
+        //                    notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+        //                }
 
-                        AddSources(Element.MapStyle.CustomSources.ToList());
-                    }
-                    if (mapStyle.CustomLayers != null)
-                    {
-                        if (Element.MapStyle.CustomLayers is INotifyCollectionChanged notifiyCollection)
-                        {
-                            notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
-                        }
+        //                AddSources(Element.MapStyle.CustomSources.ToList());
+        //            }
+        //            if (mapStyle.CustomLayers != null)
+        //            {
+        //                if (Element.MapStyle.CustomLayers is INotifyCollectionChanged notifiyCollection)
+        //                {
+        //                    notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+        //                }
 
-                        AddLayers(Element.MapStyle.CustomLayers.ToList());
-                    }
-                    mapStyle.OriginalLayers = map.Layers.Select((arg) =>
-                                                                        new Layer(arg.Id)
-                                                                       ).ToArray();
-                    Element.MapStyle = mapStyle;
-                    Element.DidFinishLoadingStyleCommand?.Execute(mapStyle);
-                    break;
-                case MapView.DidFinishRenderingMap:
-                    Element.Center = new Position(map.CameraPosition.Target.Latitude, map.CameraPosition.Target.Longitude);
-                    Element.DidFinishRenderingCommand?.Execute(false);
-                    break;
-                case MapView.DidFinishRenderingMapFullyRendered:
-                    Element.DidFinishRenderingCommand?.Execute(true);
-                    break;
-                case MapView.RegionDidChange:
-                    Element.RegionDidChangeCommand?.Execute(false);
-                    break;
-                case MapView.RegionDidChangeAnimated:
-                    Element.RegionDidChangeCommand?.Execute(true);
-                    break;
-                default:
-                    break;
-            }
-        }
+        //                AddLayers(Element.MapStyle.CustomLayers.ToList());
+        //            }
+        //            mapStyle.OriginalLayers = map.Layers.Select((arg) =>
+        //                                                                new Layer(arg.Id)
+        //                                                               ).ToArray();
+        //            Element.MapStyle = mapStyle;
+        //            Element.DidFinishLoadingStyleCommand?.Execute(mapStyle);
+        //            break;
+        //        case MapView.DidFinishRenderingMap:
+        //            Element.Center = new Position(map.CameraPosition.Target.Latitude, map.CameraPosition.Target.Longitude);
+        //            Element.DidFinishRenderingCommand?.Execute(false);
+        //            break;
+        //        case MapView.DidFinishRenderingMapFullyRendered:
+        //            Element.DidFinishRenderingCommand?.Execute(true);
+        //            break;
+        //        case MapView.RegionDidChange:
+        //            Element.RegionDidChangeCommand?.Execute(false);
+        //            break;
+        //        case MapView.RegionDidChangeAnimated:
+        //            Element.RegionDidChangeCommand?.Execute(true);
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
     }
 }

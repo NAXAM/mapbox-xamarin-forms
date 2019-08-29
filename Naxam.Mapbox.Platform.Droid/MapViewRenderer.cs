@@ -136,7 +136,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (!string.IsNullOrEmpty(layerId))
                 {
                     string layerIdStr = IsCustom ? layerId.Prefix() : layerId;
-                    var layer = map.GetLayer(layerIdStr);
+                    var layer = map.Style.GetLayer(layerIdStr);
                     if (layer != null)
                     {
                         layer.SetProperties(layer.Visibility,
@@ -166,7 +166,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (annotation != null && !string.IsNullOrEmpty(sourceId))
                 {
                     var shape = annotation.ToFeatureCollection();
-                    var source = map.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
+                    var source = map.Style.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
                     if (source != null)
                     {
                         Device.BeginInvokeOnMainThread(() =>
@@ -186,7 +186,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             Element.ReloadStyleAction = () =>
             {
                 //https://github.com/mapbox/mapbox-gl-native/issues/9511
-                map.SetStyleUrl(map.StyleUrl, null);
+                map.SetStyle(map.Style.Url);
             };
 
             Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) =>
@@ -221,7 +221,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 if (obj == null || map == null || map.Annotations == null) return;
                 foreach (var item in map.Annotations)
                 {
-
                     if (item is Marker marker && marker.Id.ToString() == obj.Item1)
                     {
                         map.SelectMarker(marker);
@@ -264,7 +263,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private byte[] GetStyleImage(string imageName)
         {
-            var img = map.GetImage(imageName);
+            var img = map.Style.GetImage(imageName);
             if (img != null)
             {
                 var stream = new MemoryStream();
@@ -276,7 +275,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private StyleLayer GetStyleLayer(string layerId, bool isCustomLayer)
         {
-            var layer = map.GetLayer(isCustomLayer ? layerId.Prefix() : layerId);
+            var layer = map.Style.GetLayer(isCustomLayer ? layerId.Prefix() : layerId);
             if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.BackgroundLayer background)
             {
                 return background.ToForms();
@@ -301,10 +300,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 return raster.ToForms();
             }
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.UnknownLayer unknown)
-            {
-                return null;
-            }
+
             return null;
         }
 
@@ -432,7 +428,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
             {
-                map.StyleUrl = Element.MapStyle.UrlString;
+                map.SetStyle(Element.MapStyle.UrlString);
                 Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
                 Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
             }
@@ -506,12 +502,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     RemoveSources(e.OldItems.Cast<MapSource>().ToList());
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    var sources = map.Sources;
+                    var sources = map.Style.Sources;
                     foreach (var source in sources)
                     {
                         if (source.Id.HasPrefix())
                         {
-                            map.RemoveSource(source);
+                            map.Style.RemoveSource(source);
                         }
                     }
                     break;
@@ -537,12 +533,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     {
                         var shape = shapeSource.Shape.ToFeatureCollection();
 
-                        var source = map.GetSource(shapeSource.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
+                        var source = map.Style.GetSource(shapeSource.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
 
                         if (source == null)
                         {
                             source = new Sdk.Style.Sources.GeoJsonSource(shapeSource.Id.Prefix(), shape);
-                            map.AddSource(source);
+                            map.Style.AddSource(source);
                         }
                         else
                         {
@@ -551,11 +547,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     }
                     else if (mapSource is RasterSource rs)
                     {
-                        var source = map.GetSource(rs.Id);
+                        var source = map.Style.GetSource(rs.Id);
                         if (source == null)
                         {
                             Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
-                            map.AddSource(rasterSource);
+                            map.Style.AddSource(rasterSource);
                         }
                     }
                 }
@@ -572,7 +568,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 if (source.Id != null)
                 {
-                    map.RemoveSource(source.Id.Prefix());
+                    map.Style.RemoveSource(source.Id.Prefix());
                 }
             }
         }
@@ -588,12 +584,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     RemoveLayers(e.OldItems);
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    var layers = map.Layers;
+                    var layers = map.Style.Layers;
                     foreach (var layer in layers)
                     {
                         if (layer.Id.HasPrefix())
                         {
-                            map.RemoveLayer(layer);
+                            map.Style.RemoveLayer(layer);
                         }
                     }
                     break;
@@ -612,11 +608,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             foreach (Layer layer in layers)
             {
-                var native = map.GetLayer(layer.Id.Prefix());
+                var native = map.Style.GetLayer(layer.Id.Prefix());
 
                 if (native != null)
                 {
-                    map.RemoveLayer(native);
+                    map.Style.RemoveLayer(native);
                 }
             }
         }
@@ -634,41 +630,41 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     continue;
                 }
 
-                map.RemoveLayer(layer.Id.Prefix());
+                map.Style.RemoveLayer(layer.Id.Prefix());
 
                 if (layer is CircleLayer)
                 {
                     var cross = (CircleLayer)layer;
 
-                    var source = map.GetSource(cross.SourceId.Prefix());
+                    var source = map.Style.GetSource(cross.SourceId.Prefix());
                     if (source == null)
                     {
                         continue;
                     }
 
-                    map.AddLayer(cross.ToNative());
+                    map.Style.AddLayer(cross.ToNative());
                 }
                 else if (layer is LineLayer)
                 {
                     var cross = (LineLayer)layer;
 
-                    var source = map.GetSource(cross.SourceId.Prefix());
+                    var source = map.Style.GetSource(cross.SourceId.Prefix());
                     if (source == null)
                     {
                         continue;
                     }
 
-                    map.AddLayer(cross.ToNative());
+                    map.Style.AddLayer(cross.ToNative());
                 }
                 else if (layer is RasterLayer cross)
                 {
-                    var source = map.GetSource(cross.SourceId);
+                    var source = map.Style.GetSource(cross.SourceId);
                     if (source == null)
                     {
                         continue;
                     }
 
-                    map.AddLayer(cross.ToNative());
+                    map.Style.AddLayer(cross.ToNative());
                 }
             }
         }
@@ -954,7 +950,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void OnMapReady(MapboxMap mapBox)
         {
             map = mapBox;
-            map.SetStyle("mapbox://styles/mapbox/streets-v9");
+            map.SetStyle(Sdk.Maps.Style.MAPBOX_STREETS);
             mapReady = true;
             OnMapRegionChanged();
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
@@ -974,9 +970,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             SetupFunctions();
             if (Element.MapStyle == null)
             {
-                if (map.StyleUrl != null)
+                if (map.Style != null)
                 {
-                    Element.MapStyle = new MapStyle(map.StyleUrl);
+                    Element.MapStyle = new MapStyle(map.Style.Url);
                 }
             }
             else
