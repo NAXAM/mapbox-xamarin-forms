@@ -7,11 +7,9 @@ using Com.Mapbox.Mapboxsdk.Maps;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    public class MapViewFragment : SupportMapFragment, MapView.IOnMapChangedListener
+    public class MapViewFragment : SupportMapFragment
     {
         public MapView MapView { get; private set; }
-
-        public MapView.IOnMapChangedListener OnMapChangedListener { get; set; }
 
         public bool StateSaved { get; private set; }
 
@@ -30,19 +28,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             base.OnViewCreated(view, savedInstanceState);
 
             MapView = view as MapView;
-            MapView?.AddOnMapChangedListener(this);
         }
 
 
         public override void OnDestroyView()
         {
             base.OnDestroyView();
-            MapView?.RemoveOnMapChangedListener(this);
-        }
-
-        public void OnMapChanged(int p0)
-        {
-            OnMapChangedListener?.OnMapChanged(p0);
         }
 
         public override void OnResume()
