@@ -304,23 +304,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return null;
         }
 
-        TaskCompletionSource<byte[]> tcs;
-        Task<byte[]> TakeMapSnapshot()
-        {
-            if (tcs != null && tcs.Task.IsCompleted == false)
-                return tcs.Task;
-            tcs = new TaskCompletionSource<byte[]>();
-
-            map.Snapshot(new SnapshotReadyCallback((bmp) =>
-            {
-                MemoryStream stream = new MemoryStream();
-                bmp.Compress(Bitmap.CompressFormat.Png, 0, stream);
-                var result = stream.ToArray();
-                tcs.TrySetResult(result);
-            }));
-            return tcs.Task;
-        }
-
         IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
         {
             var output = new List<IFeature>();
@@ -762,20 +745,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-    }
-
-    class SnapshotReadyCallback : Java.Lang.Object, ISnapshotReadyCallback
-    {
-        public Action<Bitmap> SnapshotReady { get; set; }
-        public SnapshotReadyCallback(Action<Bitmap> SnapshotReady)
-        {
-            this.SnapshotReady = SnapshotReady;
-        }
-
-        public void OnSnapshotReady(Bitmap p0)
-        {
-            SnapshotReady?.Invoke(p0);
-        }
     }
 
     public static class StringExtensions

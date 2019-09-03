@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="CustomInfoWindowAdapter.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
+    <Compile Include="MapViewRenderer.Snapshot.cs" />
     <Compile Include="MapViewRenderer.Style.Layers.cs" />
     <Compile Include="MapViewRenderer.Style.Sources.cs" />
     <Compile Include="MapViewRenderer_MapEvents.cs" />
