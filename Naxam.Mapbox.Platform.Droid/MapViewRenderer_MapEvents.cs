@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Linq;
-using Android.Graphics;
-using Android.Support.V4.Widget;
-using Android.Views;
-using Com.Mapbox.Mapboxsdk.Annotations;
-using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Mapbox.Forms;
-using static Android.Support.V4.Widget.NestedScrollView;
-using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
-using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {

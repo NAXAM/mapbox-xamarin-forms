@@ -424,17 +424,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        protected virtual void UpdateMapStyle()
-        {
-            if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
-            {
-                map.SetStyle(Element.MapStyle.UrlString);
-                Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
-                Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
-            }
-
-        }
-
         void OnMapRegionChanged()
         {
             if (Element.Region != Naxam.Mapbox.Forms.AnnotationsAndFeatures.MapRegion.Empty)
@@ -446,226 +435,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         Element.Region.SouthWest.Lat,
                         Element.Region.SouthWest.Long
                     ), 0));
-            }
-        }
-
-        void OnMapStylePropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
-        {
-            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
-                && (sender as MapStyle).CustomSources != null)
-            {
-                var notifiyCollection = (sender as MapStyle).CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
-                }
-                RemoveSources(Element.MapStyle.CustomSources.ToList());
-            }
-        }
-
-        void OnMapStylePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var style = sender as MapStyle;
-            if (style == null) return;
-            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
-                && style.CustomSources != null)
-            {
-                var notifiyCollection = style.CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
-                }
-
-                AddSources(style.CustomSources.ToList());
-            }
-            else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName
-                     && style.CustomLayers != null)
-            {
-                var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
-                }
-
-                AddLayers(Element.MapStyle.CustomLayers.ToList());
-            }
-        }
-
-        void OnShapeSourcesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    AddSources(e.NewItems.Cast<MapSource>().ToList());
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    RemoveSources(e.OldItems.Cast<MapSource>().ToList());
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    var sources = map.Style.Sources;
-                    foreach (var source in sources)
-                    {
-                        if (source.Id.HasPrefix())
-                        {
-                            map.Style.RemoveSource(source);
-                        }
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    RemoveSources(e.OldItems.Cast<MapSource>().ToList());
-                    AddSources(e.NewItems.Cast<MapSource>().ToList());
-                    break;
-            }
-        }
-
-        void AddSources(List<MapSource> sources)
-        {
-            if (sources == null || map == null)
-            {
-                return;
-            }
-
-            foreach (MapSource mapSource in sources)
-            {
-                if (mapSource.Id != null)
-                {
-                    if (mapSource is ShapeSource shapeSource && shapeSource.Shape != null)
-                    {
-                        var shape = shapeSource.Shape.ToFeatureCollection();
-
-                        var source = map.Style.GetSource(shapeSource.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
-
-                        if (source == null)
-                        {
-                            source = new Sdk.Style.Sources.GeoJsonSource(shapeSource.Id.Prefix(), shape);
-                            map.Style.AddSource(source);
-                        }
-                        else
-                        {
-                            source.SetGeoJson(shape);
-                        }
-                    }
-                    else if (mapSource is RasterSource rs)
-                    {
-                        var source = map.Style.GetSource(rs.Id);
-                        if (source == null)
-                        {
-                            Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
-                            map.Style.AddSource(rasterSource);
-                        }
-                    }
-                }
-            }
-        }
-
-        void RemoveSources(List<MapSource> sources)
-        {
-            if (sources == null)
-            {
-                return;
-            }
-            foreach (MapSource source in sources)
-            {
-                if (source.Id != null)
-                {
-                    map.Style.RemoveSource(source.Id.Prefix());
-                }
-            }
-        }
-
-        void OnLayersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case NotifyCollectionChangedAction.Add:
-                    AddLayers(e.NewItems.Cast<Layer>().ToList());
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    RemoveLayers(e.OldItems);
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    var layers = map.Style.Layers;
-                    foreach (var layer in layers)
-                    {
-                        if (layer.Id.HasPrefix())
-                        {
-                            map.Style.RemoveLayer(layer);
-                        }
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    RemoveLayers(e.OldItems);
-                    AddLayers(e.NewItems.Cast<Layer>().ToList());
-                    break;
-            }
-        }
-
-        void RemoveLayers(System.Collections.IList layers)
-        {
-            if (layers == null)
-            {
-                return;
-            }
-            foreach (Layer layer in layers)
-            {
-                var native = map.Style.GetLayer(layer.Id.Prefix());
-
-                if (native != null)
-                {
-                    map.Style.RemoveLayer(native);
-                }
-            }
-        }
-
-        void AddLayers(List<Naxam.Controls.Mapbox.Forms.Layer> layers)
-        {
-            if (layers == null)
-            {
-                return;
-            }
-            foreach (Layer layer in layers)
-            {
-                if (string.IsNullOrEmpty(layer.Id))
-                {
-                    continue;
-                }
-
-                map.Style.RemoveLayer(layer.Id.Prefix());
-
-                if (layer is CircleLayer)
-                {
-                    var cross = (CircleLayer)layer;
-
-                    var source = map.Style.GetSource(cross.SourceId.Prefix());
-                    if (source == null)
-                    {
-                        continue;
-                    }
-
-                    map.Style.AddLayer(cross.ToNative());
-                }
-                else if (layer is LineLayer)
-                {
-                    var cross = (LineLayer)layer;
-
-                    var source = map.Style.GetSource(cross.SourceId.Prefix());
-                    if (source == null)
-                    {
-                        continue;
-                    }
-
-                    map.Style.AddLayer(cross.ToNative());
-                }
-                else if (layer is RasterLayer cross)
-                {
-                    var source = map.Style.GetSource(cross.SourceId);
-                    if (source == null)
-                    {
-                        continue;
-                    }
-
-                    map.Style.AddLayer(cross.ToNative());
-                }
             }
         }
 
@@ -950,7 +719,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public void OnMapReady(MapboxMap mapBox)
         {
             map = mapBox;
-            map.SetStyle(Sdk.Maps.Style.MAPBOX_STREETS);
             mapReady = true;
             OnMapRegionChanged();
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
@@ -970,10 +738,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             SetupFunctions();
             if (Element.MapStyle == null)
             {
-                if (map.Style != null)
-                {
-                    Element.MapStyle = new MapStyle(map.Style.Url);
-                }
+                Element.MapStyle = new MapStyle(Sdk.Maps.Style.MAPBOX_STREETS);
             }
             else
             {

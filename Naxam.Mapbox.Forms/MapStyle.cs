@@ -4,12 +4,6 @@ using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Forms
 {
-    public sealed class PreserveAttribute : System.Attribute
-    {
-        public bool AllMembers;
-        public bool Conditional;
-    }
-
     public class MapStyle : BindableObject
     {
         public string Id { get; set; }
