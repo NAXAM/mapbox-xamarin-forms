@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Naxam.Controls.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public class OSSEventArgs : EventArgs
     {

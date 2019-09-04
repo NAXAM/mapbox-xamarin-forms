@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace Naxam.Controls.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
 
     public class AnnotationChangeEventArgs : EventArgs

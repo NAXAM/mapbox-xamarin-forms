@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace Naxam.Controls.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public class MapStyle : BindableObject
     {

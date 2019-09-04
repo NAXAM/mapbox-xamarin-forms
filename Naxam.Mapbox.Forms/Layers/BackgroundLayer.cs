@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace Naxam.Controls.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public class BackgroundLayer : StyleLayer
     {

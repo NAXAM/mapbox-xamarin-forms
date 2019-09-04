@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Xamarin.Forms;
 
 namespace MapBoxQs
@@ -144,7 +144,7 @@ namespace MapBoxQs
 
             }, (arg) => true);
 
-            offlineService = DependencyService.Get<Naxam.Controls.Mapbox.Forms.IOfflineStorageService>();
+            offlineService = DependencyService.Get<Naxam.Controls.Forms.IOfflineStorageService>();
             offlineService.OfflinePackProgressChanged += (sender, e) =>
             {
                 var progress = e.OfflinePack.Progress;

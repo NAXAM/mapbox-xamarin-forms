@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Offline;
 using GoogleGson;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Naxam.Mapbox.Platform.Droid.Offline;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Naxam.Controls.Mapbox.Platform.Droid.OfflineStorageService))]

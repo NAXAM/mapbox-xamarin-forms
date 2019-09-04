@@ -29,6 +29,7 @@ namespace MapBoxQs.Droid
             base.OnCreate(savedInstanceState);
 
             Com.Mapbox.Mapboxsdk.Mapbox.GetInstance(this, MapBoxQs.Services.MapBoxService.AccessToken);
+            Com.Mapbox.Mapboxsdk.Mapbox.Telemetry.SetDebugLoggingEnabled(true);
 
             Acr.UserDialogs.UserDialogs.Init(() => this);
 

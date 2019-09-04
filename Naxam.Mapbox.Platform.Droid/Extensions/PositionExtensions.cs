@@ -1,6 +1,6 @@
 ﻿using System;
 using Com.Mapbox.Mapboxsdk.Geometry;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {

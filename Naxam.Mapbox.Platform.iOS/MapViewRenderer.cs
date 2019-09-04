@@ -10,22 +10,22 @@ using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using Mapbox;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Naxam.Controls.Mapbox.Platform.iOS;
 using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
 using Naxam.Mapbox.Platform.iOS;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using FormsMap = Naxam.Controls.Mapbox.Forms.MapView;
-using FormsMB = Naxam.Controls.Mapbox.Forms;
+using FormsMap = Naxam.Controls.Forms.MapView;
+using FormsMB = Naxam.Controls.Forms;
 using Naxam.Mapbox.Platform.iOS.Extensions;
 using ObjCRuntime;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(FormsMap), typeof(MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
-    public partial class MapViewRenderer : ViewRenderer<Naxam.Controls.Mapbox.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
+    public partial class MapViewRenderer : ViewRenderer<Naxam.Controls.Forms.MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
     {
         protected MGLMapView MapView { get; set; }
 
@@ -47,10 +47,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (Control == null)
                 {
                     SetupUserInterface();
-                    SetupEventHandlers();
                     SetupFunctions();
+                    SetupEventHandlers();
                     SetNativeControl(MapView);
-                    if(e.NewElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
+                    MapView.WeakDelegate = this;
+                    if (e.NewElement.Annotations is INotifyCollectionChanged notifyCollection && notifyCollection != null)
                     {
                         notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                     }
@@ -198,7 +199,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 MapView = new MGLMapView(Bounds)
                 {
                     ShowsUserLocation = Element.ShowUserLocation,
-                    WeakDelegate = this,
                     PitchEnabled = Element.PitchEnabled,
                     RotateEnabled = Element.RotateEnabled,
                     UserTrackingMode = MGLUserTrackingMode.FollowWithHeading

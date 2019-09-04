@@ -1,4 +1,4 @@
-﻿using Naxam.Controls.Mapbox.Forms;
+﻿using Naxam.Controls.Forms;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using Xamarin.Forms.Platform.Android;
 
@@ -90,7 +90,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (circle == null) { return null; }
 
-            var forms = new Mapbox.Forms.CircleLayer(circle.Id, circle.SourceLayer);
+            var forms = new CircleLayer(circle.Id, circle.SourceLayer);
             if (circle.CircleColor != null && circle.CircleColor.ColorInt != null)
             {
                 Android.Graphics.Color circleColor = new Android.Graphics.Color((int)circle.CircleColor.ColorInt);

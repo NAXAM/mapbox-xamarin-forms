@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Sdk = Com.Mapbox.Mapboxsdk;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
@@ -52,7 +52,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        void AddLayers(List<Naxam.Controls.Mapbox.Forms.Layer> layers)
+        void AddLayers(List<Naxam.Controls.Forms.Layer> layers)
         {
             if (layers == null)
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Newtonsoft.Json;
 using MapBoxQs.Dtos;
 

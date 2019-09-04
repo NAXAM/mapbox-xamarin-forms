@@ -13,25 +13,25 @@ using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Java.Util;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Naxam.Controls.Mapbox.Platform.Droid;
 using Naxam.Mapbox.Platform.Droid;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
-using Annotation = Naxam.Controls.Mapbox.Forms.Annotation;
+using Annotation = Naxam.Controls.Forms.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
-using MapView = Naxam.Controls.Mapbox.Forms.MapView;
+using MapView = Naxam.Controls.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
-using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
+using FAnnotation = Naxam.Controls.Forms.Annotation;
 
-using FMarker = Naxam.Controls.Mapbox.Forms.PointAnnotation;
+using FMarker = Naxam.Controls.Forms.PointAnnotation;
 using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
 
-using FPolyline = Naxam.Controls.Mapbox.Forms.PolylineAnnotation;
+using FPolyline = Naxam.Controls.Forms.PolylineAnnotation;
 using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
 using Com.Mapbox.Mapboxsdk.Offline;
 

@@ -12,9 +12,9 @@ namespace Naxam.Mapbox.Platform.Droid
     public class CustomInfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
     {
         Context _context;
-        Naxam.Controls.Mapbox.Forms.MapView _mapView;
+        Naxam.Controls.Forms.MapView _mapView;
         DataTemplate _dataTemPlate;
-        public CustomInfoWindowAdapter(Context context, Naxam.Controls.Mapbox.Forms.MapView map)
+        public CustomInfoWindowAdapter(Context context, Naxam.Controls.Forms.MapView map)
         {
             _context = context;
             _mapView = map;

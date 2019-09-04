@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.709228" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
   </ItemGroup>
 
@@ -19,6 +19,9 @@
 	<Compile Update="App.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+	<Compile Update="AppShell.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
 	<Compile Update="MapBoxQsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -26,6 +29,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="App.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AppShell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MapBoxQsPage.xaml">

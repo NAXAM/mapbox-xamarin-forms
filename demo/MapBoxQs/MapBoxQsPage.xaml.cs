@@ -1,7 +1,7 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 
 namespace MapBoxQs
 {

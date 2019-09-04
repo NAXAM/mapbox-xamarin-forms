@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:MapBoxQs.Views"
+    x:Class="MapBoxQs.AppShell">
+    <FlyoutItem
+        Title="Get Started">
+        <ShellContent
+            Title="Get Started"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Styles">
+        <ShellContent
+            Title="Styles"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Data-Driven Styling">
+        <ShellContent
+            Title="Data-Driven Styling"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Location">
+        <ShellContent
+            Title="Location"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="3D Extrusions">
+        <ShellContent
+            Title="3D Extrusions"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Plugins">
+        <ShellContent
+            Title="Plugins"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Camera">
+        <ShellContent
+            Title="Camera"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Offline">
+        <ShellContent
+            Title="Offline"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+    <FlyoutItem
+        Title="Query Map">
+        <ShellContent
+            Title="Query Map"
+            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+        </ShellContent>
+    </FlyoutItem>
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid
+                Padding="24,16"
+                BackgroundColor="#7753eb">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="168" />
+                </Grid.RowDefinitions>
+                <StackLayout
+                    Spacing="0"
+                    VerticalOptions="End"
+                    >
+                    <Label
+                        Text="Mapbox by Naxam"
+                        TextColor="White"
+                        FontSize="Title"
+                        />
+                    <Label
+                        Text="Xamarin.Forms Examples"
+                        TextColor="LightGray"
+                        FontSize="Subtitle"
+                        />
+                </StackLayout>
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+</Shell>

@@ -1,7 +1,5 @@
-﻿using Naxam.Controls.Mapbox.Forms;
+﻿using Naxam.Controls.Forms;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Naxam.Mapbox.Forms.AnnotationsAndFeatures
 {

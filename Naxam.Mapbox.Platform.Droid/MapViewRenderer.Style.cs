@@ -2,7 +2,7 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Sdk = Com.Mapbox.Mapboxsdk;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-namespace Naxam.Controls.Mapbox.Forms
+namespace Naxam.Controls.Forms
 {
     public enum TileSourceOption
     {

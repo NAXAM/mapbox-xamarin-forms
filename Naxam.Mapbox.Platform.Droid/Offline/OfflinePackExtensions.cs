@@ -2,7 +2,7 @@
 using Com.Mapbox.Mapboxsdk.Offline;
 using GoogleGson;
 using Java.Lang;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Naxam.Controls.Mapbox.Platform.Droid;
 
 namespace Naxam.Mapbox.Platform.Droid.Offline

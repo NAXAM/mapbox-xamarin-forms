@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Com.Mapbox.Mapboxsdk.Maps;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {

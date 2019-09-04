@@ -1,7 +1,7 @@
 ﻿using System;
 using Com.Mapbox.Geojson;
 using Point = Com.Mapbox.Geojson.Point;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using System.Linq;
 using Android.Graphics;
 using System.Collections.Generic;

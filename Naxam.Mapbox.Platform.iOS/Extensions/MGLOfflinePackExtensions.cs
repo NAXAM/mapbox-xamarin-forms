@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Foundation;
 using Mapbox;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using ObjCRuntime;
 namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
 {

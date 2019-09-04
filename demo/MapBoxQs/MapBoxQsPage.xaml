@@ -2,7 +2,7 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:Naxam.Controls.Mapbox.Forms;assembly=Naxam.Mapbox.Forms"
+    xmlns:controls="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
     xmlns:local="clr-namespace:MapBoxQs"
     x:Name="root"
     x:Class="MapBoxQs.MapBoxQsPage">
@@ -87,11 +87,7 @@
             DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
             DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
             DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
-            <controls:MapView.Center>
-                <controls:Position
-                    Lat="21.028511"
-                    Long="105.804817" />
-            </controls:MapView.Center>
+            
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>
                     <StackLayout

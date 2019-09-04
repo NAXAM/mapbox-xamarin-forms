@@ -1,9 +1,9 @@
-﻿using Naxam.Controls.Mapbox.Forms;
+﻿using Naxam.Controls.Forms;
 
 using System.Collections.Generic;
 using System.Linq;
 using Com.Mapbox.Mapboxsdk.Annotations;
-using FAnnotation = Naxam.Controls.Mapbox.Forms.Annotation;
+using FAnnotation = Naxam.Controls.Forms.Annotation;
 using Android.Content;
 using Com.Mapbox.Geojson;
 

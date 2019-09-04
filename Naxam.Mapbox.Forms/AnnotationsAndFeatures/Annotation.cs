@@ -1,4 +1,4 @@
-﻿namespace Naxam.Controls.Mapbox.Forms
+﻿namespace Naxam.Controls.Forms
 {
 	public class Annotation: Xamarin.Forms.BindableObject
     {

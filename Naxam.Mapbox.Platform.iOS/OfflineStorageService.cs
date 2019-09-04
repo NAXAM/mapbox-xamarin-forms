@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Foundation;
-using Naxam.Controls.Mapbox.Forms;
+using Naxam.Controls.Forms;
 using Mapbox;
 using System.Threading.Tasks;
 using Naxam.Controls.Mapbox.Platform.iOS.Extensions;
