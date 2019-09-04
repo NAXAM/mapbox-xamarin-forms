@@ -44,7 +44,6 @@
     <WarningLevel>4</WarningLevel>
     <AndroidLinkTool>
     </AndroidLinkTool>
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Reveal|AnyCPU' ">
     <Optimize>false</Optimize>
