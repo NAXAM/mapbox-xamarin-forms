@@ -43,7 +43,6 @@
     <OutputPath>bin\iPhoneSimulator\Debug-Reveal</OutputPath>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkTool></AndroidLinkTool>
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Reveal|AnyCPU' ">
     <Optimize>false</Optimize>

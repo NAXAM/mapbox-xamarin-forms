@@ -25,6 +25,24 @@ Install-Package Naxam.Mapbox.Forms -pre
 <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
 ```
 
+### Permisisons
+Mapbox requires location and internet permissions on the device in order to run.
+
+Android
+```
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.INTERNET" />
+```
+iOS
+```
+<key>NSLocationAlwaysUsageDescription</key>
+<string>This app needs to use your location</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs to use your location</string>
+```
+
 ### Your XAML
 ```xml
 <local:MapView 
