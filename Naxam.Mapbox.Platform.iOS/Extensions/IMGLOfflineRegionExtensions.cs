@@ -1,6 +1,7 @@
 ﻿using System;
 using Mapbox;
 using Naxam.Controls.Forms;
+using Naxam.Mapbox;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
 {

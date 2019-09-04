@@ -17,87 +17,87 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 map.SetStyle(Element.MapStyle.UrlString, new StyleLoadedCallback(new WeakReference<MapViewRenderer>(this)));
 
-                Element.MapStyle.PropertyChanging -= OnMapStylePropertyChanging;
-                Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
+                //Element.MapStyle.PropertyChanging -= OnMapStylePropertyChanging;
+                //Element.MapStyle.PropertyChanging += OnMapStylePropertyChanging;
 
-                Element.MapStyle.PropertyChanged -= OnMapStylePropertyChanged;
-                Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
+                //Element.MapStyle.PropertyChanged -= OnMapStylePropertyChanged;
+                //Element.MapStyle.PropertyChanged += OnMapStylePropertyChanged;
             }
         }
 
-        void OnMapStylePropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
-        {
-            var style = sender as MapStyle;
-            if (style == null) return;
+        //void OnMapStylePropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        //{
+        //    var style = sender as MapStyle;
+        //    if (style == null) return;
 
-            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName)
-            {
-                if (style.CustomSources == null)
-                {
-                    return;
-                }
+        //    if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName)
+        //    {
+        //        if (style.CustomSources == null)
+        //        {
+        //            return;
+        //        }
 
-                var notifiyCollection = style.CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
-                }
+        //        var notifiyCollection = style.CustomSources as INotifyCollectionChanged;
+        //        if (notifiyCollection != null)
+        //        {
+        //            notifiyCollection.CollectionChanged -= OnShapeSourcesCollectionChanged;
+        //        }
 
-                RemoveSources(style.CustomSources.ToList());
-            }
-            else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName)
-            {
-                if (style.CustomLayers == null)
-                {
-                    return;
-                }
+        //        RemoveSources(style.CustomSources.ToList());
+        //    }
+        //    else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName)
+        //    {
+        //        if (style.CustomLayers == null)
+        //        {
+        //            return;
+        //        }
 
-                var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged -= OnLayersCollectionChanged;
-                }
+        //        var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+        //        if (notifiyCollection != null)
+        //        {
+        //            notifiyCollection.CollectionChanged -= OnLayersCollectionChanged;
+        //        }
 
-                RemoveLayers(Element.MapStyle.CustomLayers.ToList());
-            }
-        }
+        //        RemoveLayers(Element.MapStyle.CustomLayers.ToList());
+        //    }
+        //}
 
-        void OnMapStylePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var style = sender as MapStyle;
-            if (style == null) return;
+        //void OnMapStylePropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    var style = sender as MapStyle;
+        //    if (style == null) return;
 
-            if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName)
-            {
-                if (style.CustomSources == null)
-                {
-                    return;
-                }
+        //    if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName)
+        //    {
+        //        if (style.CustomSources == null)
+        //        {
+        //            return;
+        //        }
 
-                var notifiyCollection = style.CustomSources as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
-                }
+        //        var notifiyCollection = style.CustomSources as INotifyCollectionChanged;
+        //        if (notifiyCollection != null)
+        //        {
+        //            notifiyCollection.CollectionChanged += OnShapeSourcesCollectionChanged;
+        //        }
 
-                AddSources(style.CustomSources.ToList());
-            }
-            else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName)
-            {
-                if (style.CustomLayers == null)
-                {
-                    return;
-                }
+        //        AddSources(style.CustomSources.ToList());
+        //    }
+        //    else if (e.PropertyName == MapStyle.CustomLayersProperty.PropertyName)
+        //    {
+        //        if (style.CustomLayers == null)
+        //        {
+        //            return;
+        //        }
 
-                var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
-                if (notifiyCollection != null)
-                {
-                    notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
-                }
+        //        var notifiyCollection = Element.MapStyle.CustomLayers as INotifyCollectionChanged;
+        //        if (notifiyCollection != null)
+        //        {
+        //            notifiyCollection.CollectionChanged += OnLayersCollectionChanged;
+        //        }
 
-                AddLayers(Element.MapStyle.CustomLayers.ToList());
-            }
-        }
+        //        AddLayers(Element.MapStyle.CustomLayers.ToList());
+        //    }
+        //}
 
         class StyleLoadedCallback : Java.Lang.Object, Sdk.Maps.Style.IOnStyleLoaded
         {

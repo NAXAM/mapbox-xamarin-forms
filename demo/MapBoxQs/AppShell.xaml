@@ -8,7 +8,7 @@
         Title="Get Started">
         <ShellContent
             Title="Get Started"
-            ContentTemplate="{DataTemplate views:StylesLandingPage}">
+            ContentTemplate="{DataTemplate views:GetStartedPage}">
         </ShellContent>
     </FlyoutItem>
     <FlyoutItem

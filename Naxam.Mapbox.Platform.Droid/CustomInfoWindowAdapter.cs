@@ -22,45 +22,46 @@ namespace Naxam.Mapbox.Platform.Droid
         }
         public Android.Views.View GetInfoWindow(Marker marker)
         {
-            if (marker.InfoWindow?.View != null)
-            {
-                return marker.InfoWindow.View;
-            }
+            //if (marker.InfoWindow?.View != null)
+            //{
+            //    return marker.InfoWindow.View;
+            //}
 
-            if (_dataTemPlate == null)
-                return null;
+            //if (_dataTemPlate == null)
+            //    return null;
 
-            var bindingContext = _mapView.Annotations?.FirstOrDefault(d => d.Id == marker.Id.ToString());
-            var templateContent = (_dataTemPlate is DataTemplateSelector dataTemplateSelector)
-                ? dataTemplateSelector.SelectTemplate(bindingContext, _mapView).CreateContent()
-                : _dataTemPlate.CreateContent();
+            ////var bindingContext = _mapView.Annotations?.FirstOrDefault(d => d.Id == marker.Id.ToString());
+            //var templateContent = (_dataTemPlate is DataTemplateSelector dataTemplateSelector)
+            //    ? dataTemplateSelector.SelectTemplate(bindingContext, _mapView).CreateContent()
+            //    : _dataTemPlate.CreateContent();
 
-            View view = null;
+            //View view = null;
 
-            switch (templateContent)
-            {
-                case ViewCell viewCell:
-                    viewCell.BindingContext = bindingContext;
-                    viewCell.Parent = _mapView;
-                    view = viewCell.View;
-                    break;
-                case View view1:
-                    view1.BindingContext = bindingContext;
-                    view1.Parent = _mapView;
-                    view = view1;
-                    break;
-                default:
-                    return null;
-            }
+            //switch (templateContent)
+            //{
+            //    case ViewCell viewCell:
+            //        viewCell.BindingContext = bindingContext;
+            //        viewCell.Parent = _mapView;
+            //        view = viewCell.View;
+            //        break;
+            //    case View view1:
+            //        view1.BindingContext = bindingContext;
+            //        view1.Parent = _mapView;
+            //        view = view1;
+            //        break;
+            //    default:
+            //        return null;
+            //}
 
-            var renderer = Platform.GetRenderer(view) ?? Platform.CreateRendererWithContext(view, _context);
-            Platform.SetRenderer(view, renderer);
+            //var renderer = Platform.GetRenderer(view) ?? Platform.CreateRendererWithContext(view, _context);
+            //Platform.SetRenderer(view, renderer);
 
-            var output = new ViewGroupContainer(_context)
-            {
-                Child = renderer
-            };
-            return output;
+            //var output = new ViewGroupContainer(_context)
+            //{
+            //    Child = renderer
+            //};
+            //return output;
+            return null;
         }
     }
 }

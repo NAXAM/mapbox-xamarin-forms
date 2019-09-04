@@ -1,26 +1,27 @@
 using System;
-namespace Naxam.Controls.Forms
+
+namespace Naxam.Mapbox
 {
-    public class Position
+    public class LatLng
     {
         public double Lat { get; set; }
 
         public double Long { get; set; }
 
-        public Position() { }
+        public LatLng() { }
 
-        public Position(double lat, double lon)
+        public LatLng(double lat, double lon)
         {
             Lat = lat;
             Long = lon;
         }
 
-        public double DistanceTo(Position targetCoordinates)
+        public double DistanceTo(LatLng targetCoordinates)
         {
             return DistanceTo(targetCoordinates, UnitOfLength.Kilometers);
         }
 
-        public double DistanceTo(Position targetCoordinates, UnitOfLength unitOfLength)
+        public double DistanceTo(LatLng targetCoordinates, UnitOfLength unitOfLength)
         {
             var baseRad = Math.PI * Lat / 180;
             var targetRad = Math.PI * targetCoordinates.Lat / 180;

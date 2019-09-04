@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using Naxam.Controls.Forms;
+using Naxam.Mapbox;
+using Naxam.Mapbox.Annotations;
 using Xamarin.Forms;
 
 namespace MapBoxQs
@@ -109,11 +111,11 @@ namespace MapBoxQs
             Annotations = new ObservableCollection<Annotation>();
 
             Annotations = new ObservableCollection<Annotation> {
-                new PointAnnotation {
-                    Coordinate = new Position(21.004142f, 105.847607f),
-                    Title = "Naxam Company Limited",
-                    SubTitle = "A software development agency from Hanoi, Vietnam"
-,                }
+//                new PointAnnotation {
+//                    Coordinate = new LatLng(21.004142f, 105.847607f),
+//                    Title = "Naxam Company Limited",
+//                    SubTitle = "A software development agency from Hanoi, Vietnam"
+//,                }
             };
             DidFinishRenderingCommand = new Command((obj) =>
             {
@@ -125,7 +127,7 @@ namespace MapBoxQs
                 if (forcedRegion != null)
                 {
                     UpdateViewPortAction?.Invoke(
-                        new Position()
+                        new LatLng
                         {
                             Lat = forcedRegion.Bounds.SouthWest.Lat / 2 + forcedRegion.Bounds.NorthEast.Lat / 2,
                             Long = forcedRegion.Bounds.SouthWest.Long / 2 + forcedRegion.Bounds.NorthEast.Long / 2
@@ -187,9 +189,9 @@ namespace MapBoxQs
             });
         }
 
-        private Position _UserLocation;
+        private LatLng _UserLocation;
 
-        public Position UserLocation
+        public LatLng UserLocation
         {
             get { return _UserLocation; }
             set
@@ -206,7 +208,7 @@ namespace MapBoxQs
 
         public ICommand DidTapOnMarkerCommand { get; set; }
 
-        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction { get; set; }
+        public Action<LatLng, double?, double?, bool, Action> UpdateViewPortAction { get; set; }
         public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc { get; set; }
         public Func<OfflinePack, bool> ApplyOfflinePackFunc { get; set; }
         Action<Tuple<string, bool>> _SelectAnnotationAction;
@@ -296,9 +298,9 @@ namespace MapBoxQs
 
         public Func<string, Byte[]> GetStyleImageFunc { get; set; }
 
-        private Position _centerLocation;
+        private LatLng _centerLocation;
 
-        public Position CenterLocation
+        public LatLng CenterLocation
         {
             get { return _centerLocation; }
             set
@@ -331,12 +333,12 @@ namespace MapBoxQs
                 MinimumZoomLevel = 1,
                 Bounds = new CoordinateBounds()
                 {
-                    NorthEast = new Position()
+                    NorthEast = new LatLng()
                     {
                         Lat = CenterLocation.Lat - 0.01,
                         Long = CenterLocation.Long + 0.005
                     },
-                    SouthWest = new Position()
+                    SouthWest = new LatLng
                     {
                         Lat = CenterLocation.Lat + 0.01,
                         Long = CenterLocation.Long - 0.005
@@ -495,12 +497,12 @@ namespace MapBoxQs
         }
 
         #region Custom locations
-        Position[] positions = new[] {
-             new Position {
+        LatLng[] positions = new[] {
+             new LatLng {
               Lat = 21.0333,
               Long = 105.8500
              },
-              new Position {
+              new LatLng {
                             Lat = 55.75719563,
                             Long = 8.93032908
               }
@@ -546,7 +548,7 @@ namespace MapBoxQs
             if (double.TryParse(CustomLatitude, out double lat)
                 && double.TryParse(CustomLongitude, out double lon))
             {
-                UpdateViewPortAction?.Invoke(new Position(lat, lon), null, null, true, null);
+                UpdateViewPortAction?.Invoke(new LatLng(lat, lon), null, null, true, null);
             }
         }
 
@@ -703,7 +705,7 @@ namespace MapBoxQs
             }
         }
 
-        PolylineAnnotation polyline;
+        //PolylineAnnotation polyline;
         ICommand _ToggleCurrentActionCommand;
         public ICommand ToggleCurrentActionCommand
         {
@@ -728,7 +730,7 @@ namespace MapBoxQs
                 switch (state)
                 {
                     case ActionState.AddPolyline:
-                        polyline = null;
+                        //polyline = null;
                         break;
                 }
                 CurrentAction = ActionState.None;
@@ -738,43 +740,43 @@ namespace MapBoxQs
         ICommand _DidTapOnMapCommand;
         public ICommand DidTapOnMapCommand
         {
-            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<Position, Point>>(ExecuteDidTapOnMapCommand)); }
+            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<LatLng, Xamarin.Forms.Point>>(this.ExecuteDidTapOnMapCommand)); }
         }
 
-        void ExecuteDidTapOnMapCommand(Tuple<Position, Point> currentTap)
+        void ExecuteDidTapOnMapCommand(Tuple<LatLng, Xamarin.Forms.Point> currentTap)
         {
             if (Annotations == null || currentTap == null) return;
-            var currentPosition = currentTap.Item1;
-            var currentPoint = currentTap.Item2;
+            //var currentPosition = currentTap.Item1;
+            //var currentPoint = currentTap.Item2;
 
-            if (CurrentAction == ActionState.AddPointAnnotation)
-            {
-                var annotation = new PointAnnotation()
-                {
-                    Coordinate = currentPosition,
-                    Icon = "pin"
-                };
-                annotation.Title = "PointAnnot." + i;
-                Annotations.Add(annotation);
-                OnPropertyChanged("Annotations");
-                i = i + 1;
-            }
-            if (CurrentAction == ActionState.AddPolyline)
-            {
-                if (polyline == null)
-                    polyline = new PolylineAnnotation
-                    {
-                        HexColor = colorPolyline,
-                        Width = 1
-                    };
-                if (polyline.Coordinates == null)
-                {
-                    polyline.Coordinates = new ObservableCollection<Position> { currentPosition };
-                    Annotations.Add(polyline);
-                }
-                else
-                    (polyline.Coordinates as ObservableCollection<Position>).Add(currentPosition);
-            }
+            //if (CurrentAction == ActionState.AddPointAnnotation)
+            //{
+            //    var annotation = new PointAnnotation()
+            //    {
+            //        Coordinate = currentPosition,
+            //        Icon = "pin"
+            //    };
+            //    annotation.Title = "PointAnnot." + i;
+            //    Annotations.Add(annotation);
+            //    OnPropertyChanged("Annotations");
+            //    i = i + 1;
+            //}
+            //if (CurrentAction == ActionState.AddPolyline)
+            //{
+            //    if (polyline == null)
+            //        polyline = new PolylineAnnotation
+            //        {
+            //            HexColor = colorPolyline,
+            //            Width = 1
+            //        };
+            //    if (polyline.Coordinates == null)
+            //    {
+            //        polyline.Coordinates = new ObservableCollection<LatLng> { currentPosition };
+            //        Annotations.Add(polyline);
+            //    }
+            //    else
+            //        (polyline.Coordinates as ObservableCollection<LatLng>).Add(currentPosition);
+            //}
         }
 
         ICommand _ClearAllAnnotation;
@@ -895,12 +897,12 @@ namespace MapBoxQs
         bool CanExecuteAddSatelliteLayerCommand(object obj) { return true; }
         void ExecuteAddSatelliteLayerCommand(object obj)
         {
-            List<MapSource> listCustomSources = new List<MapSource>();
-            listCustomSources.Add(new RasterSource("my-raster-source", "mapbox://mapbox.satellite", 512));
-            CurrentMapStyle.CustomSources = listCustomSources;
-            List<Layer> listCustomLayers = new List<Layer>();
-            listCustomLayers.Add(new RasterLayer("0", "my-raster-source"));
-            CurrentMapStyle.CustomLayers = listCustomLayers;
+            //List<MapSource> listCustomSources = new List<MapSource>();
+            //listCustomSources.Add(new RasterSource("my-raster-source", "mapbox://mapbox.satellite", 512));
+            //CurrentMapStyle.CustomSources = listCustomSources;
+            //List<Layer> listCustomLayers = new List<Layer>();
+            //listCustomLayers.Add(new RasterLayer("0", "my-raster-source"));
+            //CurrentMapStyle.CustomLayers = listCustomLayers;
         }
 
 
@@ -912,17 +914,17 @@ namespace MapBoxQs
         bool CanExecuteSelectAnnotationCommand(object obj) { return true; }
         async void ExecuteSelectAnnotationCommand(object obj)
         {
-            var buttons = Annotations.Select((arg) => arg.Id).ToArray();
-            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
-            if (buttons.Contains(choice))
-            {
-                SelectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
-                if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
-                {
-                    UserDialogs.Instance.Alert("You just select marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Selected Annotation");
-                    SelectedAnnotation = point;
-                }
-            }
+            //var buttons = Annotations.Select((arg) => arg.Id).ToArray();
+            //var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
+            //if (buttons.Contains(choice))
+            //{
+            //    SelectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
+            //    if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
+            //    {
+            //        UserDialogs.Instance.Alert("You just select marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Selected Annotation");
+            //        SelectedAnnotation = point;
+            //    }
+            //}
         }
 
         ICommand _DeselectAnnotationCommand;

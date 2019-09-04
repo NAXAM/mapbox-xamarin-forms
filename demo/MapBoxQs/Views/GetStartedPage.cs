@@ -1,17 +1,18 @@
 ﻿using Naxam.Controls.Forms;
+using Naxam.Mapbox;
 using Xamarin.Forms;
 
 namespace MapBoxQs.Views
 {
-    public class StylesLandingPage : ContentPage
+    public class GetStartedPage : ContentPage
     {
-        public StylesLandingPage()
+        public GetStartedPage()
         {
             Title = "Get Started";
 
-            var mapView = new MapView()
+            var mapView = new MapView
             {
-                Center = new Position(21.028511, 105.804817),
+                Center = new LatLng(21.028511, 105.804817),
                 ZoomLevel = 15
             };
 

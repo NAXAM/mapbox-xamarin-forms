@@ -2,6 +2,7 @@
 using System.Linq;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
+using NxLatLng = Naxam.Mapbox.LatLng;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -69,22 +70,22 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var point = map.Projection.ToScreenLocation(args.P0);
             var xfPoint = new Xamarin.Forms.Point(point.X, point.Y);
-            var xfPosition = new Position(args.P0.Latitude, args.P0.Longitude);
+            var xfPosition = new NxLatLng(args.P0.Latitude, args.P0.Longitude);
 
-            Element.DidTapOnMapCommand?.Execute(new Tuple<Position, Xamarin.Forms.Point>(xfPosition, xfPoint));
+            Element.DidTapOnMapCommand?.Execute(new Tuple<NxLatLng, Xamarin.Forms.Point>(xfPosition, xfPoint));
         }
 
         void MarkerClicked(object o, MapboxMap.MarkerClickEventArgs args)
         {
             fragment?.ToggleInfoWindow(map, args.P0);
 
-            if (Element?.Annotations?.Count() > 0)
-            {
-                var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
-                if (fm == null)
-                    return;
-                Element.DidTapOnMarkerCommand?.Execute(fm);
-            }
+            //if (Element?.Annotations?.Count() > 0)
+            //{
+            //    var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
+            //    if (fm == null)
+            //        return;
+            //    Element.DidTapOnMarkerCommand?.Execute(fm);
+            //}
         }
 
         void InfoWindowClick(object s, MapboxMap.InfoWindowClickEventArgs e)

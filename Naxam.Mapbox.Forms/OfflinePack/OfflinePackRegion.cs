@@ -1,4 +1,6 @@
 using System;
+using Naxam.Mapbox;
+
 namespace Naxam.Controls.Forms
 {
     public class OfflinePackRegion

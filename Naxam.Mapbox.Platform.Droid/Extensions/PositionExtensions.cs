@@ -1,12 +1,11 @@
-﻿using System;
-using Com.Mapbox.Mapboxsdk.Geometry;
-using Naxam.Controls.Forms;
+﻿using Com.Mapbox.Mapboxsdk.Geometry;
+using NxLatLng = Naxam.Mapbox.LatLng;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class PositionExtensions
     {
-        public static LatLng ToLatLng(this Position pos)
+        public static LatLng ToLatLng(this NxLatLng pos)
         {
             return new LatLng(pos.Lat, pos.Long);
         }

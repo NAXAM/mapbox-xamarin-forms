@@ -64,29 +64,7 @@
             DragFinishedCommand="{Binding DragFinishedCommand}"
             ShowUserLocation="true"
             Center="{Binding CenterLocation}"
-            VerticalOptions="FillAndExpand"
-            Annotations="{Binding Annotations}"
-            MapStyle="{Binding CurrentMapStyle}"
-            ReloadStyleAction="{Binding ReloadStyleAction}"
-            ZoomLevel="{Binding ZoomLevel}"
-            Region="{Binding Region}"
-            UserLocation="{Binding UserLocation}"
-            ToggleScaleBarFunc="{Binding ToggleScaleBarFunc}"
-            UpdateViewPortAction="{Binding UpdateViewPortAction}"
-            InsertLayerBelowLayerFunc="{Binding InsertLayerBelowLayerFunc}"
-            ApplyOfflinePackFunc="{Binding ApplyOfflinePackFunc}"
-            Pitch="{Binding Pitch}"
-            RotatedDegree="{Binding RotatedDegree}"
-            TakeSnapshotFunc="{Binding TakeSnapshotFunc,Mode=OneWayToSource}"
-            GetStyleImageFunc="{Binding GetStyleImageFunc,Mode=OneWayToSource}"
-            GetImageForAnnotationFunc="{Binding GetImageForAnnotationFunc}"
-            DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
-            GetStyleLayerFunc="{Binding GetStyleLayerFunc}"
-            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
-            SelectAnnotationAction="{Binding SelectAnnotationAction}"
-            DeselectAnnotationAction="{Binding DeselectAnnotationAction}"
-            DidTapOnCalloutViewCommand="{Binding DidTapOnCalloutViewCommand}"
-            DidTapOnMarkerCommand="{Binding DidTapOnMarkerCommand}">
+            VerticalOptions="FillAndExpand">
             
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>

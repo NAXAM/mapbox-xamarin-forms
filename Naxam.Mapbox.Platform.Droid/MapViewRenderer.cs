@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
 using Android.Support.V7.App;
@@ -12,28 +10,18 @@ using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
-using Java.Util;
 using Naxam.Controls.Forms;
 using Naxam.Controls.Mapbox.Platform.Droid;
 using Naxam.Mapbox.Platform.Droid;
-using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using static Com.Mapbox.Mapboxsdk.Maps.MapboxMap;
-using Annotation = Naxam.Controls.Forms.Annotation;
+using Annotation = Naxam.Mapbox.Annotations.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Forms.MapView;
 using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
-using FAnnotation = Naxam.Controls.Forms.Annotation;
-
-using FMarker = Naxam.Controls.Forms.PointAnnotation;
-using MMarker = Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions;
-
-using FPolyline = Naxam.Controls.Forms.PolylineAnnotation;
-using MPolyline = Com.Mapbox.Mapboxsdk.Annotations.PolylineOptions;
-using Com.Mapbox.Mapboxsdk.Offline;
+using NxLatLng = Naxam.Mapbox.LatLng;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -42,7 +30,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         protected MapboxMap map;
         protected MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
-        private Position currentCamera;
+        private NxLatLng currentCamera;
         bool mapReady;
         Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries;
         public MapViewRenderer(Context context) : base(context)
@@ -57,7 +45,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 e.OldElement.AnnotationChanged -= Element_AnnotationChanged;
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
-                e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
+                //e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
                 if (map != null)
                 {
                     RemoveMapEvents();
@@ -83,19 +71,19 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 .Replace(view.Id, fragment)
                 .CommitAllowingStateLoss();
                 fragment.GetMapAsync(this);
-                currentCamera = new Position();
+                currentCamera = new NxLatLng();
 
                 if (mapReady)
                 {
-                    if (Element.Annotations != null)
-                    {
-                        AddAnnotations(Element.Annotations.ToArray());
-                        if (Element.Annotations is INotifyCollectionChanged notifyCollection)
-                        {
-                            notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                            notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                        }
-                    }
+                    //if (Element.Annotations != null)
+                    //{
+                    //    AddAnnotations(Element.Annotations.ToArray());
+                    //    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+                    //    {
+                    //        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+                    //        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+                    //    }
+                    //}
 
                     OnMapRegionChanged();
                 }
@@ -105,7 +93,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public virtual void SetupFunctions()
         {
             Element.TakeSnapshotFunc += TakeMapSnapshot;
-            Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
+            //Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
             Element.ResetPositionAction = () =>
             {
                 //TODO handle reset position call
@@ -142,27 +130,27 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 return false;
             };
 
-            Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) =>
-            {
-                if (annotation != null && !string.IsNullOrEmpty(sourceId))
-                {
-                    var shape = annotation.ToFeatureCollection();
-                    var source = map.Style.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
-                    if (source != null)
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            source.SetGeoJson(shape);
-                        });
-                        if (Element.MapStyle.CustomSources?.FirstOrDefault((arg) => arg.Id == sourceId) is ShapeSource shapeSource)
-                        {
-                            shapeSource.Shape = annotation;
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            };
+            //Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) =>
+            //{
+            //    if (annotation != null && !string.IsNullOrEmpty(sourceId))
+            //    {
+            //        var shape = annotation.ToFeatureCollection();
+            //        var source = map.Style.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
+            //        if (source != null)
+            //        {
+            //            Device.BeginInvokeOnMainThread(() =>
+            //            {
+            //                source.SetGeoJson(shape);
+            //            });
+            //            if (Element.MapStyle.CustomSources?.FirstOrDefault((arg) => arg.Id == sourceId) is ShapeSource shapeSource)
+            //            {
+            //                shapeSource.Shape = annotation;
+            //            }
+            //            return true;
+            //        }
+            //    }
+            //    return false;
+            //};
 
             Element.ReloadStyleAction = () =>
             {
@@ -170,11 +158,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.SetStyle(map.Style.Url);
             };
 
-            Element.UpdateViewPortAction = (Position centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) =>
+            Element.UpdateViewPortAction = (NxLatLng centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) =>
             {
+                var tartget = centerLocation != null ? new LatLng(centerLocation.Lat, centerLocation.Long) : map.CameraPosition.Target;
                 var newPosition = new CameraPosition.Builder()
                                                     .Bearing(bearing ?? map.CameraPosition.Bearing)
-                                                    .Target(centerLocation?.ToLatLng() ?? map.CameraPosition.Target)
+                                                    .Target(tartget)
                                                     .Zoom(zoomLevel ?? map.CameraPosition.Zoom)
                                                     .Build();
                 var callback = completionHandler == null ? null : new CancelableCallback()
@@ -285,15 +274,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return null;
         }
 
-        IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
-        {
-            var output = new List<IFeature>();
-            RectF rect = point.ToRect(Context.ToPixels(radius));
-            var listFeatures = map.QueryRenderedFeatures(rect, layers);
-            return listFeatures.Select(x => x.ToFeature())
-                               .Where(x => x != null)
-                               .ToArray();
-        }
+        //IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
+        //{
+        //    var output = new List<IFeature>();
+        //    RectF rect = point.ToRect(Context.ToPixels(radius));
+        //    var listFeatures = map.QueryRenderedFeatures(rect, layers);
+        //    return listFeatures.Select(x => x.ToFeature())
+        //                       .Where(x => x != null)
+        //                       .ToArray();
+        //}
 
         protected override void Dispose(bool disposing)
         {
@@ -342,7 +331,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 if (Element.Center == null) return;
 
-                FocustoLocation(Element.Center.ToLatLng());
+                FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
             }
             else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
             {
@@ -384,7 +373,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void OnMapRegionChanged()
         {
-            if (Element.Region != Naxam.Mapbox.Forms.AnnotationsAndFeatures.MapRegion.Empty)
+            if (Element.Region != Naxam.Mapbox.Forms.Annotations.MapRegion.Empty)
             {
                 map?.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
                     Com.Mapbox.Mapboxsdk.Geometry.LatLngBounds.From(
@@ -403,11 +392,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             OnMapRegionChanged();
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
-            RemoveAllAnnotations();
+            //RemoveAllAnnotations();
             OnMapRegionChanged();
             if (Element.Center != null)
             {
-                FocustoLocation(Element.Center.ToLatLng());
+                FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
             }
             else
             {
@@ -431,15 +420,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.InfoWindowAdapter = info;
             }
 
-            if (Element.Annotations != null)
-            {
-                AddAnnotations(Element.Annotations.ToArray());
-                if (Element.Annotations is INotifyCollectionChanged notifyCollection)
-                {
-                    notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                    notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                }
-            }
+            //if (Element.Annotations != null)
+            //{
+            //    AddAnnotations(Element.Annotations.ToArray());
+            //    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
+            //    {
+            //        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+            //        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+            //    }
+            //}
         }
 
     }

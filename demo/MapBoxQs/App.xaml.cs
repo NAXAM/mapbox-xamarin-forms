@@ -9,7 +9,7 @@ namespace MapBoxQs
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new MapBoxQsPage();
         }
 
         protected override void OnStart()

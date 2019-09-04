@@ -1,8 +1,8 @@
-namespace Naxam.Controls.Forms
+namespace Naxam.Mapbox
 {
     public class CoordinateBounds
     {
-        public Position SouthWest { get; set; }
-        public Position NorthEast { get; set; }
+        public LatLng SouthWest { get; set; }
+        public LatLng NorthEast { get; set; }
     }
 }

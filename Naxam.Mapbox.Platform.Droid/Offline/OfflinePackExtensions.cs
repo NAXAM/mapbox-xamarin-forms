@@ -52,8 +52,8 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
             {
                 Bounds = new CoordinateBounds()
                 {
-                    NorthEast = new Position(definition.Bounds.NorthEast.Latitude, definition.Bounds.NorthEast.Longitude),
-                    SouthWest = new Position(definition.Bounds.SouthWest.Latitude, definition.Bounds.SouthWest.Longitude)
+                    NorthEast = new LatLng(definition.Bounds.NorthEast.Latitude, definition.Bounds.NorthEast.Longitude),
+                    SouthWest = new LatLng(definition.Bounds.SouthWest.Latitude, definition.Bounds.SouthWest.Longitude)
                 },
                 StyleURL = definition.StyleURL,
                 MinimumZoomLevel = definition.MinZoom,

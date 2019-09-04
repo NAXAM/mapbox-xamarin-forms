@@ -1,16 +1,16 @@
 ﻿using Naxam.Controls.Forms;
 using System;
 
-namespace Naxam.Mapbox.Forms.AnnotationsAndFeatures
+namespace Naxam.Mapbox.Forms.Annotations
 {
     public struct MapRegion : IEquatable<MapRegion>
     {
         public static MapRegion Empty = new MapRegion();
 
-        public Position NorthEast { get; set; }
-        public Position SouthWest { get; set; }
+        public LatLng NorthEast { get; set; }
+        public LatLng SouthWest { get; set; }
 
-        public MapRegion(Position ne, Position sw)
+        public MapRegion(LatLng ne, LatLng sw)
         {
             NorthEast = ne;
             SouthWest = sw;

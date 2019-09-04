@@ -1,9 +1,7 @@
 
-using Naxam.Mapbox.Forms.AnnotationsAndFeatures;
+using Naxam.Mapbox;
+using Naxam.Mapbox.Forms.Annotations;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -12,17 +10,17 @@ namespace Naxam.Controls.Forms
 
     public class AnnotationChangeEventArgs : EventArgs
     {
-        public IEnumerable<Annotation> OldAnnotation { get; set; }
-        public IEnumerable<Annotation> NewAnnotation { get; set; }
+        //public IEnumerable<Annotation> OldAnnotation { get; set; }
+        //public IEnumerable<Annotation> NewAnnotation { get; set; }
     }
     public class PositionChangeEventArgs : EventArgs
     {
-        public PositionChangeEventArgs(Position newPosition)
+        public PositionChangeEventArgs(Point newPosition)
         {
             NewPosition = newPosition;
         }
 
-        public Position NewPosition { get; private set; }
+        public Point NewPosition { get; private set; }
     }
 
     public partial class MapView : View
@@ -74,26 +72,26 @@ namespace Naxam.Controls.Forms
 
         public static readonly BindableProperty CenterProperty = BindableProperty.Create(
             nameof(Center),
-            typeof(Position),
+            typeof(LatLng),
             typeof(MapView),
-            default(Position),
+            default(LatLng),
             BindingMode.TwoWay);
-        public Position Center
+        public LatLng Center
         {
-            get => (Position)GetValue(CenterProperty);
+            get => (LatLng)GetValue(CenterProperty);
             set => SetValue(CenterProperty, value);
         }
 
 
         public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
             nameof(UserLocation),
-            typeof(Position),
+            typeof(LatLng),
             typeof(MapView),
-            default(Position),
+            default(LatLng),
             BindingMode.OneWayToSource);
-        public Position UserLocation
+        public LatLng UserLocation
         {
-            get => (Position)GetValue(UserLocationProperty);
+            get => (LatLng)GetValue(UserLocationProperty);
             set => SetValue(UserLocationProperty, value);
         }
 
@@ -201,53 +199,53 @@ namespace Naxam.Controls.Forms
             set => SetValue(MapStyleProperty, value);
         }
 
-        public static readonly BindableProperty AnnotationsProperty = BindableProperty.Create(
-            nameof(Annotations),
-            typeof(IEnumerable<Annotation>),
-            typeof(MapView),
-            default(IEnumerable<Annotation>),
-            BindingMode.TwoWay,
-          propertyChanged: OnAnnotationChanged
-            );
+        //public static readonly BindableProperty AnnotationsProperty = BindableProperty.Create(
+        //    nameof(Annotations),
+        //    typeof(IEnumerable<Annotation>),
+        //    typeof(MapView),
+        //    default(IEnumerable<Annotation>),
+        //    BindingMode.TwoWay,
+        //  propertyChanged: OnAnnotationChanged
+        //    );
 
-        private static void OnAnnotationChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (bindable is MapView control)
-            {
-                control.OnAnnotationChanged((IEnumerable<Annotation>)oldValue, (IEnumerable<Annotation>)newValue);
-            }
-        }
+        //private static void OnAnnotationChanged(BindableObject bindable, object oldValue, object newValue)
+        //{
+        //    if (bindable is MapView control)
+        //    {
+        //        control.OnAnnotationChanged((IEnumerable<Annotation>)oldValue, (IEnumerable<Annotation>)newValue);
+        //    }
+        //}
 
-        public IEnumerable<Annotation> Annotations
-        {
-            get => (IEnumerable<Annotation>)GetValue(AnnotationsProperty);
-            set => SetValue(AnnotationsProperty, value);
-        }
+        //public IEnumerable<Annotation> Annotations
+        //{
+        //    get => (IEnumerable<Annotation>)GetValue(AnnotationsProperty);
+        //    set => SetValue(AnnotationsProperty, value);
+        //}
 
-        public static BindableProperty MarkersProperty = BindableProperty.Create(
-           nameof(Markers),
-           typeof(IEnumerable<PointAnnotation>),
-           typeof(MapView),
-           default(IEnumerable<PointAnnotation>),
-           BindingMode.OneWay
-           );
-        public IEnumerable<PointAnnotation> Markers
-        {
-            get => (IEnumerable<PointAnnotation>)GetValue(MarkersProperty);
-            set => SetValue(MarkersProperty, value);
-        }
+        //public static BindableProperty MarkersProperty = BindableProperty.Create(
+        //   nameof(Markers),
+        //   typeof(IEnumerable<PointAnnotation>),
+        //   typeof(MapView),
+        //   default(IEnumerable<PointAnnotation>),
+        //   BindingMode.OneWay
+        //   );
+        //public IEnumerable<PointAnnotation> Markers
+        //{
+        //    get => (IEnumerable<PointAnnotation>)GetValue(MarkersProperty);
+        //    set => SetValue(MarkersProperty, value);
+        //}
 
-        public static BindableProperty PolylinesProperty = BindableProperty.Create(
-           nameof(Polylines),
-           typeof(IEnumerable<PolylineAnnotation>),
-           typeof(MapView),
-           default(IEnumerable<PolylineAnnotation>),
-           BindingMode.OneWay);
-        public IEnumerable<PolylineAnnotation> Polylines
-        {
-            get => (IEnumerable<PolylineAnnotation>)GetValue(PolylinesProperty);
-            set => SetValue(PolylinesProperty, value);
-        }
+        //public static BindableProperty PolylinesProperty = BindableProperty.Create(
+        //   nameof(Polylines),
+        //   typeof(IEnumerable<PolylineAnnotation>),
+        //   typeof(MapView),
+        //   default(IEnumerable<PolylineAnnotation>),
+        //   BindingMode.OneWay);
+        //public IEnumerable<PolylineAnnotation> Polylines
+        //{
+        //    get => (IEnumerable<PolylineAnnotation>)GetValue(PolylinesProperty);
+        //    set => SetValue(PolylinesProperty, value);
+        //}
 
 
         public static BindableProperty RegionProperty = BindableProperty.Create(
@@ -275,13 +273,13 @@ namespace Naxam.Controls.Forms
             set { SetValue(InfoWindowTemplateProperty, value); }
         }
 
-        void OnAnnotationChanged(IEnumerable<Annotation> oldAnnotation, IEnumerable<Annotation> newAnnotation)
-        {
-            AnnotationChanged?.Invoke(this, new AnnotationChangeEventArgs
-            {
-                OldAnnotation = oldAnnotation,
-                NewAnnotation = newAnnotation
-            });
-        }
+        //void OnAnnotationChanged(IEnumerable<Annotation> oldAnnotation, IEnumerable<Annotation> newAnnotation)
+        //{
+        //    AnnotationChanged?.Invoke(this, new AnnotationChangeEventArgs
+        //    {
+        //        OldAnnotation = oldAnnotation,
+        //        NewAnnotation = newAnnotation
+        //    });
+        //}
     }
 }

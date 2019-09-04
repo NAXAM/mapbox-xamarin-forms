@@ -65,18 +65,18 @@ namespace Naxam.Controls.Forms
             }
         }
 
-        public static readonly BindableProperty CustomSourcesProperty = BindableProperty.Create(
-            nameof(CustomSources),
-            typeof(IEnumerable<MapSource>),
-            typeof(MapView),
-            default(IEnumerable<MapSource>),
-            BindingMode.TwoWay);
+        //public static readonly BindableProperty CustomSourcesProperty = BindableProperty.Create(
+        //    nameof(CustomSources),
+        //    typeof(IEnumerable<MapSource>),
+        //    typeof(MapView),
+        //    default(IEnumerable<MapSource>),
+        //    BindingMode.TwoWay);
 
-        public IEnumerable<MapSource> CustomSources
-        {
-            get => (IEnumerable<MapSource>)GetValue(CustomSourcesProperty);
-            set => SetValue(CustomSourcesProperty, value);
-        }
+        //public IEnumerable<MapSource> CustomSources
+        //{
+        //    get => (IEnumerable<MapSource>)GetValue(CustomSourcesProperty);
+        //    set => SetValue(CustomSourcesProperty, value);
+        //}
 
         public static readonly BindableProperty CustomLayersProperty = BindableProperty.Create(
             nameof(CustomLayers),

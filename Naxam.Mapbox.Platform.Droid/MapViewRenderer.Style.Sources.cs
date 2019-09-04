@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using Naxam.Controls.Forms;
+using NxSource = Naxam.Mapbox.Sources.Source;
+using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
 using Sdk = Com.Mapbox.Mapboxsdk;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
@@ -14,10 +15,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    AddSources(e.NewItems.Cast<MapSource>().ToList());
+                    AddSources(e.NewItems.Cast<NxSource>().ToList());
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    RemoveSources(e.OldItems.Cast<MapSource>().ToList());
+                    RemoveSources(e.OldItems.Cast<NxSource>().ToList());
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     var sources = map.Style.Sources;
@@ -30,59 +31,66 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     }
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    RemoveSources(e.OldItems.Cast<MapSource>().ToList());
-                    AddSources(e.NewItems.Cast<MapSource>().ToList());
+                    RemoveSources(e.OldItems.Cast<NxSource>().ToList());
+                    AddSources(e.NewItems.Cast<NxSource>().ToList());
                     break;
             }
         }
 
-        void AddSources(List<MapSource> sources)
+        void AddSources(List<NxSource> sources)
         {
             if (sources == null || map == null)
             {
                 return;
             }
 
-            foreach (MapSource mapSource in sources)
+            foreach (NxSource source in sources)
             {
-                if (mapSource.Id != null)
+                if (string.IsNullOrWhiteSpace(source.Id))
                 {
-                    if (mapSource is ShapeSource shapeSource && shapeSource.Shape != null)
-                    {
-                        var shape = shapeSource.Shape.ToFeatureCollection();
-
-                        var source = map.Style.GetSource(shapeSource.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
-
-                        if (source == null)
-                        {
-                            source = new Sdk.Style.Sources.GeoJsonSource(shapeSource.Id.Prefix(), shape);
-                            map.Style.AddSource(source);
-                        }
-                        else
-                        {
-                            source.SetGeoJson(shape);
-                        }
-                    }
-                    else if (mapSource is RasterSource rs)
-                    {
-                        var source = map.Style.GetSource(rs.Id);
-                        if (source == null)
-                        {
-                            Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
-                            map.Style.AddSource(rasterSource);
-                        }
-                    }
+                    continue;
                 }
+
+                //switch(source)
+                //{
+                //    case NxShapeSource shapeSrc:
+                //        if (shapeSrc.Shape == null) continue;
+
+                //        var shape = shapeSource.Shape.ToFeatureCollection();
+
+                //        var source = map.Style.GetSource(shapeSource.Id.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
+
+                //        if (source == null)
+                //        {
+                //            source = new Sdk.Style.Sources.GeoJsonSource(shapeSource.Id.Prefix(), shape);
+                //            map.Style.AddSource(source);
+                //        }
+                //        else
+                //        {
+                //            source.SetGeoJson(shape);
+                //        }
+                //        break;
+                //}
+
+                //if (source is RasterSource rs)
+                //    {
+                //        var source = map.Style.GetSource(rs.Id);
+                //        if (source == null)
+                //        {
+                //            Sdk.Style.Sources.RasterSource rasterSource = new Sdk.Style.Sources.RasterSource(rs.Id, rs.ConfigurationURL, (int)rs.TileSize);
+                //            map.Style.AddSource(rasterSource);
+                //        }
+                //    }
             }
         }
 
-        void RemoveSources(List<MapSource> sources)
+        void RemoveSources(List<NxSource> sources)
         {
             if (sources == null)
             {
                 return;
             }
-            foreach (MapSource source in sources)
+            foreach (NxSource source in sources)
             {
                 if (source.Id != null)
                 {

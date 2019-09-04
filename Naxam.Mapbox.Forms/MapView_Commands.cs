@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Naxam.Mapbox;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Forms
@@ -39,18 +40,18 @@ namespace Naxam.Controls.Forms
         }
 
 
-        public static readonly BindableProperty GetFeaturesAroundPointFuncProperty = BindableProperty.Create(
-            nameof(GetFeaturesAroundPointFunc),
-            typeof(Func<Point, double, string[], IFeature[]>),
-            typeof(MapView),
-            default(Func<Point, double, string[], IFeature[]>),
-            BindingMode.OneWayToSource);
+        //public static readonly BindableProperty GetFeaturesAroundPointFuncProperty = BindableProperty.Create(
+        //    nameof(GetFeaturesAroundPointFunc),
+        //    typeof(Func<Xamarin.Forms.Point, double, string[], IFeature[]>),
+        //    typeof(MapView),
+        //    default(Func<Xamarin.Forms.Point, double, string[], IFeature[]>),
+        //    BindingMode.OneWayToSource);
 
-        public Func<Point, double, string[], IFeature[]> GetFeaturesAroundPointFunc
-        {
-            get => ((Func<Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointFuncProperty));
-            set => SetValue(GetFeaturesAroundPointFuncProperty, value);
-        }
+        //public Func<Xamarin.Forms.Point, double, string[], IFeature[]> GetFeaturesAroundPointFunc
+        //{
+        //    get => ((Func<Xamarin.Forms.Point, double, string[], IFeature[]>)GetValue(GetFeaturesAroundPointFuncProperty));
+        //    set => SetValue(GetFeaturesAroundPointFuncProperty, value);
+        //}
 
         public static readonly BindableProperty ResetPositionActionProperty = BindableProperty.Create(
             nameof(ResetPositionAction),
@@ -101,22 +102,22 @@ namespace Naxam.Controls.Forms
         }
 
 
-        public static readonly BindableProperty UpdateShapeOfSourceFuncProperty = BindableProperty.Create(
-            nameof(UpdateShapeOfSourceFunc),
-            typeof(Func<Annotation, string, bool>),
-            typeof(MapView),
-            default(Func<Annotation, string, bool>),
-             BindingMode.OneWayToSource);
+        //public static readonly BindableProperty UpdateShapeOfSourceFuncProperty = BindableProperty.Create(
+        //    nameof(UpdateShapeOfSourceFunc),
+        //    typeof(Func<Annotation, string, bool>),
+        //    typeof(MapView),
+        //    default(Func<Annotation, string, bool>),
+        //     BindingMode.OneWayToSource);
 
-        public Func<Annotation, string, bool> UpdateShapeOfSourceFunc
-        {
-            get => (Func<Annotation, string, bool>)GetValue(UpdateShapeOfSourceFuncProperty);
-            set => SetValue(UpdateShapeOfSourceFuncProperty, value);
-        }
-        public bool UpdateShapeOfSource(Annotation shape, string sourceId)
-        {
-            return UpdateShapeOfSourceFunc?.Invoke(shape, sourceId) ?? false;
-        }
+        //public Func<Annotation, string, bool> UpdateShapeOfSourceFunc
+        //{
+        //    get => (Func<Annotation, string, bool>)GetValue(UpdateShapeOfSourceFuncProperty);
+        //    set => SetValue(UpdateShapeOfSourceFuncProperty, value);
+        //}
+        //public bool UpdateShapeOfSource(Annotation shape, string sourceId)
+        //{
+        //    return UpdateShapeOfSourceFunc?.Invoke(shape, sourceId) ?? false;
+        //}
 
         /// <summary>
         /// The update layer func property.
@@ -145,18 +146,18 @@ namespace Naxam.Controls.Forms
         /// </summary>
         public static readonly BindableProperty UpdateViewPortActionProperty = BindableProperty.Create(
             nameof(UpdateViewPortAction),
-            typeof(Action<Position, double?, double?, bool, Action>),
+            typeof(Action<Point, double?, double?, bool, Action>),
             typeof(MapView),
-            default(Action<Position, double?, double?, bool, Action>),
+            default(Action<Point, double?, double?, bool, Action>),
             BindingMode.OneWayToSource);
 
-        public Action<Position, double?, double?, bool, Action> UpdateViewPortAction
+        public Action<LatLng, double?, double?, bool, Action> UpdateViewPortAction
         {
-            get => ((Action<Position, double?, double?, bool, Action>)GetValue(UpdateViewPortActionProperty));
+            get => ((Action<LatLng, double?, double?, bool, Action>)GetValue(UpdateViewPortActionProperty));
             set => SetValue(UpdateViewPortActionProperty, value);
         }
 
-        public void UpdateViewPort(Position center, double? zoomLevel = null, double? bearing = null, bool animated = false, Action completionHandler = null)
+        public void UpdateViewPort(LatLng center, double? zoomLevel = null, double? bearing = null, bool animated = false, Action completionHandler = null)
         {
             UpdateViewPortAction?.Invoke(center, zoomLevel, bearing, animated, completionHandler);
         }
@@ -274,7 +275,7 @@ namespace Naxam.Controls.Forms
 
         public bool ApplyOfflinePack(OfflinePack pack)
         {
-            return ApplyOfflinePackFunc?.Invoke(pack)?? false;
+            return ApplyOfflinePackFunc?.Invoke(pack) ?? false;
         }
     }
 }
