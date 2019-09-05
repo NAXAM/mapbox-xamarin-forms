@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Naxam.Controls;
 using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Annotations
@@ -42,12 +43,12 @@ namespace Naxam.Mapbox.Annotations
 
         public Color? LineColor
         {
-            get => Properties.TryGetValue(PROPERTY_LINE_COLOR, out var val) && val is Color ? ((Color?)val) : null;
+            get => Properties.TryGetValue(PROPERTY_LINE_COLOR, out var val) && val is string sVal ? ((Color?)Color.FromHex(sVal)) : null;
             set
             {
                 if (value.HasValue)
                 {
-                    Properties[PROPERTY_LINE_COLOR] = value;
+                    Properties[PROPERTY_LINE_COLOR] = value.Value.ToHex();
                 }
                 else
                 {

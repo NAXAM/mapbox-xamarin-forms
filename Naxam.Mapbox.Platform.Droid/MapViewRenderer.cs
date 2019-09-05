@@ -1,24 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using Android.Content;
-using Android.Graphics;
 using Android.Support.V7.App;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
-using Naxam.Controls.Mapbox.Platform.Droid;
 using Naxam.Mapbox.Platform.Droid;
-using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using Annotation = Naxam.Mapbox.Annotations.Annotation;
 using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Forms.MapView;
-using Point = Xamarin.Forms.Point;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
 using NxLatLng = Naxam.Mapbox.LatLng;
@@ -30,12 +24,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         protected MapboxMap map;
         protected MapViewFragment fragment;
         private const int SIZE_ZOOM = 13;
-        private NxLatLng currentCamera;
+
+        NxLatLng currentCamera;
         bool mapReady;
-        Dictionary<string, Sdk.Annotations.Annotation> _annotationDictionaries;
+
+        readonly Dictionary<string, Annotation> _annotationDictionaries;
         public MapViewRenderer(Context context) : base(context)
         {
-            _annotationDictionaries = new Dictionary<string, Sdk.Annotations.Annotation>();
+            _annotationDictionaries = new Dictionary<string, Annotation>();
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
@@ -43,7 +39,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             base.OnElementChanged(e);
             if (e.OldElement != null)
             {
-                e.OldElement.AnnotationChanged -= Element_AnnotationChanged;
+                e.OldElement.AnnotationsChanged -= Element_AnnotationsChanged;
                 e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
                 //e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
                 if (map != null)
@@ -54,7 +50,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (e.NewElement == null)
                 return;
-            e.NewElement.AnnotationChanged += Element_AnnotationChanged;
+
             if (Control == null)
             {
                 var activity = (AppCompatActivity)Context;
@@ -67,26 +63,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 fragment = new MapViewFragment();
 
-                activity.SupportFragmentManager.BeginTransaction()
-                .Replace(view.Id, fragment)
-                .CommitAllowingStateLoss();
+                activity.SupportFragmentManager
+                    .BeginTransaction()
+                    .Replace(view.Id, fragment)
+                    .CommitAllowingStateLoss();
+
                 fragment.GetMapAsync(this);
                 currentCamera = new NxLatLng();
-
-                if (mapReady)
-                {
-                    //if (Element.Annotations != null)
-                    //{
-                    //    AddAnnotations(Element.Annotations.ToArray());
-                    //    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
-                    //    {
-                    //        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-                    //        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-                    //    }
-                    //}
-
-                    OnMapRegionChanged();
-                }
             }
         }
 

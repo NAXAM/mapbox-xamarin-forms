@@ -1,81 +1,131 @@
-﻿//using Naxam.Controls.Forms;
+﻿using Com.Mapbox.Mapboxsdk.Plugins.Annotation;
+using Naxam.Mapbox.Annotations;
+using Java.Lang;
+using System.Linq;
 
-//using System.Collections.Generic;
-//using System.Linq;
-//using Com.Mapbox.Mapboxsdk.Annotations;
-//using FAnnotation = Naxam.Controls.Forms.Annotation;
-//using Android.Content;
-//using Com.Mapbox.Geojson;
+namespace Naxam.Controls.Mapbox.Platform.Droid
+{
+    public static class AnnotationExtensions
+    {
+        public static SymbolOptions ToSymbolOptions(this SymbolAnnotation symbolAnnotation)
+        {
+            var symbolOptions = new SymbolOptions()
+                                .WithLatLng(symbolAnnotation.Coordinates.ToLatLng());
+            if (!string.IsNullOrWhiteSpace(symbolAnnotation.IconAnchor))
+            {
+                symbolOptions.WithIconImage(symbolAnnotation.IconAnchor);
+            }
+            if (symbolAnnotation.IconColor.HasValue)
+            {
+                symbolOptions.WithIconColor(symbolAnnotation.IconColor.Value.ToHex());
+            }
+            if (symbolAnnotation.IconHaloBlur.HasValue)
+            {
+                symbolOptions.WithIconHaloBlur(new Float(symbolAnnotation.IconHaloBlur.Value));
+            }
+            if (symbolAnnotation.IconHaloColor.HasValue)
+            {
+                symbolOptions.WithIconHaloColor(symbolAnnotation.IconHaloColor.Value.ToHex());
+            }
+            if (symbolAnnotation.IconHaloWidth.HasValue)
+            {
+                symbolOptions.WithIconHaloWidth(new Float(symbolAnnotation.IconHaloWidth.Value));
+            }
+            if (!string.IsNullOrWhiteSpace(symbolAnnotation.IconImage))
+            {
+                symbolOptions.WithIconImage(symbolAnnotation.IconImage);
+            }
+            if (symbolAnnotation.IconOffset?.Length > 0)
+            {
+                symbolOptions.WithIconOffset(symbolAnnotation.IconOffset.Select(x => new Float(x)).ToArray());
+            }
+            if (symbolAnnotation.IconOpacity.HasValue)
+            {
+                symbolOptions.WithIconOpacity(new Float(symbolAnnotation.IconOpacity.Value));
+            }
+            if (symbolAnnotation.IconRotate.HasValue)
+            {
+                symbolOptions.WithIconRotate(new Float(symbolAnnotation.IconRotate.Value));
+            }
+            if (symbolAnnotation.IconSize.HasValue)
+            {
+                symbolOptions.WithIconSize(new Float(symbolAnnotation.IconSize.Value));
+            }
+            if (symbolAnnotation.IsDraggable.HasValue)
+            {
+                symbolOptions.WithDraggable(symbolAnnotation.IsDraggable.Value);
+            }
+            if (symbolAnnotation.SymbolSortKey.HasValue)
+            {
+                symbolOptions.WithSymbolSortKey(new Float(symbolAnnotation.SymbolSortKey.Value));
+            }
+            if (!string.IsNullOrWhiteSpace(symbolAnnotation.TextAnchor))
+            {
+                symbolOptions.WithTextAnchor(symbolAnnotation.TextAnchor);
+            }
+            if (symbolAnnotation.TextColor.HasValue)
+            {
+                symbolOptions.WithTextColor(symbolAnnotation.TextColor.Value.ToHex());
+            }
+            if (!string.IsNullOrWhiteSpace(symbolAnnotation.TextField))
+            {
+                symbolOptions.WithTextField(symbolAnnotation.TextField);
+            }
+            if (symbolAnnotation.TextFont?.Length > 0)
+            {
+                symbolOptions.WithTextFont(symbolAnnotation.TextFont);
+            }
+            if (symbolAnnotation.TextHaloBlur.HasValue)
+            {
+                symbolOptions.WithTextHaloBlur(new Float(symbolAnnotation.TextHaloBlur.Value));
+            }
+            if (symbolAnnotation.TextHaloColor.HasValue)
+            {
+                symbolOptions.WithTextHaloColor(symbolAnnotation.TextHaloColor.Value.ToHex());
+            }
+            if (symbolAnnotation.TextHaloWidth.HasValue)
+            {
+                symbolOptions.WithTextHaloWidth(new Float(symbolAnnotation.TextHaloWidth.Value));
+            }
+            if (!string.IsNullOrWhiteSpace(symbolAnnotation.TextJustify))
+            {
+                symbolOptions.WithTextJustify(symbolAnnotation.TextJustify);
+            }
+            if (symbolAnnotation.TextLetterSpacing.HasValue)
+            {
+                symbolOptions.WithTextLetterSpacing(new Float(symbolAnnotation.TextLetterSpacing.Value));
+            }
+            if (symbolAnnotation.TextMaxWidth.HasValue)
+            {
+                symbolOptions.WithTextMaxWidth(new Float(symbolAnnotation.TextMaxWidth.Value));
+            }
+            if (symbolAnnotation.TextOffset?.Length > 0)
+            {
+                symbolOptions.WithTextOffset(symbolAnnotation.TextOffset.Select(x => new Float(x)).ToArray());
+            }
+            if (symbolAnnotation.TextOpacity.HasValue)
+            {
+                symbolOptions.WithTextOpacity(new Float(symbolAnnotation.TextOpacity.Value));
+            }
+            if (symbolAnnotation.TextRadialOffset.HasValue)
+            {
+                symbolOptions.WithTextRadialOffset(new Float(symbolAnnotation.TextRadialOffset.Value));
+            }
+            if (symbolAnnotation.TextRotate.HasValue)
+            {
+                symbolOptions.WithTextRotate(new Float(symbolAnnotation.TextRotate.Value));
+            }
+            if (symbolAnnotation.TextSize.HasValue)
+            {
+                symbolOptions.WithTextSize(new Float(symbolAnnotation.TextSize.Value));
+            }
+            if (!string.IsNullOrWhiteSpace(symbolAnnotation.TextTransform))
+            {
+                symbolOptions.WithTextTransform(symbolAnnotation.TextTransform);
+            }
 
-//namespace Naxam.Controls.Mapbox.Platform.Droid
-//{
-//    public static class AnnotationExtensions
-//    {
-//        public static Icon GetIconFromResource(this Context context, string name)
-//        {
-//            var resId = context.Resources.GetIdentifier(name, "drawable", context.PackageName);
-//            if (resId == 0)
-//                return null;
-//            IconFactory iconFactory = IconFactory.GetInstance(context);
-//            return iconFactory.FromResource(resId);
-//        }
+            return symbolOptions;
+        }
+    }
 
-//        public static FeatureCollection ToFeatureCollection(this FAnnotation annotation)
-//        {
-//            var list = new List<Feature>();
-
-//            if (annotation is PointAnnotation)
-//            {
-//                var pa = (PointAnnotation)annotation;
-//                list.Add(pa.ToFeature());
-//            }
-//            else if (annotation is PolylineAnnotation)
-//            {
-//                var pa = (PolylineAnnotation)annotation;
-//                list.Add(pa.ToFeature());
-//            }
-//            else if (annotation is MultiPolylineAnnotation)
-//            {
-//                var pa = (MultiPolylineAnnotation)annotation;
-//                list.Add(pa.ToFeature());
-//            }
-
-//            return FeatureCollection.FromFeatures(list.ToArray());
-//        }
-
-//        public static Feature ToFeature(this PointAnnotation annotation)
-//        {
-//            //var coords = new[] { annotation.Coordinate.Long, annotation.Coordinate.Lat };
-//            var coords = ToCoords(annotation.Coordinate);
-//            var geometry = Com.Mapbox.Geojson.Point.FromLngLat(annotation.Coordinate.Long, annotation.Coordinate.Lat);
-//            return Feature.FromGeometry(geometry);
-//        }
-
-//        public static Feature ToFeature(this PolylineAnnotation annotation)
-//        {
-//            var coords = annotation.Coordinates
-//                                   .Select(position => ToCoords(position))
-//                                  .ToArray();
-
-//            var geometry = LineString.FromLngLats(MultiPoint.FromLngLats(coords));
-//            return Feature.FromGeometry(geometry);
-//        }
-
-//        public static Feature ToFeature(this MultiPolylineAnnotation annotation)
-//        {
-//            var coords = annotation.Coordinates
-//                                   .Select(pp => pp.Select(position => ToCoords(position)).ToArray())
-//                                   .ToArray();
-
-//            var geometry = MultiLineString.FromLngLats(coords);
-
-//            return Feature.FromGeometry(geometry);
-//        }
-
-//        public static Point ToCoords(Forms.Point pos)
-//        {
-//            return Com.Mapbox.Geojson.Point.FromLngLat(pos.Long, pos.Lat);
-//        }
-//    }
-
-//}
+}

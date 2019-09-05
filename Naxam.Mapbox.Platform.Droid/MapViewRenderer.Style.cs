@@ -117,6 +117,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                                                                                     new Layer(arg.Id)
                                                                                    ).ToArray();
                     renderer.Element.DidFinishLoadingStyleCommand?.Execute(renderer.Element.MapStyle);
+
+                    renderer.AddAnnotations(renderer.Element.Annotations?.ToArray());
+                    renderer.Element.AnnotationsChanged += renderer.Element_AnnotationsChanged;
                 }
             }
         }

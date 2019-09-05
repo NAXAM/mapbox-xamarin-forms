@@ -3,94 +3,153 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using Android.Content;
+using System.Runtime.InteropServices;
 using Com.Mapbox.Mapboxsdk.Annotations;
-using Java.Util;
+using Com.Mapbox.Mapboxsdk.Plugins.Annotation;
 using Naxam.Controls.Forms;
-using Naxam.Controls.Mapbox.Platform.Droid;
-using Xamarin.Forms;
-using Xamarin.Forms.Platform.Android;
+using Naxam.Mapbox.Annotations;
 using NxAnnotation = Naxam.Mapbox.Annotations.Annotation;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
     {
+        SymbolManager symbolManager;
+        CircleManager circleManager;
 
         private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
-                //case NotifyCollectionChangedAction.Add:
-                //    AddAnnotations(e.NewItems.Cast<FAnnotation>().ToArray());
-                //    break;
-                //case NotifyCollectionChangedAction.Remove:
-                //    RemoveAnnotations(e.OldItems.Cast<FAnnotation>().ToArray());
-                //    break;
-                //case NotifyCollectionChangedAction.Reset:
-                //    map.RemoveAnnotations();
-                //    _annotationDictionaries.Clear();
-                //    AddAnnotations(Element.Annotations.ToList());
-                //    break;
-                //case NotifyCollectionChangedAction.Replace:
-                //    var itemsToRemove = new List<Annotation>();
-                //    foreach (Annotation annotation in e.OldItems)
-                //    {
-                //        itemsToRemove.Add(annotation);
-                //    }
-                //    RemoveAnnotations(itemsToRemove.ToArray());
+                case NotifyCollectionChangedAction.Add:
+                    AddAnnotations(e.NewItems.Cast<NxAnnotation>().ToArray());
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    RemoveAnnotations(e.OldItems.Cast<NxAnnotation>().ToArray());
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    RemoveAllAnnotations();
+                    AddAnnotations(Element.Annotations.ToList());
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    var itemsToRemove = new List<NxAnnotation>();
+                    foreach (NxAnnotation annotation in e.OldItems)
+                    {
+                        itemsToRemove.Add(annotation);
+                    }
+                    RemoveAnnotations(itemsToRemove.ToArray());
 
-                //    var itemsToAdd = new List<Annotation>();
-                //    foreach (Annotation annotation in e.NewItems)
-                //    {
-                //        itemsToRemove.Add(annotation);
-                //    }
-                //    AddAnnotations(itemsToAdd.ToArray());
-                //    break;
+                    var itemsToAdd = new List<NxAnnotation>();
+                    foreach (NxAnnotation annotation in e.NewItems)
+                    {
+                        itemsToRemove.Add(annotation);
+                    }
+                    AddAnnotations(itemsToAdd.ToArray());
+                    break;
             }
         }
 
-        void Element_AnnotationChanged(object sender, AnnotationChangeEventArgs e)
+        void Element_AnnotationsChanged(object sender, AnnotationChangedEventArgs e)
         {
-            //if (e.OldAnnotation is INotifyCollectionChanged oldCollection)
-            //{
-            //    oldCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-            //}
+            if (mapReady)
+            {
+                RemoveAllAnnotations();
+                AddAnnotations(Element?.Annotations?.ToArray());
+            }
 
-            //if (e.NewAnnotation is INotifyCollectionChanged newCollection)
-            //{
-            //    newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-            //}
+            if (e.OldAnnotations is INotifyCollectionChanged oldCollection)
+            {
+                oldCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
+            }
 
-            //if (mapReady)
-            //{
-            //    RemoveAllAnnotations();
-            //    AddAnnotations(Element?.Annotations?.ToArray());
-            //}
+            if (e.NewAnnotations is INotifyCollectionChanged newCollection)
+            {
+                newCollection.CollectionChanged += OnAnnotationsCollectionChanged;
+            }
         }
 
-        //void RemoveAnnotations(IList<FAnnotation> annotations)
-        //{
-        //    var currentAnnotations = map.Annotations.Where(d => annotations.Any(annotation => annotation.Id == d.Id.ToString()));
-        //    if (currentAnnotations == null || currentAnnotations.Count() == 0)
-        //    {
-        //        return;
-        //    }
-        //    for (int i = 0; i < annotations.Count(); i++)
-        //    {
-        //        _annotationDictionaries.Remove(annotations[i].Id);
-        //    }
+        void RemoveAnnotations(IList<NxAnnotation> annotations)
+        {
+            if (map == null)
+                return;
 
-        //    map.RemoveAnnotations(currentAnnotations.ToList());
-        //}
+            for (int i = 0; i < annotations.Count; i++)
+            {
+                switch (annotations[i])
+                {
+                    case SymbolAnnotation symbolAnnotation:
+                        {
+                            if (symbolManager == null) continue;
+                            IntPtr handleId = IntPtr.Zero;
+                            try
+                            {
+                                handleId = Marshal.StringToHGlobalUni(symbolAnnotation.HandleId);
+                                var symbol = new Java.Lang.Object(
+                                    handleId,
+                                    Android.Runtime.JniHandleOwnership.DoNotTransfer
+                                    );
+                                symbolManager.Delete(symbol);
+                            }
+                            finally
+                            {
+                                Marshal.FreeHGlobal(handleId);
+                            }
+                        }
+                        break;
+                    case CircleAnnotation circleAnnotation:
+                        {
+                            if (circleManager == null) continue;
+                            IntPtr handleId = IntPtr.Zero;
+                            try
+                            {
+                                handleId = Marshal.StringToHGlobalUni(circleAnnotation.HandleId);
+                                var symbol = new Java.Lang.Object(
+                                    handleId,
+                                    Android.Runtime.JniHandleOwnership.DoNotTransfer
+                                    );
+                                circleManager.Delete(symbol);
+                            }
+                            finally
+                            {
+                                Marshal.FreeHGlobal(handleId);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
 
-        //void AddAnnotations(IList<Annotation> annotations)
-        //{
-        //    if (map == null)
-        //        return;
-        //    AddMakers(annotations.Where(d => d is FMarker).Cast<FMarker>().ToList());
-        //    AddPolylines(annotations.Where(d => d is FPolyline).Cast<FPolyline>().ToList());
-        //}
+        void AddAnnotations(IList<NxAnnotation> annotations)
+        {
+            if (map == null)
+                return;
+
+            for (int i = 0; i < annotations.Count; i++)
+            {
+                switch (annotations[i])
+                {
+                    case SymbolAnnotation symbolAnnotation:
+                        {
+                            if (symbolManager == null)
+                            {
+                                symbolManager = new SymbolManager(fragment.MapView, map, mapStyle);
+                                symbolManager.IconAllowOverlap = Java.Lang.Boolean.True;
+                                symbolManager.TextAllowOverlap = Java.Lang.Boolean.True;
+                            }
+                            var symbolOptions = symbolAnnotation.ToSymbolOptions();
+                            var symbol = Android.Runtime.Extensions.JavaCast<Symbol>(symbolManager.Create(symbolOptions));
+                            symbolAnnotation.HandleId = symbol.Handle.ToString();
+                            symbolAnnotation.Id = symbol.Id.ToString();
+                        }
+                        break;
+                    case CircleAnnotation circleAnnotation:
+                        {
+                            // TODO
+                        }
+                        break;
+                }
+            }
+        }
 
         //IList<Marker> AddMakers(IList<FMarker> markers)
         //{
@@ -195,13 +254,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         //    return options;
         //}
 
-        //void RemoveAllAnnotations()
-        //{
-        //    if (map?.Annotations != null)
-        //    {
-        //        map.RemoveAnnotations(map.Annotations);
-        //    }
-        //}
+        void RemoveAllAnnotations()
+        {
+            symbolManager?.DeleteAll();
+        }
 
     }
 }

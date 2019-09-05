@@ -69,9 +69,6 @@
     <PackageReference Include="GoogleGson">
       <Version>2.8.5</Version>
     </PackageReference>
-    <PackageReference Include="Naxam.Mapzen.Droid">
-      <Version>1.2.1</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Location">
       <Version>71.1600.0</Version>
     </PackageReference>
@@ -104,6 +101,9 @@
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.Droid">
       <Version>8.0.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="Naxam.MapboxAnnotation.Droid">
+      <Version>0.7.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

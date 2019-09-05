@@ -1,32 +1,17 @@
 
 using Naxam.Mapbox;
+using Naxam.Mapbox.Annotations;
 using Naxam.Mapbox.Forms.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Forms
 {
-
-    public class AnnotationChangeEventArgs : EventArgs
-    {
-        //public IEnumerable<Annotation> OldAnnotation { get; set; }
-        //public IEnumerable<Annotation> NewAnnotation { get; set; }
-    }
-    public class PositionChangeEventArgs : EventArgs
-    {
-        public PositionChangeEventArgs(Point newPosition)
-        {
-            NewPosition = newPosition;
-        }
-
-        public Point NewPosition { get; private set; }
-    }
-
     public partial class MapView : View
     {
 
-        public event EventHandler<AnnotationChangeEventArgs> AnnotationChanged;
         public static readonly BindableProperty IsMarkerClickedProperty = BindableProperty.Create(
             nameof(IsMarkerClicked),
             typeof(bool),
@@ -36,11 +21,8 @@ namespace Naxam.Controls.Forms
         );
         public bool IsMarkerClicked
         {
-            get
-            {
-                return (bool)GetValue(IsMarkerClickedProperty);
-            }
-            set { SetValue(IsMarkerClickedProperty, value); }
+            get => (bool)GetValue(IsMarkerClickedProperty);
+            set => SetValue(IsMarkerClickedProperty, value);
         }
 
         public static readonly BindableProperty DragFinishedCommandProperty = BindableProperty.Create(
@@ -51,8 +33,8 @@ namespace Naxam.Controls.Forms
             BindingMode.OneWay);
         public ICommand DragFinishedCommand
         {
-            get { return (ICommand)GetValue(DragFinishedCommandProperty); }
-            set { SetValue(DragFinishedCommandProperty, value); }
+            get => (ICommand)GetValue(DragFinishedCommandProperty);
+            set => SetValue(DragFinishedCommandProperty, value); 
         }
 
         public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
@@ -63,11 +45,8 @@ namespace Naxam.Controls.Forms
             BindingMode.OneWay);
         public bool FocusPosition
         {
-            get
-            {
-                return (bool)GetValue(FocusPositionProperty);
-            }
-            set { SetValue(FocusPositionProperty, value); }
+            get => (bool)GetValue(FocusPositionProperty);
+            set => SetValue(FocusPositionProperty, value);
         }
 
         public static readonly BindableProperty CenterProperty = BindableProperty.Create(
@@ -81,7 +60,6 @@ namespace Naxam.Controls.Forms
             get => (LatLng)GetValue(CenterProperty);
             set => SetValue(CenterProperty, value);
         }
-
 
         public static readonly BindableProperty UserLocationProperty = BindableProperty.Create(
             nameof(UserLocation),
@@ -282,4 +260,21 @@ namespace Naxam.Controls.Forms
         //    });
         //}
     }
+
+    public class AnnotationChangedEventArgs : EventArgs
+    {
+        public IEnumerable<Annotation> OldAnnotations { get; set; }
+        public IEnumerable<Annotation> NewAnnotations { get; set; }
+    }
+
+    public class PositionChangedEventArgs : EventArgs
+    {
+        public PositionChangedEventArgs(LatLng newPosition)
+        {
+            NewPosition = newPosition;
+        }
+
+        public LatLng NewPosition { get; private set; }
+    }
+
 }

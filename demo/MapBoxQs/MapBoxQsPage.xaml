@@ -61,11 +61,11 @@
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            Annotations="{Binding Annotations}"
             DragFinishedCommand="{Binding DragFinishedCommand}"
             ShowUserLocation="true"
             Center="{Binding CenterLocation}"
             VerticalOptions="FillAndExpand">
-            
             <controls:MapView.InfoWindowTemplate>
                 <DataTemplate>
                     <StackLayout
@@ -74,16 +74,6 @@
                         HeightRequest="56"
                         Padding="24"
                         BackgroundColor="Aqua">
-                        <!--<Grid.RowDefinitions>
-                            <RowDefinition
-                                Height="48" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition
-                                Width="30" />
-                            <ColumnDefinition
-                                Width="*" />
-                        </Grid.ColumnDefinitions>-->
                         <Image
                             Grid.Column="0"
                             Source="icon.png">

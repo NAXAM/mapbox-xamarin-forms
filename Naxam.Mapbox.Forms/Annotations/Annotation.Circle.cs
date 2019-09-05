@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using Naxam.Controls;
 using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Annotations
@@ -8,7 +8,7 @@ namespace Naxam.Mapbox.Annotations
     {
         public LatLng Coordinates { get; set; }
 
-        public double? Radius
+        public double? CircleRadius
         {
             get => Properties.TryGetValue(PROPERTY_CIRCLE_RADIUS, out var val) && val is double ? ((double?)val) : null;
             set
@@ -24,14 +24,14 @@ namespace Naxam.Mapbox.Annotations
             }
         }
 
-        public Color? Color
+        public Color? CircleColor
         {
-            get => Properties.TryGetValue(PROPERTY_CIRCLE_COLOR, out var val) && val is Color ? ((Color?)val) : null;
+            get => Properties.TryGetValue(PROPERTY_CIRCLE_COLOR, out var val) && val is string sVal ? ((Color?)Color.FromHex(sVal)) : null;
             set
             {
                 if (value.HasValue)
                 {
-                    Properties[PROPERTY_CIRCLE_COLOR] = value;
+                    Properties[PROPERTY_CIRCLE_COLOR] = value.Value.ToHex();
                 }
                 else
                 {

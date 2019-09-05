@@ -111,11 +111,16 @@ namespace MapBoxQs
             Annotations = new ObservableCollection<Annotation>();
 
             Annotations = new ObservableCollection<Annotation> {
-//                new PointAnnotation {
-//                    Coordinate = new LatLng(21.004142f, 105.847607f),
-//                    Title = "Naxam Company Limited",
-//                    SubTitle = "A software development agency from Hanoi, Vietnam"
-//,                }
+                new SymbolAnnotation {
+                    Coordinates = new LatLng(21.004142f, 105.847607f),
+                    Id = Guid.NewGuid().ToString(),
+                    Title = "Naxam Company Limited",
+                    SubTitle = "A software development agency from Hanoi, Vietnam",
+                    IconImage = "harbor-15",
+                    IconSize = 1,
+                    IconColor = Color.Green,
+                    IsDraggable = true
+,                }
             };
             DidFinishRenderingCommand = new Command((obj) =>
             {
