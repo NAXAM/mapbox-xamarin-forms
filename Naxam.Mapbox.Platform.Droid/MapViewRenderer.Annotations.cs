@@ -83,7 +83,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             IntPtr handleId = IntPtr.Zero;
                             try
                             {
-                                handleId = Marshal.StringToHGlobalUni(symbolAnnotation.HandleId);
+                                handleId = Marshal.StringToHGlobalUni(symbolAnnotation.NativeHandle);
                                 var symbol = new Java.Lang.Object(
                                     handleId,
                                     Android.Runtime.JniHandleOwnership.DoNotTransfer
@@ -102,7 +102,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             IntPtr handleId = IntPtr.Zero;
                             try
                             {
-                                handleId = Marshal.StringToHGlobalUni(circleAnnotation.HandleId);
+                                handleId = Marshal.StringToHGlobalUni(circleAnnotation.NativeHandle);
                                 var symbol = new Java.Lang.Object(
                                     handleId,
                                     Android.Runtime.JniHandleOwnership.DoNotTransfer
@@ -138,7 +138,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             }
                             var symbolOptions = symbolAnnotation.ToSymbolOptions();
                             var symbol = Android.Runtime.Extensions.JavaCast<Symbol>(symbolManager.Create(symbolOptions));
-                            symbolAnnotation.HandleId = symbol.Handle.ToString();
+                            symbolAnnotation.NativeHandle = symbol.Handle;
                             symbolAnnotation.Id = symbol.Id.ToString();
                         }
                         break;

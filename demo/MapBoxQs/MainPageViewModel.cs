@@ -110,6 +110,8 @@ namespace MapBoxQs
             MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
 
+            CenterLocation = new LatLng(21.004142f, 105.847607f);
+
             Annotations = new ObservableCollection<Annotation> {
                 new SymbolAnnotation {
                     Coordinates = new LatLng(21.004142f, 105.847607f),

@@ -106,10 +106,11 @@
     <Compile Include="DraggableAnnotationView.cs" />
     <Compile Include="MGLCustomCalloutView.cs" />
     <Compile Include="Extensions\NativeViewExtensions.cs" />
+    <Compile Include="MapViewRenderer.Annotations.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
-      <Project>{FDE2F80B-0370-4736-A01C-21286649A14D}</Project>
+      <Project>{EBB04763-2E36-4D2C-94C9-351FBACE3C83}</Project>
       <Name>Naxam.Mapbox.Forms</Name>
     </ProjectReference>
   </ItemGroup>

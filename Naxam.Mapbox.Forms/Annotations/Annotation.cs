@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Naxam.Mapbox.Annotations
 {
 	public abstract class Annotation
     {
-        public string HandleId { get; set; }
+        public IntPtr NativeHandle { get; set; }
 
 		public string Id { get; set; }
 
