@@ -16,12 +16,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         internal static string JSON_CHARSET = "UTF-8";
 
         OfflineManager offlineManager;
-        List<TaskCompletionSource<OfflinePack>> RunningTasks;
 
         public OfflineStorageService()
         {
             offlineManager = OfflineManager.GetInstance(Android.App.Application.Context);
-            RunningTasks = new List<TaskCompletionSource<OfflinePack>>();
         }
 
         public event EventHandler<OSSEventArgs> OfflinePackProgressChanged;
@@ -32,11 +30,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public Task<OfflinePack> DownloadMap(OfflinePackRegion region, Dictionary<string, string> packInfo)
         {
             var tcs = new TaskCompletionSource<OfflinePack>();
-            LatLngBounds latLngBounds = new LatLngBounds.Builder()
-                                                        .Include(new LatLng(region.Bounds.NorthEast.Lat, region.Bounds.NorthEast.Long)) // Northeast 
-                                                        .Include(new LatLng(region.Bounds.SouthWest.Lat, region.Bounds.SouthWest.Long)) // Southwest 
+            var latLngBounds = new LatLngBounds.Builder()
+                                                        .Include(region.Bounds.NorthEast.ToLatLng()) // Northeast 
+                                                        .Include(region.Bounds.SouthWest.ToLatLng()) // Southwest 
                                                         .Build();
-            OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
+            var definition = new OfflineTilePyramidRegionDefinition(
                 region.StyleURL,
                 latLngBounds,
                 region.MinimumZoomLevel,
@@ -51,7 +49,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //metadata = mStream.ToArray();
                 try
                 {
-                    JsonObject jsonObject = new JsonObject();
+                    var jsonObject = new JsonObject();
 
                     foreach (KeyValuePair<string, string> pair in packInfo)
                     {
@@ -67,20 +65,22 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 }
             }
 
-            offlineManager.CreateOfflineRegion(definition,
-                                              metadata,
-                                               new CreateOfflineRegionCallback(
-                                                   (reg) =>
-                                                  {
-                                                      reg.SetDownloadState(OfflineRegion.StateActive);
-                                                      tcs.TrySetResult(reg.ToFormsPack());
-                                                  },
-                                                   (msg) =>
-                                                    {
-                                                        System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't create offline pack: " + msg);
-                                                        tcs.TrySetResult(null);
-                                                    }
-                                                  ));
+            offlineManager.CreateOfflineRegion(
+                definition,
+                metadata,
+                new CreateOfflineRegionCallback(
+                    (reg) =>
+                    {
+                        reg.SetDownloadState(OfflineRegion.StateActive);
+                        tcs.TrySetResult(reg.ToFormsPack());
+                    },
+                    (msg) =>
+                    {
+                        System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't create offline pack: " + msg);
+                        tcs.TrySetResult(null);
+                    }
+                )
+            );
 
             return tcs.Task;
         }
@@ -90,16 +90,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             var tcs = new TaskCompletionSource<OfflinePack[]>();
             offlineManager.ListOfflineRegions(new ListOfflineRegionsCallback()
             {
-                OnErrorHandle = ((msg) =>
+                OnErrorHandle = (msg) =>
                 {
                     System.Diagnostics.Debug.WriteLine("[ERROR] Couldn't get offline packs: " + msg);
                     tcs.TrySetResult(null);
-                }),
-                OnListHandle = ((regs) =>
+                },
+                OnListHandle = (regs) =>
                 {
                     var output = regs.Select((reg) => reg.ToFormsPack());
                     tcs.TrySetResult(output.ToArray());
-                })
+                }
             });
             return tcs.Task;
         }

@@ -50,7 +50,7 @@ namespace Naxam.Mapbox.Platform.Droid.Offline
         {
             return new OfflinePackRegion()
             {
-                Bounds = new CoordinateBounds()
+                Bounds = new LatLngBounds()
                 {
                     NorthEast = new LatLng(definition.Bounds.NorthEast.Latitude, definition.Bounds.NorthEast.Longitude),
                     SouthWest = new LatLng(definition.Bounds.SouthWest.Latitude, definition.Bounds.SouthWest.Longitude)

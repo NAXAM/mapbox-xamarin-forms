@@ -80,39 +80,24 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     case SymbolAnnotation symbolAnnotation:
                         {
                             if (symbolManager == null) continue;
-                            IntPtr handleId = IntPtr.Zero;
+                            Java.Lang.Object symbol = null;
                             try
                             {
-                                handleId = Marshal.StringToHGlobalUni(symbolAnnotation.NativeHandle);
-                                var symbol = new Java.Lang.Object(
-                                    handleId,
+                                symbol = new Java.Lang.Object(
+                                    symbolAnnotation.NativeHandle,
                                     Android.Runtime.JniHandleOwnership.DoNotTransfer
                                     );
                                 symbolManager.Delete(symbol);
                             }
                             finally
                             {
-                                Marshal.FreeHGlobal(handleId);
+                                symbol?.Dispose();
                             }
                         }
                         break;
                     case CircleAnnotation circleAnnotation:
                         {
-                            if (circleManager == null) continue;
-                            IntPtr handleId = IntPtr.Zero;
-                            try
-                            {
-                                handleId = Marshal.StringToHGlobalUni(circleAnnotation.NativeHandle);
-                                var symbol = new Java.Lang.Object(
-                                    handleId,
-                                    Android.Runtime.JniHandleOwnership.DoNotTransfer
-                                    );
-                                circleManager.Delete(symbol);
-                            }
-                            finally
-                            {
-                                Marshal.FreeHGlobal(handleId);
-                            }
+                            // TODO
                         }
                         break;
                 }

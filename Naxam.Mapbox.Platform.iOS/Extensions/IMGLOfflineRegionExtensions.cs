@@ -13,7 +13,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
             var output = new OfflinePackRegion();
             if (region is MGLTilePyramidOfflineRegion tpoRegion)
             {
-                output.Bounds = new CoordinateBounds()
+                output.Bounds = new LatLngBounds()
                 {
                     SouthWest = TypeConverter.FromCoordinateToPosition(tpoRegion.Bounds.sw),
                     NorthEast = TypeConverter.FromCoordinateToPosition(tpoRegion.Bounds.ne),
@@ -32,7 +32,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS.Extensions
         {
             if (region == null) return null;
             var output = new OfflinePackRegion();
-            output.Bounds = new CoordinateBounds()
+            output.Bounds = new LatLngBounds()
             {
                 SouthWest = TypeConverter.FromCoordinateToPosition(region.Bounds.sw),
                 NorthEast = TypeConverter.FromCoordinateToPosition(region.Bounds.ne),

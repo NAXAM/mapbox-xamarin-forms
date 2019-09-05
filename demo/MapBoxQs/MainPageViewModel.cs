@@ -338,7 +338,7 @@ namespace MapBoxQs
                 StyleURL = CurrentMapStyle.UrlString,
                 MaximumZoomLevel = 14,
                 MinimumZoomLevel = 1,
-                Bounds = new CoordinateBounds()
+                Bounds = new LatLngBounds()
                 {
                     NorthEast = new LatLng()
                     {

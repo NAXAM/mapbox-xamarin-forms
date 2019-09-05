@@ -7,7 +7,7 @@ namespace Naxam.Controls.Forms
     {
         public string StyleURL { get; set; }
 
-        public CoordinateBounds Bounds { get; set; }
+        public LatLngBounds Bounds { get; set; }
 
         public double MaximumZoomLevel { get; set; }
 

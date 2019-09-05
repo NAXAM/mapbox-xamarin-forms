@@ -108,14 +108,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         void RemoveAllAnnotations()
         {
-            if (MapView == null) return;
-            if (MapView.Annotations != null)
-            {
-                MapView.RemoveAnnotations(MapView.Annotations);
-            }
+            if (MapView == null || MapView.Annotations == null) return;
+
+            MapView.RemoveAnnotations(MapView.Annotations);
         }
-
-
 
         private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -125,17 +121,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 foreach (Annotation annotation in e.NewItems)
                 {
                     var shape = ShapeFromAnnotation(annotation);
-                    if (shape != null)
-                    {
-                        annotations.Add(shape);
-                    }
+                    if (shape == null) continue;
+
+                    annotations.Add(shape);
                 }
                 MapView.AddAnnotations(annotations.ToArray());
                 for (int i = 0; i < annotations.Count; i++)
                 {
                     if (e.NewItems[i] is Annotation an)
                     {
-                        an.Id = annotations[i].Handle.ToString();
+                        an.Id = annotations[i].Id();
                     }
                 }
             }
