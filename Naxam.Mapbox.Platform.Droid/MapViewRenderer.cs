@@ -16,7 +16,7 @@ using MapView = Naxam.Controls.Forms.MapView;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
 using NxLatLng = Naxam.Mapbox.LatLng;
-using System.Collections.Specialized;
+using NxLatLngBounds = Naxam.Mapbox.LatLngBounds;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -144,7 +144,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             Element.UpdateViewPortAction = (NxLatLng centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) =>
             {
-                var tartget = centerLocation != null ? new LatLng(centerLocation.Lat, centerLocation.Long) : map.CameraPosition.Target;
+                var tartget = centerLocation != NxLatLng.Zero ? new LatLng(centerLocation.Lat, centerLocation.Long) : map.CameraPosition.Target;
                 var newPosition = new CameraPosition.Builder()
                                                     .Bearing(bearing ?? map.CameraPosition.Bearing)
                                                     .Target(tartget)
@@ -313,8 +313,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
-                if (Element.Center == null) return;
-
                 FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
             }
             else if (e.PropertyName == MapView.MapStyleProperty.PropertyName && map != null)
@@ -357,10 +355,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void OnMapRegionChanged()
         {
-            if (Element.Region != Naxam.Mapbox.Forms.Annotations.MapRegion.Empty)
+            if (false == Element.Region.IsEmpty())
             {
                 map?.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
-                    Com.Mapbox.Mapboxsdk.Geometry.LatLngBounds.From(
+                    LatLngBounds.From(
                         Element.Region.NorthEast.Lat,
                         Element.Region.NorthEast.Long,
                         Element.Region.SouthWest.Lat,
@@ -378,7 +376,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
             //RemoveAllAnnotations();
             OnMapRegionChanged();
-            if (Element.Center != null)
+            if (Element.Center != NxLatLng.Zero)
             {
                 FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
             }
@@ -391,7 +389,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             SetupFunctions();
             if (Element.MapStyle == null)
             {
-                Element.MapStyle = new MapStyle(Sdk.Maps.Style.MAPBOX_STREETS);
+                Element.MapStyle = new MapStyle(Style.MAPBOX_STREETS);
             }
             else
             {

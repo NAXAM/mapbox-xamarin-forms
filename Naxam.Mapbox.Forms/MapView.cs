@@ -1,7 +1,6 @@
 
 using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
-using Naxam.Mapbox.Forms.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
@@ -177,29 +176,6 @@ namespace Naxam.Controls.Forms
             set => SetValue(MapStyleProperty, value);
         }
 
-        //public static readonly BindableProperty AnnotationsProperty = BindableProperty.Create(
-        //    nameof(Annotations),
-        //    typeof(IEnumerable<Annotation>),
-        //    typeof(MapView),
-        //    default(IEnumerable<Annotation>),
-        //    BindingMode.TwoWay,
-        //  propertyChanged: OnAnnotationChanged
-        //    );
-
-        //private static void OnAnnotationChanged(BindableObject bindable, object oldValue, object newValue)
-        //{
-        //    if (bindable is MapView control)
-        //    {
-        //        control.OnAnnotationChanged((IEnumerable<Annotation>)oldValue, (IEnumerable<Annotation>)newValue);
-        //    }
-        //}
-
-        //public IEnumerable<Annotation> Annotations
-        //{
-        //    get => (IEnumerable<Annotation>)GetValue(AnnotationsProperty);
-        //    set => SetValue(AnnotationsProperty, value);
-        //}
-
         //public static BindableProperty MarkersProperty = BindableProperty.Create(
         //   nameof(Markers),
         //   typeof(IEnumerable<PointAnnotation>),
@@ -228,13 +204,13 @@ namespace Naxam.Controls.Forms
 
         public static BindableProperty RegionProperty = BindableProperty.Create(
            nameof(Region),
-           typeof(MapRegion),
+           typeof(LatLngBounds),
            typeof(MapView),
-           MapRegion.Empty,
+           default,
            BindingMode.TwoWay);
-        public MapRegion Region
+        public LatLngBounds Region
         {
-            get => (MapRegion)GetValue(RegionProperty);
+            get => (LatLngBounds)GetValue(RegionProperty);
             set => SetValue(RegionProperty, value);
         }
 
@@ -250,15 +226,6 @@ namespace Naxam.Controls.Forms
             get { return (DataTemplate)GetValue(InfoWindowTemplateProperty); }
             set { SetValue(InfoWindowTemplateProperty, value); }
         }
-
-        //void OnAnnotationChanged(IEnumerable<Annotation> oldAnnotation, IEnumerable<Annotation> newAnnotation)
-        //{
-        //    AnnotationChanged?.Invoke(this, new AnnotationChangeEventArgs
-        //    {
-        //        OldAnnotation = oldAnnotation,
-        //        NewAnnotation = newAnnotation
-        //    });
-        //}
     }
 
     public class AnnotationChangedEventArgs : EventArgs

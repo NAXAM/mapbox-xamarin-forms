@@ -90,22 +90,5 @@ namespace Naxam.Controls.Forms
             get => (ICommand)GetValue(DidTapOnMarkerCommandProperty);
             set => SetValue(DidTapOnMarkerCommandProperty, value);
         }
-
-        /// <summary>
-        /// MGLMapViewDelegate -mapView:imageForAnnotation:
-        /// </summary>
-        /// <returns>(Reusable key, image file name)</returns>
-        public static BindableProperty GetImageForAnnotationFuncProperty = BindableProperty.Create(
-            nameof(GetImageForAnnotationFunc),
-            typeof(Func<string, Tuple<string, string>>),
-            typeof(MapView),
-            default(Func<string, Tuple<string, string>>),
-            BindingMode.OneWay
-        );
-        public Func<string, Tuple<string, string>> GetImageForAnnotationFunc
-        {
-            get { return (Func<string, Tuple<string, string>>)GetValue(GetImageForAnnotationFuncProperty); }
-            set { SetValue(GetImageForAnnotationFuncProperty, value); }
-        }
     }
 }

@@ -1,14 +1,15 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace Naxam.Mapbox
 {
-    public class LatLng
+    public struct LatLng : IEquatable<LatLng>
     {
+        public static LatLng Zero = new LatLng(0, 0);
+
         public double Lat { get; set; }
 
         public double Long { get; set; }
-
-        public LatLng() { }
 
         public LatLng(double lat, double lon)
         {
@@ -36,6 +37,60 @@ namespace Naxam.Mapbox
             dist = dist * 60 * 1.1515;
 
             return unitOfLength.ConvertFromMiles(dist);
+        }
+
+        public override int GetHashCode()
+        {
+            return Lat.GetHashCode() ^ Long.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is LatLng other)
+            {
+                return Equals(other);
+            }
+
+            return false;
+        }
+
+        public bool Equals(LatLng other)
+        {
+            return Math.Abs(other.Lat - Lat) < 0.000000001
+                && Math.Abs(other.Long - Long) < 0.00000001;
+        }
+
+        public static bool operator ==(LatLng left, LatLng right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(LatLng left, LatLng right)
+        {
+            return false == left.Equals(right);
+        }
+
+        public static implicit operator LatLng(double[] coordinates)
+        {
+            if (coordinates?.Length < 2)
+            {
+                throw new InvalidOperationException("Must provide an array of at least two doubles: first is Latitube, second is Longitude");
+            }
+
+            return new LatLng(coordinates[0], coordinates[1]);
+        }
+
+        static Regex COORDINATE_PATTERN = new Regex("^(-)?[\\d]+(.[\\d]*)?,(-)?[\\d]+(.[\\d]*)?$");
+        public static implicit operator LatLng(string coordinatesInString)
+        {
+            if (string.IsNullOrWhiteSpace(coordinatesInString) || false == COORDINATE_PATTERN.IsMatch(coordinatesInString))
+            {
+                throw new InvalidOperationException("Must provide a strign in format of `lat,lng`. E.g. 21.0001,105.0011");
+            }
+
+            var coordinates = coordinatesInString.Split(',');
+
+            return new LatLng(double.Parse(coordinates[0]), double.Parse(coordinates[1]));
         }
     }
 

@@ -95,8 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapViewRenderer.cs" />
     <Compile Include="Extensions\MGLShapeExtensions.cs" />
-    <Compile Include="TypeConverter.cs" />
-    <Compile Include="Extensions\PositionExtensions.cs" />
+    <Compile Include="Extensions\LatLngExtensions.cs" />
     <Compile Include="Extensions\UIDeviceExtensions.cs" />
     <Compile Include="MapViewRenderer_StyleLayer.cs" />
     <Compile Include="Extensions\IMGLOfflineRegionExtensions.cs" />
@@ -107,6 +106,7 @@
     <Compile Include="MGLCustomCalloutView.cs" />
     <Compile Include="Extensions\NativeViewExtensions.cs" />
     <Compile Include="MapViewRenderer.Annotations.cs" />
+    <Compile Include="MapViewRenderer.Style.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

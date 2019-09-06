@@ -23,7 +23,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             var shape = ShapeFromAnnotation(annotation);
             if (shape != null)
             {
-                MapView.AddAnnotation(shape);
+                map.AddAnnotation(shape);
                 annotation.Id = shape.Handle.ToInt64().ToString();
             }
         }
@@ -40,7 +40,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 }
                 annots.Add(shape);
             }
-            MapView.AddAnnotations(annots.ToArray());
+            map.AddAnnotations(annots.ToArray());
             for (int i = 0; i < annots.Count; i++)
             {
                 annotations[i].Id = annots[i].Id();
@@ -83,7 +83,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 var point = new SymbolAnnotation();
                 point.NativeHandle = annotation.Handle;
-                point.Coordinates = TypeConverter.FromCoordinateToPosition(annotation.Coordinate);
+                point.Coordinates = annotation.Coordinate.ToLatLng();
                 Element.DragFinishedCommand?.Execute(point);
             };
 
@@ -120,7 +120,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         void RemoveAnnotations(Annotation[] annotations)
         {
-            var currentAnnotations = MapView.Annotations;
+            var currentAnnotations = map.Annotations;
             if (currentAnnotations == null)
             {
                 return;
@@ -143,14 +143,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     }
                 }
             }
-            MapView.RemoveAnnotations(annots.ToArray());
+            map.RemoveAnnotations(annots.ToArray());
         }
 
         void RemoveAllAnnotations()
         {
-            if (MapView == null || MapView.Annotations == null) return;
+            if (map == null || map.Annotations == null) return;
 
-            MapView.RemoveAnnotations(MapView.Annotations);
+            map.RemoveAnnotations(map.Annotations);
         }
 
         private void OnAnnotationsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -165,7 +165,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
                     annotations.Add(shape);
                 }
-                MapView.AddAnnotations(annotations.ToArray());
+                map.AddAnnotations(annotations.ToArray());
                 for (int i = 0; i < annotations.Count; i++)
                 {
                     if (e.NewItems[i] is Annotation an)
@@ -204,7 +204,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                         annots.Add(shape);
                     }
                 }
-                MapView.AddAnnotations(annots.ToArray());
+                map.AddAnnotations(annots.ToArray());
                 for (int i = 0; i < annots.Count; i++)
                 {
                     if (e.NewItems[i] is Annotation an)
@@ -305,5 +305,29 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
             return output;
         }
+
+        [Export("mapView:annotationCanShowCallout:"),]
+        protected virtual bool AnnotationCanShowCallout(MGLMapView mapView, NSObject annotation)
+        {
+            if (annotation is MGLShape && Element.CanShowCalloutChecker != null)
+            {
+                return Element.CanShowCalloutChecker.Invoke(((MGLShape)annotation).Id());
+            }
+            return true;
+        }
+
+        [Export("mapView:tapOnCalloutForAnnotation:")]
+        protected virtual void MapView_TapOnCalloutForAnnotation(MGLMapView mapView, NSObject annotation)
+        {
+            if (annotation is MGLShape shape)
+            {
+                Element.DidTapOnCalloutViewCommand?.Execute(shape.Id());
+            }
+            else
+            {
+                Element.DidTapOnCalloutViewCommand?.Execute(null);
+            }
+        }
+
     }
 }

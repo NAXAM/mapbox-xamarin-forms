@@ -55,7 +55,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 			}
 			var sourceId = styleLayer.SourceId.ToCustomId();
 
-			var source = MapView.Style.SourceWithIdentifier(sourceId);
+			var source = map.Style.SourceWithIdentifier(sourceId);
 			if (source == null)
 			{
 				return null;

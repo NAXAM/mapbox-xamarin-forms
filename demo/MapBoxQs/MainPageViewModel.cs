@@ -126,7 +126,7 @@ namespace MapBoxQs
             };
             DidFinishRenderingCommand = new Command((obj) =>
             {
-                if (isScaleBarShown == false && CenterLocation != null)
+                if (isScaleBarShown == false && CenterLocation != LatLng.Zero)
                 {
                     isScaleBarShown = ToggleScaleBarFunc?.Invoke(true) ?? false;
                     System.Diagnostics.Debug.WriteLine("Did toggle scale bar");
@@ -332,7 +332,7 @@ namespace MapBoxQs
         }
         private async void DownloadMap(object obj)
         {
-            if (offlineService == null || CenterLocation == null) return;
+            if (offlineService == null || CenterLocation == LatLng.Zero) return;
             var region = new OfflinePackRegion()
             {
                 StyleURL = CurrentMapStyle.UrlString,
@@ -476,18 +476,8 @@ namespace MapBoxQs
             }
             if (obj == MapTools.CustomLocation)
             {
-                if (CenterLocation == null)
-                {
-                    CustomLatitude = positions[1].Lat.ToString();
-                    CustomLongitude = positions[1].Long.ToString();
-                }
-                else if (CenterLocation != null
-                    && (Math.Abs(CenterLocation.Lat - positions[0].Lat) > 0.01)
-                    || Math.Abs(CenterLocation.Long - positions[0].Long) > 0.01)
-                {
-                    CustomLatitude = positions[0].Lat.ToString();
-                    CustomLongitude = positions[0].Long.ToString();
-                }
+                CustomLatitude = positions[0].Lat.ToString();
+                CustomLongitude = positions[0].Long.ToString();
             }
             ShowingTool = obj;
         }
@@ -505,13 +495,13 @@ namespace MapBoxQs
 
         #region Custom locations
         LatLng[] positions = new[] {
-             new LatLng {
-              Lat = 21.0333,
-              Long = 105.8500
-             },
+            new LatLng {
+                Lat = 21.0333,
+                Long = 105.8500
+            },
               new LatLng {
-                            Lat = 55.75719563,
-                            Long = 8.93032908
+                Lat = 55.75719563,
+                Long = 8.93032908
               }
          };
 

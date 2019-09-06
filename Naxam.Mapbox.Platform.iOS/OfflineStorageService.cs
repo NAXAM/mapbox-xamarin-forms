@@ -122,11 +122,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             var tsc = new TaskCompletionSource<OfflinePack>();
             var region = new MGLTilePyramidOfflineRegion(
                 new NSUrl(formsRegion.StyleURL),
-                new MGLCoordinateBounds()
-                {
-                    sw = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.SouthWest),
-                    ne = TypeConverter.FromPositionToCoordinate(formsRegion.Bounds.NorthEast)
-                },
+                formsRegion.Bounds.ToCLRegiion(),
                 formsRegion.MinimumZoomLevel,
                 formsRegion.MaximumZoomLevel);
             NSData context = null;
