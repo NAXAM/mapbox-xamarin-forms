@@ -119,6 +119,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     renderer.Element.DidFinishLoadingStyleCommand?.Execute(renderer.Element.MapStyle);
 
                     renderer.AddAnnotations(renderer.Element.Annotations?.ToArray());
+                    if (renderer.Element.Annotations is INotifyCollectionChanged notifyCollection)
+                    {
+                        notifyCollection.CollectionChanged -= renderer.OnAnnotationsCollectionChanged;
+                        notifyCollection.CollectionChanged += renderer.OnAnnotationsCollectionChanged;
+                    }
+                    renderer.Element.AnnotationsChanged -= renderer.Element_AnnotationsChanged;
                     renderer.Element.AnnotationsChanged += renderer.Element_AnnotationsChanged;
                 }
             }

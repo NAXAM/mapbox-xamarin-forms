@@ -30,7 +30,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         void AddAnnotations(Annotation[] annotations)
         {
-            var annots = new List<IMGLAnnotation>();
+            var annots = new List<MGLShape>();
             foreach (Annotation at in annotations)
             {
                 var shape = ShapeFromAnnotation(at);
@@ -43,17 +43,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             MapView.AddAnnotations(annots.ToArray());
             for (int i = 0; i < annots.Count; i++)
             {
-                annotations[i].Id = annots[i].Handle.ToString();
+                annotations[i].Id = annots[i].Id();
             }
         }
 
         [Export("mapView:calloutViewForAnnotation:")]
         public IMGLCalloutView MapView_CalloutViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
-            var id = annotation.Handle.ToInt64().ToString();
+            var id = annotation.Handle;
             if (mapView.Annotations != null)
             {
-                var bindingContext = Element.Annotations.FirstOrDefault(a => a.Id == id);
+                var bindingContext = Element.Annotations.FirstOrDefault(a => a.NativeHandle == id);
                 UIView calloutContent = Element.InfoWindowTemplate.DataTemplateToNativeView(bindingContext, Element);
                 return new MGLCustomCalloutView(null, calloutContent);
             }
@@ -62,8 +62,20 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         }
 
         [Export("mapView:viewForAnnotation:")]
-        public MGLAnnotationView MapView_ViewForAnnotation(MGLMapView mapView, MGLPointAnnotation annotation)
+        public MGLAnnotationView MapView_ViewForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
         {
+            var fannotation = Element.Annotations.FirstOrDefault(x => x.NativeHandle == annotation.Handle);
+
+            switch (fannotation)
+            {
+                case SymbolAnnotation symbol:
+                    if (symbol.IconImage?.Source != null)
+                    {
+                        return null;
+                    }
+                    break;
+            }
+
             var annotationView = mapView.DequeueReusableAnnotationViewWithIdentifier("draggablePoint");
             if (annotationView != null) return annotationView;
             var view = new DraggableAnnotationView(reuseIdentifier: "draggablePoint", size: 24);
@@ -76,6 +88,34 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             };
 
             return view;
+        }
+
+        [Export("mapView:imageForAnnotation:")]
+        public MGLAnnotationImage MapView_ImageForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
+        {
+            var fannotation = Element.Annotations.FirstOrDefault(x => x.NativeHandle == annotation.Handle);
+
+            switch (fannotation)
+            {
+                case SymbolAnnotation symbol:
+                    switch (symbol.IconImage.Source)
+                    {
+                        case FileImageSource fileImageSource:
+                            var cachedImage = mapView.DequeueReusableAnnotationImageWithIdentifier(fileImageSource.File);
+
+                            if (cachedImage != null) return cachedImage;
+
+                            var fileImageSourceHandler = new FileImageSourceHandler();
+                            var image = fileImageSourceHandler.LoadImageAsync(fileImageSource).Result;
+
+                            if (image == null) return null;
+
+                            return MGLAnnotationImage.AnnotationImageWithImage(image, fileImageSource.File);
+                    }
+                    break;
+            }
+
+            return null;
         }
 
         void RemoveAnnotations(Annotation[] annotations)
@@ -182,7 +222,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 shape = new MGLPointAnnotation
                 {
-                    Coordinate = symbol.Coordinates.ToCLCoordinate()
+                    Coordinate = symbol.Coordinates.ToCLCoordinate(),
                 };
             }
             else if (annotation is LineAnnotation line)

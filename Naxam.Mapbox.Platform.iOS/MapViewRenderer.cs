@@ -293,24 +293,25 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         protected virtual void SetupEventHandlers()
         {
-            //var tapGest = new UITapGestureRecognizer();
-            //tapGest.NumberOfTapsRequired = 1;
-            //tapGest.CancelsTouchesInView = false;
-            //tapGest.Delegate = this;
-            //MapView.AddGestureRecognizer(tapGest);
-            //tapGest.AddTarget((NSObject obj) =>
-            //{
-            //    var gesture = obj as UITapGestureRecognizer;
-            //    if (gesture.State == UIGestureRecognizerState.Ended)
-            //    {
-            //        var point = gesture.LocationInView(MapView);
-            //        var touchedCooridinate = MapView.ConvertPoint(point, MapView);
-            //        var position = new FormsMB.Point(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
-            //        Element.DidTapOnMapCommand?.Execute(new Tuple<FormsMB.Point, Xamarin.Forms.Point>(position,
-            //                                                                       new Xamarin.Forms.Point((double)point.X, (double)point.Y)));
-            //    }
-            //});
-            //Element.PropertyChanging += OnElementPropertyChanging;
+            var tapGest = new UITapGestureRecognizer();
+            tapGest.NumberOfTapsRequired = 1;
+            tapGest.CancelsTouchesInView = false;
+            tapGest.Delegate = this;
+            MapView.AddGestureRecognizer(tapGest);
+            tapGest.AddTarget((NSObject obj) =>
+            {
+                var gesture = obj as UITapGestureRecognizer;
+                if (gesture.State == UIGestureRecognizerState.Ended)
+                {
+                    var point = gesture.LocationInView(MapView);
+                    var touchedCooridinate = MapView.ConvertPoint(point, MapView);
+                    var position = new LatLng(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
+                    Element.DidTapOnMapCommand?.Execute(new Tuple<LatLng, Point>(
+                        position,
+                        new Point((double)point.X, (double)point.Y)));
+                }
+            });
+            Element.PropertyChanging += OnElementPropertyChanging;
         }
 
         protected virtual void SetupFunctions()
@@ -390,7 +391,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 return false;
             };
 
-            //Element.UpdateViewPortAction = (FormsMB.Point centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionBlock) =>
+            //Element.UpdateViewPortAction = (LatLng centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionBlock) =>
             //{
             //    MapView?.SetCenterCoordinate(
             //        centerLocation?.ToCLCoordinate() ?? MapView.CenterCoordinate,
@@ -575,19 +576,19 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         //        //        if (coorArr != null)
         //        //        {
-        //        //            var coorsList = new List<FormsMB.Point>();
-        //        //            (ifeat as PolylineFeature).Coordinates = new FormsMB.Point[coorArr.Count];
+        //        //            var coorsList = new List<LatLng>();
+        //        //            (ifeat as PolylineFeature).Coordinates = new LatLng[coorArr.Count];
         //        //            for (nuint i = 0; i < coorArr.Count; i++)
         //        //            {
         //        //                var childArr = coorArr.GetItem<NSArray>(i);
         //        //                if (childArr != null && childArr.Count == 2)
         //        //                {
-        //        //                    var coord = new FormsMB.Point(childArr.GetItem<NSNumber>(1).DoubleValue, //lat
+        //        //                    var coord = new LatLng(childArr.GetItem<NSNumber>(1).DoubleValue, //lat
         //        //                                            childArr.GetItem<NSNumber>(0).DoubleValue); //long
         //        //                    coorsList.Add(coord);
         //        //                }
         //        //            }
-        //        //            (ifeat as PolylineFeature).Coordinates = new ObservableCollection<FormsMB.Point>(coorsList);
+        //        //            (ifeat as PolylineFeature).Coordinates = new ObservableCollection<LatLng>(coorsList);
         //        //        }
 
         //        //    }
@@ -598,19 +599,19 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         //        //        (ifeat as MultiPolylineFeature).SubTitle = mplFeature.Subtitle;
         //        //        if (coorArr != null)
         //        //        {
-        //        //            (ifeat as MultiPolylineFeature).Coordinates = new FormsMB.Point[coorArr.Count][];
+        //        //            (ifeat as MultiPolylineFeature).Coordinates = new LatLng[coorArr.Count][];
         //        //            for (nuint i = 0; i < coorArr.Count; i++)
         //        //            {
         //        //                var childArr = coorArr.GetItem<NSArray>(i);
         //        //                if (childArr != null)
         //        //                {
-        //        //                    (ifeat as MultiPolylineFeature).Coordinates[i] = new FormsMB.Point[childArr.Count];
+        //        //                    (ifeat as MultiPolylineFeature).Coordinates[i] = new LatLng[childArr.Count];
         //        //                    for (nuint j = 0; j < childArr.Count; j++)
         //        //                    {
         //        //                        var anscArr = childArr.GetItem<NSArray>(j);
         //        //                        if (anscArr != null && anscArr.Count == 2)
         //        //                        {
-        //        //                            (ifeat as MultiPolylineFeature).Coordinates[i][j] = new FormsMB.Point(anscArr.GetItem<NSNumber>(1).DoubleValue, //lat
+        //        //                            (ifeat as MultiPolylineFeature).Coordinates[i][j] = new LatLng(anscArr.GetItem<NSNumber>(1).DoubleValue, //lat
         //        //                                                                                            anscArr.GetItem<NSNumber>(0).DoubleValue);
         //        //                        }
         //        //                    }
@@ -1041,32 +1042,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 Element.DidTapOnCalloutViewCommand?.Execute(null);
             }
         }
-        [Export("mapView:imageForAnnotation:")]
-        protected virtual MGLAnnotationImage MapView_ImageForAnnotation(MGLMapView mapView, IMGLAnnotation annotation)
-        {
-            if (annotation is MGLShape shape)
-            {
-                var result = Element.GetImageForAnnotationFunc?.Invoke(shape.Id());
-                if (result != null
-                    && false == string.IsNullOrEmpty(result.Item1)
-                    && false == string.IsNullOrEmpty(result.Item2))
-                {
-                    var image = MapView.DequeueReusableAnnotationImageWithIdentifier(result.Item1);
-                    if (image == null)
-                    {
-                        var iosImage = UIImage.FromBundle(result.Item2);
-                        if (iosImage != null)
-                        {
-                            iosImage = iosImage.ImageWithAlignmentRectInsets(new UIEdgeInsets(0, 0, iosImage.Size.Height / 2, 0));
-                            return MGLAnnotationImage.AnnotationImageWithImage(iosImage, result.Item1);
-                        }
-                    }
-                    return image;
-                }
-            }
-            return null;
-
-        }
+        
         #endregion
 
         #region UIGestureRecognizerDelegate

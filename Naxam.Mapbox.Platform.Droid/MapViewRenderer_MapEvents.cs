@@ -79,13 +79,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             fragment?.ToggleInfoWindow(map, args.P0);
 
-            //if (Element?.Annotations?.Count() > 0)
-            //{
-            //    var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
-            //    if (fm == null)
-            //        return;
-            //    Element.DidTapOnMarkerCommand?.Execute(fm);
-            //}
+            if (Element?.Annotations?.Count() > 0)
+            {
+                var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
+                if (fm == null)
+                    return;
+                Element.DidTapOnMarkerCommand?.Execute(fm);
+            }
         }
 
         void InfoWindowClick(object s, MapboxMap.InfoWindowClickEventArgs e)

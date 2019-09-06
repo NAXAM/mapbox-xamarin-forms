@@ -2,6 +2,30 @@
 
 namespace Naxam.Mapbox.Annotations
 {
+    public class IconImageSource
+    {
+        public string Id { set; get; }
+
+        public ImageSource Source { get; set; }
+
+        public static implicit operator IconImageSource(string id)
+        {
+            return new IconImageSource
+            {
+                Id = id,
+            };
+        }
+
+        public static implicit operator IconImageSource(ImageSource source)
+        {
+            return new IconImageSource
+            {
+                Source = source,
+                Id = source.Id.ToString()
+            };
+        }
+    }
+
     public class SymbolAnnotation : Annotation
     {
         public LatLng Coordinates { get; set; }
@@ -14,7 +38,7 @@ namespace Naxam.Mapbox.Annotations
 
         public double? IconHaloWidth { get; set; }
 
-        public string IconImage { get; set; }
+        public IconImageSource IconImage { get; set; }
 
         public double? IconRotate { get; set; }
 

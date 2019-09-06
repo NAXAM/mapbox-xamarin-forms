@@ -61,8 +61,10 @@
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            ZoomLevel="{Binding ZoomLevel}"
             Annotations="{Binding Annotations}"
             DragFinishedCommand="{Binding DragFinishedCommand}"
+            DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
             ShowUserLocation="true"
             Center="{Binding CenterLocation}"
             VerticalOptions="FillAndExpand">

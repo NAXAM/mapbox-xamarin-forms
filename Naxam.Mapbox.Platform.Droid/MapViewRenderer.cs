@@ -16,6 +16,7 @@ using MapView = Naxam.Controls.Forms.MapView;
 using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
 using NxLatLng = Naxam.Mapbox.LatLng;
+using System.Collections.Specialized;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -402,16 +403,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 var info = new CustomInfoWindowAdapter(Context, Element);
                 map.InfoWindowAdapter = info;
             }
-
-            //if (Element.Annotations != null)
-            //{
-            //    AddAnnotations(Element.Annotations.ToArray());
-            //    if (Element.Annotations is INotifyCollectionChanged notifyCollection)
-            //    {
-            //        notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
-            //        notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
-            //    }
-            //}
         }
 
     }

@@ -747,43 +747,45 @@ namespace MapBoxQs
         ICommand _DidTapOnMapCommand;
         public ICommand DidTapOnMapCommand
         {
-            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<LatLng, Xamarin.Forms.Point>>(this.ExecuteDidTapOnMapCommand)); }
+            get { return (_DidTapOnMapCommand = _DidTapOnMapCommand ?? new Command<Tuple<LatLng, Point>>(this.ExecuteDidTapOnMapCommand)); }
         }
 
-        void ExecuteDidTapOnMapCommand(Tuple<LatLng, Xamarin.Forms.Point> currentTap)
+        ImageSource pinIcon = (ImageSource)"pin.png";
+
+        void ExecuteDidTapOnMapCommand(Tuple<LatLng, Point> currentTap)
         {
             if (Annotations == null || currentTap == null) return;
-            //var currentPosition = currentTap.Item1;
-            //var currentPoint = currentTap.Item2;
+            var currentPosition = currentTap.Item1;
 
-            //if (CurrentAction == ActionState.AddPointAnnotation)
-            //{
-            //    var annotation = new PointAnnotation()
-            //    {
-            //        Coordinate = currentPosition,
-            //        Icon = "pin"
-            //    };
-            //    annotation.Title = "PointAnnot." + i;
-            //    Annotations.Add(annotation);
-            //    OnPropertyChanged("Annotations");
-            //    i = i + 1;
-            //}
-            //if (CurrentAction == ActionState.AddPolyline)
-            //{
-            //    if (polyline == null)
-            //        polyline = new PolylineAnnotation
-            //        {
-            //            HexColor = colorPolyline,
-            //            Width = 1
-            //        };
-            //    if (polyline.Coordinates == null)
-            //    {
-            //        polyline.Coordinates = new ObservableCollection<LatLng> { currentPosition };
-            //        Annotations.Add(polyline);
-            //    }
-            //    else
-            //        (polyline.Coordinates as ObservableCollection<LatLng>).Add(currentPosition);
-            //}
+            if (CurrentAction == ActionState.AddPointAnnotation)
+            {
+                var annotation = new SymbolAnnotation()
+                {
+                    Coordinates = currentPosition,
+                    IconImage = pinIcon,
+                    IconSize = 1,
+                    IconColor = Color.Green,
+                };
+                annotation.Title = "PointAnnot." + i;
+                Annotations.Add(annotation);
+                i = i + 1;
+            }
+            if (CurrentAction == ActionState.AddPolyline)
+            {
+                //if (polyline == null)
+                //    polyline = new PolylineAnnotation
+                //    {
+                //        HexColor = colorPolyline,
+                //        Width = 1
+                //    };
+                //if (polyline.Coordinates == null)
+                //{
+                //    polyline.Coordinates = new ObservableCollection<LatLng> { currentPosition };
+                //    Annotations.Add(polyline);
+                //}
+                //else
+                //    (polyline.Coordinates as ObservableCollection<LatLng>).Add(currentPosition);
+            }
         }
 
         ICommand _ClearAllAnnotation;

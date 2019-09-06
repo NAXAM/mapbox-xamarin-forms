@@ -17,7 +17,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             if (symbolAnnotation.IconColor.HasValue)
             {
-                symbolOptions.WithIconColor(symbolAnnotation.IconColor.Value.ToHex());
+                symbolOptions.WithIconColor(symbolAnnotation.IconColor.Value.ToRGBAString());
             }
             if (symbolAnnotation.IconHaloBlur.HasValue)
             {
@@ -25,15 +25,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             if (symbolAnnotation.IconHaloColor.HasValue)
             {
-                symbolOptions.WithIconHaloColor(symbolAnnotation.IconHaloColor.Value.ToHex());
+                symbolOptions.WithIconHaloColor(symbolAnnotation.IconHaloColor.Value.ToRGBAString());
             }
             if (symbolAnnotation.IconHaloWidth.HasValue)
             {
                 symbolOptions.WithIconHaloWidth(new Float(symbolAnnotation.IconHaloWidth.Value));
             }
-            if (!string.IsNullOrWhiteSpace(symbolAnnotation.IconImage))
+            if (symbolAnnotation.IconImage != null)
             {
-                symbolOptions.WithIconImage(symbolAnnotation.IconImage);
+                symbolOptions.WithIconImage(symbolAnnotation.IconImage.Id);
             }
             if (symbolAnnotation.IconOffset?.Length > 0)
             {
@@ -65,7 +65,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             if (symbolAnnotation.TextColor.HasValue)
             {
-                symbolOptions.WithTextColor(symbolAnnotation.TextColor.Value.ToHex());
+                symbolOptions.WithTextColor(symbolAnnotation.TextColor.Value.ToRGBAString());
             }
             if (!string.IsNullOrWhiteSpace(symbolAnnotation.TextField))
             {
@@ -81,7 +81,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             if (symbolAnnotation.TextHaloColor.HasValue)
             {
-                symbolOptions.WithTextHaloColor(symbolAnnotation.TextHaloColor.Value.ToHex());
+                symbolOptions.WithTextHaloColor(symbolAnnotation.TextHaloColor.Value.ToRGBAString());
             }
             if (symbolAnnotation.TextHaloWidth.HasValue)
             {

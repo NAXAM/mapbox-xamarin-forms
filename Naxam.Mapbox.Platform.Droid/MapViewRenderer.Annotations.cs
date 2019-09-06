@@ -4,10 +4,13 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Android.Graphics;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Plugins.Annotation;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox.Annotations;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 using NxAnnotation = Naxam.Mapbox.Annotations.Annotation;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
@@ -121,6 +124,24 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                                 symbolManager.IconAllowOverlap = Java.Lang.Boolean.True;
                                 symbolManager.TextAllowOverlap = Java.Lang.Boolean.True;
                             }
+
+                            if (symbolAnnotation.IconImage?.Source != null)
+                            {
+                                switch (symbolAnnotation.IconImage.Source)
+                                {
+                                    // TODO: Handle other type of ImageSoure
+                                    case FileImageSource fileImageSource:
+                                        var cachedImage = mapStyle.GetImage(fileImageSource.File);
+                                        if (cachedImage !=  null) break;
+
+                                        var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
+                                        if (bitmap == null) break;
+
+                                        mapStyle.AddImage(fileImageSource.File, bitmap);
+                                        break;
+                                }
+                            }
+
                             var symbolOptions = symbolAnnotation.ToSymbolOptions();
                             var symbol = Android.Runtime.Extensions.JavaCast<Symbol>(symbolManager.Create(symbolOptions));
                             symbolAnnotation.NativeHandle = symbol.Handle;
@@ -129,52 +150,51 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                         break;
                     case CircleAnnotation circleAnnotation:
                         {
-                            // TODO
+                            // TODO Handle other type of annotation
                         }
                         break;
                 }
             }
         }
 
-        //IList<Marker> AddMakers(IList<FMarker> markers)
-        //{
-        //    if (markers == null || markers.Count == 0)
-        //        return null;
-        //    var iconSource = new Dictionary<string, Icon>();
-        //    var markerOptions = new List<MMarker>();
-        //    for (int i = 0; i < markers.Count; i++)
-        //    {
-        //        var annotation = markers[i];
-        //        var marker = new MarkerOptions();
-        //        marker.SetTitle(annotation.Title);
-        //        marker.SetSnippet(annotation.SubTitle);
-        //        marker.SetPosition(annotation.Coordinate.ToLatLng());
-        //        if (string.IsNullOrEmpty(annotation.Icon) == false)
-        //        {
-        //            if (iconSource.ContainsKey(annotation.Icon))
-        //            {
-        //                marker.SetIcon(iconSource[annotation.Icon]);
-        //            }
-        //            else
-        //            {
-        //                var icon = Context.GetIconFromResource(annotation.Icon);
-        //                if (icon != null)
-        //                {
-        //                    marker.SetIcon(icon);
-        //                    iconSource.Add(annotation.Icon, icon);
-        //                }
-        //            }
-        //        }
+        IList<Marker> AddMakers(IList<SymbolAnnotation> annotations)
+        {
+            if (annotations == null || annotations.Count == 0)
+                return null;
 
-        //        markerOptions.Add(marker);
-        //    }
-        //    var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList());
-        //    for (int i = 0; i < options.Count; i++)
-        //    {
-        //        markers[i].Id = options[i].Id.ToString();
-        //    }
-        //    return options;
-        //}
+            var iconSource = new Dictionary<string, Icon>();
+            var markerOptions = new List<MarkerOptions>();
+            for (int i = 0; i < annotations.Count; i++)
+            {
+                var annotation = annotations[i];
+                var marker = new MarkerOptions();
+                marker.SetTitle(annotation.Title);
+                marker.SetSnippet(annotation.SubTitle);
+                marker.SetPosition(annotation.Coordinates.ToLatLng());
+                if (annotation.IconImage?.Source != null)
+                {
+                    switch(annotation.IconImage.Source)
+                    {
+                        case FileImageSource fileImageSource:
+                            var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
+                            if (bitmap == null) continue;
+                            var icon = IconFactory.GetInstance(Context).FromBitmap(bitmap);
+                            marker.SetIcon(icon);
+                            break;
+                        default:
+                            continue;
+                    }
+                }
+
+                markerOptions.Add(marker);
+            }
+            var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList());
+            for (int i = 0; i < options.Count; i++)
+            {
+                annotations[i].Id = options[i].Id.ToString();
+            }
+            return options;
+        }
 
         //IList<Polyline> AddPolylines(IList<FPolyline> polylines)
         //{
