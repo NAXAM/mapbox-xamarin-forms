@@ -156,17 +156,25 @@ namespace MapBoxQs
 
             DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
             {
-                var source = new GeojsonSource {
-                    Id = "regions.src",
-                    Url = "https://gist.githubusercontent.com/tobrun/cf0d689c8187d42ebe62757f6d0cf137/raw/4d8ac3c8333f1517df9d303d58f20f4a1d8841e8/regions.geojson"
+                //var source = new GeoJsonSource {
+                //    Id = "regions.src",
+                //    Url = "https://gist.githubusercontent.com/tobrun/cf0d689c8187d42ebe62757f6d0cf137/raw/4d8ac3c8333f1517df9d303d58f20f4a1d8841e8/regions.geojson"
+                //};
+                //MapFunctions.AddSource(source);
+
+                //var layer = new FillLayer("regions.layer", "regions.src") {
+                //    FillOpacity = 0.7,
+                //    FillColor = Color.Green
+                //};
+                //MapFunctions.AddLayer(layer);
+
+                var source = new GeoJsonSource
+                {
+                    Id = "ports.src",
+                    Url = "ports.geojson",
+                    IsLocal = true,
                 };
                 MapFunctions.AddSource(source);
-
-                var layer = new FillLayer("regions.layer", "regions.src") {
-                    FillOpacity = 0.7,
-                    FillColor = Color.Green
-                };
-                MapFunctions.AddLayer(layer);
             });
 
             DidTapOnCalloutViewCommand = new Command<string>((markerId) =>

@@ -1,25 +1,84 @@
 ﻿using NxSource = Naxam.Mapbox.Sources.Source;
 using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
-using NxGeojsonSource = Naxam.Mapbox.Sources.GeojsonSource;
-using Sdk = Com.Mapbox.Mapboxsdk;
+using NxGeojsonSource = Naxam.Mapbox.Sources.GeoJsonSource;
+using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
+using Com.Mapbox.Mapboxsdk.Style.Sources;
 
 namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
     public static class SourceExtensions
     {
-        public static Sdk.Style.Sources.Source ToSource(this NxSource source)
+        public static Source ToSource(this NxSource source)
         {
             switch (source)
             {
                 case NxGeojsonSource geojsonSource:
-                    return geojsonSource.Data != null
-                        ? null // TODO 
-                        : new Sdk.Style.Sources.GeoJsonSource(geojsonSource.Id, new Java.Net.URL(geojsonSource.Url));
+                    if (geojsonSource.Data != null)
+                    {
+                        return null;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(geojsonSource.Url)) return null;
+
+                    if (false == geojsonSource.IsLocal)
+                    {
+                        return new GeoJsonSource(geojsonSource.Id, new Java.Net.URL(geojsonSource.Url), geojsonSource.Options.ToOptions());
+                    }
+
+                    var localUrl = geojsonSource.Url.StartsWith("assets://")
+                        ? new Java.Net.URI(geojsonSource.Url)
+                        : new Java.Net.URI("assets://" + geojsonSource.Url);
+
+                    return new GeoJsonSource(geojsonSource.Id, localUrl, geojsonSource.Options.ToOptions());
+
                 case NxRasterSource rasterSource:
-                    return new Sdk.Style.Sources.RasterSource(rasterSource.Id, rasterSource.ConfigurationURL, rasterSource.TileSize);
+                    return new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL, rasterSource.TileSize);
             }
 
             return null;
+        }
+    }
+
+    public static class GeoJsonOptionsExtensions
+    {
+        public static GeoJsonOptions ToOptions(this NxGeoJsonOptions nxoptions)
+        {
+            if (nxoptions == null) return null;
+
+            var options = new GeoJsonOptions();
+            if (nxoptions.Buffer.HasValue)
+            {
+                options.WithBuffer(nxoptions.Buffer.Value);
+            }
+            if (nxoptions.Cluster.HasValue)
+            {
+                options.WithCluster(nxoptions.Cluster.Value);
+            }
+            if (nxoptions.ClusterMaxZoom.HasValue)
+            {
+                options.WithClusterMaxZoom(nxoptions.ClusterMaxZoom.Value);
+            }
+            if (nxoptions.ClusterRadius.HasValue)
+            {
+                options.WithClusterRadius(nxoptions.ClusterRadius.Value);
+            }
+            if (nxoptions.LineMetrics.HasValue)
+            {
+                options.WithLineMetrics(nxoptions.LineMetrics.Value);
+            }
+            if (nxoptions.MaxZoom.HasValue)
+            {
+                options.WithMaxZoom(nxoptions.MaxZoom.Value);
+            }
+            if (nxoptions.MinZoom.HasValue)
+            {
+                options.WithMinZoom(nxoptions.MinZoom.Value);
+            }
+            if (nxoptions.Tolerance.HasValue)
+            {
+                options.WithTolerance(nxoptions.Tolerance.Value);
+            }
+            return options;
         }
     }
 }

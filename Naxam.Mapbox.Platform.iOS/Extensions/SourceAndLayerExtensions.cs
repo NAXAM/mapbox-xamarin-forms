@@ -6,6 +6,7 @@ using Naxam.Mapbox.Sources;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
+using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
@@ -17,10 +18,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             switch (source)
             {
-                case GeojsonSource geojsonSource:
+                case GeoJsonSource geojsonSource:
+                    var options = geojsonSource.Options.ToOptions();
+                    var url = geojsonSource.IsLocal
+                        ? NSUrl.FromFilename(geojsonSource.Url)
+                        : NSUrl.FromString(geojsonSource.Url);
                     result = geojsonSource.Data != null
-                        ? new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), null)
-                        : new MGLShapeSource(source.Id, NSUrl.FromString(geojsonSource.Url), null);
+                        ? new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), options)
+                        : new MGLShapeSource(source.Id, url, options);
 
                     break;
             }
@@ -37,6 +42,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             var shape = MGLShape.ShapeWithData(data, (int)NSStringEncoding.UTF8, out var error);
 
+            // TODO Handle error
             if (error != null) return null;
 
             return shape;
@@ -118,5 +124,48 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             return result;
         }
 
+    }
+
+    public static class GeoJsonOptionsExtensions
+    {
+        public static NSDictionary<NSString, NSObject> ToOptions(this NxGeoJsonOptions nxoptions)
+        {
+            if (nxoptions == null) return null;
+
+            var options = new NSMutableDictionary<NSString, NSObject>();
+            if (nxoptions.Buffer.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.Buffer, NSNumber.FromNInt(nxoptions.Buffer.Value));
+            }
+            if (nxoptions.Cluster.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.Clustered, NSNumber.FromBoolean(nxoptions.Cluster.Value));
+            }
+            if (nxoptions.ClusterMaxZoom.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.ClusterRadius, NSNumber.FromNInt(nxoptions.ClusterMaxZoom.Value));
+            }
+            if (nxoptions.ClusterRadius.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.ClusterRadius, NSNumber.FromNInt(nxoptions.ClusterRadius.Value));
+            }
+            if (nxoptions.LineMetrics.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.LineDistanceMetrics, NSNumber.FromBoolean(nxoptions.LineMetrics.Value));
+            }
+            if (nxoptions.MaxZoom.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.MaximumZoomLevel, NSNumber.FromNInt(nxoptions.MaxZoom.Value));
+            }
+            if (nxoptions.MinZoom.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.MinimumZoomLevel, NSNumber.FromNInt(nxoptions.MinZoom.Value));
+            }
+            if (nxoptions.Tolerance.HasValue)
+            {
+                options.Add(MGLShapeSourceOptions.SimplificationTolerance, NSNumber.FromFloat(nxoptions.Tolerance.Value));
+            }
+            return new NSDictionary<NSString, NSObject>(options.Keys, options.Values);
+        }
     }
 }
