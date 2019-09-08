@@ -3,51 +3,12 @@ using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
 using System;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Forms
 {
     public partial class MapView : View
     {
-
-        public static readonly BindableProperty IsMarkerClickedProperty = BindableProperty.Create(
-            nameof(IsMarkerClicked),
-            typeof(bool),
-            typeof(MapView),
-            default(bool),
-            BindingMode.TwoWay
-        );
-        public bool IsMarkerClicked
-        {
-            get => (bool)GetValue(IsMarkerClickedProperty);
-            set => SetValue(IsMarkerClickedProperty, value);
-        }
-
-        public static readonly BindableProperty DragFinishedCommandProperty = BindableProperty.Create(
-            nameof(DragFinishedCommand),
-            typeof(ICommand),
-            typeof(MapView),
-            default(ICommand),
-            BindingMode.OneWay);
-        public ICommand DragFinishedCommand
-        {
-            get => (ICommand)GetValue(DragFinishedCommandProperty);
-            set => SetValue(DragFinishedCommandProperty, value); 
-        }
-
-        public static readonly BindableProperty FocusPositionProperty = BindableProperty.Create(
-            nameof(FocusPosition),
-            typeof(bool),
-            typeof(MapView),
-            default(bool),
-            BindingMode.OneWay);
-        public bool FocusPosition
-        {
-            get => (bool)GetValue(FocusPositionProperty);
-            set => SetValue(FocusPositionProperty, value);
-        }
-
         public static readonly BindableProperty CenterProperty = BindableProperty.Create(
             nameof(Center),
             typeof(LatLng),
@@ -157,7 +118,6 @@ namespace Naxam.Controls.Forms
             typeof(MapView),
             0.0,
             BindingMode.TwoWay);
-
         public double RotatedDegree
         {
             get => (double)GetValue(RotatedDegreeProperty);
@@ -176,42 +136,16 @@ namespace Naxam.Controls.Forms
             set => SetValue(MapStyleProperty, value);
         }
 
-        //public static BindableProperty MarkersProperty = BindableProperty.Create(
-        //   nameof(Markers),
-        //   typeof(IEnumerable<PointAnnotation>),
-        //   typeof(MapView),
-        //   default(IEnumerable<PointAnnotation>),
-        //   BindingMode.OneWay
-        //   );
-        //public IEnumerable<PointAnnotation> Markers
-        //{
-        //    get => (IEnumerable<PointAnnotation>)GetValue(MarkersProperty);
-        //    set => SetValue(MarkersProperty, value);
-        //}
-
-        //public static BindableProperty PolylinesProperty = BindableProperty.Create(
-        //   nameof(Polylines),
-        //   typeof(IEnumerable<PolylineAnnotation>),
-        //   typeof(MapView),
-        //   default(IEnumerable<PolylineAnnotation>),
-        //   BindingMode.OneWay);
-        //public IEnumerable<PolylineAnnotation> Polylines
-        //{
-        //    get => (IEnumerable<PolylineAnnotation>)GetValue(PolylinesProperty);
-        //    set => SetValue(PolylinesProperty, value);
-        //}
-
-
-        public static BindableProperty RegionProperty = BindableProperty.Create(
-           nameof(Region),
+        public static BindableProperty VisibleBoundsProperty = BindableProperty.Create(
+           nameof(VisibleBounds),
            typeof(LatLngBounds),
            typeof(MapView),
            default,
            BindingMode.TwoWay);
-        public LatLngBounds Region
+        public LatLngBounds VisibleBounds
         {
-            get => (LatLngBounds)GetValue(RegionProperty);
-            set => SetValue(RegionProperty, value);
+            get => (LatLngBounds)GetValue(VisibleBoundsProperty);
+            set => SetValue(VisibleBoundsProperty, value);
         }
 
         public static BindableProperty InfoWindowTemplateProperty = BindableProperty.Create(
@@ -226,22 +160,24 @@ namespace Naxam.Controls.Forms
             get { return (DataTemplate)GetValue(InfoWindowTemplateProperty); }
             set { SetValue(InfoWindowTemplateProperty, value); }
         }
+
+        public static readonly BindableProperty FunctionsProperty = BindableProperty.Create(
+            nameof(Functions),
+            typeof(IMapFunctions),
+            typeof(MapView),
+            default(IMapFunctions),
+            BindingMode.OneWayToSource);
+        public IMapFunctions Functions
+        {
+            get => (IMapFunctions)GetValue(FunctionsProperty);
+            set => SetValue(FunctionsProperty, value);
+        }
     }
 
     public class AnnotationChangedEventArgs : EventArgs
     {
         public IEnumerable<Annotation> OldAnnotations { get; set; }
         public IEnumerable<Annotation> NewAnnotations { get; set; }
-    }
-
-    public class PositionChangedEventArgs : EventArgs
-    {
-        public PositionChangedEventArgs(LatLng newPosition)
-        {
-            NewPosition = newPosition;
-        }
-
-        public LatLng NewPosition { get; private set; }
     }
 
 }

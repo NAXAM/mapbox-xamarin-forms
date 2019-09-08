@@ -107,6 +107,8 @@
     <Compile Include="Extensions\NativeViewExtensions.cs" />
     <Compile Include="MapViewRenderer.Annotations.cs" />
     <Compile Include="MapViewRenderer.Style.cs" />
+    <Compile Include="MapViewRenderer.Interactor.cs" />
+    <Compile Include="Extensions\FeatureExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
@@ -119,10 +121,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Naxam.Mapbox.iOS">
-      <Version>5.0.0</Version>
+      <Version>5.0.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
       <Version>3.6.0.709228</Version>
+    </PackageReference>
+    <PackageReference Include="GeoJSON.Net">
+      <Version>1.1.73</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -28,7 +28,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
         }
 
-        void OnMapStylePropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
+        void OnMapStylePropertyChanging(object sender, PropertyChangingEventArgs e)
         {
             //if (e.PropertyName == MapStyle.CustomSourcesProperty.PropertyName
             //    && (sender as MapStyle).CustomSources != null)
@@ -351,7 +351,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         MGLStyle mapStyle;
 
         [Export("mapView:didFinishLoadingStyle:"),]
-        void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
+        public void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
         {
             MapStyle newStyle;
             if (Element.MapStyle == null)
@@ -396,6 +396,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }).ToArray();
             newStyle.Name = style.Name;
             Element.DidFinishLoadingStyleCommand?.Execute(newStyle);
+            Element.Functions = this;
         }
     }
 

@@ -40,6 +40,9 @@ namespace MapBoxQs
         OfflinePackRegion forcedRegion;
         IOfflineStorageService offlineService;
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public IMapFunctions MapFunctions { get; set; }
+
         ObservableCollection<Annotation> _Annotations;
         public ObservableCollection<Annotation> Annotations
         {
@@ -302,8 +305,6 @@ namespace MapBoxQs
         {
             return new Tuple<string, string>("default_pin", "pin");
         }
-
-        public Func<string, Byte[]> GetStyleImageFunc { get; set; }
 
         private LatLng _centerLocation;
 
@@ -793,36 +794,19 @@ namespace MapBoxQs
         #endregion
         #region Other
 
-        ICommand _GetStyleImageCommand;
-        public ICommand GetStyleImageCommand
+        ICommand _QueryFeaturesAtCenterPointCommand;
+        public ICommand QueryFeaturesAtCenterPointCommand
         {
-            get { return _GetStyleImageCommand = _GetStyleImageCommand ?? new Command<object>(ExecuteGetStyleImageCommand, CanExecuteGetStyleImageCommand); }
+            get { return _QueryFeaturesAtCenterPointCommand = _QueryFeaturesAtCenterPointCommand ?? new Command<object>(ExecuteQueryFeaturesAtCenterPointCommand, CanExecuteQueryFeaturesAtCenterPointCommand); }
         }
-        bool CanExecuteGetStyleImageCommand(object obj) { return true; }
-        async void ExecuteGetStyleImageCommand(object obj)
+        bool CanExecuteQueryFeaturesAtCenterPointCommand(object obj) { return true; }
+        void ExecuteQueryFeaturesAtCenterPointCommand(object obj)
         {
-            var configs = new PromptConfig()
-            {
-                Title = "Get an image of the current style",
-                Message = "Please input image name",
-                CancelText = "Cancel",
-                OkText = "Get image",
-                Text = "city-small"
-            };
+            if (MapFunctions == null) return;
 
-            var result = await UserDialogs.Instance.PromptAsync(configs);
-            if (result.Ok && false == string.IsNullOrEmpty(result.Text))
-            {
-                var styleImageResult = GetStyleImageFunc?.Invoke(result.Text);
-                if (styleImageResult == null)
-                {
-                    await UserDialogs.Instance.AlertAsync("Image not found!");
-                }
-                else
-                {
-                    await navigation.PushAsync(new Views.ShowPhotoDialog(styleImageResult));
-                }
-            }
+            var features = MapFunctions.QueryFeatures(CenterLocation);
+
+            System.Diagnostics.Debug.Write(features.Length);
         }
 
         ICommand _TakeSnapshotCommand;
@@ -833,7 +817,9 @@ namespace MapBoxQs
         bool CanExecuteTakeSnapshotCommand(object obj) { return true; }
         async void ExecuteTakeSnapshotCommand(object obj)
         {
-            var snapshotResult = await TakeSnapshotFunc?.Invoke();
+            if (MapFunctions == null) return;
+
+            var snapshotResult = await MapFunctions.TakeSnapshotAsync();
             await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
         }
 

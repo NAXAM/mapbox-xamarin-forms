@@ -27,6 +27,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             base.OnElementChanged(e);
             if (e.OldElement != null)
             {
+                e.OldElement.Functions = null;
                 if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection)
                 {
                     notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
@@ -40,7 +41,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (Control == null)
                 {
                     SetupUserInterface();
-                    SetupFunctions();
                     SetupEventHandlers();
                     SetNativeControl(map);
 
@@ -69,7 +69,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
             if (map == null || Element == null) return;
 
-            if (e.PropertyName == MapView.RegionProperty.PropertyName)
+            if (e.PropertyName == MapView.VisibleBoundsProperty.PropertyName)
             {
                 UpdateRegion();
             }
@@ -189,10 +189,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         void UpdateRegion()
         {
-            if (false == Element?.Region.IsEmpty())
+            if (false == Element?.VisibleBounds.IsEmpty())
             {
-                var ne = new CLLocationCoordinate2D(Element.Region.NorthEast.Lat, Element.Region.NorthEast.Long);
-                var sw = new CLLocationCoordinate2D(Element.Region.SouthWest.Lat, Element.Region.SouthWest.Long);
+                var ne = new CLLocationCoordinate2D(Element.VisibleBounds.NorthEast.Lat, Element.VisibleBounds.NorthEast.Long);
+                var sw = new CLLocationCoordinate2D(Element.VisibleBounds.SouthWest.Lat, Element.VisibleBounds.SouthWest.Long);
                 var bounds = new MGLCoordinateBounds() { ne = ne, sw = sw };
                 map.SetVisibleCoordinateBounds(bounds, true);
             }
@@ -230,203 +230,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 }
             });
             Element.PropertyChanging += OnElementPropertyChanging;
-        }
-
-        protected virtual void SetupFunctions()
-        {
-            Element.TakeSnapshotFunc = () =>
-            {
-                var image = map.Capture(true);
-                var imageData = image.AsJPEG();
-                Byte[] imgByteArray = new Byte[imageData.Length];
-                System.Runtime.InteropServices.Marshal.Copy(imageData.Bytes,
-                                                            imgByteArray,
-                                                            0,
-                                                            Convert.ToInt32(imageData.Length));
-                return Task.FromResult(imgByteArray);
-            };
-
-            //Element.GetFeaturesAroundPointFunc = GetFeaturesArroundPoint;
-
-            Element.ResetPositionAction = () =>
-            {
-                map.ResetPosition();
-            };
-
-            Element.ReloadStyleAction = () =>
-            {
-                map.ReloadStyle(map);
-            };
-
-            //Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) =>
-            //{
-            //    if (annotation != null && !string.IsNullOrEmpty(sourceId))
-            //    {
-            //        var mglSource = MapView.Style.SourceWithIdentifier(sourceId.ToCustomId());
-            //        if (mglSource != null && mglSource is MGLShapeSource)
-            //        {
-            //            Device.BeginInvokeOnMainThread(() =>
-            //            {
-            //                (mglSource as MGLShapeSource).Shape = ShapeFromAnnotation(annotation);
-            //            });
-            //            if (Element.MapStyle.CustomSources != null)
-            //            {
-            //                var count = Element.MapStyle.CustomSources.Count();
-            //                if (Element.MapStyle.CustomSources.FirstOrDefault((arg) => arg.Id == sourceId) is ShapeSource shapeSource)
-            //                {
-            //                    shapeSource.Shape = annotation;
-            //                }
-            //            }
-            //            return true;
-            //        }
-            //    }
-            //    return false;
-            //};
-
-            Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) =>
-            {
-                if (string.IsNullOrEmpty(layerId) || map == null || map.Style == null)
-                    return false;
-                NSString layerIdStr = IsCustom ? layerId.ToCustomId() : (NSString)layerId;
-                var layer = map.Style.LayerWithIdentifier(layerIdStr);
-                if (layer != null)
-                {
-                    layer.Visible = isVisible;
-                    if (IsCustom && Element.MapStyle != null && Element.MapStyle.CustomLayers != null)
-                    {
-                        var count = Element.MapStyle.CustomLayers.Count();
-                        for (var i = 0; i < count; i++)
-                        {
-                            if (Element.MapStyle.CustomLayers.ElementAt(i).Id == layerId)
-                            {
-                                Element.MapStyle.CustomLayers.ElementAt(i).IsVisible = isVisible;
-                                break;
-                            }
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            };
-
-            //Element.UpdateViewPortAction = (LatLng centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionBlock) =>
-            //{
-            //    MapView?.SetCenterCoordinate(
-            //        centerLocation?.ToCLCoordinate() ?? MapView.CenterCoordinate,
-            //        zoomLevel ?? MapView.ZoomLevel,
-            //        bearing ?? MapView.Direction,
-            //        animated,
-            //        completionBlock
-            //    );
-            //};
-
-            //Element.GetMapScaleReciprocalFunc = () => {
-            //             if (MapView == null) return 500000000;
-            //             System.Diagnostics.Debug.WriteLine($"Center latitude: {MapView.CenterCoordinate.Latitude}");
-            //	var metersPerPoint = MapView.MetersPerPointAtLatitude(MapView.CenterCoordinate.Latitude);
-            //	System.Diagnostics.Debug.WriteLine($"metersPerPoint: {metersPerPoint}");
-            //	var resolution = metersPerPoint / Math.Pow(2, MapView.ZoomLevel);
-            //             System.Diagnostics.Debug.WriteLine($"resolution: {resolution}");
-            //	var output = UIDeviceExtensions.DPI() * 39.37 * resolution;
-            //	return output;
-            //};
-
-            Element.ToggleScaleBarFunc = (bool show) =>
-            {
-                if (map == null || map.ScaleBar == null) return false;
-                InvokeOnMainThread(() =>
-                {
-                    Debug.WriteLine($"Toggle scale bar: {show}");
-                    map.ScaleBar.Hidden = !show;
-                });
-
-                return true;
-            };
-
-            Element.GetStyleImageFunc = (imageName) =>
-            {
-                if (string.IsNullOrEmpty(imageName)
-                    || map == null
-                    || map.Style == null) return null;
-                return map.Style.ImageForName(imageName)?.AsPNG().ToArray();
-            };
-
-            Element.GetStyleLayerFunc = (string layerId, bool isCustom) =>
-            {
-                if (string.IsNullOrEmpty(layerId)
-                    || map == null
-                    || map.Style == null) return null;
-                NSString layerIdStr = isCustom ? layerId.ToCustomId() : (NSString)layerId;
-                var layer = map.Style.LayerWithIdentifier(layerIdStr);
-                if (layer is MGLVectorStyleLayer vLayer)
-                {
-                    return CreateStyleLayer(vLayer, layerId);
-                }
-
-                return null;
-            };
-
-            Element.InsertLayerAboveLayerFunc = (newLayer, siblingLayerId) =>
-            {
-                if (map.Style?.LayerWithIdentifier(siblingLayerId) is MGLStyleLayer siblingLayer
-                    && GetStyleLayer(newLayer, newLayer.Id.ToCustomId()) is MGLStyleLayer layerToInsert)
-                {
-                    map.Style.InsertLayerAbove(layerToInsert, siblingLayer);
-                    return true;
-                }
-                return false;
-            };
-
-            Element.InsertLayerBelowLayerFunc = (newLayer, siblingLayerId) =>
-            {
-                if (map.Style?.LayerWithIdentifier(siblingLayerId) is MGLStyleLayer siblingLayer
-                    && GetStyleLayer(newLayer, newLayer.Id.ToCustomId()) is MGLStyleLayer layerToInsert)
-                {
-                    map.Style.InsertLayerBelow(layerToInsert, siblingLayer);
-                    return true;
-                }
-                return false;
-            };
-
-            Element.ApplyOfflinePackFunc = (mapPack) =>
-            {
-                var pack = Runtime.GetNSObject<MGLOfflinePack>(mapPack.Handle);
-                var region = Runtime.GetNSObject<MGLTilePyramidOfflineRegion>(pack.Region.Handle);
-                map.StyleURL = region.StyleURL;
-                map.VisibleCoordinateBounds = region.Bounds;
-                map.ZoomLevel = Math.Min(map.MaximumZoomLevel, Math.Max(map.MinimumZoomLevel, map.ZoomLevel));
-                return true;
-            };
-
-            Element.SelectAnnotationAction = (Tuple<string, bool> obj) =>
-            {
-                if (obj == null || map == null || map.Annotations == null) return;
-                foreach (var childObj in map.Annotations)
-                {
-                    var anno = Runtime.GetNSObject<MGLPointAnnotation>(childObj.Handle);
-                    if (anno is MGLShape shape
-                        && shape.Handle.ToString() == obj.Item1)
-                    {
-                        map.SelectAnnotation(shape, obj.Item2);
-                        break;
-                    }
-                }
-            };
-
-            Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
-            {
-                if (obj == null || map == null || map.Annotations == null) return;
-                foreach (var childObj in map.Annotations)
-                {
-                    var anno = Runtime.GetNSObject<MGLPointAnnotation>(childObj.Handle);
-                    if (anno is MGLShape shape
-                        && shape.Handle.ToString() == obj.Item1)
-                    {
-                        map.DeselectAnnotation(shape, obj.Item2);
-                        break;
-                    }
-                }
-            };
         }
 
         #region MGLMapViewDelegate

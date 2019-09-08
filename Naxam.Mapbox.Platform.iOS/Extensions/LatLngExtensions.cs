@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using CoreGraphics;
 using CoreLocation;
 using Mapbox;
 using Naxam.Mapbox;
@@ -36,7 +38,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return positions.Select(x => x.ToCLCoordinate()).ToArray();
         }
 
-        public static MGLCoordinateBounds ToCLRegiion(this LatLngBounds pos)
+        public static MGLCoordinateBounds ToCLRegion(this LatLngBounds pos)
         {
             return new MGLCoordinateBounds {
                 ne = pos.NorthEast.ToCLCoordinate(),
@@ -47,6 +49,41 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public static LatLngBounds ToLatLngBounds(this MGLCoordinateBounds pos)
         {
             return new LatLngBounds(pos.sw.ToLatLng(), pos.ne.ToLatLng());
+        }
+
+        public static CGRect ToRect(this CGPoint pos, nfloat radius)
+        {
+            return CGRect.FromLTRB(
+                pos.X - radius,
+                pos.Y - radius,
+                pos.X + radius,
+                pos.Y + radius
+                );
+        }
+
+        public static CGRect ToRect(this CGPoint tl, CGPoint rb)
+        {
+            return CGRect.FromLTRB(
+                tl.X,
+                tl.Y,
+                rb.X,
+                rb.Y
+                );
+        }
+
+        public static CGRect ToRect(this Xamarin.Forms.Rectangle rectangle)
+        {
+            return CGRect.FromLTRB(
+               (nfloat)rectangle.Left,
+               (nfloat)rectangle.Top,
+               (nfloat)rectangle.Right,
+               (nfloat)rectangle.Bottom
+            );
+        }
+
+        public static CGPoint ToPoint(this Xamarin.Forms.Point tl)
+        {
+            return new CGPoint(tl.X, tl.Y);
         }
     }
 }

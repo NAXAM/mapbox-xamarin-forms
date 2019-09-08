@@ -3,13 +3,15 @@ using System.IO;
 using System.Threading.Tasks;
 using Android.Graphics;
 using Com.Mapbox.Mapboxsdk.Snapshotter;
+using Naxam.Controls.Forms;
+using Naxam.Mapbox;
 using Sdk = Com.Mapbox.Mapboxsdk;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    public partial class MapViewRenderer
+    public partial class MapViewRenderer : IMapFunctions
     {
-        Task<byte[]> TakeMapSnapshot()
+        public Task<byte[]> TakeSnapshotAsync(LatLngBounds bounds = default)
         {
             var tcs = new TaskCompletionSource<byte[]>();
 

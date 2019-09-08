@@ -126,6 +126,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     }
                     renderer.Element.AnnotationsChanged -= renderer.Element_AnnotationsChanged;
                     renderer.Element.AnnotationsChanged += renderer.Element_AnnotationsChanged;
+                    renderer.Element.Functions = renderer;
                 }
             }
         }

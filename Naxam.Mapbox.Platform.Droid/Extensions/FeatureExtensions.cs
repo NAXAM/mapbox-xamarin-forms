@@ -1,93 +1,24 @@
-﻿//using System;
-//using Com.Mapbox.Geojson;
-//using Point = Com.Mapbox.Geojson.Point;
-//using Naxam.Controls.Forms;
-//using System.Linq;
-//using Android.Graphics;
-//using System.Collections.Generic;
+﻿using Com.Mapbox.Geojson;
 
-//namespace Naxam.Controls.Mapbox.Platform.Droid
-//{
-//    public static class FeatureExtensions
-//    {
-//        public static IFeature ToFeature(this Feature feature)
-//        {
-//            if (feature == null)
-//            {
-//                return null;
-//            }
+using NFeature = GeoJSON.Net.Feature.Feature;
+using Newtonsoft.Json;
 
-//            IFeature forms = null;
+namespace Naxam.Controls.Mapbox.Platform.Droid
+{
+    public static class FeatureExtensions
+    {
+        public static NFeature ToFeature(this Feature feature, bool shouldDispose = false)
+        {
+            if (feature == null)
+            {
+                return null;
+            }
 
-//            if (feature.Geometry() is Point point)
-//            {
-//                var cords = point.Coordinates();
-//                forms = new PointFeature(new PointAnnotation
-//                {
-//                    Id = feature.Id(),
-//                    Coordinate = new Forms.Point
-//                    {
-//                        Lat = cords[0].DoubleValue(),
-//                        Long = cords[1].DoubleValue()
-//                    }
-//                });
-//            }
-//            else if (feature.Geometry() is LineString line)
-//            {
-//                var coords = line.Coordinates()
-//                                  .Select(ToForms)
-//                                  .ToArray();
+            var json = feature.ToJson();
 
-//                forms = new PolylineFeature(new PolylineAnnotation
-//                {
-//                    Id = feature.Id(),
-//                    Coordinates = coords
-//                });
-//            }
-//            else if (feature.Geometry() is MultiLineString mline)
-//            {
-//                var coords = mline.Coordinates()
-//                                  .Select(x => x.Select(ToForms).ToArray())
-//                                  .ToArray();
+            if (shouldDispose) feature.Dispose();
 
-//                forms = new MultiPolylineFeature(new MultiPolylineAnnotation
-//                {
-//                    Id = feature.Id(),
-//                    Coordinates = coords
-//                });
-//            }
-
-//            if (forms != null)
-//            {
-//                var json = feature.Properties().ToString();
-
-//                forms.Attributes = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
-//            }
-
-//            return forms;
-//        }
-
-//        public static Point ToForms(this Point position)
-//        {
-//            return new Forms.Point
-//            {
-//                Lat = position.Latitude(),
-//                Long = position.Longitude()
-//            };
-//        }
-
-//        public static RectF ToRect(this Xamarin.Forms.Point point, double radius)
-//        {
-//            return new RectF(
-//                            (float)(point.X - radius),
-//                            (float)(point.Y - radius),
-//                            (float)(point.X + radius),
-//                            (float)(point.Y + radius));
-//        }
-
-//        public static IEnumerable<T> Cast<T>(this Android.Runtime.JavaList list)
-//        {
-//            return list.ToArray().Cast<T>();
-//        }
-//    }
-//}
+            return JsonConvert.DeserializeObject<NFeature>(json);
+        }
+    }
+}

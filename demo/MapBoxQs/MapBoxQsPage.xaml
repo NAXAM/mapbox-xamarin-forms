@@ -61,6 +61,7 @@
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            Functions="{Binding MapFunctions}"
             ZoomLevel="{Binding ZoomLevel}"
             Annotations="{Binding Annotations}"
             DragFinishedCommand="{Binding DragFinishedCommand}"
@@ -408,8 +409,8 @@
                 CommandParameter="{x:Static local:MapTools.None}"
                 Text="Take Snapshot" />
             <Button
-                Command="{Binding GetStyleImageCommand}"
-                Text="Get Style Image" />
+                Command="{Binding QueryFeaturesAtCenterPointCommand}"
+                Text="Features at Center" />
             <Button
                 Command="{Binding GetStyleLayerCommand}"
                 Text="Get Style Layer" />

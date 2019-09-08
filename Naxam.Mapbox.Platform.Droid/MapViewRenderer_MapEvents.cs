@@ -66,8 +66,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         protected virtual void MapClicked(object o, MapboxMap.MapClickEventArgs args)
         {
-            Element.FocusPosition = false;
-
             var point = map.Projection.ToScreenLocation(args.P0);
             var xfPoint = new Xamarin.Forms.Point(point.X, point.Y);
             var xfPosition = new NxLatLng(args.P0.Latitude, args.P0.Longitude);

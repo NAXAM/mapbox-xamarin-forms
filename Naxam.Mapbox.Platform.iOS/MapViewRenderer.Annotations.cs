@@ -307,7 +307,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         }
 
         [Export("mapView:annotationCanShowCallout:"),]
-        protected virtual bool AnnotationCanShowCallout(MGLMapView mapView, NSObject annotation)
+        protected virtual bool AnnotationCanShowCallout(MGLMapView mapView, IMGLAnnotation annotation)
         {
             if (annotation is MGLShape && Element.CanShowCalloutChecker != null)
             {

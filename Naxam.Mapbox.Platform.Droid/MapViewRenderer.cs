@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Android.Content;
 using Android.Support.V7.App;
 using Com.Mapbox.Mapboxsdk.Annotations;
@@ -11,12 +9,9 @@ using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox.Platform.Droid;
 using Xamarin.Forms.Platform.Android;
-using Bitmap = Android.Graphics.Bitmap;
 using MapView = Naxam.Controls.Forms.MapView;
-using Sdk = Com.Mapbox.Mapboxsdk;
 using View = Android.Views.View;
 using NxLatLng = Naxam.Mapbox.LatLng;
-using NxLatLngBounds = Naxam.Mapbox.LatLngBounds;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -29,10 +24,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         NxLatLng currentCamera;
         bool mapReady;
 
-        readonly Dictionary<string, Annotation> _annotationDictionaries;
         public MapViewRenderer(Context context) : base(context)
         {
-            _annotationDictionaries = new Dictionary<string, Annotation>();
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
@@ -41,8 +34,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (e.OldElement != null)
             {
                 e.OldElement.AnnotationsChanged -= Element_AnnotationsChanged;
-                e.OldElement.TakeSnapshotFunc -= TakeMapSnapshot;
-                //e.OldElement.GetFeaturesAroundPointFunc -= GetFeaturesAroundPoint;
+                e.OldElement.Functions = null;
+
                 if (map != null)
                 {
                     RemoveMapEvents();
@@ -74,203 +67,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        public virtual void SetupFunctions()
-        {
-            Element.TakeSnapshotFunc += TakeMapSnapshot;
-            //Element.GetFeaturesAroundPointFunc += GetFeaturesAroundPoint;
-            Element.ResetPositionAction = () =>
-            {
-                //TODO handle reset position call
-                //map.ResetNorth();
-                //map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
-            };
-            Element.UpdateLayerFunc = (string layerId, bool isVisible, bool IsCustom) =>
-            {
-                if (!string.IsNullOrEmpty(layerId))
-                {
-                    string layerIdStr = IsCustom ? layerId.Prefix() : layerId;
-                    var layer = map.Style.GetLayer(layerIdStr);
-                    if (layer != null)
-                    {
-                        layer.SetProperties(layer.Visibility,
-                                            isVisible ? Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.Visible)
-                                            : Sdk.Style.Layers.PropertyFactory.Visibility(Sdk.Style.Layers.Property.None));
-
-                        if (IsCustom && Element.MapStyle.CustomLayers != null)
-                        {
-                            var count = Element.MapStyle.CustomLayers.Count();
-                            for (var i = 0; i < count; i++)
-                            {
-                                if (Element.MapStyle.CustomLayers.ElementAt(i).Id == layerId)
-                                {
-                                    Element.MapStyle.CustomLayers.ElementAt(i).IsVisible = isVisible;
-                                    break;
-                                }
-                            }
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            };
-
-            //Element.UpdateShapeOfSourceFunc = (Annotation annotation, string sourceId) =>
-            //{
-            //    if (annotation != null && !string.IsNullOrEmpty(sourceId))
-            //    {
-            //        var shape = annotation.ToFeatureCollection();
-            //        var source = map.Style.GetSource(sourceId.Prefix()) as Sdk.Style.Sources.GeoJsonSource;
-            //        if (source != null)
-            //        {
-            //            Device.BeginInvokeOnMainThread(() =>
-            //            {
-            //                source.SetGeoJson(shape);
-            //            });
-            //            if (Element.MapStyle.CustomSources?.FirstOrDefault((arg) => arg.Id == sourceId) is ShapeSource shapeSource)
-            //            {
-            //                shapeSource.Shape = annotation;
-            //            }
-            //            return true;
-            //        }
-            //    }
-            //    return false;
-            //};
-
-            Element.ReloadStyleAction = () =>
-            {
-                //https://github.com/mapbox/mapbox-gl-native/issues/9511
-                map.SetStyle(map.Style.Url);
-            };
-
-            Element.UpdateViewPortAction = (NxLatLng centerLocation, double? zoomLevel, double? bearing, bool animated, Action completionHandler) =>
-            {
-                var tartget = centerLocation != NxLatLng.Zero ? new LatLng(centerLocation.Lat, centerLocation.Long) : map.CameraPosition.Target;
-                var newPosition = new CameraPosition.Builder()
-                                                    .Bearing(bearing ?? map.CameraPosition.Bearing)
-                                                    .Target(tartget)
-                                                    .Zoom(zoomLevel ?? map.CameraPosition.Zoom)
-                                                    .Build();
-                var callback = completionHandler == null ? null : new CancelableCallback()
-                {
-                    FinishHandler = completionHandler,
-                    CancelHandler = completionHandler
-                };
-                var update = CameraUpdateFactory.NewCameraPosition(newPosition);
-                if (animated)
-                {
-                    map.AnimateCamera(update, callback);
-                }
-                else
-                {
-                    map.MoveCamera(update, callback);
-                }
-            };
-
-            Element.GetStyleImageFunc += GetStyleImage;
-
-            Element.GetStyleLayerFunc = GetStyleLayer;
-
-            Element.SelectAnnotationAction = (Tuple<string, bool> obj) =>
-            {
-                if (obj == null || map == null || map.Annotations == null) return;
-                foreach (var item in map.Annotations)
-                {
-                    if (item is Marker marker && marker.Id.ToString() == obj.Item1)
-                    {
-                        map.SelectMarker(marker);
-                    }
-                }
-            };
-
-            Element.DeselectAnnotationAction = (Tuple<string, bool> obj) =>
-            {
-                if (obj == null || map == null || map.Annotations == null) return;
-                foreach (var item in map.Annotations)
-                {
-                    if (item is Marker marker && marker.Id.ToString() == obj.Item1)
-                    {
-                        map.DeselectMarker(marker);
-                    }
-                }
-            };
-
-            Element.ApplyOfflinePackFunc = (offlinePack) =>
-            {
-                //var region = offlinePack.Region;
-                //OfflineTilePyramidRegionDefinition definition = new OfflineTilePyramidRegionDefinition(
-                //    region.StyleURL,
-                //    LatLngBounds.From(offlinePack.Region.Bounds.NorthEast.Lat, offlinePack.Region.Bounds.NorthEast.Long, offlinePack.Region.Bounds.SouthWest.Lat, offlinePack.Region.Bounds.SouthWest.Long),
-                //    region.MinimumZoomLevel,
-                //    region.MaximumZoomLevel,
-                //    Android.App.Application.Context.Resources.DisplayMetrics.Density);
-                //var xxx = new OfflineTilePyramidRegionDefinition(null);
-                LatLngBounds bounds = LatLngBounds.From(offlinePack.Region.Bounds.NorthEast.Lat, offlinePack.Region.Bounds.NorthEast.Long, offlinePack.Region.Bounds.SouthWest.Lat, offlinePack.Region.Bounds.SouthWest.Long);
-                double regionZoom = offlinePack.Region.MaximumZoomLevel;
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                  .Target(bounds.Center)
-                  .Zoom(regionZoom)
-                  .Build();
-                map.MoveCamera(CameraUpdateFactory.NewCameraPosition(cameraPosition));
-                return true;
-            };
-        }
-
-        private byte[] GetStyleImage(string imageName)
-        {
-            var img = map.Style.GetImage(imageName);
-            if (img != null)
-            {
-                var stream = new MemoryStream();
-                img.Compress(Bitmap.CompressFormat.Png, 100, stream);
-                return stream.ToArray();
-            }
-            return null;
-        }
-
-        private StyleLayer GetStyleLayer(string layerId, bool isCustomLayer)
-        {
-            var layer = map.Style.GetLayer(isCustomLayer ? layerId.Prefix() : layerId);
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.BackgroundLayer background)
-            {
-                return background.ToForms();
-            }
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.CircleLayer circle)
-            {
-                return circle.ToForms();
-            }
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.LineLayer line)
-            {
-                return line.ToForms();
-            }
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.FillLayer fill)
-            {
-                return fill.ToForms();
-            }
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.SymbolLayer symbol)
-            {
-                return symbol.ToForms();
-            }
-            if (layer is Com.Mapbox.Mapboxsdk.Style.Layers.RasterLayer raster)
-            {
-                return raster.ToForms();
-            }
-
-            return null;
-        }
-
-        //IFeature[] GetFeaturesAroundPoint(Point point, double radius, string[] layers)
-        //{
-        //    var output = new List<IFeature>();
-        //    RectF rect = point.ToRect(Context.ToPixels(radius));
-        //    var listFeatures = map.QueryRenderedFeatures(rect, layers);
-        //    return listFeatures.Select(x => x.ToFeature())
-        //                       .Where(x => x != null)
-        //                       .ToArray();
-        //}
-
         protected override void Dispose(bool disposing)
         {
             RemoveMapEvents();
+            Element.Functions = null;
 
             if (fragment != null)
             {
@@ -305,7 +105,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             base.OnElementPropertyChanged(sender, e);
             System.Diagnostics.Debug.WriteLine("MapViewRenderer:" + e.PropertyName);
-            if (e.PropertyName == MapView.RegionProperty.PropertyName)
+            if (e.PropertyName == MapView.VisibleBoundsProperty.PropertyName)
             {
                 OnMapRegionChanged();
                 return;
@@ -355,14 +155,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void OnMapRegionChanged()
         {
-            if (false == Element.Region.IsEmpty())
+            if (false == Element.VisibleBounds.IsEmpty())
             {
                 map?.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
                     LatLngBounds.From(
-                        Element.Region.NorthEast.Lat,
-                        Element.Region.NorthEast.Long,
-                        Element.Region.SouthWest.Lat,
-                        Element.Region.SouthWest.Long
+                        Element.VisibleBounds.NorthEast.Lat,
+                        Element.VisibleBounds.NorthEast.Long,
+                        Element.VisibleBounds.SouthWest.Lat,
+                        Element.VisibleBounds.SouthWest.Long
                     ), 0));
             }
         }
@@ -374,8 +174,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             OnMapRegionChanged();
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
-            //RemoveAllAnnotations();
             OnMapRegionChanged();
+
             if (Element.Center != NxLatLng.Zero)
             {
                 FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
@@ -386,7 +186,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
 
             AddMapEvents();
-            SetupFunctions();
+
             if (Element.MapStyle == null)
             {
                 Element.MapStyle = new MapStyle(Style.MAPBOX_STREETS);
@@ -395,14 +195,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 UpdateMapStyle();
             }
-
-            if (Element.InfoWindowTemplate != null)
-            {
-                var info = new CustomInfoWindowAdapter(Context, Element);
-                map.InfoWindowAdapter = info;
-            }
         }
-
     }
 
     public static class StringExtensions

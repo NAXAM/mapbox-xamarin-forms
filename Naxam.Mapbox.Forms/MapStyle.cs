@@ -1,10 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Naxam.Mapbox.Sources;
 using Xamarin.Forms;
 
 namespace Naxam.Controls.Forms
 {
-    public class MapStyle : BindableObject
+    public abstract class NotifyableObject : INotifyPropertyChanged, INotifyPropertyChanging
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public event System.ComponentModel.PropertyChangingEventHandler PropertyChanging;
+
+        protected void SetProperty<T>(ref T currentValue, T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(currentValue, newValue)) return;
+
+            PropertyChanging?.Invoke(this, new System.ComponentModel.PropertyChangingEventArgs(propertyName));
+            currentValue = newValue;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+    public class MapStyle : NotifyableObject
     {
         public string Id { get; set; }
 
@@ -65,42 +83,25 @@ namespace Naxam.Controls.Forms
             }
         }
 
-        //public static readonly BindableProperty CustomSourcesProperty = BindableProperty.Create(
-        //    nameof(CustomSources),
-        //    typeof(IEnumerable<MapSource>),
-        //    typeof(MapView),
-        //    default(IEnumerable<MapSource>),
-        //    BindingMode.TwoWay);
-
-        //public IEnumerable<MapSource> CustomSources
-        //{
-        //    get => (IEnumerable<MapSource>)GetValue(CustomSourcesProperty);
-        //    set => SetValue(CustomSourcesProperty, value);
-        //}
-
-        public static readonly BindableProperty CustomLayersProperty = BindableProperty.Create(
-            nameof(CustomLayers),
-            typeof(IEnumerable<Layer>),
-            typeof(MapStyle),
-            default(IEnumerable<Layer>),
-            BindingMode.TwoWay);
-
-        public IEnumerable<Layer> CustomLayers
+        IEnumerable<Source> _CustomSources;
+        public IEnumerable<Source> CustomSources
         {
-            get => (IEnumerable<Layer>)GetValue(CustomLayersProperty);
-            set => SetValue(CustomLayersProperty, value);
+            get => _CustomSources;
+            set => SetProperty(ref _CustomSources, value);
         }
 
-        public static readonly BindableProperty OriginalLayersProperty = BindableProperty.Create(
-                    nameof(CustomLayers),
-                    typeof(Layer[]),
-                    typeof(MapStyle),
-                    default(Layer[]),
-            BindingMode.OneWayToSource);
-        public Layer[] OriginalLayers
+        IEnumerable<Layer> _CustomLayers;
+        public IEnumerable<Layer> CustomLayers
         {
-            get => (Layer[])GetValue(OriginalLayersProperty);
-            set => SetValue(OriginalLayersProperty, value);
+            get => _CustomLayers;
+            set => SetProperty(ref _CustomLayers, value);
+        }
+
+        IEnumerable<Layer> _OriginalLayers;
+        public IEnumerable<Layer> OriginalLayers
+        {
+            get => _OriginalLayers;
+            set => SetProperty(ref _OriginalLayers, value);
         }
     }
 }
