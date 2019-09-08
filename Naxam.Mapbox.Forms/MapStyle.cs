@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Naxam.Mapbox.Layers;
 using Naxam.Mapbox.Sources;
 using Xamarin.Forms;
 
@@ -83,25 +84,25 @@ namespace Naxam.Controls.Forms
             }
         }
 
-        IEnumerable<Source> _CustomSources;
-        public IEnumerable<Source> CustomSources
-        {
-            get => _CustomSources;
-            set => SetProperty(ref _CustomSources, value);
-        }
+        //IEnumerable<Source> _CustomSources;
+        //public IEnumerable<Source> CustomSources
+        //{
+        //    get => _CustomSources;
+        //    set => SetProperty(ref _CustomSources, value);
+        //}
 
-        IEnumerable<Layer> _CustomLayers;
-        public IEnumerable<Layer> CustomLayers
-        {
-            get => _CustomLayers;
-            set => SetProperty(ref _CustomLayers, value);
-        }
+        //IEnumerable<Layer> _CustomLayers;
+        //public IEnumerable<Layer> CustomLayers
+        //{
+        //    get => _CustomLayers;
+        //    set => SetProperty(ref _CustomLayers, value);
+        //}
 
-        IEnumerable<Layer> _OriginalLayers;
-        public IEnumerable<Layer> OriginalLayers
-        {
-            get => _OriginalLayers;
-            set => SetProperty(ref _OriginalLayers, value);
-        }
+        //IEnumerable<Layer> _OriginalLayers;
+        //public IEnumerable<Layer> OriginalLayers
+        //{
+        //    get => _OriginalLayers;
+        //    set => SetProperty(ref _OriginalLayers, value);
+        //}
     }
 }

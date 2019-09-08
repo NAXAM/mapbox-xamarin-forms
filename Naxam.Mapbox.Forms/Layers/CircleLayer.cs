@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace Naxam.Controls.Forms
+namespace Naxam.Mapbox.Layers
 {
     public class CircleLayer : StyleLayer
     {

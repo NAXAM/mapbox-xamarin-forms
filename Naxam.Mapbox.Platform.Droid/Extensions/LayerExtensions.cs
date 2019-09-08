@@ -1,11 +1,53 @@
-﻿using Naxam.Controls.Forms;
-using Sdk = Com.Mapbox.Mapboxsdk;
+﻿using Sdk = Com.Mapbox.Mapboxsdk;
 using Xamarin.Forms.Platform.Android;
+using Naxam.Mapbox.Layers;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class LayerExtensions
     {
+        public static Sdk.Style.Layers.Layer ToLayer(this Layer layer)
+        {
+            switch (layer)
+            {
+                case CircleLayer circleLayer:
+                    return circleLayer.ToNative();
+                case LineLayer lineLayer:
+                    return lineLayer.ToNative();
+                case BackgroundLayer backgroundLayer:
+                    return backgroundLayer.ToNative();
+                case FillLayer fillLayer:
+                    return fillLayer.ToNative();
+                case SymbolLayer symbolLayer:
+                    return symbolLayer.ToNative();
+                case RasterLayer circleLayer:
+                    return circleLayer.ToNative();
+            }
+
+            return null;
+        }
+
+        public static Layer ToLayer(this Sdk.Style.Layers.Layer layer)
+        {
+            switch (layer)
+            {
+                case Sdk.Style.Layers.CircleLayer circleLayer:
+                    return circleLayer.ToForms();
+                case Sdk.Style.Layers.LineLayer lineLayer:
+                    return lineLayer.ToForms();
+                case Sdk.Style.Layers.BackgroundLayer backgroundLayer:
+                    return backgroundLayer.ToForms();
+                case Sdk.Style.Layers.FillLayer fillLayer:
+                    return fillLayer.ToForms();
+                case Sdk.Style.Layers.SymbolLayer symbolLayer:
+                    return symbolLayer.ToForms();
+                case Sdk.Style.Layers.RasterLayer circleLayer:
+                    return circleLayer.ToForms();
+            }
+
+            return null;
+        }
+
         public static Sdk.Style.Layers.CircleLayer ToNative(this CircleLayer layer)
         {
             if (layer == null) { return null; }
@@ -120,20 +162,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (symbol == null) { return null; }
             var forms = new SymbolLayer(symbol.Id, "");
             return forms;
-        }
-    }
-
-    public static class IdExtensions
-    {
-        static string PREFIX = "__naxam_prefix__";
-
-        public static string Prefix(this string self)
-        {
-            return $"{PREFIX}{self}";
-        }
-        public static bool HasPrefix(this string self)
-        {
-            return self?.StartsWith($"{PREFIX}") ?? false;
         }
     }
 }

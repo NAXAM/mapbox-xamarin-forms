@@ -4,7 +4,16 @@ using NFeature = GeoJSON.Net.Feature.Feature;
 
 namespace Naxam.Mapbox
 {
-    public interface IMapFunctions
+    public partial interface IMapFunctions
+    {
+        bool AddSource(params Sources.Source[] sources);
+        void RemoveSource(params string[] sourceIds);
+
+        bool AddLayer(params Layers.Layer[] layers);
+        void RemoveLayer(params string[] layerIds);
+    }
+
+    public partial interface IMapFunctions
     {
         Task<byte[]> TakeSnapshotAsync(LatLngBounds bounds = default);
 

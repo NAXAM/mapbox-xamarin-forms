@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using Foundation;
 using Mapbox;
-using Naxam.Mapbox.Platform.iOS;
-using Naxam.Controls.Forms;
+using Naxam.Mapbox.Layers;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using System.Diagnostics;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {

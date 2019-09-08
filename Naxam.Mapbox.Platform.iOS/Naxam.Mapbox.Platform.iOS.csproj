@@ -109,6 +109,8 @@
     <Compile Include="MapViewRenderer.Style.cs" />
     <Compile Include="MapViewRenderer.Interactor.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
+    <Compile Include="MapViewRenderer.Style.Layers.cs" />
+    <Compile Include="Extensions\SourceAndLayerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

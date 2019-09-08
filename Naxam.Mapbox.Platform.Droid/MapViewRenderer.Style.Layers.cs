@@ -1,107 +1,39 @@
-﻿using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using Naxam.Controls.Forms;
-using Sdk = Com.Mapbox.Mapboxsdk;
+﻿using Naxam.Mapbox.Layers;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer
     {
-        void OnLayersCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public void RemoveLayer(params string[] layerIds)
         {
-            switch (e.Action)
+            for (int i = 0; i < layerIds.Length; i++)
             {
-                case NotifyCollectionChangedAction.Add:
-                    AddLayers(e.NewItems.Cast<Layer>().ToList());
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    RemoveLayers(e.OldItems);
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    var layers = map.Style.Layers;
-                    foreach (var layer in layers)
-                    {
-                        if (layer.Id.HasPrefix())
-                        {
-                            map.Style.RemoveLayer(layer);
-                        }
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    RemoveLayers(e.OldItems);
-                    AddLayers(e.NewItems.Cast<Layer>().ToList());
-                    break;
+                var native = map.Style.GetLayer(layerIds[i]);
+
+                if (native == null) continue;
+
+                map.Style.RemoveLayer(native);
             }
         }
 
-        void RemoveLayers(System.Collections.IList layers)
+        public bool AddLayer(params Layer[] layers)
         {
-            if (layers == null)
+            for (int i = 0; i < layers.Length; i++)
             {
-                return;
+                if (string.IsNullOrWhiteSpace(layers[i].Id)) continue;
+
+                var styleLayer = layers[i] as StyleLayer;
+
+                if (styleLayer == null) continue;
+
+                var source = mapStyle.GetSource(styleLayer.SourceId);
+
+                if (source == null) continue;
+
+                mapStyle.AddLayer(layers[i].ToLayer());
             }
-            foreach (Layer layer in layers)
-            {
-                var native = map.Style.GetLayer(layer.Id.Prefix());
 
-                if (native != null)
-                {
-                    map.Style.RemoveLayer(native);
-                }
-            }
-        }
-
-        void AddLayers(List<Naxam.Controls.Forms.Layer> layers)
-        {
-            if (layers == null)
-            {
-                return;
-            }
-            foreach (Layer layer in layers)
-            {
-                if (string.IsNullOrEmpty(layer.Id))
-                {
-                    continue;
-                }
-
-                map.Style.RemoveLayer(layer.Id.Prefix());
-
-                if (layer is CircleLayer)
-                {
-                    var cross = (CircleLayer)layer;
-
-                    var source = map.Style.GetSource(cross.SourceId.Prefix());
-                    if (source == null)
-                    {
-                        continue;
-                    }
-
-                    map.Style.AddLayer(cross.ToNative());
-                }
-                else if (layer is LineLayer)
-                {
-                    var cross = (LineLayer)layer;
-
-                    var source = map.Style.GetSource(cross.SourceId.Prefix());
-                    if (source == null)
-                    {
-                        continue;
-                    }
-
-                    map.Style.AddLayer(cross.ToNative());
-                }
-                else if (layer is RasterLayer cross)
-                {
-                    var source = map.Style.GetSource(cross.SourceId);
-                    if (source == null)
-                    {
-                        continue;
-                    }
-
-                    map.Style.AddLayer(cross.ToNative());
-                }
-            }
+            return true;
         }
     }
 }

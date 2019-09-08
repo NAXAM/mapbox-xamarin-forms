@@ -1,4 +1,5 @@
 ﻿using Naxam.Controls.Forms;
+using Naxam.Mapbox.Layers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -47,7 +48,6 @@ namespace MapBoxQs.Dtos
             return new MapStyle {
                 Id = dto.Id,
                 Center = dto.Center,
-                OriginalLayers = dto.layers,
                 Name = dto.Name,
                 Owner = dto.Owner,
             };

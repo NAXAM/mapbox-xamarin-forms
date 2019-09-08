@@ -9,6 +9,8 @@ using Acr.UserDialogs;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
+using Naxam.Mapbox.Layers;
+using Naxam.Mapbox.Sources;
 using Xamarin.Forms;
 
 namespace MapBoxQs
@@ -64,29 +66,6 @@ namespace MapBoxQs
             }
         }
 
-        #region MapStyle Layer
-        ObservableCollection<Layer> _ListLayers;
-        public ObservableCollection<Layer> ListLayers
-        {
-            get { return _ListLayers; }
-            set
-            {
-                _ListLayers = value;
-                OnPropertyChanged("ListLayers");
-            }
-        }
-
-        private Layer _SelectedLayer;
-        public Layer SelectedLayer
-        {
-            get { return _SelectedLayer; }
-            set
-            {
-                _SelectedLayer = value;
-                OnPropertyChanged("SelectedLayer");
-            }
-        }
-        #endregion
         MapStyle _CurrentMapStyle;
         public MapStyle CurrentMapStyle
         {
@@ -113,7 +92,7 @@ namespace MapBoxQs
             MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
 
-            CenterLocation = new LatLng(21.004142f, 105.847607f);
+            //CenterLocation = new LatLng(21.004142f, 105.847607f);
 
             Annotations = new ObservableCollection<Annotation> {
                 new SymbolAnnotation {
@@ -136,22 +115,18 @@ namespace MapBoxQs
                 }
                 if (forcedRegion != null)
                 {
-                    UpdateViewPortAction?.Invoke(
-                        new LatLng
-                        {
-                            Lat = forcedRegion.Bounds.SouthWest.Lat / 2 + forcedRegion.Bounds.NorthEast.Lat / 2,
-                            Long = forcedRegion.Bounds.SouthWest.Long / 2 + forcedRegion.Bounds.NorthEast.Long / 2
-                        },
-                        forcedRegion.MaximumZoomLevel / 2 + forcedRegion.MinimumZoomLevel / 2,
-                        null,
-                        true,
-                        null
-                    );
-                    forcedRegion = null;
-                }
-                foreach (Layer layer in CurrentMapStyle.OriginalLayers)
-                {
-                    System.Diagnostics.Debug.WriteLine(layer.Id);
+                    //UpdateViewPortAction?.Invoke(
+                    //    new LatLng
+                    //    {
+                    //        Lat = forcedRegion.Bounds.SouthWest.Lat / 2 + forcedRegion.Bounds.NorthEast.Lat / 2,
+                    //        Long = forcedRegion.Bounds.SouthWest.Long / 2 + forcedRegion.Bounds.NorthEast.Long / 2
+                    //    },
+                    //    forcedRegion.MaximumZoomLevel / 2 + forcedRegion.MinimumZoomLevel / 2,
+                    //    null,
+                    //    true,
+                    //    null
+                    //);
+                    //forcedRegion = null;
                 }
 
             }, (arg) => true);
@@ -179,13 +154,20 @@ namespace MapBoxQs
 
             this.navigation = navigation;
 
-            ListLayers = new ObservableCollection<Layer>();
-
             DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
             {
-                ListLayers = new ObservableCollection<Layer>(style.OriginalLayers);
-            });
+                var source = new GeojsonSource {
+                    Id = "regions.src",
+                    Url = "https://gist.githubusercontent.com/tobrun/cf0d689c8187d42ebe62757f6d0cf137/raw/4d8ac3c8333f1517df9d303d58f20f4a1d8841e8/regions.geojson"
+                };
+                MapFunctions.AddSource(source);
 
+                var layer = new FillLayer("regions.layer", "regions.src") {
+                    FillOpacity = 0.7,
+                    FillColor = Color.Green
+                };
+                MapFunctions.AddLayer(layer);
+            });
 
             DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
             {
@@ -218,9 +200,6 @@ namespace MapBoxQs
 
         public ICommand DidTapOnMarkerCommand { get; set; }
 
-        public Action<LatLng, double?, double?, bool, Action> UpdateViewPortAction { get; set; }
-        public Func<StyleLayer, string, bool> InsertLayerBelowLayerFunc { get; set; }
-        public Func<OfflinePack, bool> ApplyOfflinePackFunc { get; set; }
         Action<Tuple<string, bool>> _SelectAnnotationAction;
         public Action<Tuple<string, bool>> SelectAnnotationAction
         {
@@ -292,18 +271,6 @@ namespace MapBoxQs
             {
                 _ToggleScaleBarFunc = value;
             }
-        }
-
-        public Func<Task<byte[]>> TakeSnapshotFunc { get; set; }
-        public Func<string, bool, StyleLayer> GetStyleLayerFunc { get; set; }
-        public Func<string, Tuple<string, string>> GetImageForAnnotationFunc
-        {
-            get => GetImageForAnnotation;
-        }
-
-        Tuple<string, string> GetImageForAnnotation(string annotationId)
-        {
-            return new Tuple<string, string>("default_pin", "pin");
         }
 
         private LatLng _centerLocation;
@@ -424,7 +391,7 @@ namespace MapBoxQs
                     var chosenPack = packs[chosenIndex];
                     //forcedRegion = chosenPack.Region;
                     //CurrentMapStyle = new MapStyle(chosenPack.Region.StyleURL);
-                    ApplyOfflinePackFunc?.Invoke(chosenPack);
+                    //ApplyOfflinePackFunc?.Invoke(chosenPack);
                 }
             }
             else
@@ -546,7 +513,7 @@ namespace MapBoxQs
             if (double.TryParse(CustomLatitude, out double lat)
                 && double.TryParse(CustomLongitude, out double lon))
             {
-                UpdateViewPortAction?.Invoke(new LatLng(lat, lon), null, null, true, null);
+                //UpdateViewPortAction?.Invoke(new LatLng(lat, lon), null, null, true, null);
             }
         }
 
@@ -823,106 +790,6 @@ namespace MapBoxQs
             await navigation.PushAsync(new Views.ShowPhotoDialog(snapshotResult));
         }
 
-        ICommand _GetStyleLayerCommand;
-        public ICommand GetStyleLayerCommand
-        {
-            get { return _GetStyleLayerCommand = _GetStyleLayerCommand ?? new Command<object>(ExecuteGetStyleLayerCommand, CanExecuteGetStyleLayerCommand); }
-        }
-        bool CanExecuteGetStyleLayerCommand(object obj) { return true; }
-        async void ExecuteGetStyleLayerCommand(object obj)
-        {
-            var buttons = ListLayers.Select((arg) => arg.Id).ToArray();
-            var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "", "OK", buttons: buttons);
-            if (choice == "OK")
-            {
-
-            }
-            else if (buttons.Contains(choice))
-            {
-                var layer = GetStyleLayerFunc(choice, false);
-                if (layer is BackgroundLayer background)
-                {
-                    UserDialogs.Instance.Alert("You choose layer: " + background.Id + "\nType: " + nameof(BackgroundLayer) + "\n" + background.BackgroundColor.ToString(), "Layer Detail");
-                    return;
-                }
-                if (layer is LineLayer line)
-                {
-                    UserDialogs.Instance.Alert("You choose layer: " + line.Id + "\nType: " + nameof(LineLayer) + "\n" + line.LineColor.ToString(), "Layer Detail");
-                    return;
-                }
-                if (layer is CircleLayer circle)
-                {
-                    UserDialogs.Instance.Alert("You choose layer: " + circle.Id + "\nType: " + nameof(CircleLayer) + "\n" + circle.CircleColor.ToString(), "Layer Detail");
-                    return;
-                }
-                if (layer is FillLayer fill)
-                {
-                    UserDialogs.Instance.Alert("You choose layer: " + fill.Id + "\nType: " + nameof(FillLayer) + "\n" + fill.FillColor.ToString(), "Layer Detail");
-                    return;
-                }
-                if (layer is RasterLayer raster)
-                {
-                    UserDialogs.Instance.Alert("You choose layer: " + raster.Id + "\nType: " + nameof(RasterLayer) + "\n" + raster.SourceId.ToString(), "Layer Detail");
-                    return;
-                }
-                if (layer is SymbolLayer symbol)
-                {
-                    UserDialogs.Instance.Alert("You choose layer: " + symbol.Id + "\nType: " + nameof(SymbolLayer) + "\n" + symbol.IconImageName.ToString(), "Layer Detail");
-                    return;
-                }
-                UserDialogs.Instance.Alert("Can not find informations of layer : " + choice, "Layer Detail");
-            }
-        }
-
-        ICommand _AddSatelliteLayerCommand;
-        public ICommand AddSatelliteLayerCommand
-        {
-            get { return _AddSatelliteLayerCommand = _AddSatelliteLayerCommand ?? new Command<object>(ExecuteAddSatelliteLayerCommand, CanExecuteAddSatelliteLayerCommand); }
-        }
-        bool CanExecuteAddSatelliteLayerCommand(object obj) { return true; }
-        void ExecuteAddSatelliteLayerCommand(object obj)
-        {
-            //List<MapSource> listCustomSources = new List<MapSource>();
-            //listCustomSources.Add(new RasterSource("my-raster-source", "mapbox://mapbox.satellite", 512));
-            //CurrentMapStyle.CustomSources = listCustomSources;
-            //List<Layer> listCustomLayers = new List<Layer>();
-            //listCustomLayers.Add(new RasterLayer("0", "my-raster-source"));
-            //CurrentMapStyle.CustomLayers = listCustomLayers;
-        }
-
-
-        ICommand _SelectAnnotationCommand;
-        public ICommand SelectAnnotationCommand
-        {
-            get { return _SelectAnnotationCommand = _SelectAnnotationCommand ?? new Command<object>(ExecuteSelectAnnotationCommand, CanExecuteSelectAnnotationCommand); }
-        }
-        bool CanExecuteSelectAnnotationCommand(object obj) { return true; }
-        async void ExecuteSelectAnnotationCommand(object obj)
-        {
-            //var buttons = Annotations.Select((arg) => arg.Id).ToArray();
-            //var choice = await UserDialogs.Instance.ActionSheetAsync("Choose Layer", "Cancel", "OK", buttons: buttons);
-            //if (buttons.Contains(choice))
-            //{
-            //    SelectAnnotationAction?.Invoke(new Tuple<string, bool>(choice, false));
-            //    if (Annotations.First(d => d.Id == choice) is PointAnnotation point)
-            //    {
-            //        UserDialogs.Instance.Alert("You just select marker:\nId: " + point.Id + "\nLat: " + point.Coordinate.Lat + "\nLng: " + point.Coordinate.Long, "Selected Annotation");
-            //        SelectedAnnotation = point;
-            //    }
-            //}
-        }
-
-        ICommand _DeselectAnnotationCommand;
-        public ICommand DeselectAnnotationCommand
-        {
-            get { return _DeselectAnnotationCommand = _DeselectAnnotationCommand ?? new Command<object>(ExecuteDeselectAnnotationCommand, CanExecuteDeselectAnnotationCommand); }
-        }
-        bool CanExecuteDeselectAnnotationCommand(object obj) { return true; }
-        void ExecuteDeselectAnnotationCommand(object obj)
-        {
-            if (SelectedAnnotation != null)
-                DeselectAnnotationAction?.Invoke(new Tuple<string, bool>(SelectedAnnotation.Id, false));
-        }
         #endregion
     }
 }

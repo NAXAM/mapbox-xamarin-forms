@@ -104,14 +104,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
-            System.Diagnostics.Debug.WriteLine("MapViewRenderer:" + e.PropertyName);
+
             if (e.PropertyName == MapView.VisibleBoundsProperty.PropertyName)
             {
                 OnMapRegionChanged();
-                return;
             }
-
-            if (e.PropertyName == MapView.CenterProperty.PropertyName)
+            else if (e.PropertyName == MapView.CenterProperty.PropertyName)
             {
                 FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
             }
@@ -150,6 +148,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     System.Diagnostics.Debug.WriteLine("Updating zoom level");
                     map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
                 }
+            }
+            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
+            {
+
             }
         }
 

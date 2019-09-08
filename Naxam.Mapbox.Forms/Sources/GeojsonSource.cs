@@ -2,6 +2,8 @@
 {
     public class GeojsonSource : Source
     {
-        public string GeoJson { get; set; }
+        public string Url { get; set; }
+
+        public GeoJSON.Net.IGeoJSONObject Data { get; set; }
     }
 }

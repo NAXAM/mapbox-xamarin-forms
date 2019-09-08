@@ -5,6 +5,7 @@
     xmlns:controls="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
     xmlns:local="clr-namespace:MapBoxQs"
     x:Name="root"
+    Title="Mapbox for Forms"
     x:Class="MapBoxQs.MapBoxQsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -64,6 +65,7 @@
             Functions="{Binding MapFunctions}"
             ZoomLevel="{Binding ZoomLevel}"
             Annotations="{Binding Annotations}"
+            DidFinishLoadingStyleCommand="{Binding DidFinishLoadingStyleCommand}"
             DragFinishedCommand="{Binding DragFinishedCommand}"
             DidTapOnMapCommand="{Binding DidTapOnMapCommand}"
             ShowUserLocation="true"
