@@ -194,7 +194,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 var ne = new CLLocationCoordinate2D(Element.VisibleBounds.NorthEast.Lat, Element.VisibleBounds.NorthEast.Long);
                 var sw = new CLLocationCoordinate2D(Element.VisibleBounds.SouthWest.Lat, Element.VisibleBounds.SouthWest.Long);
                 var bounds = new MGLCoordinateBounds() { ne = ne, sw = sw };
-                map.SetVisibleCoordinateBounds(bounds, true);
+                map.SetVisibleCoordinateBounds(bounds, true, null);
             }
         }
 
