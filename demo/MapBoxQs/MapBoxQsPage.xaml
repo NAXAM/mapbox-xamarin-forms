@@ -62,6 +62,7 @@
         <controls:MapView
             x:Name="Map"
             Grid.Row="1"
+            MapStyle="{Binding CurrentMapStyle}"
             Functions="{Binding MapFunctions}"
             ZoomLevel="{Binding ZoomLevel}"
             Annotations="{Binding Annotations}"

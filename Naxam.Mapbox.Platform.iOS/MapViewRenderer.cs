@@ -184,7 +184,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             };
             map.ZoomLevel = Element.ZoomLevel;
             UpdateMapStyle();
-            UpdateCenter();
+            UpdateCenter(false);
         }
 
         void UpdateRegion()
@@ -194,19 +194,26 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 var ne = new CLLocationCoordinate2D(Element.VisibleBounds.NorthEast.Lat, Element.VisibleBounds.NorthEast.Long);
                 var sw = new CLLocationCoordinate2D(Element.VisibleBounds.SouthWest.Lat, Element.VisibleBounds.SouthWest.Long);
                 var bounds = new MGLCoordinateBounds() { ne = ne, sw = sw };
-                map.SetVisibleCoordinateBounds(bounds, true, null);
+                map.SetVisibleCoordinateBounds(bounds, true, null );
             }
         }
 
-        protected virtual void UpdateCenter()
+        protected virtual void UpdateCenter(bool animated = true)
         {
             if (map == null || Element == null) return;
 
             var center = map.CenterCoordinate.ToLatLng();
 
-            if (center != Element.Center) return;
+            if (center == Element.Center) return;
 
-            map.SetCenterCoordinate(new CLLocationCoordinate2D(Element.Center.Lat, Element.Center.Long), true);
+            if (false == animated)
+            {
+                map.CenterCoordinate = Element.Center.ToCLCoordinate();
+            }
+            else
+            {
+                map.SetCenterCoordinate(new CLLocationCoordinate2D(Element.Center.Lat, Element.Center.Long), true);
+            }
         }
 
         protected virtual void SetupEventHandlers()

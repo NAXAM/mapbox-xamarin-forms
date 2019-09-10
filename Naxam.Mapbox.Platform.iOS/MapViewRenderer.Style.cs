@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
 using Foundation;
 using Mapbox;
 using Naxam.Controls.Forms;
 using Naxam.Controls.Mapbox.Platform.iOS;
-using Naxam.Mapbox.Layers;
 using UIKit;
 using Xamarin.Forms.Platform.iOS;
 
@@ -18,6 +12,12 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
     {
         protected virtual void UpdateMapStyle()
         {
+            if (Element.MapStyle == null)
+            {
+                Element.MapStyle = new MapStyle(MGLStyle.StreetsStyleURL.AbsoluteString);
+                return;
+            }
+
             if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
             {
                 map.StyleURL = new NSUrl(Element.MapStyle.UrlString);

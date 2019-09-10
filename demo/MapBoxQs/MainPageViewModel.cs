@@ -92,7 +92,7 @@ namespace MapBoxQs
             MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
 
-            //CenterLocation = new LatLng(21.004142f, 105.847607f);
+            CenterLocation = new LatLng(21.004142f, 105.847607f);
 
             Annotations = new ObservableCollection<Annotation> {
                 new SymbolAnnotation {
@@ -314,9 +314,9 @@ namespace MapBoxQs
                 StyleURL = CurrentMapStyle.UrlString,
                 MaximumZoomLevel = 14,
                 MinimumZoomLevel = 1,
-                Bounds = new LatLngBounds()
+                Bounds = new LatLngBounds
                 {
-                    NorthEast = new LatLng()
+                    NorthEast = new LatLng
                     {
                         Lat = CenterLocation.Lat - 0.01,
                         Long = CenterLocation.Long + 0.005
@@ -519,9 +519,9 @@ namespace MapBoxQs
         void ExecuteChangeLocationCommand(object obj)
         {
             if (double.TryParse(CustomLatitude, out double lat)
-                && double.TryParse(CustomLongitude, out double lon))
+                && double.TryParse(CustomLongitude, out double lng))
             {
-                //UpdateViewPortAction?.Invoke(new LatLng(lat, lon), null, null, true, null);
+                CenterLocation = new LatLng(lat, lng);
             }
         }
 
