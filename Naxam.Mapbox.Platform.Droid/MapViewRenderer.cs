@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using Android.Content;
 using Android.Support.V7.App;
-using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
-using Naxam.Mapbox.Platform.Droid;
 using Xamarin.Forms.Platform.Android;
 using MapView = Naxam.Controls.Forms.MapView;
 using View = Android.Views.View;
@@ -157,16 +154,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void OnMapRegionChanged()
         {
-            if (false == Element.VisibleBounds.IsEmpty())
-            {
-                map?.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
-                    LatLngBounds.From(
-                        Element.VisibleBounds.NorthEast.Lat,
-                        Element.VisibleBounds.NorthEast.Long,
-                        Element.VisibleBounds.SouthWest.Lat,
-                        Element.VisibleBounds.SouthWest.Long
-                    ), 0));
-            }
+            //if (false == Element.VisibleBounds.IsEmpty())
+            //{
+            //    map?.AnimateCamera(CameraUpdateFactory.NewLatLngBounds(
+            //        LatLngBounds.From(
+            //            Element.VisibleBounds.NorthEast.Lat,
+            //            Element.VisibleBounds.NorthEast.Long,
+            //            Element.VisibleBounds.SouthWest.Lat,
+            //            Element.VisibleBounds.SouthWest.Long
+            //        ), 0));
+            //}
         }
 
         public void OnMapReady(MapboxMap mapBox)
@@ -182,10 +179,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
             }
-            else
-            {
-                FocustoLocation(new LatLng(21.0278, 105.8342));
-            }
+            //else
+            //{
+            //    FocustoLocation(new LatLng(21.0278, 105.8342));
+            //}
 
             AddMapEvents();
 

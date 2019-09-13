@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Naxam.Controls.Forms;
 using Newtonsoft.Json;
 using MapBoxQs.Dtos;
+using System.Linq;
 
 namespace MapBoxQs.Services
 {
@@ -17,8 +18,8 @@ namespace MapBoxQs.Services
     {
         HttpClient client;
         static string BaseURL = "https://api.mapbox.com/";
-        public static string AccessToken = "sk.eyJ1IjoibmF4YW10ZXN0IiwiYSI6ImNqNWtpb2d1ZzJpMngyd3J5ZnB2Y2JhYmQifQ.LEvGqQkAqM4MO3ZtGbQrdw";
-        public static string Username = "naxamtest";
+        public static string AccessToken = "pk.eyJ1IjoidHV5ZW52IiwiYSI6ImNpdzI5aXVmZTAwMmEyeW12OHd1YmxtZTUifQ.ac4QpT_xRso8CDc3V_Fc0A";
+        public static string Username = "tuyenv";
         public MapBoxService()
         {
             client = new HttpClient()
@@ -26,6 +27,20 @@ namespace MapBoxQs.Services
                 MaxResponseContentBufferSize = 256000
             };
         }
+
+        static MapStyle[] DefaultStyles = {
+            MapStyle.STREETS,
+            MapStyle.OUTDOORS,
+            MapStyle.LIGHT,
+            MapStyle.DARK,
+            MapStyle.SATELITE,
+            MapStyle.SATELITE_STREETS,
+            MapStyle.NAVIGATION_PREVIEW_DAY,
+            MapStyle.NAVIGATION_PREVIEW_NIGHT,
+            MapStyle.NAVIGATION_GUIDANCE_DAY,
+            MapStyle.NAVIGATION_GUIDANCE_NIGHT
+        };
+
         public async Task<MapStyle[]> GetAllStyles()
         {
             var urlFormat = BaseURL + "styles/v1/{0}?access_token={1}";
@@ -37,14 +52,17 @@ namespace MapBoxQs.Services
                 System.Diagnostics.Debug.WriteLine(content);
                 try
                 {
-                    return JsonConvert.DeserializeObject<MapStyle[]>(content);
+                    var privateStyles = JsonConvert.DeserializeObject<MapStyle[]>(content);
+
+                    return privateStyles.Union(DefaultStyles)
+                        .ToArray();
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine("[EXCEPTION] " + ex.Message);
                 }
             }
-            return null;
+            return DefaultStyles;
         }
         public async Task<MapStyle> GetStyleDetails(string id, string owner = null)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Naxam.Mapbox.Expressions;
+
 namespace Naxam.Mapbox.Layers
 {
     public class SymbolLayer : StyleLayer
@@ -7,16 +8,14 @@ namespace Naxam.Mapbox.Layers
         {
         }
 
-        public string IconImageName { get; set; }
+        public Expression FilterExpression { get; set; }
 
-        private double iconOpacity = 0.8;
-        public double IconOpacity
-        {
-            get => iconOpacity;
-            set
-            {
-                iconOpacity = Math.Min(1.0, Math.Max(value, 0.0));
-            }
-        }
+        public IconImageSource IconImageName { get; set; }
+
+        public bool? IconAllowOverlap { get; set; }
+
+        public float[] IconOffset { get; set; }
+
+        public double? IconOpacity { get; set; }
     }
 }

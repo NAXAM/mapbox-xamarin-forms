@@ -170,6 +170,10 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher.png" />
     <AndroidResource Include="Resources\drawable\pin.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\red_marker.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml" />
@@ -177,6 +181,7 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />
     <AndroidAsset Include="Assets\ports.geojson" />
+    <AndroidAsset Include="Assets\us_west_coast.geojson" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

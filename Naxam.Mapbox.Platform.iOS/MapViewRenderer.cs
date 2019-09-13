@@ -200,7 +200,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         protected virtual void UpdateCenter(bool animated = true)
         {
-            if (map == null || Element == null) return;
+            if (map == null || Element == null || Element.Center == LatLng.Zero) return;
 
             var center = map.CenterCoordinate.ToLatLng();
 

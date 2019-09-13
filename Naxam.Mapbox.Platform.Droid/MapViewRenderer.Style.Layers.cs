@@ -30,7 +30,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 if (source == null) continue;
 
-                mapStyle.AddLayer(layers[i].ToLayer());
+                var layer = layers[i].ToLayer();
+
+                mapStyle.AddLayer(layer);
             }
 
             return true;

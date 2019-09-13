@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace Naxam.Mapbox.Annotations
+namespace Naxam.Mapbox
 {
     public class IconImageSource
     {
@@ -25,7 +25,10 @@ namespace Naxam.Mapbox.Annotations
             };
         }
     }
+}
 
+namespace Naxam.Mapbox.Annotations
+{
     public class SymbolAnnotation : Annotation
     {
         public LatLng Coordinates { get; set; }

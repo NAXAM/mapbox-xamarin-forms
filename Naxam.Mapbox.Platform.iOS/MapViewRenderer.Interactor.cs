@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Naxam.Controls.Forms;
 using Xamarin.Forms;
 using Naxam.Mapbox;
 using GeoJSON.Net.Feature;

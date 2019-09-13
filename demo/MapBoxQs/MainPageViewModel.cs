@@ -92,20 +92,22 @@ namespace MapBoxQs
             MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
 
-            CenterLocation = new LatLng(21.004142f, 105.847607f);
+            CurrentMapStyle = MapStyle.STREETS;
 
-            Annotations = new ObservableCollection<Annotation> {
-                new SymbolAnnotation {
-                    Coordinates = new LatLng(21.004142f, 105.847607f),
-                    Id = Guid.NewGuid().ToString(),
-                    Title = "Naxam Company Limited",
-                    SubTitle = "A software development agency from Hanoi, Vietnam",
-                    IconImage = "harbor-15",
-                    IconSize = 1,
-                    IconColor = Color.Green,
-                    IsDraggable = true
-,                }
-            };
+            //CenterLocation = new LatLng(21.004142f, 105.847607f);
+
+            //            Annotations = new ObservableCollection<Annotation> {
+            //                new SymbolAnnotation {
+            //                    Coordinates = new LatLng(21.004142f, 105.847607f),
+            //                    Id = Guid.NewGuid().ToString(),
+            //                    Title = "Naxam Company Limited",
+            //                    SubTitle = "A software development agency from Hanoi, Vietnam",
+            //                    IconImage = "harbor-15",
+            //                    IconSize = 1,
+            //                    IconColor = Color.Green,
+            //                    IsDraggable = true
+            //,                }
+            //            };
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (isScaleBarShown == false && CenterLocation != LatLng.Zero)
@@ -168,13 +170,42 @@ namespace MapBoxQs
                 //};
                 //MapFunctions.AddLayer(layer);
 
-                var source = new GeoJsonSource
-                {
-                    Id = "ports.src",
-                    Url = "ports.geojson",
-                    IsLocal = true,
-                };
-                MapFunctions.AddSource(source);
+                //var source = new GeoJsonSource
+                //{
+                //    Id = "ports.src",
+                //    Url = "ports.geojson",
+                //    IsLocal = true,
+                //};
+                //MapFunctions.AddSource(source);
+
+                //ImageSource iconSource = "red_marker.png";
+                //IconImageSource iconImageSource = iconSource;
+                //MapFunctions.AddStyleImage(iconImageSource);
+
+                //var source = new GeoJsonSource
+                //{
+                //    Id = "us_west_coast.src",
+                //    Url = "us_west_coast.geojson",
+                //    IsLocal = true,
+                //};
+
+                //MapFunctions.AddSource(source);
+
+                //var makersLayer = new SymbolLayer("us_west_coast.markers.layer", source.Id)
+                //{
+                //    IconImageName = iconImageSource,
+                //    IconAllowOverlap = true,
+                //    IconOffset = new float[] { 0, -8 }
+                //};
+                //MapFunctions.AddLayer(makersLayer);
+
+                //var infoWindowLayer = new SymbolLayer("us_west_coast.info-window.layer", source.Id)
+                //{
+                //    IconImageName = iconImageSource,
+                //    IconAllowOverlap = true,
+                //    IconOffset = new float[] { -2, -8 }
+                //};
+                //MapFunctions.AddLayer(makersLayer);
             });
 
             DidTapOnCalloutViewCommand = new Command<string>((markerId) =>

@@ -25,9 +25,9 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                         return new GeoJsonSource(geojsonSource.Id, new Java.Net.URL(geojsonSource.Url), geojsonSource.Options.ToOptions());
                     }
 
-                    var localUrl = geojsonSource.Url.StartsWith("assets://")
+                    var localUrl = geojsonSource.Url.StartsWith("asset://", System.StringComparison.OrdinalIgnoreCase)
                         ? new Java.Net.URI(geojsonSource.Url)
-                        : new Java.Net.URI("assets://" + geojsonSource.Url);
+                        : new Java.Net.URI("asset://" + geojsonSource.Url);
 
                     return new GeoJsonSource(geojsonSource.Id, localUrl, geojsonSource.Options.ToOptions());
 

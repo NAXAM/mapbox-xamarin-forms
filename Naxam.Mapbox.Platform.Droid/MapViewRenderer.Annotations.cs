@@ -5,6 +5,7 @@ using System.Linq;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Plugins.Annotation;
 using Naxam.Controls.Forms;
+using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -120,23 +121,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                                 symbolManager = new SymbolManager(fragment.MapView, map, mapStyle);
                                 symbolManager.IconAllowOverlap = Java.Lang.Boolean.True;
                                 symbolManager.TextAllowOverlap = Java.Lang.Boolean.True;
+                                symbolManager.AddClickListener(this);
                             }
 
                             if (symbolAnnotation.IconImage?.Source != null)
                             {
-                                switch (symbolAnnotation.IconImage.Source)
-                                {
-                                    // TODO: Handle other type of ImageSoure
-                                    case FileImageSource fileImageSource:
-                                        var cachedImage = mapStyle.GetImage(fileImageSource.File);
-                                        if (cachedImage !=  null) break;
-
-                                        var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
-                                        if (bitmap == null) break;
-
-                                        mapStyle.AddImage(fileImageSource.File, bitmap);
-                                        break;
-                                }
+                                AddStyleImage(symbolAnnotation.IconImage.Source);
                             }
 
                             var symbolOptions = symbolAnnotation.ToSymbolOptions();
@@ -261,5 +251,28 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             symbolManager?.DeleteAll();
         }
 
+    }
+
+    public partial class MapViewRenderer : IMapFunctions
+    {
+        public void AddStyleImage(IconImageSource iconImageSource)
+        {
+            if (iconImageSource?.Source == null) return;
+
+            switch (iconImageSource.Source)
+            {
+                // TODO: Handle other type of ImageSoure
+                case FileImageSource fileImageSource:
+                    var cachedImage = mapStyle.GetImage(fileImageSource.File);
+                    if (cachedImage != null) break;
+
+                    var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
+                    if (bitmap == null) break;
+
+                    mapStyle.AddImage(fileImageSource.File, bitmap);
+                    iconImageSource.Id = fileImageSource.File;
+                    break;
+            }
+        }
     }
 }

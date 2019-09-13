@@ -103,13 +103,39 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                         return newLayer;
                     }
 
-                case SymbolLayer sl:
+                case SymbolLayer symbolLayer:
                     {
-                        var newLayer = new MGLSymbolStyleLayer(id, source)
+                        var newLayer = new MGLSymbolStyleLayer(id, source);
+
+                        if (symbolLayer.IconImageName != null)
                         {
-                            IconImageName = NSExpression.FromConstant(new NSString(sl.IconImageName)),
-                            IconOpacity = NSExpression.FromConstant(NSNumber.FromDouble(sl.IconOpacity))
-                        };
+                            // TODO Need to ensure ID if it's a local resource
+                            newLayer.IconImageName = NSExpression.FromConstant(new NSString(symbolLayer.IconImageName.Id));
+                        }
+
+                        if (symbolLayer.IconOpacity.HasValue)
+                        {
+                            newLayer.IconOpacity = NSExpression.FromConstant(NSNumber.FromDouble(symbolLayer.IconOpacity.Value));
+                        }
+
+                        if (symbolLayer.IconAllowOverlap.HasValue)
+                        {
+                            newLayer.IconAllowsOverlap = NSExpression.FromConstant(NSNumber.FromBoolean(symbolLayer.IconAllowOverlap.Value));
+                        }
+
+                        if (symbolLayer.IconAllowOverlap.HasValue)
+                        {
+                            newLayer.IconAllowsOverlap = NSExpression.FromConstant(NSNumber.FromBoolean(symbolLayer.IconAllowOverlap.Value));
+                        }
+
+                        if (symbolLayer.IconOffset?.Length >= 2)
+                        {
+                            var offset = NSValue.FromCGVector(new CoreGraphics.CGVector(symbolLayer.IconOffset[0], symbolLayer.IconOffset[1]));
+                            newLayer.IconOffset = NSExpression.FromConstant(offset);
+                        }
+
+                        // TODO Add other properties
+
                         return newLayer;
                     }
 

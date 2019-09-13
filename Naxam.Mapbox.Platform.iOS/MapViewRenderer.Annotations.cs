@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Foundation;
 using Mapbox;
 using Naxam.Mapbox.Platform.iOS;
-using Naxam.Controls.Forms;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using System.Diagnostics;
 using Naxam.Mapbox.Annotations;
 using System.Collections.Specialized;
 using Naxam.Mapbox;

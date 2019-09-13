@@ -1,9 +1,16 @@
 ﻿using System.Threading.Tasks;
+using Naxam.Mapbox.Annotations;
 using Xamarin.Forms;
 using NFeature = GeoJSON.Net.Feature.Feature;
 
 namespace Naxam.Mapbox
 {
+
+    public partial interface IMapFunctions
+    {
+        void AddStyleImage(IconImageSource source);
+    }
+
     public partial interface IMapFunctions
     {
         bool AddSource(params Sources.Source[] sources);

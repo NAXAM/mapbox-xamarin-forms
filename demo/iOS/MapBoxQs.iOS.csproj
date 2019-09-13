@@ -213,6 +213,7 @@
     <BundleResource Include="Resources\naxam_copyright%403x.png" />
     <BundleResource Include="Resources\materialdesignicons-webfont.ttf" />
     <BundleResource Include="Resources\ports.geojson" />
+    <BundleResource Include="Resources\us_west_coast.geojson" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.Support">
@@ -239,6 +240,9 @@
     <PackageReference Include="GeoJSON.Net">
       <Version>1.1.73</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\red_marker%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
