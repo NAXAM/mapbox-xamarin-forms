@@ -3,14 +3,15 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Mapbox.Forms</id>
-       <version>1.0.8</version>
+       <version>1.0.8.1</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Naxam - Mapbox for Xamarin.Forms</title>
         <description>Mapbox for Xamarin.Forms</description>
         <releaseNotes>
-        Upgrade to Mapbox v8 (Android), v5 (iOS).
+        - Upgrade to Mapbox v8 (Android), v5 (iOS).
+        - Add event handler for symbol click
         </releaseNotes>
         <copyright>Copyright (c) 2018 NAXAM</copyright>
         <licenseUrl>https://opensource.org/licenses/Apache-2.0</licenseUrl>

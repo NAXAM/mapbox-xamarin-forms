@@ -121,8 +121,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                             if (symbolManager == null)
                             {
                                 symbolManager = new SymbolManager(fragment.MapView, map, mapStyle);
-                                symbolManager.IconAllowOverlap = Java.Lang.Boolean.True;
-                                symbolManager.TextAllowOverlap = Java.Lang.Boolean.True;
+
+                                // TODO Provide values from Forms
+                                symbolManager.IconAllowOverlap = Boolean.True;
+                                symbolManager.TextAllowOverlap = Boolean.True;
                                 symbolManager.AddClickListener(this);
                             }
 

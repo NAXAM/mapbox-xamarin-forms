@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
 using NxLatLng = Naxam.Mapbox.LatLng;
@@ -7,14 +8,15 @@ using NxLatLng = Naxam.Mapbox.LatLng;
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
 
-    public partial class MapViewRenderer
+    public partial class MapViewRenderer : MapboxMap.IOnMapClickListener
     {
         bool cameraBusy;
         protected virtual void AddMapEvents()
         {
-            map.MarkerClick += MarkerClicked;
-            map.InfoWindowClick += InfoWindowClick;
-            map.MapClick += MapClicked;
+            //map.MarkerClick += MarkerClicked;
+            //map.InfoWindowClick += InfoWindowClick;
+            //map.MapClick += MapClicked;
+            map.AddOnMapClickListener(this);
             map.CameraIdle += OnCameraIdle;
             map.CameraMoveStarted += Map_CameraMoveStarted;
             map.CameraMoveCancel += Map_CameraMoveCancel;
@@ -27,7 +29,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 map.MarkerClick -= MarkerClicked;
                 map.InfoWindowClick -= InfoWindowClick;
-                map.MapClick -= MapClicked;
+                map.RemoveOnMapClickListener(this);
                 map.CameraIdle -= OnCameraIdle;
                 map.CameraMoveStarted -= Map_CameraMoveStarted;
                 map.CameraMoveCancel -= Map_CameraMoveCancel;
@@ -64,15 +66,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             Element.Center = currentCamera;
         }
 
-        protected virtual void MapClicked(object o, MapboxMap.MapClickEventArgs args)
-        {
-            var point = map.Projection.ToScreenLocation(args.P0);
-            var xfPoint = new Xamarin.Forms.Point(point.X, point.Y);
-            var xfPosition = new NxLatLng(args.P0.Latitude, args.P0.Longitude);
-
-            Element.DidTapOnMapCommand?.Execute(new Tuple<NxLatLng, Xamarin.Forms.Point>(xfPosition, xfPoint));
-        }
-
         void MarkerClicked(object o, MapboxMap.MarkerClickEventArgs args)
         {
             fragment?.ToggleInfoWindow(map, args.P0);
@@ -92,6 +85,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 Element.DidTapOnCalloutViewCommand?.Execute(e.P0.Id.ToString());
             }
+        }
+
+        public bool OnMapClick(LatLng p0)
+        {
+            var point = map.Projection.ToScreenLocation(p0);
+            var xfPoint = new Xamarin.Forms.Point(point.X, point.Y);
+            var xfPosition = new NxLatLng(p0.Latitude, p0.Longitude);
+
+            Element.DidTapOnMapCommand?.Execute(new Tuple<NxLatLng, Xamarin.Forms.Point>(xfPosition, xfPoint));
+
+            // TODO should return true
+            return false;
         }
 
         //public virtual void OnMapChanged(int p0)
