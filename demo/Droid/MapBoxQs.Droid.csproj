@@ -83,7 +83,7 @@
       <Version>8.3.1</Version>
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.Droid">
-      <Version>8.3.0</Version>
+      <Version>8.3.0.2</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.Annotations">
       <Version>28.0.0.1</Version>
@@ -107,7 +107,7 @@
       <Version>1.1.73</Version>
     </PackageReference>
     <PackageReference Include="Naxam.MapboxGestures.Droid">
-      <Version>0.5.1</Version>
+      <Version>0.5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Naxam.MapboxAccounts.Droid">
       <Version>0.2.0</Version>
@@ -127,6 +127,7 @@
     <PackageReference Include="Square.OkHttp3">
       <Version>3.12.1</Version>
     </PackageReference>
+    <Reference Include="Mono.Android.Export" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Naxam.Mapbox.Platform.Droid\Naxam.Mapbox.Platform.Droid.csproj">

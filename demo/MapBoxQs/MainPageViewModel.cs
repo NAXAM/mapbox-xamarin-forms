@@ -92,22 +92,26 @@ namespace MapBoxQs
             MBService = new MapBoxQs.Services.MapBoxService();
             Annotations = new ObservableCollection<Annotation>();
 
-            CurrentMapStyle = MapStyle.STREETS;
+            CurrentMapStyle =
+                //new MapStyle("mapbox://styles/hemamaps/cjy9oxfop0v511co4ep2uvt7t");
+                MapStyle.STREETS;
 
-            //CenterLocation = new LatLng(21.004142f, 105.847607f);
+            CenterLocation =
+                //new LatLng(-28.4353498348801, 140.31082470261492);
+                new LatLng(21.004142f, 105.847607f);
 
-            //            Annotations = new ObservableCollection<Annotation> {
-            //                new SymbolAnnotation {
-            //                    Coordinates = new LatLng(21.004142f, 105.847607f),
-            //                    Id = Guid.NewGuid().ToString(),
-            //                    Title = "Naxam Company Limited",
-            //                    SubTitle = "A software development agency from Hanoi, Vietnam",
-            //                    IconImage = "harbor-15",
-            //                    IconSize = 1,
-            //                    IconColor = Color.Green,
-            //                    IsDraggable = true
-            //,                }
-            //            };
+            Annotations = new ObservableCollection<Annotation> {
+                            new SymbolAnnotation {
+                                Coordinates = new LatLng(21.004142f, 105.847607f),
+                                Id = Guid.NewGuid().ToString(),
+                                Title = "Naxam Company Limited",
+                                SubTitle = "A software development agency from Hanoi, Vietnam",
+                                IconImage = "harbor-15",
+                                IconSize = 4,
+                                IconColor = Color.Green,
+                                IsDraggable = true
+            ,                }
+                        };
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (isScaleBarShown == false && CenterLocation != LatLng.Zero)
@@ -213,10 +217,11 @@ namespace MapBoxQs
                 // UserDialogs.Instance.Alert("You just tap on callout view of marker have id: " + markerId);
             });
 
-            DidTapOnMarkerCommand = new Command<object>((markerId) =>
+            DidTapOnMarkerCommand = new Command<string>((markerId) =>
             {
-                //SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
-                //System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
+                SelectedAnnotation = Annotations.First(d => d.Id.ToString() == markerId.ToString());
+                System.Diagnostics.Debug.WriteLine("You just tap on marker have id: " + markerId);
+                UserDialogs.Instance.Alert("You just tap on marker of marker have id: " + SelectedAnnotation.Title);
             });
         }
 

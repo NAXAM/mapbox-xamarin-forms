@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Plugins.Annotation;
+using Java.Interop;
+using Java.Lang;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
@@ -13,7 +15,7 @@ using NxAnnotation = Naxam.Mapbox.Annotations.Annotation;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    public partial class MapViewRenderer
+    public partial class MapViewRenderer : IOnSymbolClickListener
     {
         SymbolManager symbolManager;
         CircleManager circleManager;
@@ -131,7 +133,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                             var symbolOptions = symbolAnnotation.ToSymbolOptions();
                             var symbol = Android.Runtime.Extensions.JavaCast<Symbol>(symbolManager.Create(symbolOptions));
-                            symbolAnnotation.NativeHandle = symbol.Handle;
                             symbolAnnotation.Id = symbol.Id.ToString();
                         }
                         break;
@@ -160,7 +161,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 marker.SetPosition(annotation.Coordinates.ToLatLng());
                 if (annotation.IconImage?.Source != null)
                 {
-                    switch(annotation.IconImage.Source)
+                    switch (annotation.IconImage.Source)
                     {
                         case FileImageSource fileImageSource:
                             var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
@@ -251,6 +252,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             symbolManager?.DeleteAll();
         }
 
+        public void OnAnnotationClick(Symbol symbol)
+        {
+            if (symbol == null) return;
+
+            if (Element.DidTapOnMarkerCommand?.CanExecute(symbol.Id.ToString()) == true)
+            {
+                Element.DidTapOnMarkerCommand.Execute(symbol.Id.ToString());
+            }
+        }
     }
 
     public partial class MapViewRenderer : IMapFunctions

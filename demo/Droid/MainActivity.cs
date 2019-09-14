@@ -35,7 +35,7 @@ namespace MapBoxQs.Droid
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            System.Diagnostics.Debug.WriteLine("Mapbox version: " + Com.Mapbox.Mapboxsdk.BuildConfig.MapboxVersionString);
+            System.Diagnostics.Debug.WriteLine("Mapbox version: " + Com.Mapbox.Mapboxsdk.BuildConfig.MAPBOX_VERSION_STRING);
 
             LoadApplication(new App());
             //SetContentView(Resource.Layout.activity_main);

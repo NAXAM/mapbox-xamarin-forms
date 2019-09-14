@@ -97,10 +97,10 @@
       <Version>4.8.0.1</Version>
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.Droid">
-      <Version>8.3.0</Version>
+      <Version>8.3.0.2</Version>
     </PackageReference>
     <PackageReference Include="Naxam.MapboxAnnotation.Droid">
-      <Version>0.7.0</Version>
+      <Version>0.7.0.2</Version>
     </PackageReference>
     <PackageReference Include="GeoJSON.Net">
       <Version>1.1.73</Version>
@@ -111,6 +111,7 @@
     <PackageReference Include="Naxam.MapboxAccounts.Droid">
       <Version>0.2.0</Version>
     </PackageReference>
+    <Reference Include="Mono.Android.Export" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomInfoWindowAdapter.cs" />
