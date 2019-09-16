@@ -196,29 +196,4 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
     }
-
-    public static class StringExtensions
-    {
-        static string CustomPrefix = "NXCustom_";
-        public static string ToCustomId(this string str)
-        {
-            if (str == null) return null;
-            return CustomPrefix + str;
-        }
-
-        public static bool IsCustomId(this string str)
-        {
-            if (str == null) return false;
-            return str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase);
-        }
-
-        public static string TrimCustomId(this string str)
-        {
-            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase))
-            {
-                return str.Substring(CustomPrefix.Length);
-            }
-            return str;
-        }
-    }
 }
