@@ -235,7 +235,7 @@ namespace Naxam.Mapbox.Expressions
 
         public Expression Value { get; private set; }
 
-        public FormatOption(string type, Expression value)
+        FormatOption(string type, Expression value)
         {
             this.Type = type;
             this.Value = value;

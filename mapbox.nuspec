@@ -20,14 +20,14 @@
         <tags>Xamarin.Forms, Xamarin.Android, Xamarin.iOS, Mapbox</tags>
         <dependencies>
             <group>
-                <dependency id="Xamarin.Forms" version="3.2.0.839982" />
+                <dependency id="Xamarin.Forms" version="3.6.0.709228" />
                 <dependency id="GeoJSON.Net" version="1.1.73" />
             </group>
             <group targetFramework="MonoAndroid10">
                 <dependency id="Newtonsoft.Json" version="12.0.2" />
-                <dependency id="Naxam.Mapbox.Droid" version="8.3.0" />
-                <dependency id="Naxam.MapboxAnnotation.Droid" version="0.7.0" />
-                <dependency id="Naxam.MapboxGestures.Droid" version="0.5.1" />
+                <dependency id="Naxam.Mapbox.Droid" version="8.3.0.3" />
+                <dependency id="Naxam.MapboxAnnotation.Droid" version="0.7.0.2" />
+                <dependency id="Naxam.MapboxGestures.Droid" version="0.5.1.1" />
                 <dependency id="Naxam.MapboxAccounts.Droid" version="0.2.0" />
             </group>
             <group targetFramework="Xamarin.iOS10">

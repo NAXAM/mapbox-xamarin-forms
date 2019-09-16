@@ -8,6 +8,8 @@ namespace Naxam.Mapbox.Layers
 
         public bool IsVisible { get; set; }
 
+        public Expressions.Expression Filter { get; set; }
+
         public Layer(string id)
         {
             Id = id;

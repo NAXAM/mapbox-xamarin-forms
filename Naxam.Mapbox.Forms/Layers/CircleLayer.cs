@@ -5,49 +5,19 @@ namespace Naxam.Mapbox.Layers
 {
     public class CircleLayer : StyleLayer
     {
-        public Color CircleColor = Color.Red;
+        public Color? CircleColor { get; set; }
 
-        private double circleRadius = 5.0;
-        public double CircleRadius
-        {
-            get => circleRadius;
-            set
-            {
-                circleRadius = Math.Max(value, 0.0);
-            }
-        }
+        public double? CircleRadius { get; set; }
 
-        private double circleOpacity = 0.8;
-        public double CircleOpacity
-        {
-            get => circleOpacity;
-            set
-            {
-                circleOpacity = Math.Min(1.0, Math.Max(value, 0.0));
-            }
-        }
+        public double? CircleBlur { get; set; }
+
+        public double? CircleOpacity { get; set; }
 
         public Color? StrokeColor { get; set; }
 
-        private double strokeWidth = 0.0;
-        public double StrokeWidth
-        {
-            get => strokeWidth;
-            set
-            {
-                strokeWidth = Math.Max(value, 0.0);
-            }
-        }
+        public double? StrokeWidth { get; set; }
 
-        private double strokeOpacity = 1.0;
-        public double StrokeOpacity
-        {
-            get => strokeOpacity;
-            set
-            {
-                strokeOpacity = Math.Min(1.0, Math.Max(value, 0.0));
-            }
-        }
+        public double? StrokeOpacity { get; set; }
 
         public CircleLayer(string id, string sourceId) : base(id, sourceId)
         {

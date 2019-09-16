@@ -11,6 +11,8 @@ using NxFillLayer = Naxam.Mapbox.Layers.FillLayer;
 using NxRasterLayer = Naxam.Mapbox.Layers.RasterLayer;
 using System.Linq;
 using Naxam.Mapbox.Platform.Droid.Extensions;
+using System.Collections.Generic;
+using Com.Mapbox.Mapboxsdk.Style.Expressions;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -18,23 +20,30 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
     {
         public static Sdk.Style.Layers.Layer ToLayer(this NxLayer layer)
         {
+            Layer result = null;
             switch (layer)
             {
                 case NxCircleLayer circleLayer:
-                    return circleLayer.ToNative();
+                    result = circleLayer.ToNative();
+                    break;
                 case NxLineLayer lineLayer:
-                    return lineLayer.ToNative();
+                    result = lineLayer.ToNative();
+                    break;
                 case NxBackgroundLayer backgroundLayer:
-                    return backgroundLayer.ToNative();
+                    result = backgroundLayer.ToNative();
+                    break;
                 case NxFillLayer fillLayer:
-                    return fillLayer.ToNative();
+                    result = fillLayer.ToNative();
+                    break;
                 case NxSymbolLayer symbolLayer:
-                    return symbolLayer.ToNative();
+                    result = symbolLayer.ToNative();
+                    break;
                 case NxRasterLayer circleLayer:
-                    return circleLayer.ToNative();
+                    result = circleLayer.ToNative();
+                    break;
             }
 
-            return null;
+            return result;
         }
 
         public static NxLayer ToLayer(this Layer layer)
@@ -63,11 +72,43 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (layer == null) { return null; }
 
             var native = new CircleLayer(layer.Id, layer.SourceId);
-            native.SetProperties(
-                PropertyFactory.CircleColor(layer.CircleColor.ToAndroid()),
-                PropertyFactory.CircleOpacity(new Java.Lang.Float(layer.CircleOpacity)),
-                PropertyFactory.CircleRadius(new Java.Lang.Float(layer.CircleRadius))
-            );
+            var properties = new List<PropertyValue>();
+            if (layer.CircleBlur.HasValue)
+            {
+                properties.Add(
+                    PropertyFactory.CircleBlur(new Java.Lang.Float(layer.CircleBlur.Value))
+                    );
+            }
+
+            if (layer.CircleOpacity.HasValue)
+            {
+                properties.Add(
+                    PropertyFactory.CircleOpacity(new Java.Lang.Float(layer.CircleOpacity.Value))
+                    );
+            }
+
+            if (layer.CircleRadius.HasValue)
+            {
+                properties.Add(
+                    PropertyFactory.CircleRadius(new Java.Lang.Float(layer.CircleRadius.Value))
+                    );
+            }
+
+            if (layer.CircleColor.HasValue)
+            {
+                properties.Add(PropertyFactory.CircleColor(layer.CircleColor.Value.ToAndroid()));
+            }
+
+            native.SetProperties(properties.ToArray());
+
+            // TODO Add other values
+
+            if (layer.Filter != null)
+            {
+                var filter = layer.Filter.ToExpression();
+                var x = filter.ToArray();
+                native.WithFilter(filter);
+            }
 
             return native;
         }
@@ -108,38 +149,63 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var newLayer = new SymbolLayer(symbol.Id, symbol.SourceId);
 
-            if (symbol.IconImageName != null)
+            var properties = new List<PropertyValue>();
+
+            if (symbol.IconImage != null)
             {
-                // TODO Need to ensure ID if it's a local resource
-                var property = PropertyFactory.IconImage(symbol.IconImageName.Id);
-                newLayer.SetProperties(property);
+                properties.Add(PropertyFactory.IconImage(symbol.IconImage.ToExpression()));
             }
 
-            if (symbol.IconOpacity.HasValue)
+            if (symbol.IconColor != null)
             {
-                var property = PropertyFactory.IconOpacity(new Java.Lang.Float(symbol.IconOpacity.Value));
-                newLayer.SetProperties(property);
+                var iconColor = Expression.Interpolate(
+                    Expression.Exponential(new Java.Lang.Float(1.0)),
+                    Expression.Get("mag"),
+                    Expression.CreateStop(new Java.Lang.Float(2.0), Expression.Rgb(new Java.Lang.Float(0), new Java.Lang.Float(255), new Java.Lang.Float(0))),
+                    Expression.CreateStop(new Java.Lang.Float(4.5), Expression.Rgb(new Java.Lang.Float(0), new Java.Lang.Float(0), new Java.Lang.Float(255))),
+                    Expression.CreateStop(new Java.Lang.Float(7.0), Expression.Rgb(new Java.Lang.Float(255), new Java.Lang.Float(0), new Java.Lang.Float(0)))
+                    );
+                    //symbol.IconColor.ToExpression();
+                var array = iconColor.ToArray();
+                properties.Add(PropertyFactory.IconColor(iconColor));
             }
 
-            if (symbol.IconAllowOverlap.HasValue)
+            if (symbol.IconSize != null)
             {
-                var property = PropertyFactory.IconAllowOverlap(new Java.Lang.Boolean(symbol.IconAllowOverlap.Value));
-                newLayer.SetProperties(property);
+                properties.Add(PropertyFactory.IconSize(symbol.IconSize.ToExpression()));
             }
 
-            if (symbol.IconOffset?.Length >= 2)
+            if (symbol.TextField != null)
             {
-                var property = PropertyFactory.IconOffset(new[] {
-                    new Java.Lang.Float(symbol.IconOffset[0]),
-                    new Java.Lang.Float(symbol.IconOffset[1])
-                });
-                newLayer.SetProperties(property);
+                properties.Add(PropertyFactory.TextField(symbol.TextField.ToExpression()));
             }
 
-            if (symbol.FilterExpression != null)
+            if (symbol.TextSize != null)
             {
-                newLayer.WithFilter(symbol.FilterExpression.ToExpression());
+                properties.Add(PropertyFactory.TextSize(symbol.TextSize.ToExpression()));
             }
+
+            if (symbol.TextColor != null)
+            {
+                properties.Add(PropertyFactory.TextColor(symbol.TextColor.ToExpression()));
+            }
+            if (symbol.TextIgnorePlacement != null)
+            {
+                properties.Add(PropertyFactory.TextIgnorePlacement(symbol.TextIgnorePlacement.ToExpression()));
+            }
+            if (symbol.TextAllowOverlap != null)
+            {
+                properties.Add(PropertyFactory.TextAllowOverlap(symbol.TextAllowOverlap.ToExpression()));
+            }
+
+            if (symbol.Filter != null)
+            {
+                var expression = symbol.Filter.ToExpression();
+                var array = expression.ToArray();
+                newLayer.WithFilter(expression);
+            }
+
+            newLayer.SetProperties(properties.ToArray());
 
             // TODO Add other properties
             return newLayer;

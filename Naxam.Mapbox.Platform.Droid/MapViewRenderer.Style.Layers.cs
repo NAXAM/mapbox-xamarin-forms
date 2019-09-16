@@ -37,5 +37,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             return true;
         }
+
+        public bool AddLayerBelow(Layer layer, string layerId)
+        {
+            map.Style.AddLayerBelow(layer.ToLayer(), layerId);
+
+            return true;
+        }
     }
 }

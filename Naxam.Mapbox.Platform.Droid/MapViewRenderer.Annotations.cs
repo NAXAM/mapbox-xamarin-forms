@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Com.Mapbox.Mapboxsdk.Annotations;
 using Com.Mapbox.Mapboxsdk.Plugins.Annotation;
+using Com.Mapbox.Mapboxsdk.Utils;
 using Java.Interop;
 using Java.Lang;
 using Naxam.Controls.Forms;
@@ -278,7 +279,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var cachedImage = mapStyle.GetImage(fileImageSource.File);
                     if (cachedImage != null) break;
 
-                    var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
+                    var id = fileImageSource.File.Split('.').First();
+                    var drawable = Context.Resources.GetDrawable(
+                        Context.Resources.GetIdentifier(id, "drawable", Context.PackageName),
+                        Context.Theme);
+                    var bitmap = BitmapUtils.GetBitmapFromDrawable(
+                        drawable
+                        );
+
                     if (bitmap == null) break;
 
                     mapStyle.AddImage(fileImageSource.File, bitmap);

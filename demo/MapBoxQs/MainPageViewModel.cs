@@ -9,6 +9,7 @@ using Acr.UserDialogs;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
+using Naxam.Mapbox.Expressions;
 using Naxam.Mapbox.Layers;
 using Naxam.Mapbox.Sources;
 using Xamarin.Forms;
@@ -94,24 +95,24 @@ namespace MapBoxQs
 
             CurrentMapStyle =
                 //new MapStyle("mapbox://styles/hemamaps/cjy9oxfop0v511co4ep2uvt7t");
-                MapStyle.STREETS;
+                MapStyle.LIGHT;
 
-            CenterLocation =
-                //new LatLng(-28.4353498348801, 140.31082470261492);
-                new LatLng(21.004142f, 105.847607f);
+            //CenterLocation =
+            //    //new LatLng(-28.4353498348801, 140.31082470261492);
+            //    new LatLng(21.004142f, 105.847607f);
 
-            Annotations = new ObservableCollection<Annotation> {
-                            new SymbolAnnotation {
-                                Coordinates = new LatLng(21.004142f, 105.847607f),
-                                Id = Guid.NewGuid().ToString(),
-                                Title = "Naxam Company Limited",
-                                SubTitle = "A software development agency from Hanoi, Vietnam",
-                                IconImage = "harbor-15",
-                                IconSize = 4,
-                                IconColor = Color.Green,
-                                IsDraggable = true
-            ,                }
-                        };
+            //Annotations = new ObservableCollection<Annotation> {
+            //                new SymbolAnnotation {
+            //                    Coordinates = new LatLng(21.004142f, 105.847607f),
+            //                    Id = Guid.NewGuid().ToString(),
+            //                    Title = "Naxam Company Limited",
+            //                    SubTitle = "A software development agency from Hanoi, Vietnam",
+            //                    IconImage = "harbor-15",
+            //                    IconSize = 4,
+            //                    IconColor = Color.Green,
+            //                    IsDraggable = true
+            //,                }
+            //            };
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (isScaleBarShown == false && CenterLocation != LatLng.Zero)
@@ -162,6 +163,10 @@ namespace MapBoxQs
 
             DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
             {
+                MapFunctions.AddStyleImage(new IconImageSource()
+                {
+                    Source = "ic_cross.xml"
+                });
                 //var source = new GeoJsonSource {
                 //    Id = "regions.src",
                 //    Url = "https://gist.githubusercontent.com/tobrun/cf0d689c8187d42ebe62757f6d0cf137/raw/4d8ac3c8333f1517df9d303d58f20f4a1d8841e8/regions.geojson"
@@ -210,7 +215,75 @@ namespace MapBoxQs
                 //    IconOffset = new float[] { -2, -8 }
                 //};
                 //MapFunctions.AddLayer(makersLayer);
+
+                var geojsonSrc = new GeoJsonSource
+                {
+                    Id = "earthquakes.src",
+                    Url = "https://www.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
+                    Options = new GeoJsonOptions
+                    {
+                        Cluster = true,
+                        ClusterMaxZoom = 14,
+                        ClusterRadius = 50
+                    }
+                };
+                MapFunctions.AddSource(geojsonSrc);
+
+                var unclusteredLayer = new SymbolLayer("unclustered.layer", geojsonSrc.Id)
+                {
+                    IconImage = Expression.Literal("ic_cross.xml"),
+                    IconSize = Expression.Division(Expression.Get("mag"), Expression.Literal(4.0)),
+                    IconColor = Expression.Interpolate(
+                        Expression.Exponential(1.0),
+                        Expression.Get("mag"),
+                        Expression.Stop(2.0, Expression.Rgb(0, 255, 0)),
+                        Expression.Stop(4.5, Expression.Rgb(0, 0, 255)),
+                        Expression.Stop(7.0, Expression.Rgb(255, 0, 0))
+                    )
+                };
+                //unclusteredLayer.Filter = Expression.Neq(Expression.Get("cluster"), true);
+                MapFunctions.AddLayer(unclusteredLayer);
+
+                var layers = new KeyValuePair<int, Color>[] {
+                    new KeyValuePair<int, Color>(150, Color.Green),
+                    new KeyValuePair<int, Color>(20, Color.Yellow),
+                    new KeyValuePair<int, Color>(0, Color.Purple)
+                };
+                for (int j = 0; j < layers.Length; j++)
+                {
+                    var item = layers[j];
+                    var layer = new CircleLayer($"layer_{item.Key}_{item.Value.ToHex()}", geojsonSrc.Id)
+                    {
+                        CircleColor = item.Value,
+                        CircleRadius = 18
+                    };
+                    var pointCount = Expression.ToNumber(Expression.Get("point_count"));
+                    var filter = j == 0
+                        ? Expression.All(
+                            Expression.Has("point_coint"),
+                            Expression.Gte(pointCount, Expression.Literal(item.Key)))
+                        : Expression.All(
+                            Expression.Has("point_coint"),
+                            Expression.Gte(pointCount, Expression.Literal(item.Key)),
+                            Expression.Lt(pointCount, Expression.Literal(layers[j-1].Key))
+                        );
+                    layer.Filter = filter;
+
+                    MapFunctions.AddLayer(layer);
+                    j++;
+                }
+
+                var count = new SymbolLayer("count.layer", geojsonSrc.Id) {
+                    TextField = Expression.ToString(Expression.Get("point_coint)")),
+                    TextSize = Expression.Literal(12.0),
+                    TextColor = Expression.Color(Color.Pink),
+                    TextIgnorePlacement = Expression.Literal(true),
+                    TextAllowOverlap = Expression.Literal(true),
+                };
+                
+                MapFunctions.AddLayer(count);
             });
+
 
             DidTapOnCalloutViewCommand = new Command<string>((markerId) =>
             {

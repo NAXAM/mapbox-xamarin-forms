@@ -97,7 +97,7 @@
       <Version>4.8.0.1</Version>
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.Droid">
-      <Version>8.3.0.2</Version>
+      <Version>8.3.0.4</Version>
     </PackageReference>
     <PackageReference Include="Naxam.MapboxAnnotation.Droid">
       <Version>0.7.0.2</Version>
@@ -106,7 +106,7 @@
       <Version>1.1.73</Version>
     </PackageReference>
     <PackageReference Include="Naxam.MapboxGestures.Droid">
-      <Version>0.5.1</Version>
+      <Version>0.5.1.1</Version>
     </PackageReference>
     <PackageReference Include="Naxam.MapboxAccounts.Droid">
       <Version>0.2.0</Version>

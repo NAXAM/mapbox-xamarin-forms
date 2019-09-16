@@ -15,22 +15,25 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                 case NxExpressions.ExpressionLiteral literal:
                     return Expression.Literal(literal.Value.ToJ());
                 case NxExpressions.ExpressionFormat format:
-                    //return Expression.Format(format.Entries.ToEntry());
-                    break;
-                case NxExpressions.ExpressionMap map:
-                    switch (map.Map.Count)
-                    {
-                        case 2:
-                            return Expression.Collator(map.Map["case-sensitive"].ToExpression(), map.Map["case-sensitive"].ToExpression());
-                        case 3:
-                            return Expression.Collator(map.Map["case-sensitive"].ToExpression(), map.Map["case-sensitive"].ToExpression());
-                    }
-                    break;
-                default:
-                    return new Expression(expression.Operator, expression.Arguments.Select(x => x.ToExpression()).ToArray());
+                    return Expression.Format(format.Entries.Select(x => x.ToEntry()).ToArray());
             }
+            switch (expression.Operator)
+            {
+                case "collator":
+                    var mapExpressipn = (NxExpressions.ExpressionMap)expression.Arguments[0];
 
-            return null;
+                    return mapExpressipn.Map.Keys.Count == 2
+                        ? Expression.Collator(
+                            mapExpressipn.Map["case-sensitive"].ToExpression(),
+                            mapExpressipn.Map["diacritic-sensitive"].ToExpression()
+                        )
+                        : Expression.Collator(
+                            mapExpressipn.Map["case-sensitive"].ToExpression(),
+                            mapExpressipn.Map["diacritic-sensitive"].ToExpression(),
+                            mapExpressipn.Map["locale"].ToExpression()
+                        );
+            }
+            return new Expression(expression.Operator, expression.Arguments.Select(x => x.ToExpression()).ToArray());
         }
 
         public static Java.Lang.Object ToJ(this object obj)
@@ -77,9 +80,23 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
             }
         }
 
-        //public static Expression.FormatEntry ToEntry(this NxExpressions.FormatEntry entry)
-        //{
-        //    return Expression.FormatEntry();
-        //}
+        public static Expression.FormatEntry ToEntry(this NxExpressions.FormatEntry entry)
+        {
+            var options = entry.Options.Select(x => {
+                switch (x.Type)
+                {
+                    case "font-scale":
+                        return Expression.FormatOption.FormatFontScale(x.Value.ToExpression());
+                    case "text-font":
+                        return Expression.FormatOption.FormatTextFont(x.Value.ToExpression());
+                    case "text-color":
+                        return Expression.FormatOption.FormatTextColor(x.Value.ToExpression());
+                    default:
+                        throw new NotSupportedException("Option isn't supported: " + x.Type);
+                }
+            }).ToArray();
+
+            return Expression.CreateFormatEntry(entry.Text.ToExpression(), options);
+        }
     }
 }

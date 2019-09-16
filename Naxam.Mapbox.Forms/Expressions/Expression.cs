@@ -56,6 +56,11 @@ namespace Naxam.Mapbox.Expressions
             // TODO Add any other number types
             return new ExpressionLiteral(number);
         }
+        public static Expression Literal(int number)
+        {
+            // TODO Add any other number types
+            return new ExpressionLiteral(number);
+        }
 
         /**
          * Create a literal string expression.
@@ -877,7 +882,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-%3E%3D">Style specification</a>
          */
-        public static Expression gte(Expression compareOne, Expression compareTwo)
+        public static Expression Gte(Expression compareOne, Expression compareTwo)
         {
             return new Expression(">=", compareOne, compareTwo);
         }
@@ -903,7 +908,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-%3E%3D">Style specification</a>
          */
-        public static Expression gte(Expression compareOne, Expression compareTwo,
+        public static Expression Gte(Expression compareOne, Expression compareTwo,
                                      Expression collator)
         {
             return new Expression(">=", compareOne, compareTwo, collator);
@@ -928,7 +933,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-%3E%3D">Style specification</a>
          */
-        public static Expression gte(Expression compareOne, double compareTwo)
+        public static Expression Gte(Expression compareOne, double compareTwo)
         {
             return new Expression(">=", compareOne, Literal(compareTwo));
         }
@@ -952,7 +957,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-%3E%3D">Style specification</a>
          */
-        public static Expression gte(Expression compareOne, string compareTwo)
+        public static Expression Gte(Expression compareOne, string compareTwo)
         {
             return new Expression(">=", compareOne, Literal(compareTwo));
         }
@@ -978,7 +983,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-%3E%3D">Style specification</a>
          */
-        public static Expression gte(Expression compareOne, string compareTwo,
+        public static Expression Gte(Expression compareOne, string compareTwo,
                                      Expression collator)
         {
             return new Expression(">=", compareOne, Literal(compareTwo), collator);
@@ -1134,7 +1139,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-all">Style specification</a>
          */
-        public static Expression all(params Expression[] input)
+        public static Expression All(params Expression[] input)
         {
             return new Expression("all", input);
         }

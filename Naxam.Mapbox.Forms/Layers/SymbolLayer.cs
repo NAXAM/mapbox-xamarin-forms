@@ -8,14 +8,15 @@ namespace Naxam.Mapbox.Layers
         {
         }
 
-        public Expression FilterExpression { get; set; }
+        public Expression IconImage { get; set; }
 
-        public IconImageSource IconImageName { get; set; }
+        public Expression IconSize { get; set; }
 
-        public bool? IconAllowOverlap { get; set; }
-
-        public float[] IconOffset { get; set; }
-
-        public double? IconOpacity { get; set; }
+        public Expression IconColor { get; set; }
+        public Expression TextField { get; set; }
+        public Expression TextSize { get; set; }
+        public Expression TextColor { get; set; }
+        public Expression TextIgnorePlacement { get; set; }
+        public Expression TextAllowOverlap { get; set; }
     }
 }
