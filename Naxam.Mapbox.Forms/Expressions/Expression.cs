@@ -51,78 +51,9 @@ namespace Naxam.Mapbox.Expressions
          * @param number the number
          * @return the expression
          */
-        public static Expression Literal(double number)
+        public static Expression Literal<T>(T obj)
         {
-            // TODO Add any other number types
-            return new ExpressionLiteral(number);
-        }
-        public static Expression Literal(int number)
-        {
-            // TODO Add any other number types
-            return new ExpressionLiteral(number);
-        }
-
-        /**
-         * Create a literal string expression.
-         * <p>
-         * Example usage:
-         * </p>
-         * <pre>
-         * {@code
-         * SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
-         * symbolLayer.setProperties(
-         *     textField(Literal("Text"))
-         * );
-         * }
-         * </pre>
-         *
-         * @param string the string
-         * @return the expression
-         */
-        public static Expression Literal(string @string)
-        {
-            return new ExpressionLiteral(@string);
-        }
-
-        /**
-         * Create a literal bool expression.
-         * <p>
-         * Example usage:
-         * </p>
-         * <pre>
-         * {@code
-         * FillLayer fillLayer = new FillLayer("layer-id", "source-id");
-         * fillLayer.setProperties(
-         *     fillAntialias(Literal(true))
-         * );
-         * }
-         * </pre>
-         *
-         * @param bool the bool
-         * @return the expression
-         */
-        public static Expression Literal(bool @bool)
-        {
-            return new ExpressionLiteral(@bool);
-        }
-
-        /**
-         * Create a literal object expression.
-         *
-         * @param object the object
-         * @return the expression
-         */
-        public static Expression Literal(object @object)
-        {
-            switch (@object)
-            {
-                case IEnumerable enumberable:
-                    return Literal(ToObjectArray(enumberable));
-                case Expression expression:
-                    throw new InvalidOperationException("Can't convert an expression to a literal");
-            }
-
-            return new ExpressionLiteral(@object);
+            return new ExpressionLiteral<T>(obj);
         }
 
         /**
@@ -131,9 +62,9 @@ namespace Naxam.Mapbox.Expressions
          * @param array the array
          * @return the expression
          */
-        public static Expression Literal(IEnumerable array)
+        public static Expression Literal<T>(IEnumerable<T> array)
         {
-            return new Expression("literal", new ExpressionLiteralArray(array));
+            return new Expression("literal", new ExpressionLiteralArray<T>(array));
         }
 
         /**
@@ -155,7 +86,7 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Color(Color color)
         {
-            return Rgba(color.R, color.G, color.B, color.A);
+            return Rgba(color.R * 255, color.G * 255, color.B * 255, color.A);
         }
 
         /**
@@ -3030,7 +2961,7 @@ namespace Naxam.Mapbox.Expressions
          * {@code
          * SymbolLayer symbolLayer = new SymbolLayer("layer-id", "source-id");
          * symbolLayer.setProperties(
-         *     textField(downcase(get("key-to-string-value")))
+         *     textField(Downcase(get("key-to-string-value")))
          * );
          * }
          * </pre>
@@ -3039,7 +2970,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-downcase">Style specification</a>
          */
-        public static Expression downcase(Expression input)
+        public static Expression Downcase(Expression input)
         {
             return new Expression("downcase", input);
         }
@@ -3066,9 +2997,9 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-downcase">Style specification</a>
          */
-        public static Expression downcase(string input)
+        public static Expression Downcase(string input)
         {
-            return downcase(Literal(input));
+            return Downcase(Literal(input));
         }
 
         /**
@@ -3209,10 +3140,12 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Collator(bool caseSensitive, bool diacriticSensitive, CultureInfo locale)
         {
-            var map = new Dictionary<string, Expression>();
-            map.Add("case-sensitive", Literal(caseSensitive));
-            map.Add("diacritic-sensitive", Literal(diacriticSensitive));
-            map.Add("locale", Literal(locale.Name));
+            var map = new Dictionary<string, Expression>
+            {
+                { "case-sensitive", Literal(caseSensitive) },
+                { "diacritic-sensitive", Literal(diacriticSensitive) },
+                { "locale", Literal(locale.Name) }
+            };
             return new Expression("collator", new ExpressionMap(map));
         }
 
@@ -3231,9 +3164,11 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Collator(bool caseSensitive, bool diacriticSensitive)
         {
-            var map = new Dictionary<string, Expression>();
-            map.Add("case-sensitive", Literal(caseSensitive));
-            map.Add("diacritic-sensitive", Literal(diacriticSensitive));
+            var map = new Dictionary<string, Expression>
+            {
+                { "case-sensitive", Literal(caseSensitive) },
+                { "diacritic-sensitive", Literal(diacriticSensitive) }
+            };
             return new Expression("collator", new ExpressionMap(map));
         }
 
@@ -3253,10 +3188,12 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Collator(Expression caseSensitive, Expression diacriticSensitive, Expression locale)
         {
-            var map = new Dictionary<string, Expression>();
-            map.Add("case-sensitive", caseSensitive);
-            map.Add("diacritic-sensitive", diacriticSensitive);
-            map.Add("locale", locale);
+            var map = new Dictionary<string, Expression>
+            {
+                { "case-sensitive", caseSensitive },
+                { "diacritic-sensitive", diacriticSensitive },
+                { "locale", locale }
+            };
             return new Expression("collator", new ExpressionMap(map));
         }
 
@@ -3275,9 +3212,11 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Collator(Expression caseSensitive, Expression diacriticSensitive)
         {
-            var map = new Dictionary<string, Expression>();
-            map.Add("case-sensitive", caseSensitive);
-            map.Add("diacritic-sensitive", diacriticSensitive);
+            var map = new Dictionary<string, Expression>
+            {
+                { "case-sensitive", caseSensitive },
+                { "diacritic-sensitive", diacriticSensitive }
+            };
             return new Expression("collator", new ExpressionMap(map));
         }
 
@@ -3317,31 +3256,30 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Format(params FormatEntry[] formatEntries)
         {
-            return new ExpressionFormat(formatEntries);
-            //// for each entry we are going to build an input and parameters
-            //Expression[] mappedExpressions = new Expression[formatEntries.Length * 2];
+            // for each entry we are going to build an input and parameters
+            Expression[] mappedExpressions = new Expression[formatEntries.Length * 2];
 
-            //int mappedIndex = 0;
-            //foreach (var formatEntry in formatEntries)
-            //{
-            //    // input
-            //    mappedExpressions[mappedIndex++] = formatEntry.Text;
+            int mappedIndex = 0;
+            foreach (var formatEntry in formatEntries)
+            {
+                // input
+                mappedExpressions[mappedIndex++] = formatEntry.Text;
 
-            //    // parameters
-            //    var map = new Dictionary<string, Expression>();
+                // parameters
+                var map = new Dictionary<string, Expression>();
 
-            //    if (formatEntry.Options?.Length > 0)
-            //    {
-            //        foreach (FormatOption option in formatEntry.Options)
-            //        {
-            //            map.Add(option.Type, option.Value);
-            //        }
-            //    }
+                if (formatEntry.Options?.Length > 0)
+                {
+                    foreach (FormatOption option in formatEntry.Options)
+                    {
+                        map.Add(option.Type, option.Value);
+                    }
+                }
 
-            //    mappedExpressions[mappedIndex++] = new ExpressionMap(map);
-            //}
+                mappedExpressions[mappedIndex++] = new ExpressionMap(map);
+            }
 
-            //return new Expression("format", mappedExpressions);
+            return new Expression("format", mappedExpressions);
         }
 
         /**
@@ -3356,7 +3294,7 @@ namespace Naxam.Mapbox.Expressions
          * @param formatOptions format options
          * @return format entry
          */
-        public static FormatEntry FormatEntry(Expression text, params FormatOption[] formatOptions)
+        public static FormatEntry CreateFormatEntry(Expression text, params FormatOption[] formatOptions)
         {
             return new FormatEntry(text, formatOptions);
         }
@@ -3372,7 +3310,7 @@ namespace Naxam.Mapbox.Expressions
          * @param text displayed text
          * @return format entry
          */
-        public static FormatEntry FormatEntry(Expression text)
+        public static FormatEntry CreateFormatEntry(Expression text)
         {
             return new FormatEntry(text, null);
         }
@@ -3389,7 +3327,7 @@ namespace Naxam.Mapbox.Expressions
          * @param formatOptions format options
          * @return format entry
          */
-        public static FormatEntry FormatEntry(string text, params FormatOption[] formatOptions)
+        public static FormatEntry CreateFormatEntry(string text, params FormatOption[] formatOptions)
         {
             return new FormatEntry(Literal(text), formatOptions);
         }
@@ -3405,7 +3343,7 @@ namespace Naxam.Mapbox.Expressions
          * @param text displayed text
          * @return format entry
          */
-        public static FormatEntry FormatEntry(string text)
+        public static FormatEntry CreateFormatEntry(string text)
         {
             return new FormatEntry(Literal(text), null);
         }
@@ -3418,7 +3356,7 @@ namespace Naxam.Mapbox.Expressions
          * @return expression
          * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-types-object">Style specification</a>
          */
-        public static Expression @object(Expression input)
+        public static Expression Object(Expression input)
         {
             return new Expression("object", input);
         }
@@ -3626,7 +3564,7 @@ namespace Naxam.Mapbox.Expressions
          * @param value the stop output
          * @return the stop
          */
-        public static Stop Stop(object stop, object value)
+        public static Stop CreateStop(object stop, object value)
         {
             return new Stop(stop, value);
         }
@@ -3892,7 +3830,7 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Step(Expression input, double defaultOutput, params Stop[] stops)
         {
-            return Step(input, defaultOutput, Naxam.Mapbox.Expressions.Stop.ToExpressionArray(stops));
+            return Step(input, defaultOutput, Stop.ToExpressionArray(stops));
         }
 
         /**
@@ -4171,7 +4109,7 @@ namespace Naxam.Mapbox.Expressions
             {
                 foreach (Expression argument in Arguments)
                 {
-                    if (argument is ValueExpression valueExpression)
+                    if (argument is IValueExpression valueExpression)
                     {
                         array.Add(valueExpression.ToValue());
                     }
@@ -4209,46 +4147,6 @@ namespace Naxam.Mapbox.Expressions
             }
             builder.Append("]");
             return builder.ToString();
-        }
-
-        /**
-         * Returns a DSL equivalent of a raw expression.
-         * <p>
-         * If your raw expression contains a coma (,) delimited literal it has to be enclosed with double quotes ("),
-         * for example
-         * </p>
-         * <pre>
-         *   {@code
-         *   ["to-color", "rgba(255, 0, 0, 255)"]
-         *   }
-         * </pre>
-         *
-         * @param rawExpression the raw expression
-         * @return the resulting expression
-         * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/">Style specification</a>
-         */
-        public static Expression Raw(string rawExpression)
-        {
-            return Converter.Convert(rawExpression);
-        }
-
-        /**
-         * Converts an object that is a primitive array to an object[]
-         *
-         * @param object the object to convert to an object array
-         * @return the converted object array
-         */
-        static object[] ToObjectArray(IEnumerable @object)
-        {
-            // object is a primitive array
-            var result = new List<object>();
-            var enumerator = @object.GetEnumerator();
-            while (enumerator.MoveNext())
-            {
-                result.Add(enumerator.Current);
-            }
-
-            return result.ToArray();
         }
     }
 }

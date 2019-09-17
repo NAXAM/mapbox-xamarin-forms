@@ -18,6 +18,8 @@ namespace Naxam.Mapbox
 
         bool AddLayer(params Layers.Layer[] layers);
         bool AddLayerBelow(Layers.Layer layer, string layerId);
+        bool AddLayerAbove(Layers.Layer layer, string layerId);
+        bool AddLayerAt(Layers.Layer layer, int index);
         void RemoveLayer(params string[] layerIds);
     }
 

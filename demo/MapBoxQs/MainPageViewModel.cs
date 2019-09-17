@@ -236,12 +236,11 @@ namespace MapBoxQs
                     IconColor = Expression.Interpolate(
                         Expression.Exponential(1.0),
                         Expression.Get("mag"),
-                        Expression.Stop(2.0, Expression.Rgb(0, 255, 0)),
-                        Expression.Stop(4.5, Expression.Rgb(0, 0, 255)),
-                        Expression.Stop(7.0, Expression.Rgb(255, 0, 0))
+                        Expression.CreateStop(2.0, Expression.Rgb(0, 255, 0)),
+                        Expression.CreateStop(4.5, Expression.Rgb(0, 0, 255)),
+                        Expression.CreateStop(7.0, Expression.Rgb(255, 0, 0))
                     )
                 };
-                //unclusteredLayer.Filter = Expression.Neq(Expression.Get("cluster"), true);
                 MapFunctions.AddLayer(unclusteredLayer);
 
                 var layers = new KeyValuePair<int, Color>[] {
@@ -254,16 +253,16 @@ namespace MapBoxQs
                     var item = layers[j];
                     var layer = new CircleLayer($"layer_{item.Key}_{item.Value.ToHex()}", geojsonSrc.Id)
                     {
-                        CircleColor = item.Value,
-                        CircleRadius = 18
+                        CircleColor = Expression.Color(item.Value),
+                        CircleRadius = Expression.Literal(18)
                     };
                     var pointCount = Expression.ToNumber(Expression.Get("point_count"));
                     var filter = j == 0
                         ? Expression.All(
-                            Expression.Has("point_coint"),
+                            Expression.Has("point_count"),
                             Expression.Gte(pointCount, Expression.Literal(item.Key)))
                         : Expression.All(
-                            Expression.Has("point_coint"),
+                            Expression.Has("point_count"),
                             Expression.Gte(pointCount, Expression.Literal(item.Key)),
                             Expression.Lt(pointCount, Expression.Literal(layers[j-1].Key))
                         );
@@ -274,9 +273,9 @@ namespace MapBoxQs
                 }
 
                 var count = new SymbolLayer("count.layer", geojsonSrc.Id) {
-                    TextField = Expression.ToString(Expression.Get("point_coint)")),
+                    TextField = Expression.ToString(Expression.Get("point_count")),
                     TextSize = Expression.Literal(12.0),
-                    TextColor = Expression.Color(Color.Pink),
+                    TextColor = Expression.Color(Color.White),
                     TextIgnorePlacement = Expression.Literal(true),
                     TextAllowOverlap = Expression.Literal(true),
                 };

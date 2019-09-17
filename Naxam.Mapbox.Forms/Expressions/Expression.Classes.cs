@@ -18,30 +18,14 @@ namespace Naxam.Mapbox.Expressions
      * {@link #Literal(string)} and {@link #Literal(object)}.
      * </p>
      */
-    public class ExpressionLiteral : Expression, ValueExpression, IEquatable<ExpressionLiteral>
+     public class ExpressionLiteral<T> : Expression, IValueExpression, IEquatable<ExpressionLiteral<T>>
     {
-        public object Value { get; private set; }
+        public T Value { get; private set; }
 
-        /**
-         * Create an expression literal.
-         *
-         * @param object the object to be treated as literal
-         */
-        public ExpressionLiteral(object @object)
+        public ExpressionLiteral(T @object)
         {
-            switch (@object)
-            {
-                case string @string:
-                    @object = UnwrapStringLiteral(@string);
-                    break;
-                case double @double:
-                    @object = @double;
-                    break;
-            }
-
             Value = @object;
         }
-
         /**
          * Get the literal object.
          *
@@ -50,9 +34,9 @@ namespace Naxam.Mapbox.Expressions
 
         public object ToValue()
         {
-            if (Value is ExpressionLiteral l)
+            if (Value is IValueExpression valueExpression)
             {
-                return l.ToValue();
+                return valueExpression.ToValue();
             }
             return Value;
         }
@@ -61,7 +45,6 @@ namespace Naxam.Mapbox.Expressions
         {
             return new object[] { "literal", Value };
         }
-
         /**
          * Returns a string representation of the expression literal.
          *
@@ -82,20 +65,6 @@ namespace Naxam.Mapbox.Expressions
             return @string;
         }
 
-        /**
-         * Indicates whether some other object is "equal to" this one.
-         *
-         * @param o the other object
-         * @return true if equal, false if not
-         */
-
-        static string UnwrapStringLiteral(string value)
-        {
-            return (value.Length > 1 && value[0] == '\"' && value[value.Length - 1] == '\"')
-                ? value.Substring(1, value.Length - 1)
-                : value;
-        }
-
         public override bool Equals(object obj)
         {
             if (this == obj)
@@ -103,7 +72,7 @@ namespace Naxam.Mapbox.Expressions
                 return true;
             }
 
-            if (obj is ExpressionLiteral expressionLiteral)
+            if (obj is ExpressionLiteral<T> expressionLiteral)
             {
                 return Equals(expressionLiteral);
             }
@@ -116,7 +85,6 @@ namespace Naxam.Mapbox.Expressions
          *
          * @return a hash code value for this expression literal
          */
-
         public override int GetHashCode()
         {
             int result = base.GetHashCode();
@@ -124,7 +92,7 @@ namespace Naxam.Mapbox.Expressions
             return result;
         }
 
-        public bool Equals(ExpressionLiteral other)
+        public bool Equals(ExpressionLiteral<T> other)
         {
             if (other == null) return false;
 
@@ -143,13 +111,6 @@ namespace Naxam.Mapbox.Expressions
     public sealed class Interpolator : Expression
     {
         public Interpolator(string @operator, params Expression[] arguments) : base(@operator, arguments) { }
-    }
-
-    /**
-     * Expression array type.
-     */
-    public sealed class Array
-    {
     }
 
     /**
@@ -329,141 +290,141 @@ namespace Naxam.Mapbox.Expressions
         }
     }
 
-    /**
-     * Converts a JsonArray or a raw expression to a Java expression.
-     */
-    public static class Converter
-    {
-        /**
-         * Converts a JsonArray to an expression
-         *
-         * @param jsonArray the json array to convert
-         * @return the expression
-         */
-        public static Expression Convert(JArray jsonArray)
-        {
-            if (jsonArray.Count == 0)
-            {
-                throw new InvalidOperationException("Can't convert empty jsonArray expressions");
-            }
+    ///**
+    // * Converts a JsonArray or a raw expression to a Java expression.
+    // */
+    //public static class Converter
+    //{
+    //    /**
+    //     * Converts a JsonArray to an expression
+    //     *
+    //     * @param jsonArray the json array to convert
+    //     * @return the expression
+    //     */
+    //    public static Expression Convert(JArray jsonArray)
+    //    {
+    //        if (jsonArray.Count == 0)
+    //        {
+    //            throw new InvalidOperationException("Can't convert empty jsonArray expressions");
+    //        }
 
-            var @operator = jsonArray[0].Value<string>();
-            var arguments = new List<Expression>();
+    //        var @operator = jsonArray[0].Value<string>();
+    //        var arguments = new List<Expression>();
 
-            for (int i = 1; i < jsonArray.Count; i++)
-            {
-                var jsonElement = jsonArray[i];
-                if (@operator.Equals("literal") && jsonElement is JArray jArray)
-                {
-                    var array = new object[jArray.Count];
-                    for (int j = 0; j < jArray.Count; j++)
-                    {
-                        var element = jArray[j];
-                        switch (element.Type)
-                        {
-                            case JTokenType.Boolean:
-                            case JTokenType.Float:
-                            case JTokenType.Integer:
-                            case JTokenType.String:
-                                array[j] = ConvertToValue(element);
-                                break;
-                            default:
-                                throw new InvalidOperationException("Nested literal arrays are not supported.");
-                        }
-                    }
+    //        for (int i = 1; i < jsonArray.Count; i++)
+    //        {
+    //            var jsonElement = jsonArray[i];
+    //            if (@operator.Equals("literal") && jsonElement is JArray jArray)
+    //            {
+    //                var array = new object[jArray.Count];
+    //                for (int j = 0; j < jArray.Count; j++)
+    //                {
+    //                    var element = jArray[j];
+    //                    switch (element.Type)
+    //                    {
+    //                        case JTokenType.Boolean:
+    //                        case JTokenType.Float:
+    //                        case JTokenType.Integer:
+    //                        case JTokenType.String:
+    //                            array[j] = ConvertToValue(element);
+    //                            break;
+    //                        default:
+    //                            throw new InvalidOperationException("Nested literal arrays are not supported.");
+    //                    }
+    //                }
 
-                    arguments.Add(new ExpressionLiteralArray(array));
-                }
-                else
-                {
-                    arguments.Add(Convert(jsonElement));
-                }
-            }
-            return new Expression(@operator, arguments.ToArray());
-        }
+    //                arguments.Add(new ExpressionLiteralArray(array));
+    //            }
+    //            else
+    //            {
+    //                arguments.Add(Convert(jsonElement));
+    //            }
+    //        }
+    //        return new Expression(@operator, arguments.ToArray());
+    //    }
 
-        /**
-         * Converts a JsonElement to an expression
-         *
-         * @param jsonElement the json element to convert
-         * @return the expression
-         */
-        public static Expression Convert(JToken jsonElement)
-        {
-            switch (jsonElement.Type)
-            {
-                case JTokenType.Array:
-                    return Convert((JArray)jsonElement);
-                case JTokenType.None:
-                case JTokenType.Null:
-                    return new ExpressionLiteral(string.Empty);
-                case JTokenType.Boolean:
-                case JTokenType.Float:
-                case JTokenType.Integer:
-                case JTokenType.String:
-                case JTokenType.Uri:
-                    return new ExpressionLiteral(ConvertToValue(jsonElement));
-                case JTokenType.Object:
-                    var map = new Dictionary<string, Expression>();
-                    var jObject = (JObject)jsonElement;
-                    foreach (var property in jObject.Properties())
-                    {
-                        map.Add(property.Name, Convert(property.Value));
-                    }
-                    return new ExpressionMap(map);
-                default:
-                    throw new InvalidOperationException("Unsupported expression conversion for " + jsonElement.Type);
-            }
-        }
+    //    /**
+    //     * Converts a JsonElement to an expression
+    //     *
+    //     * @param jsonElement the json element to convert
+    //     * @return the expression
+    //     */
+    //    public static Expression Convert(JToken jsonElement)
+    //    {
+    //        switch (jsonElement.Type)
+    //        {
+    //            case JTokenType.Array:
+    //                return Convert((JArray)jsonElement);
+    //            case JTokenType.None:
+    //            case JTokenType.Null:
+    //                return new ExpressionLiteral(string.Empty);
+    //            case JTokenType.Boolean:
+    //            case JTokenType.Float:
+    //            case JTokenType.Integer:
+    //            case JTokenType.String:
+    //            case JTokenType.Uri:
+    //                return new ExpressionLiteral(ConvertToValue(jsonElement));
+    //            case JTokenType.Object:
+    //                var map = new Dictionary<string, Expression>();
+    //                var jObject = (JObject)jsonElement;
+    //                foreach (var property in jObject.Properties())
+    //                {
+    //                    map.Add(property.Name, Convert(property.Value));
+    //                }
+    //                return new ExpressionMap(map);
+    //            default:
+    //                throw new InvalidOperationException("Unsupported expression conversion for " + jsonElement.Type);
+    //        }
+    //    }
 
-        /**
-         * Converts a JsonPrimitive to value
-         *
-         * @param jsonPrimitive the json primitive to convert
-         * @return the value
-         */
-        private static object ConvertToValue(JToken jsonPrimitive)
-        {
-            switch (jsonPrimitive.Type)
-            {
-                case JTokenType.Boolean:
-                    return jsonPrimitive.Value<bool>();
-                case JTokenType.Integer:
-                    return jsonPrimitive.Value<int>();
-                case JTokenType.Float:
-                    return jsonPrimitive.Value<float>();
-                case JTokenType.String:
-                    return jsonPrimitive.Value<string>();
-                case JTokenType.Uri:
-                    return jsonPrimitive.Value<Uri>().ToString();
-                default:
-                    throw new InvalidOperationException("Unsupported literal expression conversion for " + jsonPrimitive.Type);
-            }
-        }
+    //    /**
+    //     * Converts a JsonPrimitive to value
+    //     *
+    //     * @param jsonPrimitive the json primitive to convert
+    //     * @return the value
+    //     */
+    //    private static object ConvertToValue(JToken jsonPrimitive)
+    //    {
+    //        switch (jsonPrimitive.Type)
+    //        {
+    //            case JTokenType.Boolean:
+    //                return jsonPrimitive.Value<bool>();
+    //            case JTokenType.Integer:
+    //                return jsonPrimitive.Value<int>();
+    //            case JTokenType.Float:
+    //                return jsonPrimitive.Value<float>();
+    //            case JTokenType.String:
+    //                return jsonPrimitive.Value<string>();
+    //            case JTokenType.Uri:
+    //                return jsonPrimitive.Value<Uri>().ToString();
+    //            default:
+    //                throw new InvalidOperationException("Unsupported literal expression conversion for " + jsonPrimitive.Type);
+    //        }
+    //    }
 
-        /**
-         * Converts a raw expression to a DSL equivalent.
-         *
-         * @param rawExpression the raw expression to convert
-         * @return the resulting expression
-         * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/">Style specification</a>
-         */
-        public static Expression Convert(string rawExpression)
-        {
-            using (var stringReader = new StringReader(rawExpression))
-            {
-                using (var jsonReader = new JsonTextReader(stringReader))
-                {
-                    return Convert(JArray.Load(jsonReader));
-                }
-            }
-        }
-    }
+    //    /**
+    //     * Converts a raw expression to a DSL equivalent.
+    //     *
+    //     * @param rawExpression the raw expression to convert
+    //     * @return the resulting expression
+    //     * @see <a href="https://www.mapbox.com/mapbox-gl-js/style-spec/">Style specification</a>
+    //     */
+    //    public static Expression Convert(string rawExpression)
+    //    {
+    //        using (var stringReader = new StringReader(rawExpression))
+    //        {
+    //            using (var jsonReader = new JsonTextReader(stringReader))
+    //            {
+    //                return Convert(JArray.Load(jsonReader));
+    //            }
+    //        }
+    //    }
+    //}
 
     /**
      * Expression to wrap object[] as a literal
      */
-    public sealed class ExpressionLiteralArray : ExpressionLiteral, IEquatable<ExpressionLiteralArray>
+    public sealed class ExpressionLiteralArray<T> : ExpressionLiteral<IEnumerable<T>>, IEquatable<ExpressionLiteralArray<T>>
     {
 
         /**
@@ -471,7 +432,7 @@ namespace Naxam.Mapbox.Expressions
          *
          * @param object the object to be treated as literal
          */
-        public ExpressionLiteralArray(IEnumerable @object) : base(@object)
+        public ExpressionLiteralArray(IEnumerable<T> @object) : base(@object)
         {
         }
 
@@ -483,7 +444,7 @@ namespace Naxam.Mapbox.Expressions
 
         public override string ToString()
         {
-            var array = (object[])Value;
+            var array = Value?.ToArray() ?? new T[0];
             var builder = new StringBuilder("[");
             for (int i = 0; i < array.Length; i++)
             {
@@ -513,7 +474,7 @@ namespace Naxam.Mapbox.Expressions
                 return true;
             }
 
-            if (obj is ExpressionLiteralArray expressionLiteralArray)
+            if (obj is ExpressionLiteralArray<T> expressionLiteralArray)
             {
                 // TODO Ensure arrays are equal
                 return Equals(expressionLiteralArray);
@@ -527,23 +488,23 @@ namespace Naxam.Mapbox.Expressions
             return base.GetHashCode();
         }
 
-        public bool Equals(ExpressionLiteralArray other)
+        public bool Equals(ExpressionLiteralArray<T> other)
         {
             if (other == null) return false;
 
             if (base.Equals(other) == false) return false;
 
-            var left = (IEnumerable)this.Value;
-            var right = (IEnumerable)other.Value;
+            var left = Value;
+            var right = other.Value;
 
-            return Enumerable.SequenceEqual(left.Cast<object>(), right.Cast<object>());
+            return Enumerable.SequenceEqual(left, right);
         }
     }
 
     /**
      * Wraps an expression value stored in a Map.
      */
-    public sealed class ExpressionMap : Expression, ValueExpression, IEquatable<ExpressionMap>
+    public sealed class ExpressionMap : Expression, IValueExpression, IEquatable<ExpressionMap>
     {
         public Dictionary<string, Expression> Map { get; private set; }
 
@@ -562,7 +523,7 @@ namespace Naxam.Mapbox.Expressions
 
                 switch (expression)
                 {
-                    case ValueExpression valueExpression:
+                    case IValueExpression valueExpression:
                         unwrappedMap[key] = valueExpression.ToValue();
                         break;
                     default:
@@ -632,18 +593,8 @@ namespace Naxam.Mapbox.Expressions
     /**
      * Interface used to describe expressions that hold a Java value.
      */
-    interface ValueExpression
+    interface IValueExpression
     {
         object ToValue();
-    }
-
-    public sealed class ExpressionFormat : Expression
-    {
-        public FormatEntry[] Entries { get; private set; }
-
-        public ExpressionFormat(params FormatEntry[] entries)
-        {
-            Entries = entries;
-        }
     }
 }

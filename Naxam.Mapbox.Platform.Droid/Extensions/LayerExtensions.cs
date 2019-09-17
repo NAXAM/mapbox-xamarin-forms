@@ -73,30 +73,30 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var native = new CircleLayer(layer.Id, layer.SourceId);
             var properties = new List<PropertyValue>();
-            if (layer.CircleBlur.HasValue)
+            if (layer.CircleBlur != null)
             {
                 properties.Add(
-                    PropertyFactory.CircleBlur(new Java.Lang.Float(layer.CircleBlur.Value))
+                    PropertyFactory.CircleBlur(layer.CircleBlur.ToExpression())
                     );
             }
 
-            if (layer.CircleOpacity.HasValue)
+            if (layer.CircleOpacity != null)
             {
                 properties.Add(
-                    PropertyFactory.CircleOpacity(new Java.Lang.Float(layer.CircleOpacity.Value))
+                    PropertyFactory.CircleOpacity(layer.CircleOpacity.ToExpression())
                     );
             }
 
-            if (layer.CircleRadius.HasValue)
+            if (layer.CircleRadius != null)
             {
                 properties.Add(
-                    PropertyFactory.CircleRadius(new Java.Lang.Float(layer.CircleRadius.Value))
+                    PropertyFactory.CircleRadius(layer.CircleRadius.ToExpression())
                     );
             }
 
-            if (layer.CircleColor.HasValue)
+            if (layer.CircleColor != null)
             {
-                properties.Add(PropertyFactory.CircleColor(layer.CircleColor.Value.ToAndroid()));
+                properties.Add(PropertyFactory.CircleColor(layer.CircleColor.ToExpression()));
             }
 
             native.SetProperties(properties.ToArray());
@@ -105,9 +105,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.Filter != null)
             {
-                var filter = layer.Filter.ToExpression();
-                var x = filter.ToArray();
-                native.WithFilter(filter);
+                native.WithFilter(layer.Filter.ToExpression());
             }
 
             return native;
@@ -158,16 +156,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (symbol.IconColor != null)
             {
-                var iconColor = Expression.Interpolate(
-                    Expression.Exponential(new Java.Lang.Float(1.0)),
-                    Expression.Get("mag"),
-                    Expression.CreateStop(new Java.Lang.Float(2.0), Expression.Rgb(new Java.Lang.Float(0), new Java.Lang.Float(255), new Java.Lang.Float(0))),
-                    Expression.CreateStop(new Java.Lang.Float(4.5), Expression.Rgb(new Java.Lang.Float(0), new Java.Lang.Float(0), new Java.Lang.Float(255))),
-                    Expression.CreateStop(new Java.Lang.Float(7.0), Expression.Rgb(new Java.Lang.Float(255), new Java.Lang.Float(0), new Java.Lang.Float(0)))
-                    );
-                    //symbol.IconColor.ToExpression();
-                var array = iconColor.ToArray();
-                properties.Add(PropertyFactory.IconColor(iconColor));
+                properties.Add(PropertyFactory.IconColor(symbol.IconColor.ToExpression()));
             }
 
             if (symbol.IconSize != null)
@@ -200,9 +189,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (symbol.Filter != null)
             {
-                var expression = symbol.Filter.ToExpression();
-                var array = expression.ToArray();
-                newLayer.WithFilter(expression);
+                newLayer.WithFilter(symbol.Filter.ToExpression());
             }
 
             newLayer.SetProperties(properties.ToArray());
@@ -248,7 +235,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (circle.CircleColor != null && circle.CircleColor.ColorInt != null)
             {
                 Android.Graphics.Color circleColor = new Android.Graphics.Color((int)circle.CircleColor.ColorInt);
-                forms.CircleColor = Xamarin.Forms.Color.FromRgb(circleColor.R, circleColor.G, circleColor.B);
+                //forms.CircleColor = Xamarin.Forms.Color.FromRgb(circleColor.R, circleColor.G, circleColor.B);
             }
             return forms;
         }
