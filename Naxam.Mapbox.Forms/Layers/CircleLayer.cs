@@ -1,6 +1,4 @@
 ﻿using Naxam.Mapbox.Expressions;
-using System;
-using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Layers
 {
@@ -20,8 +18,6 @@ namespace Naxam.Mapbox.Layers
 
         public Expression CircleStrokeOpacity { get; set; }
 
-        public CircleLayer(string id, string sourceId) : base(id, sourceId)
-        {
-        }
+        public CircleLayer(string id, string sourceId) : base(id, sourceId) { }
     }
 }
