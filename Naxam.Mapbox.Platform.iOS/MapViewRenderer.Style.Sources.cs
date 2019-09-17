@@ -32,6 +32,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                         break;
                     }
 
+                    if (iconImageSource.IsTemplate)
+                    {
+                        image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+                    }
+
                     mapStyle.SetImage(image, fileImageSource.File);
                     iconImageSource.Id = fileImageSource.File;
                     break;

@@ -150,7 +150,7 @@ namespace MapBoxQs
 
                 MapFunctions.AddStyleImage(new IconImageSource()
                 {
-                    Source = "ic_cross.xml",
+                    Source = "ic_cross.png",
                     IsTemplate = true
                 });
                 MapFunctions.AddStyleImage(new IconImageSource()
@@ -159,22 +159,22 @@ namespace MapBoxQs
                 });
 
 
-                CenterLocation =
-                //new LatLng(-28.4353498348801, 140.31082470261492);
-                new LatLng(21.004142f, 105.847607f);
+            //    CenterLocation =
+            //    //new LatLng(-28.4353498348801, 140.31082470261492);
+            //    new LatLng(21.004142f, 105.847607f);
 
-                Annotations = new ObservableCollection<Annotation> {
-                            new SymbolAnnotation {
-                                Coordinates = new LatLng(21.004142f, 105.847607f),
-                                Id = Guid.NewGuid().ToString(),
-                                Title = "Naxam Company Limited",
-                                SubTitle = "A software development agency from Hanoi, Vietnam",
-                                IconImage = (ImageSource)"catsvc_gasbottles.png",
-                                IconSize = 4,
-                                IconColor = Color.Green,
-                                IsDraggable = true
-            ,                }
-                        };
+            //    Annotations = new ObservableCollection<Annotation> {
+            //                new SymbolAnnotation {
+            //                    Coordinates = new LatLng(21.004142f, 105.847607f),
+            //                    Id = Guid.NewGuid().ToString(),
+            //                    Title = "Naxam Company Limited",
+            //                    SubTitle = "A software development agency from Hanoi, Vietnam",
+            //                    IconImage = (ImageSource)"catsvc_gasbottles.png",
+            //                    IconSize = 4,
+            //                    IconColor = Color.Green,
+            //                    IsDraggable = true
+            //,                }
+            //            };
 
                 //var source = new GeoJsonSource {
                 //    Id = "regions.src",
@@ -240,9 +240,12 @@ namespace MapBoxQs
 
                 var unclusteredLayer = new SymbolLayer("unclustered.layer", geojsonSrc.Id)
                 {
-                    IconImage = Expression.Literal("ic_cross.xml"),
+                    IconImage = Expression.Literal("ic_cross.png"),
                     IconSize = Expression.Division(Expression.Get("mag"), Expression.Literal(4.0f)),
-                    IconColor = Expression.Interpolate(
+                    IconColor =
+                    //Expression.Color(Color.Red)
+
+                    Expression.Interpolate(
                         Expression.Exponential(1.0),
                         Expression.Get("mag"),
                         Expression.CreateStop(2.0f, Expression.Color(Color.Red)),

@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxQs.iOS", "demo\iOS\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapBoxQs", "demo\MapBoxQs\MapBoxQs.csproj", "{85E7EE45-A434-481B-8777-B6AC6F986F24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Naxam.Mapbox.Platform.iOS.Tests", "Naxam.Mapbox.Platform.iOS.Tests\Naxam.Mapbox.Platform.iOS.Tests.csproj", "{7B533EC7-D64A-497E-9B83-045E14D3D9C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{85E7EE45-A434-481B-8777-B6AC6F986F24}.Release|iPhone.Build.0 = Release|Any CPU
 		{85E7EE45-A434-481B-8777-B6AC6F986F24}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{85E7EE45-A434-481B-8777-B6AC6F986F24}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Debug|iPhone.Build.0 = Debug|iPhone
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Release|Any CPU.ActiveCfg = Release|iPhone
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Release|Any CPU.Build.0 = Release|iPhone
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Release|iPhone.ActiveCfg = Release|iPhone
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Release|iPhone.Build.0 = Release|iPhone
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +136,7 @@ Global
 		{BE104097-5ADB-4739-92CC-8FD300E12E8E} = {5BC99B05-B517-4EFA-BF6E-85779D26954D}
 		{9899334D-62C2-45EA-A799-8CF1D8B6AC5E} = {5BC99B05-B517-4EFA-BF6E-85779D26954D}
 		{85E7EE45-A434-481B-8777-B6AC6F986F24} = {5BC99B05-B517-4EFA-BF6E-85779D26954D}
+		{7B533EC7-D64A-497E-9B83-045E14D3D9C2} = {CC219E0E-3822-4F20-9549-D4341744DF2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF22DA6A-2BA4-4213-8E34-D620CF0D7449}

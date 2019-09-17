@@ -1,10 +1,8 @@
-﻿using System;
-using Foundation;
+﻿using Foundation;
 using Mapbox;
 using Naxam.Mapbox.Layers;
 using Naxam.Mapbox.Sources;
 using Newtonsoft.Json;
-using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
 
@@ -58,18 +56,43 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             {
                 case CircleLayer circleLayer:
                     {
-                        var newLayer = new MGLCircleStyleLayer(id, source)
+                        var newLayer = new MGLCircleStyleLayer(id, source);
+
+                        if (circleLayer.CircleColor != null)
                         {
-                            CircleColor = NSExpression.FromConstant(circleLayer.CircleColor.ToUIColor()),
-                            CircleOpacity = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.CircleOpacity)),
-                            CircleRadius = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.CircleRadius))
-                        };
-                        if (circleLayer.StrokeColor is Color strokeColor)
-                        {
-                            newLayer.CircleStrokeColor = NSExpression.FromConstant(strokeColor.ToUIColor());
-                            newLayer.CircleStrokeOpacity = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.StrokeOpacity));
-                            newLayer.CircleStrokeWidth = NSExpression.FromConstant(NSNumber.FromDouble(circleLayer.StrokeWidth));
+                            newLayer.CircleColor = circleLayer.CircleColor.ToExpression();
                         }
+
+                        if (circleLayer.CircleOpacity != null)
+                        {
+                            newLayer.CircleOpacity = circleLayer.CircleOpacity.ToExpression();
+                        }
+
+                        if (circleLayer.CircleRadius != null)
+                        {
+                            newLayer.CircleRadius = circleLayer.CircleRadius.ToExpression();
+                        }
+
+                        if (circleLayer.CircleStrokeColor != null)
+                        {
+                            newLayer.CircleStrokeColor = circleLayer.CircleStrokeColor.ToExpression();
+                        }
+
+                        if (circleLayer.CircleStrokeOpacity != null)
+                        {
+                            newLayer.CircleStrokeOpacity = circleLayer.CircleStrokeOpacity.ToExpression();
+                        }
+
+                        if (circleLayer.CircleStrokeWidth != null)
+                        {
+                            newLayer.CircleStrokeWidth = circleLayer.CircleStrokeWidth.ToExpression();
+                        }
+
+                        if (circleLayer.Filter != null)
+                        {
+                            newLayer.Predicate = circleLayer.Filter.ToPredicate();
+                        }
+
                         return newLayer;
                     }
 
@@ -107,34 +130,61 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                     {
                         var newLayer = new MGLSymbolStyleLayer(id, source);
 
-                        if (symbolLayer.IconImageName != null)
+                        if (symbolLayer.IconImage != null)
                         {
                             // TODO Need to ensure ID if it's a local resource
-                            newLayer.IconImageName = NSExpression.FromConstant(new NSString(symbolLayer.IconImageName.Id));
+                            newLayer.IconImageName = symbolLayer.IconImage.ToExpression();
                         }
 
-                        if (symbolLayer.IconOpacity.HasValue)
+                        if (symbolLayer.IconSize != null)
                         {
-                            newLayer.IconOpacity = NSExpression.FromConstant(NSNumber.FromDouble(symbolLayer.IconOpacity.Value));
+                            // TODO iOS - Name mitmatched: IconSize vs. IconScale
+                            newLayer.IconScale = symbolLayer.IconSize.ToExpression();
                         }
 
-                        if (symbolLayer.IconAllowOverlap.HasValue)
+                        if (symbolLayer.IconColor != null)
                         {
-                            newLayer.IconAllowsOverlap = NSExpression.FromConstant(NSNumber.FromBoolean(symbolLayer.IconAllowOverlap.Value));
+                            var color = symbolLayer.IconColor.ToExpression();
+                            newLayer.IconColor = color;
                         }
 
-                        if (symbolLayer.IconAllowOverlap.HasValue)
+                        if (symbolLayer.IconColor != null)
                         {
-                            newLayer.IconAllowsOverlap = NSExpression.FromConstant(NSNumber.FromBoolean(symbolLayer.IconAllowOverlap.Value));
+                            var color = symbolLayer.IconColor.ToExpression();
+                            newLayer.IconColor = color;
                         }
 
-                        if (symbolLayer.IconOffset?.Length >= 2)
+                        if (symbolLayer.TextAllowOverlap != null)
                         {
-                            var offset = NSValue.FromCGVector(new CoreGraphics.CGVector(symbolLayer.IconOffset[0], symbolLayer.IconOffset[1]));
-                            newLayer.IconOffset = NSExpression.FromConstant(offset);
+                            newLayer.TextAllowsOverlap = symbolLayer.TextAllowOverlap.ToExpression();
+                        }
+
+                        if (symbolLayer.TextColor != null)
+                        {
+                            newLayer.TextColor = symbolLayer.TextColor.ToExpression();
+                        }
+
+                        if (symbolLayer.TextField != null)
+                        {
+                            newLayer.Text = symbolLayer.TextField.ToExpression();
+                        }
+
+                        if (symbolLayer.TextIgnorePlacement != null)
+                        {
+                            newLayer.TextIgnoresPlacement = symbolLayer.TextIgnorePlacement.ToExpression();
+                        }
+
+                        if (symbolLayer.TextSize != null)
+                        {
+                            newLayer.TextFontSize = symbolLayer.TextSize.ToExpression();
                         }
 
                         // TODO Add other properties
+
+                        if (symbolLayer.Filter != null)
+                        {
+                            newLayer.Predicate = symbolLayer.Filter.ToPredicate();
+                        }
 
                         return newLayer;
                     }

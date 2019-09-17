@@ -214,6 +214,11 @@
     <BundleResource Include="Resources\materialdesignicons-webfont.ttf" />
     <BundleResource Include="Resources\ports.geojson" />
     <BundleResource Include="Resources\us_west_coast.geojson" />
+    <BundleResource Include="Resources\ic_cross%403x.png" />
+    <BundleResource Include="Resources\catsvc_gasbottles%403x.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </BundleResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.Support">

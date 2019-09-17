@@ -48,6 +48,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
             
             newStyle.Name = style.Name;
+            mapStyle = style;
             Element.Functions = this;
             Element.DidFinishLoadingStyleCommand?.Execute(newStyle);
         }

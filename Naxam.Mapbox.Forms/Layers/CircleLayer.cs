@@ -14,11 +14,11 @@ namespace Naxam.Mapbox.Layers
 
         public Expression CircleOpacity { get; set; }
 
-        public Expression StrokeColor { get; set; }
+        public Expression CircleStrokeColor { get; set; }
 
-        public Expression StrokeWidth { get; set; }
+        public Expression CircleStrokeWidth { get; set; }
 
-        public Expression StrokeOpacity { get; set; }
+        public Expression CircleStrokeOpacity { get; set; }
 
         public CircleLayer(string id, string sourceId) : base(id, sourceId)
         {

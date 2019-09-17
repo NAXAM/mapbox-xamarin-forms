@@ -112,6 +112,7 @@
     <Compile Include="MapViewRenderer.Style.Layers.cs" />
     <Compile Include="Extensions\SourceAndLayerExtensions.cs" />
     <Compile Include="MapViewRenderer.Style.Sources.cs" />
+    <Compile Include="Extensions\ExpressionExtesions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">
