@@ -97,22 +97,6 @@ namespace MapBoxQs
                 //new MapStyle("mapbox://styles/hemamaps/cjy9oxfop0v511co4ep2uvt7t");
                 MapStyle.LIGHT;
 
-            //CenterLocation =
-            //    //new LatLng(-28.4353498348801, 140.31082470261492);
-            //    new LatLng(21.004142f, 105.847607f);
-
-            //Annotations = new ObservableCollection<Annotation> {
-            //                new SymbolAnnotation {
-            //                    Coordinates = new LatLng(21.004142f, 105.847607f),
-            //                    Id = Guid.NewGuid().ToString(),
-            //                    Title = "Naxam Company Limited",
-            //                    SubTitle = "A software development agency from Hanoi, Vietnam",
-            //                    IconImage = "harbor-15",
-            //                    IconSize = 4,
-            //                    IconColor = Color.Green,  
-            //                    IsDraggable = true
-            //,                }
-            //            };
             DidFinishRenderingCommand = new Command((obj) =>
             {
                 if (isScaleBarShown == false && CenterLocation != LatLng.Zero)
@@ -163,11 +147,35 @@ namespace MapBoxQs
 
             DidFinishLoadingStyleCommand = new Command<MapStyle>((style) =>
             {
+
                 MapFunctions.AddStyleImage(new IconImageSource()
                 {
                     Source = "ic_cross.xml",
                     IsTemplate = true
                 });
+                MapFunctions.AddStyleImage(new IconImageSource()
+                {
+                    Source = "catsvc_gasbottles.png"
+                });
+
+
+                CenterLocation =
+                //new LatLng(-28.4353498348801, 140.31082470261492);
+                new LatLng(21.004142f, 105.847607f);
+
+                Annotations = new ObservableCollection<Annotation> {
+                            new SymbolAnnotation {
+                                Coordinates = new LatLng(21.004142f, 105.847607f),
+                                Id = Guid.NewGuid().ToString(),
+                                Title = "Naxam Company Limited",
+                                SubTitle = "A software development agency from Hanoi, Vietnam",
+                                IconImage = (ImageSource)"catsvc_gasbottles.png",
+                                IconSize = 4,
+                                IconColor = Color.Green,
+                                IsDraggable = true
+            ,                }
+                        };
+
                 //var source = new GeoJsonSource {
                 //    Id = "regions.src",
                 //    Url = "https://gist.githubusercontent.com/tobrun/cf0d689c8187d42ebe62757f6d0cf137/raw/4d8ac3c8333f1517df9d303d58f20f4a1d8841e8/regions.geojson"

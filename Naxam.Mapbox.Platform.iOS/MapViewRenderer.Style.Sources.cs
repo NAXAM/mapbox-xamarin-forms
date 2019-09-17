@@ -4,14 +4,38 @@ using Mapbox;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Platform.iOS.Extensions;
 using Naxam.Mapbox.Sources;
+using UIKit;
+using Xamarin.Forms;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public partial class MapViewRenderer : IMapFunctions
     {
-        public void AddStyleImage(IconImageSource source)
+        public void AddStyleImage(IconImageSource iconImageSource)
         {
-            throw new NotImplementedException();
+            if (iconImageSource.Source == null) return;
+
+            switch (iconImageSource.Source)
+            {
+                // TODO: iOS - Handle other image sources
+                case FileImageSource fileImageSource:
+                    var cachedImage = mapStyle.ImageForName(fileImageSource.File);
+                    if (cachedImage != null) break;
+
+                    var image = UIImage.FromBundle(fileImageSource.File);
+
+                    if (image == null)
+                    {
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine("Resource not found: " + fileImageSource.File);
+#endif
+                        break;
+                    }
+
+                    mapStyle.SetImage(image, fileImageSource.File);
+                    iconImageSource.Id = fileImageSource.File;
+                    break;
+            }
         }
 
         public bool AddSource(params Source[] sources)

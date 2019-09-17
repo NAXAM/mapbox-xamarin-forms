@@ -131,7 +131,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                             if (symbolAnnotation.IconImage?.Source != null)
                             {
-                                AddStyleImage(symbolAnnotation.IconImage.Source);
+                                AddStyleImage(symbolAnnotation.IconImage);
                             }
 
                             var symbolOptions = symbolAnnotation.ToSymbolOptions();
@@ -147,108 +147,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 }
             }
         }
-
-        IList<Marker> AddMakers(IList<SymbolAnnotation> annotations)
-        {
-            if (annotations == null || annotations.Count == 0)
-                return null;
-
-            var iconSource = new Dictionary<string, Icon>();
-            var markerOptions = new List<MarkerOptions>();
-            for (int i = 0; i < annotations.Count; i++)
-            {
-                var annotation = annotations[i];
-                var marker = new MarkerOptions();
-                marker.SetTitle(annotation.Title);
-                marker.SetSnippet(annotation.SubTitle);
-                marker.SetPosition(annotation.Coordinates.ToLatLng());
-                if (annotation.IconImage?.Source != null)
-                {
-                    switch (annotation.IconImage.Source)
-                    {
-                        case FileImageSource fileImageSource:
-                            var bitmap = Context.Resources.GetBitmap(fileImageSource.File);
-                            if (bitmap == null) continue;
-                            var icon = IconFactory.GetInstance(Context).FromBitmap(bitmap);
-                            marker.SetIcon(icon);
-                            break;
-                        default:
-                            continue;
-                    }
-                }
-
-                markerOptions.Add(marker);
-            }
-            var options = map.AddMarkers(markerOptions.Cast<BaseMarkerOptions>().ToList());
-            for (int i = 0; i < options.Count; i++)
-            {
-                annotations[i].Id = options[i].Id.ToString();
-            }
-            return options;
-        }
-
-        //IList<Polyline> AddPolylines(IList<FPolyline> polylines)
-        //{
-        //    if (polylines == null || polylines.Count == 0)
-        //        return null;
-        //    var polylineOptions = new List<MPolyline>();
-        //    for (int i = 0; i < polylines.Count; i++)
-        //    {
-        //        var polyline = polylines[i];
-        //        if (polyline.Coordinates == null || polyline.Coordinates.Count() == 0)
-        //        {
-        //            continue;
-        //        }
-        //        var notifyCollection = polyline.Coordinates as INotifyCollectionChanged;
-
-        //        var coords = new ArrayList(polyline.Coordinates.Select(d => d.ToLatLng()).ToArray());
-        //        var polylineOpt = new PolylineOptions();
-        //        var width = polyline.Width == 0 ? 1 : polyline.Width;
-        //        polylineOpt.Polyline.Width = Context.ToPixels(width);
-        //        var color = string.IsNullOrEmpty(polyline.HexColor) ? Android.Graphics.Color.Red : Android.Graphics.Color.ParseColor(polyline.HexColor);
-        //        polylineOpt.Polyline.Color = color;
-        //        polylineOpt.AddAll(coords);
-        //        polylineOptions.Add(polylineOpt);
-
-        //        if (notifyCollection != null)
-        //        {
-        //            notifyCollection.CollectionChanged += (s, e) =>
-        //            {
-        //                switch (e.Action)
-        //                {
-        //                    case NotifyCollectionChangedAction.Remove:
-        //                        if (_annotationDictionaries.ContainsKey(polyline.Id))
-        //                        {
-        //                            var poly = _annotationDictionaries[polyline.Id] as Polyline;
-        //                            poly.Points.Remove(polyline.Coordinates.ElementAt(e.OldStartingIndex).ToLatLng());
-        //                        }
-        //                        break;
-        //                    case NotifyCollectionChangedAction.Add:
-        //                        if (_annotationDictionaries.ContainsKey(polyline.Id))
-        //                        {
-        //                            var poly = _annotationDictionaries[polyline.Id] as Polyline;
-        //                            poly.AddPoint(polyline.Coordinates.ElementAt(e.NewStartingIndex).ToLatLng());
-        //                        }
-        //                        break;
-        //                    case NotifyCollectionChangedAction.Reset:
-        //                        if (_annotationDictionaries.ContainsKey(polyline.Id))
-        //                        {
-        //                            var poly = _annotationDictionaries[polyline.Id] as Polyline;
-        //                            poly.Points = polyline.Coordinates.Select(d => d.ToLatLng()).ToList();
-        //                        }
-        //                        break;
-        //                }
-        //            };
-
-        //        }
-        //    }
-        //    var options = map.AddPolylines(polylineOptions.ToList());
-        //    for (int i = 0; i < options.Count; i++)
-        //    {
-        //        polylines[i].Id = options[i].Id.ToString();
-        //    }
-        //    return options;
-        //}
 
         void RemoveAllAnnotations()
         {
@@ -274,8 +172,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             switch (iconImageSource.Source)
             {
-                // TODO: Handle other type of ImageSoure
+                // TODO: Android = Handle other type of ImageSoure
                 case FileImageSource fileImageSource:
+                    iconImageSource.Id = fileImageSource.File;
                     var cachedImage = mapStyle.GetImage(fileImageSource.File);
                     if (cachedImage != null) break;
 
@@ -298,7 +197,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     if (bitmap == null) break;
 
                     mapStyle.AddImage(fileImageSource.File, bitmap, iconImageSource.IsTemplate);
-                    iconImageSource.Id = fileImageSource.File;
+
                     break;
             }
         }
