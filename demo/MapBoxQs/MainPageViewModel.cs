@@ -109,7 +109,7 @@ namespace MapBoxQs
             //                    SubTitle = "A software development agency from Hanoi, Vietnam",
             //                    IconImage = "harbor-15",
             //                    IconSize = 4,
-            //                    IconColor = Color.Green,
+            //                    IconColor = Color.Green,  
             //                    IsDraggable = true
             //,                }
             //            };
@@ -165,7 +165,8 @@ namespace MapBoxQs
             {
                 MapFunctions.AddStyleImage(new IconImageSource()
                 {
-                    Source = "ic_cross.xml"
+                    Source = "ic_cross.xml",
+                    IsTemplate = true
                 });
                 //var source = new GeoJsonSource {
                 //    Id = "regions.src",
@@ -232,20 +233,20 @@ namespace MapBoxQs
                 var unclusteredLayer = new SymbolLayer("unclustered.layer", geojsonSrc.Id)
                 {
                     IconImage = Expression.Literal("ic_cross.xml"),
-                    IconSize = Expression.Division(Expression.Get("mag"), Expression.Literal(4.0)),
+                    IconSize = Expression.Division(Expression.Get("mag"), Expression.Literal(4.0f)),
                     IconColor = Expression.Interpolate(
                         Expression.Exponential(1.0),
                         Expression.Get("mag"),
-                        Expression.CreateStop(2.0, Expression.Rgb(0, 255, 0)),
-                        Expression.CreateStop(4.5, Expression.Rgb(0, 0, 255)),
-                        Expression.CreateStop(7.0, Expression.Rgb(255, 0, 0))
+                        Expression.CreateStop(2.0f, Expression.Color(Color.Red)),
+                        Expression.CreateStop(4.5f, Expression.Color(Color.Green)),
+                        Expression.CreateStop(7.0f, Expression.Color(Color.Blue))
                     )
                 };
                 MapFunctions.AddLayer(unclusteredLayer);
 
                 var layers = new KeyValuePair<int, Color>[] {
-                    new KeyValuePair<int, Color>(150, Color.Green),
-                    new KeyValuePair<int, Color>(20, Color.Yellow),
+                    new KeyValuePair<int, Color>(150, Color.CadetBlue),
+                    new KeyValuePair<int, Color>(20, Color.DarkOrange),
                     new KeyValuePair<int, Color>(0, Color.Purple)
                 };
                 for (int j = 0; j < layers.Length; j++)
@@ -254,7 +255,7 @@ namespace MapBoxQs
                     var layer = new CircleLayer($"layer_{item.Key}_{item.Value.ToHex()}", geojsonSrc.Id)
                     {
                         CircleColor = Expression.Color(item.Value),
-                        CircleRadius = Expression.Literal(18)
+                        CircleRadius = Expression.Literal(18.0f)
                     };
                     var pointCount = Expression.ToNumber(Expression.Get("point_count"));
                     var filter = j == 0
@@ -269,12 +270,11 @@ namespace MapBoxQs
                     layer.Filter = filter;
 
                     MapFunctions.AddLayer(layer);
-                    j++;
                 }
 
                 var count = new SymbolLayer("count.layer", geojsonSrc.Id) {
                     TextField = Expression.ToString(Expression.Get("point_count")),
-                    TextSize = Expression.Literal(12.0),
+                    TextSize = Expression.Literal(12.0f),
                     TextColor = Expression.Color(Color.White),
                     TextIgnorePlacement = Expression.Literal(true),
                     TextAllowOverlap = Expression.Literal(true),

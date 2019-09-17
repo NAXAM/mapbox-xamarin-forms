@@ -279,9 +279,17 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var cachedImage = mapStyle.GetImage(fileImageSource.File);
                     if (cachedImage != null) break;
 
-                    var id = fileImageSource.File.Split('.').First();
+                    var resName = fileImageSource.File.Split('.').First();
+                    var resId = Context.Resources.GetIdentifier(resName, "drawable", Context.PackageName);
+                    if (resId == 0)
+                    {
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine("Resource not found: " + fileImageSource.File);
+#endif
+                        break;
+                    }
                     var drawable = Context.Resources.GetDrawable(
-                        Context.Resources.GetIdentifier(id, "drawable", Context.PackageName),
+                        resId,
                         Context.Theme);
                     var bitmap = BitmapUtils.GetBitmapFromDrawable(
                         drawable
@@ -289,7 +297,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                     if (bitmap == null) break;
 
-                    mapStyle.AddImage(fileImageSource.File, bitmap);
+                    mapStyle.AddImage(fileImageSource.File, bitmap, iconImageSource.IsTemplate);
                     iconImageSource.Id = fileImageSource.File;
                     break;
             }

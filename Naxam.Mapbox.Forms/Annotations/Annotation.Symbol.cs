@@ -8,6 +8,11 @@ namespace Naxam.Mapbox
 
         public ImageSource Source { get; set; }
 
+        /// <summary>
+        /// The flag indicating image is an SDF or template image
+        /// </summary>
+        public bool IsTemplate { get; set; }
+
         public static implicit operator IconImageSource(string id)
         {
             return new IconImageSource

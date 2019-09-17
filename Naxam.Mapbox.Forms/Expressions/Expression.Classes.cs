@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Expressions
@@ -18,7 +13,7 @@ namespace Naxam.Mapbox.Expressions
      * {@link #Literal(string)} and {@link #Literal(object)}.
      * </p>
      */
-     public class ExpressionLiteral<T> : Expression, IValueExpression, IEquatable<ExpressionLiteral<T>>
+    public class ExpressionLiteral<T> : Expression, IValueExpression, IEquatable<ExpressionLiteral<T>>
     {
         public T Value { get; private set; }
 
@@ -141,26 +136,14 @@ namespace Naxam.Mapbox.Expressions
         public static Expression[] ToExpressionArray(params Stop[] stops)
         {
             Expression[] expressions = new Expression[stops.Length * 2];
-            Stop stop;
-            object inputValue, outputValue;
             for (int i = 0; i < stops.Length; i++)
             {
-                stop = stops[i];
-                inputValue = stop.value;
-                outputValue = stop.output;
-
-                if (!(inputValue is Expression))
-                {
-                    inputValue = Expression.Literal(inputValue);
-                }
-
-                if (!(outputValue is Expression))
-                {
-                    outputValue = Expression.Literal(outputValue);
-                }
-
-                expressions[i * 2] = (Expression)inputValue;
-                expressions[i * 2 + 1] = (Expression)outputValue;
+                expressions[i * 2] = stops[i].value is Expression valueExpression
+                    ? valueExpression
+                    : Expression.Literal(stops[i].value);
+                expressions[i * 2 + 1] = stops[i].output is Expression outputExpression
+                    ? outputExpression
+                    : Expression.Literal(stops[i].output);
             }
             return expressions;
         }

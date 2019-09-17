@@ -4083,7 +4083,7 @@ namespace Naxam.Mapbox.Expressions
         {
             var output = new Expression[left.Length + right.Length];
 
-            left.CopyTo(output, 0);
+            System.Array.ConstrainedCopy(left, 0, output, 0, left.Length);
             System.Array.ConstrainedCopy(right, 0, output, left.Length, right.Length);
 
             return output;
