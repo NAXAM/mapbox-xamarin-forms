@@ -1,5 +1,4 @@
-﻿using Sdk = Com.Mapbox.Mapboxsdk;
-using Xamarin.Forms.Platform.Android;
+﻿using Xamarin.Forms.Platform.Android;
 
 using Com.Mapbox.Mapboxsdk.Style.Layers;
 using NxLayer = Naxam.Mapbox.Layers.Layer;
@@ -9,25 +8,23 @@ using NxLineLayer = Naxam.Mapbox.Layers.LineLayer;
 using NxBackgroundLayer = Naxam.Mapbox.Layers.BackgroundLayer;
 using NxFillLayer = Naxam.Mapbox.Layers.FillLayer;
 using NxRasterLayer = Naxam.Mapbox.Layers.RasterLayer;
-using System.Linq;
 using Naxam.Mapbox.Platform.Droid.Extensions;
 using System.Collections.Generic;
-using Com.Mapbox.Mapboxsdk.Style.Expressions;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public static class LayerExtensions
     {
-        public static Sdk.Style.Layers.Layer ToLayer(this NxLayer layer)
+        public static Layer ToLayer(this NxLayer layer)
         {
             Layer result = null;
             switch (layer)
             {
                 case NxCircleLayer circleLayer:
-                    result = circleLayer.ToNative();
+                    result = circleLayer.ToLayer();
                     break;
                 case NxLineLayer lineLayer:
-                    result = lineLayer.ToNative();
+                    result = lineLayer.ToLayer();
                     break;
                 case NxBackgroundLayer backgroundLayer:
                     result = backgroundLayer.ToNative();
@@ -67,36 +64,106 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return null;
         }
 
-        public static CircleLayer ToNative(this NxCircleLayer layer)
+        static CircleLayer ToLayer(this NxCircleLayer layer)
         {
             if (layer == null) { return null; }
 
             var native = new CircleLayer(layer.Id, layer.SourceId);
             var properties = new List<PropertyValue>();
+
             if (layer.CircleBlur != null)
             {
-                properties.Add(
-                    PropertyFactory.CircleBlur(layer.CircleBlur.ToExpression())
-                    );
+                properties.Add(PropertyFactory.CircleBlur(layer.CircleBlur.ToExpression()));
             }
 
-            if (layer.CircleOpacity != null)
+            if (layer.CircleBlurTransition != null)
             {
-                properties.Add(
-                    PropertyFactory.CircleOpacity(layer.CircleOpacity.ToExpression())
-                    );
-            }
-
-            if (layer.CircleRadius != null)
-            {
-                properties.Add(
-                    PropertyFactory.CircleRadius(layer.CircleRadius.ToExpression())
-                    );
+                native.CircleBlurTransition = layer.CircleBlurTransition.ToTransition();
             }
 
             if (layer.CircleColor != null)
             {
                 properties.Add(PropertyFactory.CircleColor(layer.CircleColor.ToExpression()));
+            }
+
+            if (layer.CircleColorTransition != null)
+            {
+                native.CircleColorTransition = layer.CircleColorTransition.ToTransition();
+            }
+
+            if (layer.CircleOpacity != null)
+            {
+                properties.Add(PropertyFactory.CircleOpacity(layer.CircleOpacity.ToExpression()));
+            }
+
+            if (layer.CircleOpacityTransition != null)
+            {
+                native.CircleOpacityTransition = layer.CircleOpacityTransition.ToTransition();
+            }
+
+            if (layer.CirclePitchAlignment != null)
+            {
+                properties.Add(PropertyFactory.CirclePitchAlignment(layer.CirclePitchAlignment.ToExpression()));
+            }
+
+            if (layer.CirclePitchScale != null)
+            {
+                properties.Add(PropertyFactory.CirclePitchScale(layer.CirclePitchScale.ToExpression()));
+            }
+
+            if (layer.CircleRadius != null)
+            {
+                properties.Add(PropertyFactory.CircleRadius(layer.CircleRadius.ToExpression()));
+            }
+
+            if (layer.CircleRadiusTransition != null)
+            {
+                native.CircleRadiusTransition = layer.CircleRadiusTransition.ToTransition();
+            }
+
+            if (layer.CircleStrokeColor != null)
+            {
+                properties.Add(PropertyFactory.CircleStrokeColor(layer.CircleStrokeColor.ToExpression()));
+            }
+
+            if (layer.CircleStrokeColorTransition != null)
+            {
+                native.CircleStrokeColorTransition = layer.CircleStrokeColorTransition.ToTransition();
+            }
+
+            if (layer.CircleStrokeOpacity != null)
+            {
+                properties.Add(PropertyFactory.CircleStrokeOpacity(layer.CircleStrokeOpacity.ToExpression()));
+            }
+
+            if (layer.CircleStrokeOpacityTransition != null)
+            {
+                native.CircleStrokeOpacityTransition = layer.CircleStrokeOpacityTransition.ToTransition();
+            }
+
+            if (layer.CircleStrokeWidth != null)
+            {
+                properties.Add(PropertyFactory.CircleStrokeWidth(layer.CircleStrokeWidth.ToExpression()));
+            }
+
+            if (layer.CircleStrokeWidthTransition != null)
+            {
+                native.CircleStrokeWidthTransition = layer.CircleStrokeWidthTransition.ToTransition();
+            }
+
+            if (layer.CircleTranslate != null)
+            {
+                properties.Add(PropertyFactory.CircleTranslate(layer.CircleTranslate.ToExpression()));
+            }
+
+            if (layer.CircleTranslateTransition != null)
+            {
+                native.CircleTranslateTransition = layer.CircleTranslateTransition.ToTransition();
+            }
+
+            if (layer.CircleTranslateAnchor != null)
+            {
+                properties.Add(PropertyFactory.CircleTranslateAnchor(layer.CircleTranslateAnchor.ToExpression()));
             }
 
             native.SetProperties(properties.ToArray());
@@ -110,7 +177,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             return native;
         }
-        public static LineLayer ToNative(this NxLineLayer layer)
+
+        static LineLayer ToLayer(this NxLineLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -261,6 +329,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (symbol == null) { return null; }
             var forms = new NxSymbolLayer(symbol.Id, symbol.SourceId);
             return forms;
+        }
+
+        static TransitionOptions ToTransition(this Naxam.Mapbox.TransitionOptions options)
+        {
+            return new TransitionOptions(
+                    options.Delay,
+                    options.Duration,
+                    options.IsEnablePlacementTransitions
+                    );
         }
     }
 }

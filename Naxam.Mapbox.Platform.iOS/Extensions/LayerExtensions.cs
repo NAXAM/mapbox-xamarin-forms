@@ -1,52 +1,12 @@
 ﻿using Foundation;
 using Mapbox;
 using Naxam.Mapbox.Layers;
-using Naxam.Mapbox.Sources;
-using Newtonsoft.Json;
 using Xamarin.Forms.Platform.iOS;
-using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
-    public static class SourceAndLayerExtensions
+    public static class LayerExtensions
     {
-        public static MGLShapeSource ToSource(this Source source)
-        {
-            MGLShapeSource result = null;
-
-            switch (source)
-            {
-                case GeoJsonSource geojsonSource:
-                    var options = geojsonSource.Options.ToOptions();
-                    var url = geojsonSource.IsLocal
-                        ? NSUrl.FromFilename(geojsonSource.Url)
-                        : NSUrl.FromString(geojsonSource.Url);
-                    result = geojsonSource.Data != null
-                        ? new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), options)
-                        : new MGLShapeSource(source.Id, url, options);
-
-                    break;
-            }
-
-            return result;
-        }
-
-        public static MGLShape ToShape(this GeoJSON.Net.IGeoJSONObject geoJSONObject)
-        {
-            if (geoJSONObject == null) return null;
-
-            var json = JsonConvert.SerializeObject(geoJSONObject);
-            var data = NSData.FromString(json);
-
-            var shape = MGLShape.ShapeWithData(data, (int)NSStringEncoding.UTF8, out var error);
-
-            // TODO Handle error
-            if (error != null) return null;
-
-            return shape;
-        }
-
-
         public static MGLStyleLayer ToLayer(this Layer layer, MGLSource source)
         {
             MGLStyleLayer result = null;
@@ -55,46 +15,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             switch (layer)
             {
                 case CircleLayer circleLayer:
-                    {
-                        var newLayer = new MGLCircleStyleLayer(id, source);
-
-                        if (circleLayer.CircleColor != null)
-                        {
-                            newLayer.CircleColor = circleLayer.CircleColor.ToExpression();
-                        }
-
-                        if (circleLayer.CircleOpacity != null)
-                        {
-                            newLayer.CircleOpacity = circleLayer.CircleOpacity.ToExpression();
-                        }
-
-                        if (circleLayer.CircleRadius != null)
-                        {
-                            newLayer.CircleRadius = circleLayer.CircleRadius.ToExpression();
-                        }
-
-                        if (circleLayer.CircleStrokeColor != null)
-                        {
-                            newLayer.CircleStrokeColor = circleLayer.CircleStrokeColor.ToExpression();
-                        }
-
-                        if (circleLayer.CircleStrokeOpacity != null)
-                        {
-                            newLayer.CircleStrokeOpacity = circleLayer.CircleStrokeOpacity.ToExpression();
-                        }
-
-                        if (circleLayer.CircleStrokeWidth != null)
-                        {
-                            newLayer.CircleStrokeWidth = circleLayer.CircleStrokeWidth.ToExpression();
-                        }
-
-                        if (circleLayer.Filter != null)
-                        {
-                            newLayer.Predicate = circleLayer.Filter.ToPredicate();
-                        }
-
-                        return newLayer;
-                    }
+                    return ToLayer(circleLayer, source);
 
                 case LineLayer lineLayer:
                     {
@@ -200,48 +121,125 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             return result;
         }
 
-    }
-
-    public static class GeoJsonOptionsExtensions
-    {
-        public static NSDictionary<NSString, NSObject> ToOptions(this NxGeoJsonOptions nxoptions)
+        static MGLCircleStyleLayer ToLayer(CircleLayer layer, MGLSource source)
         {
-            if (nxoptions == null) return null;
+            var result = new MGLCircleStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
 
-            var options = new NSMutableDictionary<NSString, NSObject>();
-            if (nxoptions.Buffer.HasValue)
+            if (layer.CircleBlur != null)
             {
-                options.Add(MGLShapeSourceOptions.Buffer, NSNumber.FromNInt(nxoptions.Buffer.Value));
+                result.CircleBlur = layer.CircleBlur.ToExpression();
             }
-            if (nxoptions.Cluster.HasValue)
+
+            if (layer.CircleBlurTransition != null)
             {
-                options.Add(MGLShapeSourceOptions.Clustered, NSNumber.FromBoolean(nxoptions.Cluster.Value));
+                result.CircleBlurTransition = layer.CircleBlurTransition.ToTransition();
             }
-            if (nxoptions.ClusterMaxZoom.HasValue)
+
+            if (layer.CircleColor != null)
             {
-                options.Add(MGLShapeSourceOptions.ClusterRadius, NSNumber.FromNInt(nxoptions.ClusterMaxZoom.Value));
+                result.CircleColor = layer.CircleColor.ToExpression();
             }
-            if (nxoptions.ClusterRadius.HasValue)
+
+            if (layer.CircleColorTransition != null)
             {
-                options.Add(MGLShapeSourceOptions.ClusterRadius, NSNumber.FromNInt(nxoptions.ClusterRadius.Value));
+                result.CircleColorTransition = layer.CircleColorTransition.ToTransition();
             }
-            if (nxoptions.LineMetrics.HasValue)
+
+            if (layer.CircleOpacity != null)
             {
-                options.Add(MGLShapeSourceOptions.LineDistanceMetrics, NSNumber.FromBoolean(nxoptions.LineMetrics.Value));
+                result.CircleOpacity = layer.CircleOpacity.ToExpression();
             }
-            if (nxoptions.MaxZoom.HasValue)
+
+            if (layer.CircleOpacityTransition != null)
             {
-                options.Add(MGLShapeSourceOptions.MaximumZoomLevel, NSNumber.FromNInt(nxoptions.MaxZoom.Value));
+                result.CircleOpacityTransition = layer.CircleOpacityTransition.ToTransition();
             }
-            if (nxoptions.MinZoom.HasValue)
+
+            if (layer.CirclePitchAlignment != null)
             {
-                options.Add(MGLShapeSourceOptions.MinimumZoomLevel, NSNumber.FromNInt(nxoptions.MinZoom.Value));
+                result.CirclePitchAlignment = layer.CirclePitchAlignment.ToExpression();
             }
-            if (nxoptions.Tolerance.HasValue)
+
+            //if (circleLayer.CirclePitchScale != null)
+            //{
+            //    // WARN Not available to iOS yet
+            //    layer.CirclePitchScale = circleLayer.CirclePitchScale.ToExpression();
+            //}
+
+            if (layer.CircleRadius != null)
             {
-                options.Add(MGLShapeSourceOptions.SimplificationTolerance, NSNumber.FromFloat(nxoptions.Tolerance.Value));
+                result.CircleRadius = layer.CircleRadius.ToExpression();
             }
-            return new NSDictionary<NSString, NSObject>(options.Keys, options.Values);
+
+            if (layer.CircleRadiusTransition != null)
+            {
+                result.CircleRadiusTransition = layer.CircleRadiusTransition.ToTransition();
+            }
+
+            if (layer.CircleStrokeColor != null)
+            {
+                result.CircleStrokeColor = layer.CircleStrokeColor.ToExpression();
+            }
+
+            if (layer.CircleStrokeColorTransition != null)
+            {
+                result.CircleStrokeColorTransition = layer.CircleStrokeColorTransition.ToTransition();
+            }
+
+            if (layer.CircleStrokeOpacity != null)
+            {
+                result.CircleStrokeOpacity = layer.CircleStrokeOpacity.ToExpression();
+            }
+
+            if (layer.CircleStrokeOpacityTransition != null)
+            {
+                result.CircleStrokeOpacityTransition = layer.CircleStrokeOpacityTransition.ToTransition();
+            }
+
+            if (layer.CircleStrokeWidth != null)
+            {
+                result.CircleStrokeWidth = layer.CircleStrokeWidth.ToExpression();
+            }
+
+            if (layer.CircleStrokeWidthTransition != null)
+            {
+                result.CircleStrokeWidthTransition = layer.CircleStrokeWidthTransition.ToTransition();
+            }
+
+            if (layer.CircleTranslate != null)
+            {
+                result.CircleTranslation = layer.CircleTranslate.ToExpression();
+            }
+
+            if (layer.CircleTranslateTransition != null)
+            {
+                result.CircleTranslationTransition = layer.CircleTranslateTransition.ToTransition();
+            }
+
+            if (layer.CircleTranslateAnchor != null)
+            {
+                result.CircleTranslationAnchor = layer.CircleTranslateAnchor.ToExpression();
+            }
+
+            if (layer.Filter != null)
+            {
+                result.Predicate = layer.Filter.ToPredicate();
+            }
+
+            return result;
+        }
+
+        static MGLTransition ToTransition(this TransitionOptions options)
+        {
+            return new MGLTransition
+            {
+                delay = options.Delay,
+                duration = options.Duration
+            };
         }
     }
 }

@@ -110,9 +110,11 @@
     <Compile Include="MapViewRenderer.Interactor.cs" />
     <Compile Include="Extensions\FeatureExtensions.cs" />
     <Compile Include="MapViewRenderer.Style.Layers.cs" />
-    <Compile Include="Extensions\SourceAndLayerExtensions.cs" />
+    <Compile Include="Extensions\SourceExtensions.cs" />
     <Compile Include="MapViewRenderer.Style.Sources.cs" />
     <Compile Include="Extensions\ExpressionExtesions.cs" />
+    <Compile Include="Extensions\LayerExtensions.cs" />
+    <Compile Include="Extensions\GeoJsonOptionsExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

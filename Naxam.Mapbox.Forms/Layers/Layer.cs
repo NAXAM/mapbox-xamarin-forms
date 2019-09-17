@@ -1,12 +1,14 @@
-﻿using System;
-
-namespace Naxam.Mapbox.Layers
+﻿namespace Naxam.Mapbox.Layers
 {
     public class Layer
     {
         public string Id { get; set; }
 
         public bool IsVisible { get; set; }
+
+        public float MinZoom { get; set; }
+
+        public float MaxZoom { get; set; }
 
         public Expressions.Expression Filter { get; set; }
 
