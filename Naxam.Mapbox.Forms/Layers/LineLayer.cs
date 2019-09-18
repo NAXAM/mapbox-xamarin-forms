@@ -1,45 +1,26 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Naxam.Mapbox.Expressions;
 
 namespace Naxam.Mapbox.Layers
 {
-    public enum MBLineCap : ulong
-    {
-        Butt,
-        Round,
-        Square
-    }
-
     public class LineLayer : StyleLayer
     {
-        public LineLayer(string id, string sourceId) : base(id, sourceId)
-        {
-        }
+        public Expression LineBlur { get; set; }
+        public TransitionOptions LineBlurTransition { get; set; }
 
-        public MBLineCap LineCap { get; set; } = MBLineCap.Round;
+        public Expression LineCap { get; set; }
 
-        public Color LineColor = Color.Red;
+        public Expression LineColor { get; set; }
+        public TransitionOptions LineColorTransition { get; set; }
 
-        private double lineOpacity = 1.0;
-        public double LineOpacity
-        {
-            get => lineOpacity;
-            set
-            {
-                lineOpacity = Math.Min(1.0, Math.Max(value, 0.0));
-            }
-        }
+        public Expression LineDasharray { get; set; }
+        public TransitionOptions LineDasharrayTransition { get; set; }
 
-        private double lineWidth = 1.0;
-        public double LineWidth
-        {
-            get => lineWidth;
-            set
-            {
-                lineWidth = Math.Max(value, 0.0);
-            }
-        }
+        public Expression LineGapWidth { get; set; }
+        public TransitionOptions LineGapWidthTransition { get; set; }
 
-        public double[] Dashes { get; set; }
+        public Expression LineGradient { get; set; }
+        public Expression LineJoin { get; set; }
+
+        public LineLayer(string id, string sourceId) : base(id, sourceId) { }
     }
 }

@@ -1,7 +1,5 @@
-﻿using Foundation;
-using Mapbox;
+﻿using Mapbox;
 using Naxam.Mapbox.Layers;
-using Xamarin.Forms.Platform.iOS;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
@@ -9,113 +7,845 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
     {
         public static MGLStyleLayer ToLayer(this Layer layer, MGLSource source)
         {
-            MGLStyleLayer result = null;
-            var id = layer.Id;
-
             switch (layer)
             {
                 case CircleLayer circleLayer:
                     return ToLayer(circleLayer, source);
 
-                case LineLayer lineLayer:
-                    {
-                        var newLayer = new MGLLineStyleLayer(id, source)
-                        {
-                            LineWidth = NSExpression.FromConstant(NSNumber.FromDouble(lineLayer.LineWidth)),
-                            LineColor = NSExpression.FromConstant(lineLayer.LineColor.ToUIColor())
-                        };
-                        if (lineLayer.Dashes != null && lineLayer.Dashes.Length != 0)
-                        {
-                            var arr = new NSMutableArray<NSNumber>();
-                            foreach (double dash in lineLayer.Dashes)
-                            {
-                                arr.Add(NSNumber.FromDouble(dash));
-                            }
-                            newLayer.LineDashPattern = NSExpression.FromConstant(arr);
-                        }
-                        //TODO lineCap
-                        return newLayer;
-                    }
+                case FillExtrusionLayer fillExtrusionLayer:
+                    return ToLayer(fillExtrusionLayer, source);
 
-                case FillLayer fl:
-                    {
-                        var newLayer = new MGLFillStyleLayer(id, source)
-                        {
-                            FillColor = NSExpression.FromConstant(fl.FillColor.ToUIColor()),
-                            FillOpacity = NSExpression.FromConstant(NSNumber.FromDouble(fl.FillOpacity))
-                        };
-                        return newLayer;
-                    }
+                case FillLayer fillLayer:
+                    return ToLayer(fillLayer, source);
+
+                case HillshadeLayer hillshadeLayer:
+                    return ToLayer(hillshadeLayer, source);
+
+                case ForegroundLayer foregroundLayer:
+                    return ToLayer(foregroundLayer, source);
+
+                case HeatmapLayer heatmapLayer:
+                    return ToLayer(heatmapLayer, source);
+
+                case LineLayer lineLayer:
+                    return ToLayer(lineLayer, source);
+
+                case RasterLayer rasterLayer:
+                    return ToLayer(rasterLayer, source);
 
                 case SymbolLayer symbolLayer:
-                    {
-                        var newLayer = new MGLSymbolStyleLayer(id, source);
+                    return ToLayer(symbolLayer, source);
+            }
 
-                        if (symbolLayer.IconImage != null)
-                        {
-                            // TODO Need to ensure ID if it's a local resource
-                            newLayer.IconImageName = symbolLayer.IconImage.ToExpression();
-                        }
+            return null;
+        }
 
-                        if (symbolLayer.IconSize != null)
-                        {
-                            // TODO iOS - Name mitmatched: IconSize vs. IconScale
-                            newLayer.IconScale = symbolLayer.IconSize.ToExpression();
-                        }
+        static MGLSymbolStyleLayer ToLayer(SymbolLayer layer, MGLSource source)
+        {
+            var result = new MGLSymbolStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
 
-                        if (symbolLayer.IconColor != null)
-                        {
-                            var color = symbolLayer.IconColor.ToExpression();
-                            newLayer.IconColor = color;
-                        }
+            if (layer.IconAllowOverlap != null)
+            {
+                result.IconAllowsOverlap = layer.IconAllowOverlap.ToExpression();
+            }
 
-                        if (symbolLayer.IconColor != null)
-                        {
-                            var color = symbolLayer.IconColor.ToExpression();
-                            newLayer.IconColor = color;
-                        }
+            if (layer.IconAnchor != null)
+            {
+                result.IconAnchor = layer.IconAnchor.ToExpression();
+            }
 
-                        if (symbolLayer.TextAllowOverlap != null)
-                        {
-                            newLayer.TextAllowsOverlap = symbolLayer.TextAllowOverlap.ToExpression();
-                        }
+            if (layer.IconColor != null)
+            {
+                result.IconColor = layer.IconColor.ToExpression();
+            }
 
-                        if (symbolLayer.TextColor != null)
-                        {
-                            newLayer.TextColor = symbolLayer.TextColor.ToExpression();
-                        }
+            if (layer.IconColorTransition != null)
+            {
+                result.IconColorTransition = layer.IconColorTransition.ToTransition();
+            }
 
-                        if (symbolLayer.TextField != null)
-                        {
-                            newLayer.Text = symbolLayer.TextField.ToExpression();
-                        }
+            if (layer.IconHaloBlur != null)
+            {
+                result.IconHaloBlur = layer.IconHaloBlur.ToExpression();
+            }
 
-                        if (symbolLayer.TextIgnorePlacement != null)
-                        {
-                            newLayer.TextIgnoresPlacement = symbolLayer.TextIgnorePlacement.ToExpression();
-                        }
+            if (layer.IconHaloBlurTransition != null)
+            {
+                result.IconHaloBlurTransition = layer.IconHaloBlurTransition.ToTransition();
+            }
 
-                        if (symbolLayer.TextSize != null)
-                        {
-                            newLayer.TextFontSize = symbolLayer.TextSize.ToExpression();
-                        }
+            if (layer.IconHaloColor != null)
+            {
+                result.IconHaloColor = layer.IconHaloColor.ToExpression();
+            }
 
-                        // TODO Add other properties
+            if (layer.IconHaloColorTransition != null)
+            {
+                result.IconHaloColorTransition = layer.IconHaloColorTransition.ToTransition();
+            }
 
-                        if (symbolLayer.Filter != null)
-                        {
-                            newLayer.Predicate = symbolLayer.Filter.ToPredicate();
-                        }
+            if (layer.IconHaloWidth != null)
+            {
+                result.IconHaloWidth = layer.IconHaloWidth.ToExpression();
+            }
 
-                        return newLayer;
-                    }
+            if (layer.IconHaloWidthTransition != null)
+            {
+                result.IconHaloWidthTransition = layer.IconHaloWidthTransition.ToTransition();
+            }
 
-                case RasterLayer rl:
-                    {
+            if (layer.IconIgnorePlacement != null)
+            {
+                result.IconIgnoresPlacement = layer.IconIgnorePlacement.ToExpression();
+            }
 
-                        var newLayer = new MGLRasterStyleLayer(id, source);
-                        return newLayer;
-                    }
+            if (layer.IconImage != null)
+            {
+                result.IconImageName = layer.IconImage.ToExpression();
+            }
+
+            if (layer.IconKeepUpright != null)
+            {
+                // TODO iOS - No IconKeepUpright
+                //result.IconKeepUpright = layer.IconKeepUpright.ToTransition();
+            }
+
+            if (layer.IconOffset != null)
+            {
+                result.IconOffset = layer.IconOffset.ToExpression();
+            }
+
+            if (layer.IconOpacity != null)
+            {
+                result.IconOpacity = layer.IconOpacity.ToExpression();
+            }
+
+            if (layer.IconOpacityTransition != null)
+            {
+                result.IconOpacityTransition = layer.IconOpacityTransition.ToTransition();
+            }
+
+            if (layer.IconOptional != null)
+            {
+                result.IconOptional = layer.IconOptional.ToExpression();
+            }
+
+            if (layer.IconPadding != null)
+            {
+                result.IconPadding = layer.IconPadding.ToExpression();
+            }
+
+            if (layer.IconPitchAlignment != null)
+            {
+                result.IconPitchAlignment = layer.IconPitchAlignment.ToExpression();
+            }
+
+            if (layer.IconSize != null)
+            {
+                // TODO iOS - Need to check if IconSize is IconScale
+                result.IconScale = layer.IconSize.ToExpression();
+            }
+
+            if (layer.IconTextFit != null)
+            {
+                result.IconTextFit = layer.IconTextFit.ToExpression();
+            }
+
+            if (layer.IconTextFitPadding != null)
+            {
+                result.IconTextFitPadding = layer.IconTextFitPadding.ToExpression();
+            }
+
+            if (layer.IconTranslate != null)
+            {
+                result.IconTranslation = layer.IconTranslate.ToExpression();
+            }
+
+            if (layer.IconTranslateAnchor != null)
+            {
+                result.IconTranslationAnchor = layer.IconTranslateAnchor.ToExpression();
+            }
+
+            if (layer.IconTranslateTransition != null)
+            {
+                result.IconTranslationTransition = layer.IconTranslateTransition.ToTransition();
+            }
+
+            if (layer.SymbolAvoidEdges != null)
+            {
+                result.SymbolAvoidsEdges = layer.SymbolAvoidEdges.ToExpression();
+            }
+
+            if (layer.SymbolPlacement != null)
+            {
+                result.SymbolPlacement = layer.SymbolPlacement.ToExpression();
+            }
+
+            if (layer.SymbolSortKey != null)
+            {
+                result.SymbolSortKey = layer.SymbolSortKey.ToExpression();
+            }
+
+            if (layer.SymbolSpacing != null)
+            {
+                result.SymbolSpacing = layer.SymbolSpacing.ToExpression();
+            }
+
+            if (layer.SymbolZOrder != null)
+            {
+                // TODO Need to check if ZOrder exists
+                // result.SymbolZOrder = layer.SymbolZOrder.ToExpression();
+            }
+
+            if (layer.TextAllowOverlap != null)
+            {
+                result.TextAllowsOverlap = layer.TextAllowOverlap.ToExpression();
+            }
+
+            if (layer.TextAnchor != null)
+            {
+                result.TextAnchor = layer.TextAnchor.ToExpression();
+            }
+
+            if (layer.TextColor != null)
+            {
+                result.TextColor = layer.TextColor.ToExpression();
+            }
+
+            if (layer.TextColorTransition != null)
+            {
+                result.TextColorTransition = layer.TextColorTransition.ToTransition();
+            }
+
+            if (layer.TextField != null)
+            {
+                result.Text = layer.TextField.ToExpression();
+            }
+
+            if (layer.TextFont != null)
+            {
+                result.TextFontNames = layer.TextFont.ToExpression();
+            }
+
+            if (layer.TextHaloBlur != null)
+            {
+                result.TextHaloBlur = layer.TextHaloBlur.ToExpression();
+            }
+
+            if (layer.TextHaloBlurTransition != null)
+            {
+                result.TextHaloBlurTransition = layer.TextHaloBlurTransition.ToTransition();
+            }
+
+            if (layer.TextHaloColor != null)
+            {
+                result.TextHaloColor = layer.TextHaloColor.ToExpression();
+            }
+
+            if (layer.TextHaloColorTransition != null)
+            {
+                result.TextHaloColorTransition = layer.TextHaloColorTransition.ToTransition();
+            }
+
+            if (layer.TextHaloWidth != null)
+            {
+                result.TextHaloWidth = layer.TextHaloWidth.ToExpression();
+            }
+
+            if (layer.TextHaloWidthTransition != null)
+            {
+                result.TextHaloWidthTransition = layer.TextHaloWidthTransition.ToTransition();
+            }
+
+            if (layer.TextIgnorePlacement != null)
+            {
+                result.TextIgnoresPlacement = layer.TextIgnorePlacement.ToExpression();
+            }
+
+            if (layer.TextJustify != null)
+            {
+                result.TextJustification = layer.TextJustify.ToExpression();
+            }
+
+            if (layer.TextKeepUpright != null)
+            {
+                // TODO iOS - Check if TextKeepUpright exists
+                //result.TextKeepUpright = layer.TextKeepUpright.ToExpression();
+            }
+
+            if (layer.TextLetterSpacing != null)
+            {
+                result.TextLetterSpacing = layer.TextLetterSpacing.ToExpression();
+            }
+
+            if (layer.TextLineHeight != null)
+            {
+                result.TextLineHeight = layer.TextLineHeight.ToExpression();
+            }
+
+            if (layer.TextMaxAngle != null)
+            {
+                result.MaximumTextAngle = layer.TextMaxAngle.ToExpression();
+            }
+
+            if (layer.TextMaxWidth != null)
+            {
+                result.MaximumTextWidth = layer.TextMaxWidth.ToExpression();
+            }
+
+            if (layer.TextOffset != null)
+            {
+                result.TextOffset = layer.TextOffset.ToExpression();
+            }
+
+            if (layer.TextOpacity != null)
+            {
+                result.TextOpacity = layer.TextOpacity.ToExpression();
+            }
+
+            if (layer.TextOpacityTransition != null)
+            {
+                result.TextOpacityTransition = layer.TextOpacityTransition.ToTransition();
+            }
+
+            if (layer.TextOptional != null)
+            {
+                result.TextOptional = layer.TextOptional.ToExpression();
+            }
+
+            if (layer.TextPadding != null)
+            {
+                result.TextPadding = layer.TextPadding.ToExpression();
+            }
+
+            if (layer.TextPitchAlignment != null)
+            {
+                result.TextPitchAlignment = layer.TextPitchAlignment.ToExpression();
+            }
+
+            if (layer.TextRadialOffset != null)
+            {
+                result.TextRadialOffset = layer.TextRadialOffset.ToExpression();
+            }
+
+            if (layer.TextRotate != null)
+            {
+                result.TextRotation = layer.TextRotate.ToExpression();
+            }
+
+            if (layer.TextRotationAlignment != null)
+            {
+                result.TextRotationAlignment = layer.TextRotationAlignment.ToExpression();
+            }
+
+            if (layer.TextSize != null)
+            {
+                result.TextFontSize = layer.TextSize.ToExpression();
+            }
+
+            if (layer.TextTransform != null)
+            {
+                result.TextTransform = layer.TextTransform.ToExpression();
+            }
+
+            if (layer.TextTranslate != null)
+            {
+                result.TextTranslation = layer.TextTranslate.ToExpression();
+            }
+
+            if (layer.TextTranslateAnchor != null)
+            {
+                result.TextTranslationAnchor = layer.TextTranslateAnchor.ToExpression();
+            }
+
+            if (layer.TextTranslateTransition != null)
+            {
+                result.TextTranslationTransition = layer.TextTranslateTransition.ToTransition();
+            }
+
+            if (layer.TextVariableAnchor != null)
+            {
+                result.TextVariableAnchor = layer.TextVariableAnchor.ToExpression();
+            }
+
+            if (layer.TextVariableAnchor != null)
+            {
+                result.TextVariableAnchor = layer.TextVariableAnchor.ToExpression();
+            }
+
+            if (layer.TextWritingMode != null)
+            {
+                result.TextWritingModes = layer.TextWritingMode.ToExpression();
+            }
+
+            if (layer.Filter != null)
+            {
+                result.Predicate = layer.Filter.ToPredicate();
+            }
+
+            return result;
+        }
+
+        static MGLRasterStyleLayer ToLayer(RasterLayer layer, MGLSource source)
+        {
+            var result = new MGLRasterStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
+
+            if (layer.RasterBrightnessMax != null)
+            {
+                result.MaximumRasterBrightness = layer.RasterBrightnessMax.ToExpression();
+            }
+
+            if (layer.RasterBrightnessMaxTransition != null)
+            {
+                result.MaximumRasterBrightnessTransition = layer.RasterBrightnessMaxTransition.ToTransition();
+            }
+
+            if (layer.RasterBrightnessMin != null)
+            {
+                result.MinimumRasterBrightness = layer.RasterBrightnessMin.ToExpression();
+            }
+
+            if (layer.RasterBrightnessMinTransition != null)
+            {
+                result.MinimumRasterBrightnessTransition = layer.RasterBrightnessMinTransition.ToTransition();
+            }
+
+            if (layer.RasterContrast != null)
+            {
+                result.RasterContrast = layer.RasterContrast.ToExpression();
+            }
+
+            if (layer.RasterContrastTransition != null)
+            {
+                result.RasterContrastTransition = layer.RasterContrastTransition.ToTransition();
+            }
+
+            if (layer.RasterFadeDuration != null)
+            {
+                result.RasterFadeDuration = layer.RasterFadeDuration.ToExpression();
+            }
+
+            if (layer.RasterHueRotate != null)
+            {
+                result.RasterHueRotation = layer.RasterHueRotate.ToExpression();
+            }
+
+            if (layer.RasterHueRotateTransition != null)
+            {
+                result.RasterHueRotationTransition = layer.RasterHueRotateTransition.ToTransition();
+            }
+
+            if (layer.RasterOpacity != null)
+            {
+                result.RasterOpacity = layer.RasterOpacity.ToExpression();
+            }
+
+            if (layer.RasterOpacityTransition != null)
+            {
+                result.RasterOpacityTransition = layer.RasterOpacityTransition.ToTransition();
+            }
+
+            if (layer.RasterResampling != null)
+            {
+                result.RasterResamplingMode = layer.RasterResampling.ToExpression();
+            }
+
+            if (layer.RasterSaturation != null)
+            {
+                result.RasterSaturation = layer.RasterSaturation.ToExpression();
+            }
+
+            if (layer.RasterSaturationTransition != null)
+            {
+                result.RasterSaturationTransition = layer.RasterSaturationTransition.ToTransition();
+            }
+
+            //if (layer.Filter != null)
+            //{
+            //    result.Predicate = layer.Filter.ToPredicate();
+            //}
+
+            return result;
+        }
+
+        static MGLLineStyleLayer ToLayer(LineLayer layer, MGLSource source)
+        {
+            var result = new MGLLineStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
+
+            if (layer.LineBlur != null)
+            {
+                result.LineBlur = layer.LineBlur.ToExpression();
+            }
+
+            if (layer.LineBlurTransition != null)
+            {
+                result.LineBlurTransition = layer.LineBlurTransition.ToTransition();
+            }
+
+            if (layer.LineCap != null)
+            {
+                result.LineCap = layer.LineCap.ToExpression();
+            }
+
+            if (layer.LineColor != null)
+            {
+                result.LineColor = layer.LineColor.ToExpression();
+            }
+
+            if (layer.LineColorTransition != null)
+            {
+                result.LineColorTransition = layer.LineColorTransition.ToTransition();
+            }
+
+            if (layer.LineDasharray != null)
+            {
+                result.LineDashPattern = layer.LineDasharray.ToExpression();
+            }
+
+            if (layer.LineDasharrayTransition != null)
+            {
+                result.LineDashPatternTransition = layer.LineDasharrayTransition.ToTransition();
+            }
+
+            if (layer.LineGapWidth != null)
+            {
+                result.LineGapWidth = layer.LineGapWidth.ToExpression();
+            }
+
+            if (layer.LineGapWidthTransition != null)
+            {
+                result.LineGapWidthTransition = layer.LineGapWidthTransition.ToTransition();
+            }
+
+            if (layer.LineGradient != null)
+            {
+                result.LineGradient = layer.LineGradient.ToExpression();
+            }
+
+            if (layer.LineJoin != null)
+            {
+                result.LineJoin = layer.LineJoin.ToExpression();
+            }
+
+            if (layer.Filter != null)
+            {
+                result.Predicate = layer.Filter.ToPredicate();
+            }
+
+            return result;
+        }
+
+        static MGLHillshadeStyleLayer ToLayer(HillshadeLayer layer, MGLSource source)
+        {
+            var result = new MGLHillshadeStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
+
+            if (layer.HillshadeAccentColor != null)
+            {
+                result.HillshadeAccentColor = layer.HillshadeAccentColor.ToExpression();
+            }
+
+            if (layer.HillshadeAccentColorTransition != null)
+            {
+                result.HillshadeAccentColorTransition = layer.HillshadeAccentColorTransition.ToTransition();
+            }
+
+            if (layer.HillshadeExaggeration != null)
+            {
+                result.HillshadeExaggeration = layer.HillshadeExaggeration.ToExpression();
+            }
+
+            if (layer.HillshadeExaggerationTransition != null)
+            {
+                result.HillshadeExaggerationTransition = layer.HillshadeExaggerationTransition.ToTransition();
+            }
+
+            if (layer.HillshadeHighlightColor != null)
+            {
+                result.HillshadeHighlightColor = layer.HillshadeHighlightColor.ToExpression();
+            }
+
+            if (layer.HillshadeHighlightColorTransition != null)
+            {
+                result.HillshadeHighlightColorTransition = layer.HillshadeHighlightColorTransition.ToTransition();
+            }
+
+            if (layer.HillshadeIlluminationAnchor != null)
+            {
+                result.HillshadeIlluminationAnchor = layer.HillshadeIlluminationAnchor.ToExpression();
+            }
+
+            if (layer.HillshadeIlluminationDirection != null)
+            {
+                result.HillshadeIlluminationDirection = layer.HillshadeIlluminationDirection.ToExpression();
+            }
+
+            if (layer.HillshadeShadowColor != null)
+            {
+                result.HillshadeShadowColor = layer.HillshadeShadowColor.ToExpression();
+            }
+
+            if (layer.HillshadeShadowColorTransition != null)
+            {
+                result.HillshadeShadowColorTransition = layer.HillshadeShadowColorTransition.ToTransition();
+            }
+
+            //if (layer.Filter != null)
+            //{
+            //    result.Predicate = layer.Filter.ToPredicate();
+            //}
+
+            return result;
+        }
+
+        static MGLHeatmapStyleLayer ToLayer(HeatmapLayer layer, MGLSource source)
+        {
+            var result = new MGLHeatmapStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
+
+            if (layer.HeatmapColor != null)
+            {
+                result.HeatmapColor = layer.HeatmapColor.ToExpression();
+            }
+
+            if (layer.HeatmapColorTransition != null)
+            {
+                // TODO iOS - No HeatmapColorTransition
+                // result.HeatmapColorTransition = layer.HeatmapColorTransition.ToTransition();
+            }
+
+            if (layer.HeatmapIntensity != null)
+            {
+                result.HeatmapIntensity = layer.HeatmapIntensity.ToExpression();
+            }
+
+            if (layer.HeatmapIntensityTransition != null)
+            {
+                result.HeatmapIntensityTransition = layer.HeatmapIntensityTransition.ToTransition();
+            }
+
+            if (layer.HeatmapOpacity != null)
+            {
+                result.HeatmapOpacity = layer.HeatmapOpacity.ToExpression();
+            }
+
+            if (layer.HeatmapOpacityTransition != null)
+            {
+                result.HeatmapOpacityTransition = layer.HeatmapOpacityTransition.ToTransition();
+            }
+
+            if (layer.HeatmapRadius != null)
+            {
+                result.HeatmapRadius = layer.HeatmapRadius.ToExpression();
+            }
+
+            if (layer.HeatmapWeight != null)
+            {
+                result.HeatmapWeight = layer.HeatmapWeight.ToExpression();
+            }
+
+            if (layer.HeatmapRadiusTransition != null)
+            {
+                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToTransition();
+            }
+
+            if (layer.Filter != null)
+            {
+                result.Predicate = layer.Filter.ToPredicate();
+            }
+
+            return result;
+        }
+
+        static MGLForegroundStyleLayer ToLayer(ForegroundLayer layer, MGLSource source)
+        {
+            //var result = new MGLForegroundStyleLayer(layer.Id, source)
+            //{
+            //    MaximumZoomLevel = layer.MaxZoom,
+            //    MinimumZoomLevel = layer.MinZoom
+            //};
+
+            //return result;
+
+            // TODO iOS - MGLForegroundStyleLayer - No info yet.
+            return null;
+        }
+
+        static MGLFillStyleLayer ToLayer(FillLayer layer, MGLSource source)
+        {
+            var result = new MGLFillStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
+
+            if (layer.FillAntialiased != null)
+            {
+                result.FillAntialiased = layer.FillAntialiased.ToExpression();
+            }
+
+            if (layer.FillColor != null)
+            {
+                result.FillColor = layer.FillColor.ToExpression();
+            }
+
+            if (layer.FillColorTransition != null)
+            {
+                result.FillColorTransition = layer.FillColorTransition.ToTransition();
+            }
+
+            if (layer.FillOpacity != null)
+            {
+                result.FillOpacity = layer.FillOpacity.ToExpression();
+            }
+
+            if (layer.FillOpacityTransition != null)
+            {
+                result.FillOpacityTransition = layer.FillOpacityTransition.ToTransition();
+            }
+
+            if (layer.FillOutlineColor != null)
+            {
+                result.FillOutlineColor = layer.FillOutlineColor.ToExpression();
+            }
+
+            if (layer.FillOutlineColorTransition != null)
+            {
+                result.FillOutlineColorTransition = layer.FillOutlineColorTransition.ToTransition();
+            }
+
+            if (layer.FillPattern != null)
+            {
+                result.FillPattern = layer.FillPattern.ToExpression();
+            }
+
+            if (layer.FillPatternTransition != null)
+            {
+                result.FillPatternTransition = layer.FillPatternTransition.ToTransition();
+            }
+
+            if (layer.FillTranslate != null)
+            {
+                result.FillTranslation = layer.FillTranslate.ToExpression();
+            }
+
+            if (layer.FillTranslateTransition != null)
+            {
+                result.FillTranslationTransition = layer.FillTranslateTransition.ToTransition();
+            }
+
+            if (layer.FillTranslateAnchor != null)
+            {
+                result.FillTranslationAnchor = layer.FillTranslateAnchor.ToExpression();
+            }
+
+            if (layer.Filter != null)
+            {
+                result.Predicate = layer.Filter.ToPredicate();
+            }
+
+            return result;
+        }
+
+        static MGLFillExtrusionStyleLayer ToLayer(FillExtrusionLayer layer, MGLSource source)
+        {
+            var result = new MGLFillExtrusionStyleLayer(layer.Id, source)
+            {
+                MaximumZoomLevel = layer.MaxZoom,
+                MinimumZoomLevel = layer.MinZoom
+            };
+
+            if (layer.FillExtrusionBase != null)
+            {
+                result.FillExtrusionBase = layer.FillExtrusionBase.ToExpression();
+            }
+
+            if (layer.FillExtrusionBaseTransition != null)
+            {
+                result.FillExtrusionBaseTransition = layer.FillExtrusionBaseTransition.ToTransition();
+            }
+
+            if (layer.FillExtrusionColor != null)
+            {
+                result.FillExtrusionColor = layer.FillExtrusionColor.ToExpression();
+            }
+
+            if (layer.FillExtrusionColorTransition != null)
+            {
+                result.FillExtrusionColorTransition = layer.FillExtrusionColorTransition.ToTransition();
+            }
+
+            if (layer.FillExtrusionOpacity != null)
+            {
+                result.FillExtrusionOpacity = layer.FillExtrusionOpacity.ToExpression();
+            }
+
+            if (layer.FillExtrusionOpacityTransition != null)
+            {
+                result.FillExtrusionOpacityTransition = layer.FillExtrusionOpacityTransition.ToTransition();
+            }
+
+            if (layer.FillExtrusionHasVerticalGradient != null)
+            {
+                result.FillExtrusionHasVerticalGradient = layer.FillExtrusionHasVerticalGradient.ToExpression();
+            }
+
+            if (layer.FillExtrusionHeight != null)
+            {
+                result.FillExtrusionHeight = layer.FillExtrusionHeight.ToExpression();
+            }
+
+            if (layer.FillExtrusionHeightTransition != null)
+            {
+                result.FillExtrusionHeightTransition = layer.FillExtrusionHeightTransition.ToTransition();
+            }
+
+            if (layer.FillExtrusionPattern != null)
+            {
+                result.FillExtrusionPattern = layer.FillExtrusionPattern.ToExpression();
+            }
+
+            if (layer.FillExtrusionPatternTransition != null)
+            {
+                result.FillExtrusionPatternTransition = layer.FillExtrusionPatternTransition.ToTransition();
+            }
+
+            if (layer.FillExtrusionTranslate != null)
+            {
+                result.FillExtrusionTranslation = layer.FillExtrusionTranslate.ToExpression();
+            }
+
+            if (layer.FillExtrusionTranslateTransition != null)
+            {
+                result.FillExtrusionTranslationTransition = layer.FillExtrusionTranslateTransition.ToTransition();
+            }
+
+            if (layer.FillExtrusionTranslateAnchor != null)
+            {
+                result.FillExtrusionTranslationAnchor = layer.FillExtrusionTranslateAnchor.ToExpression();
+            }
+
+            if (layer.Filter != null)
+            {
+                result.Predicate = layer.Filter.ToPredicate();
             }
 
             return result;
