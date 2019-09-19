@@ -28,7 +28,7 @@ namespace MapBoxQs.Services
             };
         }
 
-        static MapStyle[] DefaultStyles = {
+        public static MapStyle[] DefaultStyles = {
             MapStyle.STREETS,
             MapStyle.OUTDOORS,
             MapStyle.LIGHT,

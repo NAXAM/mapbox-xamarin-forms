@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    BackgroundColor="#E6E6E6"
+    Title="Mapbox on Xamarin.Forms"
+    mc:Ignorable="d"
+    x:Class="MapBoxQs.Views.HomePage">
+    <ListView
+        x:Name="lstExamples"
+        HasUnevenRows="True"
+        SelectionMode="None"
+        SeparatorVisibility="None"
+        Header="{Binding .}"
+        CachingStrategy="RecycleElement">
+        <ListView.HeaderTemplate>
+            <DataTemplate>
+                <SearchBar
+                    x:Name="txtSearch"
+                    Placeholder="Search"
+                    TextChanged="TxtSearch_TextChanged"
+                    SearchCommand="{Binding SearchCommand}"
+                    SearchCommandParameter="{Binding Text, Source={Reference txtSearch}}" />
+            </DataTemplate>
+        </ListView.HeaderTemplate>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout
+                        BackgroundColor="White"
+                        Spacing="0"
+                        Margin="0,8">
+                        <ff:CachedImage
+                            Source="{Binding ImageUrl}"
+                            DownsampleToViewSize="True"
+                            HeightRequest="200"
+                            CacheType="Disk"
+                            Aspect="AspectFill"
+                            DownsampleWidth="320" />
+                        <StackLayout
+                            Spacing="0"
+                            Padding="16">
+                            <Label
+                                Text="{Binding Title}"
+                                FontSize="Title" />
+                            <Label
+                                Text="{Binding Description}"
+                                FontSize="Subtitle" />
+                        </StackLayout>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding BindingContext.ViewMapCommand, Source={Reference lstExamples}}"
+                                CommandParameter="{Binding .}"
+                                />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

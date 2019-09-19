@@ -32,6 +32,7 @@ namespace MapBoxQs.Droid
             Com.Mapbox.Mapboxsdk.Mapbox.Telemetry.SetDebugLoggingEnabled(true);
 
             Acr.UserDialogs.UserDialogs.Init(() => this);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
 

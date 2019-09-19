@@ -11,6 +11,8 @@ namespace MapBoxQs.iOS
             Mapbox.MGLAccountManager.AccessToken = MapBoxQs.Services.MapBoxService.AccessToken;
             new Naxam.Controls.Mapbox.Platform.iOS.MapViewRenderer();
 
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+
             global::Xamarin.Forms.Forms.Init();
 
             LoadApplication(new App());

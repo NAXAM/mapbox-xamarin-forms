@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using MapBoxQs.Views;
+using Xamarin.Forms;
 
 [assembly: Xamarin.Forms.Xaml.XamlCompilation(Xamarin.Forms.Xaml.XamlCompilationOptions.Compile)]
 namespace MapBoxQs
@@ -9,7 +10,7 @@ namespace MapBoxQs
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MapBoxQsPage());
+            MainPage = new NavigationPage(new HomePage());
         }
 
         protected override void OnStart()

@@ -11,7 +11,7 @@
             ContentTemplate="{DataTemplate views:GetStartedPage}">
         </ShellContent>
     </FlyoutItem>
-    <FlyoutItem
+    <!--<FlyoutItem
         Title="Styles">
         <ShellContent
             Title="Styles"
@@ -66,7 +66,7 @@
             Title="Query Map"
             ContentTemplate="{DataTemplate views:StylesLandingPage}">
         </ShellContent>
-    </FlyoutItem>
+    </FlyoutItem>-->
 
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>

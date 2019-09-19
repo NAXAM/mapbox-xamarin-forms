@@ -19,7 +19,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 // TODO: iOS - Handle other image sources
                 case FileImageSource fileImageSource:
-                    var cachedImage = mapStyle.ImageForName(fileImageSource.File);
+                    var cachedImage = mapStyle.ImageForName(iconImageSource.Id);
                     if (cachedImage != null) break;
 
                     var image = UIImage.FromBundle(fileImageSource.File);
@@ -37,8 +37,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                         image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
                     }
 
-                    mapStyle.SetImage(image, fileImageSource.File);
-                    iconImageSource.Id = fileImageSource.File;
+                    mapStyle.SetImage(image, iconImageSource.Id);
                     break;
             }
         }

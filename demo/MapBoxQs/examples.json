@@ -1,0 +1,828 @@
+﻿[
+  {
+    "imageUrl": "http://i.imgur.com/ZuUhFHw.jpg",
+    "description": "Use a variety of professionally designed styles with the Mapbox Maps SDK.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Default styles"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/Q5TJIca.png",
+    "description": "Use a SymbolLayer to display icons on the map.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Symbol layer icons"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/TQ4iA0L.png",
+    "description": "Query the map and animate the change in a SymbolLayer icon\u0027s size if clicked on.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Symbol layer icon size change"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/Iqxoing.png",
+    "description": "Create a GeoJSON line source, style it using properties, and add the layer to the map.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Create a line layer"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/a0ZaKHG.png",
+    "description": "Using layer set to change a layer\u0027s fill color.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Change a layer\u0027s color"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/N0altyP.png",
+    "description": "Add a vector source to a map and display it as a layer.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Add a vector tile source"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/k14WdRG.png",
+    "description": "Adding an external Web Map Service layer to the map.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Add a WMS source"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/gn6fJBw.png",
+    "description": "Using the second argument of addLayer, you can be more precise.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Add a new layer below labels"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/0Av8kWD.png",
+    "description": "Drag the seek bar to adjust the opacity of a raster layer on top of a map.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Adjust a layer\u0027s opacity"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/rHl1pmC.png",
+    "description": "Make a property depend on the map zoom level, in this case, the water layers fill color.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Color dependent on zoom level"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/bu7GV5T.png",
+    "description": "Switch the maps language dynamically.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Change a map\u0027s language"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/amDMa1M.png",
+    "description": "Create a custom layer switcher to display different datasets.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Show and hide layers"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/MbR2zbD.png",
+    "description": "Use a custom Mapbox-hosted style.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Mapbox Studio style"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/ckKOHg6.png",
+    "description": "Load a locally stored map style JSON file or custom raster style via a URL.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Local style or custom raster style"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/I6B6cCE.png",
+    "description": "Use an image source to easily display images on the map.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Use an image source"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/ijoGPrF.png",
+    "description": "Use an image source and a runnable to show data changes over time.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Show time lapse"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/U2OKixV.png",
+    "description": "Use elevation data to show and customize hills and mountains.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Hillshading"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/dpiGiTg.png",
+    "description": "Use a format expression to style labels with multiple languages, fonts, sizes, and colors.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Multiple text formats"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/5bYnlp5.png",
+    "description": "Create a transparent background and fill it with something such as moving water.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Transparent render surface"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/uPIH5Ck.png",
+    "description": "Select a photo on the device and add it on the map tap location.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Click to add photo"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/w8cP6Wn.png",
+    "description": "Adjust the anchor position of SymbolLayer text fields.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Text anchor position"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/1sPnDx5.png",
+    "description": "Adjust the opacity of a satellite raster layer based on zoom level.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Opacity fade"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/MSoIYmU.png",
+    "description": "Adjust the color, size, and fonts of SymbolLayer text fields.",
+    "categoryId": "nav_styles",
+    "showNewIcon": true,
+    "title": "Adjust text labels"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/lSk2tDB.png",
+    "description": "Provide an icon when a Style failed to load one.",
+    "categoryId": "nav_styles",
+    "showNewIcon": true,
+    "title": "Style with missing icon"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/vLgFvlZ.jpg",
+    "description": "To increase the chance of high-priority labels staying visible, provide the map renderer a list of preferred text anchor positions.",
+    "categoryId": "nav_styles",
+    "showNewIcon": true,
+    "title": "Variable label placement"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/se1z8Wb.png",
+    "description": "Use extrusions to display 3D building height based on imported vector data.",
+    "categoryId": "nav_extrusions",
+    "showNewIcon": false,
+    "title": "Display 3D building height based on vector data"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/6j848JL.jpg",
+    "description": "Use data-driven styling and GeoJSON data to set extrusions\u0027 heights.",
+    "categoryId": "nav_extrusions",
+    "showNewIcon": false,
+    "title": "Use GeoJSON data to set extrusion height"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/XNTyIO5.png",
+    "description": "Change the location and color of the light shined on extrusions.",
+    "categoryId": "nav_extrusions",
+    "showNewIcon": false,
+    "title": "Adjust light location and color"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/1at7cMf.png",
+    "description": "Create a 3D indoor map with the fill-extrude-height paint property.",
+    "categoryId": "nav_extrusions",
+    "showNewIcon": false,
+    "title": "Extrude polygons for 3D indoor mapping"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/OzcCsB2.png",
+    "description": "Rotate and tilt device to change camera and see all around 3D buildings.",
+    "categoryId": "nav_extrusions",
+    "showNewIcon": false,
+    "title": "Rotate and tilt with 3D buildings"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/HRriOVR.png",
+    "description": "Use the traffic plugin to display live car congestion data on top of a map.",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Display real-time traffic"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/Vcu67UR.png",
+    "description": "Use the building plugin to easily display 3D building height",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Display buildings in 3D"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/oKHx3bv.png",
+    "description": "Add location search (geocoding) functionality and UI to search for any place in the world",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Location search"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/r9fuJBJ.png",
+    "description": "Listen for Symbol interaction using the Annotation plugin its and built-in listeners",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Symbol annotation listener"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/tsOM1am.png",
+    "description": "Use the plugin to automatically change map label text to the language set on the device.",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Change map text to device language"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/fPZQg7z.png",
+    "description": "Use the place picker function of the Places Plugin to choose a specific location in the world.",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Place picker"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/DyDVUJr.png",
+    "description": "Create a marker with an Android-system View.",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "MarkerView"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/YIGSu0C.png",
+    "description": "Add a scale bar to determine distance based on zoom level.",
+    "categoryId": "nav_plugins",
+    "showNewIcon": false,
+    "title": "Scale bar"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/v9X28id.png",
+    "description": "Draw a vector polygon on a map with the Mapbox Maps SDK.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Draw a polygon"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/1jG8WQG.png",
+    "description": "Use the LocationComponent to display a user\u0027s location on a map fragment.",
+    "categoryId": "nav_location",
+    "showNewIcon": false,
+    "title": "Show a user\u0027s location on a map fragment"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/4HiEJC1.png",
+    "description": "Use LocationComponent options to customize the user location information.",
+    "categoryId": "nav_location",
+    "showNewIcon": false,
+    "title": "Customized location icon"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/Q2cB3NY.png",
+    "description": "Use LocationComponent camera options to customize map camera behavior.",
+    "categoryId": "nav_location",
+    "showNewIcon": false,
+    "title": "Location camera options"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/PN3vyNJ.jpg",
+    "description": "Animate the map\u0027s camera position, tilt, bearing, and zoom.",
+    "categoryId": "nav_camera",
+    "showNewIcon": false,
+    "title": "Animate the map camera"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/A0JL21Q.png",
+    "description": "Position the camera so that all the given markers are in view.",
+    "categoryId": "nav_camera",
+    "showNewIcon": false,
+    "title": "Fit camera in bounding box"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/A227BEs.jpg",
+    "description": "Prevent a map from being panned to a different place.",
+    "categoryId": "nav_camera",
+    "showNewIcon": false,
+    "title": "Restrict map panning"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/uuiOK5D.png",
+    "description": "Slowly have the camera circle around a single point.",
+    "categoryId": "nav_camera",
+    "showNewIcon": false,
+    "title": "Rotating camera"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/dV4DgDT.png",
+    "description": "Download and view an offline map using the Mapbox Maps SDK.",
+    "categoryId": "nav_offline",
+    "showNewIcon": false,
+    "title": "A simple offline map"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/tDlcNIg.png",
+    "description": "Download, view, navigate to, and delete an offline region.",
+    "categoryId": "nav_offline",
+    "showNewIcon": false,
+    "title": "Offline manager"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/pJ8dmbU.png",
+    "description": "Explore the various ways to manage the Maps SDK cache.",
+    "categoryId": "nav_offline",
+    "showNewIcon": false,
+    "title": "Cache management"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/bImud7u.png",
+    "description": "Use the query feature to select a building, get its geometry and draw a polygon highlighting it.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Select a building"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/phzOt81.png",
+    "description": "Get the feature count inside a bounding box and highlight all the buildings.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Feature count"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/HXxRBAF.png",
+    "description": "Click the map to add a marker at the location and display the maps property information for that feature.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Query a map feature"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/z3aWAqM.png",
+    "description": "Click on and highlight a selected GeoJSON polygon.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Click on single layer"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/42QIsQI.png",
+    "description": "Search for certain features once the map is moved. This example finds parks.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Redo search"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/eCc9e7o.png",
+    "description": "Query the building layer and show a building\u0027s outline",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Building outline"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/ZrZCl7G.png",
+    "description": "Tap on a line and add a highlight effect behind it.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": false,
+    "title": "Highlighted line"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/vf5uZyS.png",
+    "description": "Drag a finger on the map to draw a search area.",
+    "categoryId": "nav_query_map",
+    "showNewIcon": true,
+    "title": "Drawing search area"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/uATgul1.png",
+    "description": "Using the polylines utility, simplify a polyline which reduces the amount of coordinates making up the polyline depending on tolerance.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Simplify a polyline"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/ig8gGnY.png",
+    "description": "Match raw GPS points to the map so they aligns with the roads/pathways.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Map Matching"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/DhQltqB.jpg",
+    "description": "Use Mapbox Java Services to request directions.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Show directions on map"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/guEQtlP.jpg",
+    "description": "Use Mapbox\u0027s Optimization API to retrieve and display the quickest multi-stop route.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Show optimized directions on map"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/aHxPYRU.png",
+    "description": "Use Mapbox Java Services to build a url and download a static map.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Download a static map"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/65RlfRZ.png",
+    "description": "Use the Matrix API to receive driving times between 2–25 different locations.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Retrieve travel times between many points"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/9xl3EF8.png",
+    "description": "Use the Geocoding API to receive information about specific coordinates.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Make a geocode request"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/eUByGvt.png",
+    "description": "Use the Isochrone API to receive information about how far you can travel within a given time.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Make a isochrone request"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/hCVswtE.png",
+    "description": "Use an Android seekbar slider to retrieve info from the Isochrone API. Display the data and adjust the camera accordingly.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Ischrone time slider"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/VkOCYwq.jpg",
+    "description": "Use the Tilequery API to search for features in a tileset. This example queries for up to 10 buildings which are within 50 meters of the single map click location.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Make a tilequery request"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/nG8xeXH.png",
+    "description": "Use Turf to calculate coordinates to eventually draw a ring around a center coordinate.",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Hollow circle"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/VkOCYwq.jpg",
+    "description": "Use Turf to generate a circle with a radius expressed in physical units (e.g. miles, kilometers, etc).",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Define a circle in physical units"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/dQLvi1t.png",
+    "description": "Use Turf to generate a circle with a radius expressed in physical units (e.g. miles, kilometers, etc).",
+    "categoryId": "nav_java_services",
+    "showNewIcon": false,
+    "title": "Measure line distance"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/OiveDFG.png",
+    "description": "Show a snapshotted image in a notification.",
+    "categoryId": "nav_snapshot_image_generator",
+    "showNewIcon": false,
+    "title": "Snapshot Notification"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/KgfsY3s.png",
+    "description": "Send and share a map snapshot image.",
+    "categoryId": "nav_snapshot_image_generator",
+    "showNewIcon": false,
+    "title": "Share snapshot image"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/XegvIKr.png",
+    "description": "Animate the marker to a new position on the map.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Animate marker position"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/FZWgfd0.png",
+    "description": "Add markers via SymbolLayer and manipulate the data in real time. A Mapillary integration is also showcased in this example.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "SymbolLayer icons"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/FUIFkIm.png",
+    "description": "Use the style API to highlight parks, hotels, and attractions. A pulsing animation is also added to the colors.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Pulsing layer opacity"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/ItqdTiG.png",
+    "description": "Display an indoor map of a building with toggles to switch between floor levels.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Indoor Map"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/0JTVwaa.png",
+    "description": "Drop a marker at a specific location and then perform reverse geocoding.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Location picker"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/spsZu9X.png",
+    "description": "Using a map matched GeoJSON route, the marker travels along the route at consistent speed.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Marker following route"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/PxuB1T8.png",
+    "description": "See the International Space Station location in real time.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Space station current location"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/kascJEy.png",
+    "description": "Use the Android O release of picture-in-picture to maintain a map in a separate window.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Picture in picture"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/8mQQuMo.jpg",
+    "description": "Manipulate the map based on recyclerview interactions.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "RecyclerView interaction"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/jp4wc24.png",
+    "description": "Show a smaller inset map fragment and link it to a larger map for two map interaction. Great for gaming!",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Inset map"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/3d810QI.png",
+    "description": "Show an animated image (GIF) anywhere on the map",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Animated image source (GIF)"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/NcSGgD8.png",
+    "description": "Add a gradient on top of a MapView to show a background fog effect.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Background fog"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/0dpCI14.png",
+    "description": "Show a dotted directions route to a location that\u0027s based on map movement.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Directions to selected location"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/M8TU7nH.png",
+    "description": "Show calendar event locations on the map.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Calendar integration"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/6jWEFJi.png",
+    "description": "Rather than showing the directions route all at once, have it snake from the origin to destination.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Snaking directions"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/H5N9jDn.png",
+    "description": "Show the device\u0027s current location or other information in a homescreen widget.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Homescreen geocoding widget"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/JfLf69C.png",
+    "description": "Use Android system interpolators to animate SymbolLayer icons movement.",
+    "categoryId": "nav_lab",
+    "showNewIcon": false,
+    "title": "Animated icon movement"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/jyrQn10.png",
+    "description": "Draw a line behind a moving SymbolLayer icon which moves along a Mapbox Directions API route.",
+    "categoryId": "nav_lab",
+    "showNewIcon": true,
+    "title": "Line behind moving icon"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/LurOuXQ.png",
+    "description": "Quickly show the directions route associated with a RecyclerView item.",
+    "categoryId": "nav_lab",
+    "showNewIcon": true,
+    "title": "RecyclerView Directions"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/jxQpAt2.png",
+    "description": "Use a ValueAnimator to adjust SymbolLayer icons\u0027 rotation values and create a spinning effect.",
+    "categoryId": "nav_lab",
+    "showNewIcon": true,
+    "title": "Spinning icon"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/Bs0X98z.png",
+    "description": "Draw a polyline by parsing a GeoJSON file with the Mapbox Maps SDK.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Draw a GeoJSON line"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/6hcqbNw.png",
+    "description": "Draw a vector polygon with holes on a map using the Mapbox Maps SDK.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Draw a polygon with holes"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/VektJUJ.png",
+    "description": "Add and customize a heatmap to visualize data.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Show heatmap data"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/Uw2DHWB.png",
+    "description": "Gain minute control over heatmap coloring.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Styling heatmaps"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/mwhOcIR.png",
+    "description": "Use data-driven styling to show bathymetry (water depth) data",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Display water depth"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/fGeZhcD.png",
+    "description": "Use GeoJSON and circle layers to visualize point data in clusters.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "CircleLayer clusters"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/KjgNcS0.png",
+    "description": "Use GeoJSON and SymbolLayer icons to view clustered images.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "SymbolLayer clustering"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/C3mtfgF.png",
+    "description": "Using a categorical circle-color property function for a visualization.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Style circles categorically"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/sPNpLEP.png",
+    "description": "Style a choropleth map with data-driven styling, local JSON data, and vector tile geometries.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Update a choropleth layer by zoom level"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/wgpKvZM.png",
+    "description": "Using an identity line-color property function for a visualization.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Style lines using an identity property function"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/cXthmpV.png",
+    "description": "Style a line with colored gradient.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Line gradient"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/pAejKLH.png",
+    "description": "Use the Mapbox Maps SDK to visualize point data as hotspots.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Create hotspots from points"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/1IXkw80.png",
+    "description": "Style a choropleth map by merging local JSON data with vector tile geometries.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Join local JSON data with vector tile geometries"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/NvayvUd.png",
+    "description": "Filter and draw multiple geometries from a single GeoJSON file.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Draw multiple geometries"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/qYoqgDk.png",
+    "description": "Use SymbolLayer and icons to show data in a BubbleLayout info window.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Symbol layer info window"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/nWzW6mU.jpg",
+    "description": "Use data-driven styling to visualize point data with a time lapse effect; rainfall in China in this example.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Data time lapse"
+  },
+  {
+    "imageUrl": "https://imgur.com/YiBeH0I.png",
+    "description": "Use multiple expressions to convert and visualize data.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Multiple expressions"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/tfbO1m4.png",
+    "description": "View satellite photos and click to outline an area of land.",
+    "categoryId": "nav_dds",
+    "showNewIcon": true,
+    "title": "Satellite land select"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/sbWU4Ui.png",
+    "description": "Change SymbolLayer icons based on the camera\u0027s zoom level.",
+    "categoryId": "nav_dds",
+    "showNewIcon": true,
+    "title": "Zoom-based icon switch"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/nV1YnIv.png",
+    "description": "Allow or deny text and icons to overlap and collide.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Toggle collision detection"
+  },
+  {
+    "imageUrl": "http://i.imgur.com/19GZh8H.jpg",
+    "description": "Outline a polygon hole to highlight a revealed region.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Outlined polygon hole"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/y5QIBeM.png",
+    "description": "Place a map fragment inside of a container.",
+    "categoryId": "nav_basics",
+    "showNewIcon": false,
+    "title": "Support map fragment"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/CRtK8UE.png",
+    "description": "Add a mapview in a dynamically created layout.",
+    "categoryId": "nav_basics",
+    "showNewIcon": false,
+    "title": "Dynamically build a map view"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/MrablT6.png",
+    "description": "Set the radii of a circle layer\u0027s circles based on a data property.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Circle radius"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/ReiY5jj.png",
+    "description": "Receive updates when the device changes location.",
+    "categoryId": "nav_location",
+    "showNewIcon": false,
+    "title": "Track device location"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/1l6YUFG.png",
+    "description": "Change various properties of a map based on user interaction and other runtime situations.",
+    "categoryId": "nav_styles",
+    "showNewIcon": false,
+    "title": "Button interaction styling"
+  }
+]

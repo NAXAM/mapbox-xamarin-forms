@@ -110,7 +110,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void AddAnnotations(IList<NxAnnotation> annotations)
         {
-            if (map == null)
+            if (map == null || annotations == null || annotations.Count == 0)
                 return;
 
             for (int i = 0; i < annotations.Count; i++)
@@ -174,8 +174,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 // TODO: Android = Handle other type of ImageSoure
                 case FileImageSource fileImageSource:
-                    iconImageSource.Id = fileImageSource.File;
-                    var cachedImage = mapStyle.GetImage(fileImageSource.File);
+                    var cachedImage = mapStyle.GetImage(iconImageSource.Id);
                     if (cachedImage != null) break;
 
                     var resName = fileImageSource.File.Split('.').First();
@@ -196,7 +195,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                     if (bitmap == null) break;
 
-                    mapStyle.AddImage(fileImageSource.File, bitmap, iconImageSource.IsTemplate);
+                    mapStyle.AddImage(iconImageSource.Id, bitmap, iconImageSource.IsTemplate);
 
                     break;
             }

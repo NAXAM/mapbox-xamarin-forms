@@ -5,9 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
+    <None Remove="examples.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="examples.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Acr.UserDialogs" Version="7.0.30" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.Forms" Version="4.2.0.778463" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
     <PackageReference Include="GeoJSON.Net" Version="1.1.73" />
   </ItemGroup>
@@ -26,6 +35,12 @@
 	<Compile Update="MapBoxQsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+	<Compile Update="Views\StylesSymbolLayerIconsPage.xaml.cs">
+	  <DependentUpon>StylesSymbolLayerIconsPage.xaml</DependentUpon>
+	</Compile>
+	<Compile Update="Views\StylesDefaultPage.xaml.cs">
+	  <DependentUpon>StylesDefaultPage.xaml</DependentUpon>
+	</Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +51,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MapBoxQsPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\HomePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ShowPhotoDialog.xaml">
