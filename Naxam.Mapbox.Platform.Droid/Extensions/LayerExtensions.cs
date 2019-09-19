@@ -58,8 +58,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new SymbolLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -395,8 +395,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new RasterLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -487,8 +487,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new LineLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -564,8 +564,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new HillshadeLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -638,8 +638,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new HeatmapLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -702,8 +702,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new FillLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -787,8 +787,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new FillExtrusionLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -881,8 +881,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             var result = new CircleLayer(layer.Id, layer.SourceId)
             {
-                MinZoom = layer.MinZoom,
-                MaxZoom = layer.MaxZoom
+                //MinZoom = layer.MinZoom,
+                //MaxZoom = layer.MaxZoom
             };
 
             var properties = new List<PropertyValue>();
@@ -992,80 +992,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
 
             return result;
-        }
-
-        public static BackgroundLayer ToNative(this NxBackgroundLayer background)
-        {
-            if (background == null) return null;
-            var native = new BackgroundLayer(background.Id);
-            native.SetProperties(
-                PropertyFactory.BackgroundColor(background.BackgroundColor.ToAndroid())
-            );
-            return native;
-        }
-
-        public static SymbolLayer ToNative(this NxSymbolLayer symbol)
-        {
-            if (symbol == null) return null;
-
-            var newLayer = new SymbolLayer(symbol.Id, symbol.SourceId);
-
-            var properties = new List<PropertyValue>();
-
-            if (symbol.IconImage != null)
-            {
-                properties.Add(PropertyFactory.IconImage(symbol.IconImage.ToExpression()));
-            }
-
-            if (symbol.IconColor != null)
-            {
-                properties.Add(PropertyFactory.IconColor(symbol.IconColor.ToExpression()));
-            }
-
-            if (symbol.IconSize != null)
-            {
-                properties.Add(PropertyFactory.IconSize(symbol.IconSize.ToExpression()));
-            }
-
-            if (symbol.TextField != null)
-            {
-                properties.Add(PropertyFactory.TextField(symbol.TextField.ToExpression()));
-            }
-
-            if (symbol.TextSize != null)
-            {
-                properties.Add(PropertyFactory.TextSize(symbol.TextSize.ToExpression()));
-            }
-
-            if (symbol.TextColor != null)
-            {
-                properties.Add(PropertyFactory.TextColor(symbol.TextColor.ToExpression()));
-            }
-            if (symbol.TextIgnorePlacement != null)
-            {
-                properties.Add(PropertyFactory.TextIgnorePlacement(symbol.TextIgnorePlacement.ToExpression()));
-            }
-            if (symbol.TextAllowOverlap != null)
-            {
-                properties.Add(PropertyFactory.TextAllowOverlap(symbol.TextAllowOverlap.ToExpression()));
-            }
-
-            if (symbol.Filter != null)
-            {
-                newLayer.WithFilter(symbol.Filter.ToExpression());
-            }
-
-            newLayer.SetProperties(properties.ToArray());
-
-            // TODO Add other properties
-            return newLayer;
-        }
-
-        public static RasterLayer ToNative(this NxRasterLayer raster)
-        {
-            if (raster == null) return null;
-            var native = new RasterLayer(raster.Id, raster.SourceId);
-            return native;
         }
 
         static TransitionOptions ToTransition(this Naxam.Mapbox.TransitionOptions options)

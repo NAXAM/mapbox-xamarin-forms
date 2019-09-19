@@ -26,7 +26,7 @@ namespace Naxam.Mapbox
             return new IconImageSource
             {
                 Source = source,
-                Id = source.Id.ToString()
+                Id = (source as FileImageSource)?.File ?? source.Id.ToString()
             };
         }
     }

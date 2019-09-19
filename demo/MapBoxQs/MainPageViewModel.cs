@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using GeoJSON.Net.Feature;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
@@ -159,22 +160,22 @@ namespace MapBoxQs
                 });
 
 
-            //    CenterLocation =
-            //    //new LatLng(-28.4353498348801, 140.31082470261492);
-            //    new LatLng(21.004142f, 105.847607f);
+                CenterLocation =
+                //new LatLng(-28.4353498348801, 140.31082470261492);
+                new LatLng(21.004142f, 105.847607f);
 
-            //    Annotations = new ObservableCollection<Annotation> {
-            //                new SymbolAnnotation {
-            //                    Coordinates = new LatLng(21.004142f, 105.847607f),
-            //                    Id = Guid.NewGuid().ToString(),
-            //                    Title = "Naxam Company Limited",
-            //                    SubTitle = "A software development agency from Hanoi, Vietnam",
-            //                    IconImage = (ImageSource)"catsvc_gasbottles.png",
-            //                    IconSize = 4,
-            //                    IconColor = Color.Green,
-            //                    IsDraggable = true
-            //,                }
-            //            };
+                //    Annotations = new ObservableCollection<Annotation> {
+                //                new SymbolAnnotation {
+                //                    Coordinates = new LatLng(21.004142f, 105.847607f),
+                //                    Id = Guid.NewGuid().ToString(),
+                //                    Title = "Naxam Company Limited",
+                //                    SubTitle = "A software development agency from Hanoi, Vietnam",
+                //                    IconImage = (ImageSource)"catsvc_gasbottles.png",
+                //                    IconSize = 4,
+                //                    IconColor = Color.Green,
+                //                    IsDraggable = true
+                //,                }
+                //            };
 
                 //var source = new GeoJsonSource {
                 //    Id = "regions.src",
@@ -276,22 +277,46 @@ namespace MapBoxQs
                         : Expression.All(
                             Expression.Has("point_count"),
                             Expression.Gte(pointCount, Expression.Literal(item.Key)),
-                            Expression.Lt(pointCount, Expression.Literal(layers[j-1].Key))
+                            Expression.Lt(pointCount, Expression.Literal(layers[j - 1].Key))
                         );
                     layer.Filter = filter;
 
                     MapFunctions.AddLayer(layer);
                 }
 
-                var count = new SymbolLayer("count.layer", geojsonSrc.Id) {
+                var count = new SymbolLayer("count.layer", geojsonSrc.Id)
+                {
                     TextField = Expression.ToString(Expression.Get("point_count")),
                     TextSize = Expression.Literal(12.0f),
                     TextColor = Expression.Color(Color.White),
                     TextIgnorePlacement = Expression.Literal(true),
                     TextAllowOverlap = Expression.Literal(true),
                 };
-                
+
                 MapFunctions.AddLayer(count);
+
+                var latLng = new LatLng(21.004142f, 105.847607f); //new LatLng(-28.4353498348801, 140.31082470261492); ;
+                var featureCollection = new FeatureCollection();
+                var geometry = new GeoJSON.Net.Geometry.Point(new GeoJSON.Net.Geometry.Position(latLng.Lat, latLng.Long));
+                var properties = new Dictionary<string, object> { { "name", "marker.Title" }, { "poiuid", "123456789" }, { "icon-image", "catsvc_gasbottles.png" } };
+                Feature feature = new Feature(geometry, properties);
+                featureCollection.Features.Add(feature);
+
+                var sourceId = Guid.NewGuid().ToString();
+                // Construct the GeoJsonSource containing the annotations and add it to the mapboxmap
+                var source = new GeoJsonSource()
+                {
+                    Id = sourceId,
+                    Data = featureCollection
+                };
+                MapFunctions.AddSource(source);
+
+                var circleLayer = new CircleLayer("memory.circle.layer", sourceId)
+                {
+                    CircleRadius = Expression.Literal(7.0),
+                    CircleColor = Expression.Color(Color.FromHex("#d004d3"))
+                };
+                MapFunctions.AddLayer(circleLayer);
             });
 
 

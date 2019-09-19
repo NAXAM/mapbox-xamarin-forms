@@ -3,6 +3,8 @@ using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
 using NxGeojsonSource = Naxam.Mapbox.Sources.GeoJsonSource;
 using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
 using Com.Mapbox.Mapboxsdk.Style.Sources;
+using Newtonsoft.Json;
+using Com.Mapbox.Geojson;
 
 namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
@@ -15,7 +17,9 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                 case NxGeojsonSource geojsonSource:
                     if (geojsonSource.Data != null)
                     {
-                        return null;
+                        var json = JsonConvert.SerializeObject(geojsonSource.Data);
+                        var feaureCollection = FeatureCollection.FromJson(json);
+                        return new GeoJsonSource(geojsonSource.Id, feaureCollection, geojsonSource.Options.ToOptions());
                     }
 
                     if (string.IsNullOrWhiteSpace(geojsonSource.Url)) return null;
