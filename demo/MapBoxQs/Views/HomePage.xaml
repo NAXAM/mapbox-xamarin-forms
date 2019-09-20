@@ -10,6 +10,7 @@
     mc:Ignorable="d"
     x:Class="MapBoxQs.Views.HomePage">
     <ListView
+        BackgroundColor="#E6E6E6"
         x:Name="lstExamples"
         HasUnevenRows="True"
         SelectionMode="None"
@@ -45,10 +46,11 @@
                             Padding="16">
                             <Label
                                 Text="{Binding Title}"
-                                FontSize="Title" />
+                                FontAttributes="Bold"
+                                FontSize="Medium" />
                             <Label
                                 Text="{Binding Description}"
-                                FontSize="Subtitle" />
+                                FontSize="Small" />
                         </StackLayout>
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer 

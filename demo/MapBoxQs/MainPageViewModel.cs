@@ -152,11 +152,13 @@ namespace MapBoxQs
                 MapFunctions.AddStyleImage(new IconImageSource()
                 {
                     Source = "ic_cross.png",
+                    Id = "ic_cross.png",
                     IsTemplate = true
                 });
                 MapFunctions.AddStyleImage(new IconImageSource()
                 {
-                    Source = "catsvc_gasbottles.png"
+                    Source = "catsvc_gasbottles.png",
+                    Id = "catsvc_gasbottles.png"
                 });
 
 

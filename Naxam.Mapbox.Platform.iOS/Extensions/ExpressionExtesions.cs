@@ -141,8 +141,10 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                     case "literal":
                         if (arguments[0] is NSArray literalArray)
                         {
-                            var expressions = ToSubexpressions(SubArray(literalArray, 0));
-                            return NSExpression.FromAggregate(expressions.ToArray());
+                            return NSExpression.FromConstant(literalArray);
+                            // WARNING This may be wrong
+                            //var expressions = ToSubexpressions(SubArray(literalArray, 0));
+                            //return NSExpression.FromAggregate(expressions.ToArray());
                         }
                         return ToExpression(arguments[0]);
                     case "to-boolean":
