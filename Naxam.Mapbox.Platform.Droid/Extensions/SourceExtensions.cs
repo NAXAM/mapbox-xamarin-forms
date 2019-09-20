@@ -18,8 +18,18 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                     if (geojsonSource.Data != null)
                     {
                         var json = JsonConvert.SerializeObject(geojsonSource.Data);
-                        var feaureCollection = FeatureCollection.FromJson(json);
-                        return new GeoJsonSource(geojsonSource.Id, feaureCollection, geojsonSource.Options.ToOptions());
+
+                        switch (geojsonSource.Data)
+                        {
+                            case GeoJSON.Net.Feature.Feature feature:
+                                {
+                                    var mapboxFeature = Feature.FromJson(json);
+                                    return new GeoJsonSource(geojsonSource.Id, mapboxFeature, geojsonSource.Options.ToOptions());
+                                }
+                            default:
+                                var feaureCollection = FeatureCollection.FromJson(json);
+                                return new GeoJsonSource(geojsonSource.Id, feaureCollection, geojsonSource.Options.ToOptions());
+                        }
                     }
 
                     if (string.IsNullOrWhiteSpace(geojsonSource.Url)) return null;

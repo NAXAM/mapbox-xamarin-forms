@@ -1,10 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Naxam.Mapbox.Layers;
-using Naxam.Mapbox.Sources;
-using Xamarin.Forms;
 
 namespace Naxam.Controls.Forms
 {

@@ -11446,26 +11446,26 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f020054
 			public const int avd_hide_password = 2130837588;
 			
-			// aapt resource value: 0x7f0200a3
-			public const int avd_hide_password_1 = 2130837667;
-			
 			// aapt resource value: 0x7f0200a4
-			public const int avd_hide_password_2 = 2130837668;
+			public const int avd_hide_password_1 = 2130837668;
 			
 			// aapt resource value: 0x7f0200a5
-			public const int avd_hide_password_3 = 2130837669;
+			public const int avd_hide_password_2 = 2130837669;
+			
+			// aapt resource value: 0x7f0200a6
+			public const int avd_hide_password_3 = 2130837670;
 			
 			// aapt resource value: 0x7f020055
 			public const int avd_show_password = 2130837589;
 			
-			// aapt resource value: 0x7f0200a6
-			public const int avd_show_password_1 = 2130837670;
-			
 			// aapt resource value: 0x7f0200a7
-			public const int avd_show_password_2 = 2130837671;
+			public const int avd_show_password_1 = 2130837671;
 			
 			// aapt resource value: 0x7f0200a8
-			public const int avd_show_password_3 = 2130837672;
+			public const int avd_show_password_2 = 2130837672;
+			
+			// aapt resource value: 0x7f0200a9
+			public const int avd_show_password_3 = 2130837673;
 			
 			// aapt resource value: 0x7f020056
 			public const int bg_splash = 2130837590;
@@ -11668,11 +11668,11 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f020098
 			public const int notification_icon_background = 2130837656;
 			
-			// aapt resource value: 0x7f0200a1
-			public const int notification_template_icon_bg = 2130837665;
-			
 			// aapt resource value: 0x7f0200a2
-			public const int notification_template_icon_low_bg = 2130837666;
+			public const int notification_template_icon_bg = 2130837666;
+			
+			// aapt resource value: 0x7f0200a3
+			public const int notification_template_icon_low_bg = 2130837667;
 			
 			// aapt resource value: 0x7f020099
 			public const int notification_tile_bg = 2130837657;
@@ -11684,19 +11684,22 @@ namespace MapBoxQs.Droid
 			public const int pin = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int red_marker = 2130837660;
+			public const int pink_dot = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int roundedbg = 2130837661;
+			public const int red_marker = 2130837661;
 			
 			// aapt resource value: 0x7f02009e
-			public const int roundedbgdark = 2130837662;
+			public const int roundedbg = 2130837662;
 			
 			// aapt resource value: 0x7f02009f
-			public const int tooltip_frame_dark = 2130837663;
+			public const int roundedbgdark = 2130837663;
 			
 			// aapt resource value: 0x7f0200a0
-			public const int tooltip_frame_light = 2130837664;
+			public const int tooltip_frame_dark = 2130837664;
+			
+			// aapt resource value: 0x7f0200a1
+			public const int tooltip_frame_light = 2130837665;
 			
 			static Drawable()
 			{
@@ -12734,6 +12737,9 @@ namespace MapBoxQs.Droid
 			
 			// aapt resource value: 0x7f030000
 			public const int ic_launcher = 2130903040;
+			
+			// aapt resource value: 0x7f030001
+			public const int pink_dot = 2130903041;
 			
 			static Mipmap()
 			{

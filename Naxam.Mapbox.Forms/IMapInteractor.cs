@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using GeoJSON.Net;
+using GeoJSON.Net.Feature;
 using Naxam.Mapbox.Annotations;
 using Xamarin.Forms;
 using NFeature = GeoJSON.Net.Feature.Feature;
@@ -14,6 +16,7 @@ namespace Naxam.Mapbox
     public partial interface IMapFunctions
     {
         bool AddSource(params Sources.Source[] sources);
+        bool UpdateSource(string sourceId, IGeoJSONObject featureCollection);
         void RemoveSource(params string[] sourceIds);
 
         bool AddLayer(params Layers.Layer[] layers);

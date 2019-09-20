@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <None Remove="examples.json" />
+    <None Remove="sample_route_trip.geojson" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="examples.json" />
+    <EmbeddedResource Include="sample_route_trip.geojson" />
   </ItemGroup>
 
   <ItemGroup>

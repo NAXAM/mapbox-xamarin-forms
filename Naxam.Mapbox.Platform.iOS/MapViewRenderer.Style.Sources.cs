@@ -1,9 +1,11 @@
 using System;
 using System.Linq;
+using GeoJSON.Net;
 using Mapbox;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Platform.iOS.Extensions;
 using Naxam.Mapbox.Sources;
+using Newtonsoft.Json;
 using UIKit;
 using Xamarin.Forms;
 
@@ -54,13 +56,24 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return true;
         }
 
+        public bool UpdateSource(string sourceId, IGeoJSONObject featureCollection)
+        {
+            var source = mapStyle.SourceWithIdentifier(sourceId) as MGLShapeSource;
+
+            if (source == null) return false;
+
+            source.Shape = featureCollection.ToShape();
+
+            return true;
+        }
+
         public void RemoveSource(params string[] sourceIds)
         {
             for (int i = 0; i < sourceIds.Length; i++)
             {
                 if (string.IsNullOrWhiteSpace(sourceIds[i])) continue;
 
-                var source = map.Style.Sources.FirstOrDefault(x => x is MGLSource s && s.Identifier == sourceIds[i]) as MGLSource;
+                var source = map.Style.SourceWithIdentifier(sourceIds[i]) as MGLSource;
 
                 if (source == null) continue;
 

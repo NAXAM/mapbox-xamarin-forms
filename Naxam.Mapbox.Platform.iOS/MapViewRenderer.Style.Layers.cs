@@ -14,7 +14,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 if (string.IsNullOrWhiteSpace(layerIds[i])) continue;
 
-                var layer = mapStyle.Layers.FirstOrDefault(x => x.Identifier == layerIds[i]);
+                var layer = mapStyle.LayerWithIdentifier(layerIds[i]);
 
                 if (layer == null) continue;
 
@@ -40,7 +40,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         public bool AddLayerAbove(Layer layer, string layerId)
         {
-            var aboveLayer = mapStyle.Layers.FirstOrDefault(x => string.Equals(x.Identifier, layerId));
+            var aboveLayer = mapStyle.LayerWithIdentifier(layerId);
 
             if (aboveLayer == null) return false;
 
@@ -67,7 +67,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         public bool AddLayerBelow(Layer layer, string layerId)
         {
-            var belowLayer = mapStyle.Layers.FirstOrDefault(x => string.Equals(x.Identifier, layerId));
+            var belowLayer = mapStyle.LayerWithIdentifier(layerId);
 
             if (belowLayer == null) return false;
 

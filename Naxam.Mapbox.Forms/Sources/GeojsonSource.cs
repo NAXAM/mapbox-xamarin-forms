@@ -1,4 +1,4 @@
-﻿using GeoJSON.Net.Feature;
+﻿using GeoJSON.Net;
 
 namespace Naxam.Mapbox.Sources
 {
@@ -8,7 +8,7 @@ namespace Naxam.Mapbox.Sources
 
         public string Url { get; set; }
 
-        public FeatureCollection Data { get; set; }
+        public IGeoJSONObject Data { get; set; }
 
         public GeoJsonOptions Options { get; set; }
     }

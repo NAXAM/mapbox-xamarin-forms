@@ -62,6 +62,9 @@ namespace MapBoxQs.Views
                 case "Symbol layer icons":
                     Navigation.PushAsync(new StylesSymbolLayerIconsPage());
                     break;
+                case "Line behind moving icon":
+                    Navigation.PushAsync(new LabLineBehindMovingIconPage());
+                    break;
                 default:
                     Navigation.PushAsync(new MapBoxQsPage());
                     break;

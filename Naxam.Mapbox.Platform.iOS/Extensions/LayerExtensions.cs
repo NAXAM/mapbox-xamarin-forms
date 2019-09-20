@@ -480,8 +480,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLLineStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+                //MaximumZoomLevel = layer.MaxZoom,
+                //MinimumZoomLevel = layer.MinZoom
             };
 
             if (layer.LineBlur != null)
@@ -537,6 +537,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             if (layer.LineJoin != null)
             {
                 result.LineJoin = layer.LineJoin.ToExpression();
+            }
+
+            if (layer.LineWidth != null)
+            {
+                result.LineWidth = layer.LineWidth.ToExpression();
+            }
+
+            if (layer.LineWidthTransition != null)
+            {
+                result.LineWidthTransition = layer.LineWidthTransition.ToTransition();
             }
 
             if (layer.Filter != null)

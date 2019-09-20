@@ -548,6 +548,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.LineJoin(layer.LineJoin.ToExpression()));
             }
 
+            if (layer.LineWidth != null)
+            {
+                properties.Add(PropertyFactory.LineWidth(layer.LineWidth.ToExpression()));
+            }
+
+            if (layer.LineWidthTransition != null)
+            {
+                result.LineWidthTransition = layer.LineWidthTransition.ToTransition();
+            }
+
             result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
