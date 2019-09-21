@@ -79,6 +79,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return true;
         }
 
+        public bool UpdateLayer(Layer layer)
+        {
+            var nativeLayer = mapStyle.LayerWithIdentifier(layer.Id);
+
+            if (nativeLayer == null) return false;
+
+            layer.UpdateLayer(nativeLayer);
+
+            return true;
+        }
+
         MGLStyleLayer CreateLayer(Layer layer)
         {
             if (string.IsNullOrWhiteSpace(layer.Id)

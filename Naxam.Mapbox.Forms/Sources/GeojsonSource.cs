@@ -11,6 +11,25 @@ namespace Naxam.Mapbox.Sources
         public IGeoJSONObject Data { get; set; }
 
         public GeoJsonOptions Options { get; set; }
+
+        public GeoJsonSource() { }
+
+        public GeoJsonSource(string id)
+        {
+            Id = id;
+        }
+
+        public GeoJsonSource(string id, IGeoJSONObject data)
+        {
+            Id = id;
+            Data = data;
+        }
+
+        public GeoJsonSource(string id, string url)
+        {
+            Id = id;
+            Url = url;
+        }
     }
 
     public class GeoJsonOptions

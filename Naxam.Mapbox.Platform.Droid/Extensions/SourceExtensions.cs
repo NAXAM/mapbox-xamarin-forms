@@ -32,7 +32,10 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                         }
                     }
 
-                    if (string.IsNullOrWhiteSpace(geojsonSource.Url)) return null;
+                    if (string.IsNullOrWhiteSpace(geojsonSource.Url))
+                    {
+                        return new GeoJsonSource(geojsonSource.Id);
+                    }
 
                     if (false == geojsonSource.IsLocal)
                     {

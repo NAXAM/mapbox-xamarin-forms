@@ -92,8 +92,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             var point = map.Projection.ToScreenLocation(p0);
             var xfPoint = new Xamarin.Forms.Point(point.X, point.Y);
             var xfPosition = new NxLatLng(p0.Latitude, p0.Longitude);
+            (NxLatLng, Xamarin.Forms.Point) commandParamters = (xfPosition, xfPoint);
 
-            Element.DidTapOnMapCommand?.Execute(new Tuple<NxLatLng, Xamarin.Forms.Point>(xfPosition, xfPoint));
+            if (Element.DidTapOnMapCommand?.CanExecute(commandParamters) != false)
+            {
+                Element.DidTapOnMapCommand?.Execute(commandParamters);
+            }
 
             // TODO should return true
             return false;

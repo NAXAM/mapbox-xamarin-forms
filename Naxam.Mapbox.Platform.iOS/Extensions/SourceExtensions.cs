@@ -21,6 +21,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                         return new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), options);
                     }
 
+                    if (string.IsNullOrWhiteSpace(geojsonSource.Url))
+                    {
+                        return new MGLShapeSource()
+                        {
+                            Identifier = geojsonSource.Id
+                        };
+                    }
+
                     var url = geojsonSource.IsLocal
                         ? NSUrl.FromFilename(geojsonSource.Url)
                         : NSUrl.FromString(geojsonSource.Url);

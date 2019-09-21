@@ -14,6 +14,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 return null;
             }
 
+            if (feature.Properties() == null || feature.Properties().Size() == 0)
+            {
+                feature.AddBooleanProperty("___naxam_temporary_fix___", new Java.Lang.Boolean(false));
+            }
+
             var json = feature.ToJson();
 
             if (shouldDispose) feature.Dispose();

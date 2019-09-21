@@ -52,6 +52,17 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return true;
         }
 
+        public bool UpdateLayer(Layer layer)
+        {
+            var nativeLayer = map.Style.GetLayer(layer.Id);
+
+            if (nativeLayer == null) return false;
+
+            layer.UpdateLayer(nativeLayer);
+
+            return true;
+        }
+
         public bool AddLayerAt(Layer layer, int index)
         {
             map.Style.AddLayerAt(layer.ToLayer(), index);

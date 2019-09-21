@@ -44,12 +44,53 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 case NxSymbolLayer symbolLayer:
                     return ToLayer(symbolLayer);
-                //case NxBackgroundLayer backgroundLayer:
-                //    result = backgroundLayer.ToNative();
-                //    break;
+                    //case NxBackgroundLayer backgroundLayer:
+                    //    result = backgroundLayer.ToNative();
+                    //    break;
             }
 
             return null;
+        }
+
+        public static void UpdateLayer(this NxLayer layer, Layer target)
+        {
+            if (layer == null || target == null) { return; }
+
+            switch (layer)
+            {
+                case NxCircleLayer circleLayer:
+                    UpdateLayer(target as CircleLayer, circleLayer);
+                    break;
+                case NxFillExtrusionLayer fillExtrusionLayer:
+                    UpdateLayer(target as FillExtrusionLayer, fillExtrusionLayer);
+                    break;
+                case NxFillLayer fillLayer:
+                    UpdateLayer(target as FillLayer, fillLayer);
+                    break;
+                case NxHillshadeLayer hillshadeLayer:
+                    UpdateLayer(target as HillshadeLayer, hillshadeLayer);
+                    break;
+                case NxForegroundLayer foregroundLayer:
+                    // TODO Android - No ForegroundLayer
+                    break;
+                case NxHeatmapLayer heatmapLayer:
+                    UpdateLayer(target as HeatmapLayer, heatmapLayer);
+                    break;
+                case NxLineLayer lineLayer:
+                    UpdateLayer(target as LineLayer, lineLayer);
+                    break;
+
+                case NxRasterLayer rasterLayer:
+                    UpdateLayer(target as RasterLayer, rasterLayer);
+                    break;
+
+                case NxSymbolLayer symbolLayer:
+                    UpdateLayer(target as SymbolLayer, symbolLayer);
+                    break;
+                    //case NxBackgroundLayer backgroundLayer:
+                    //    result = backgroundLayer.ToNative();
+                    //    break;
+            }
         }
 
         static SymbolLayer ToLayer(NxSymbolLayer layer)
@@ -62,6 +103,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(SymbolLayer result, NxSymbolLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.IconAllowOverlap != null)
@@ -385,8 +433,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
-
-            return result;
         }
 
         static RasterLayer ToLayer(NxRasterLayer layer)
@@ -399,6 +445,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(RasterLayer result, NxRasterLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.RasterBrightnessMax != null)
@@ -477,8 +530,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             //{
             //    result.WithFilter(layer.Filter.ToExpression());
             //}
-
-            return result;
         }
 
         static LineLayer ToLayer(NxLineLayer layer)
@@ -491,6 +542,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(LineLayer result, NxLineLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.LineBlur != null)
@@ -564,8 +622,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
-
-            return result;
         }
 
         static HillshadeLayer ToLayer(NxHillshadeLayer layer)
@@ -578,6 +634,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(HillshadeLayer result, NxHillshadeLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.HillshadeAccentColor != null)
@@ -638,8 +701,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             //{
             //    result.WithFilter(layer.Filter.ToExpression());
             //}
-
-            return result;
         }
 
         static HeatmapLayer ToLayer(NxHeatmapLayer layer)
@@ -652,6 +713,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(HeatmapLayer result, NxHeatmapLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.HeatmapColor != null)
@@ -702,8 +770,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
-
-            return result;
         }
 
         static FillLayer ToLayer(NxFillLayer layer)
@@ -716,6 +782,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(FillLayer result, NxFillLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.FillAntialiased != null)
@@ -787,8 +860,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
-
-            return result;
         }
 
         static FillExtrusionLayer ToLayer(NxFillExtrusionLayer layer)
@@ -801,6 +872,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(FillExtrusionLayer result, NxFillExtrusionLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.FillExtrusionBase != null)
@@ -881,8 +959,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
-
-            return result;
         }
 
         static CircleLayer ToLayer(NxCircleLayer layer)
@@ -895,6 +971,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 //MaxZoom = layer.MaxZoom
             };
 
+            UpdateLayer(result, layer);
+
+            return result;
+        }
+
+        static void UpdateLayer(CircleLayer result, NxCircleLayer layer)
+        {
             var properties = new List<PropertyValue>();
 
             if (layer.CircleBlur != null)
@@ -1000,8 +1083,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
-
-            return result;
         }
 
         static TransitionOptions ToTransition(this Naxam.Mapbox.TransitionOptions options)

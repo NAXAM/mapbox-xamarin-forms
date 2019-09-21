@@ -54,20 +54,45 @@ namespace MapBoxQs.Views
         ICommand _ViewMapCommand;
         void ExecuteViewMapCommand(ExampleItemModel item)
         {
+            Xamarin.Forms.Page page = null;
             switch (item.Title)
             {
                 case "Default styles":
-                    Navigation.PushAsync(new StylesDefaultPage());
+                    page = (new StylesDefaultPage
+                    {
+                        Title = item.Title
+                    });
                     break;
                 case "Symbol layer icons":
-                    Navigation.PushAsync(new StylesSymbolLayerIconsPage());
+                    page = (new StylesSymbolLayerIconsPage
+                    {
+                        Title = item.Title
+                    });
+                    break;
+                case "Symbol layer icon size change":
+                    page = (new StylesSymbolLayerIconSizeChangePage() {
+                        Title = item.Title
+                    });
                     break;
                 case "Line behind moving icon":
-                    Navigation.PushAsync(new LabLineBehindMovingIconPage());
+                    page = (new LabLineBehindMovingIconPage
+                    {
+                        Title = item.Title
+                    });
                     break;
                 default:
-                    Navigation.PushAsync(new MapBoxQsPage());
+                    page = (new MapBoxQsPage
+                    {
+                        Title = item.Title
+                    });
                     break;
+            }
+
+            if (page != null)
+            {
+                page.Title = item.Title;
+
+                Navigation.PushAsync(page);
             }
         }
 

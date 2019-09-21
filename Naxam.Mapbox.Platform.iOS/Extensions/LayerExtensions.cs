@@ -40,6 +40,41 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             return null;
         }
 
+        public static MGLStyleLayer UpdateLayer(this Layer layer, MGLStyleLayer target)
+        {
+            switch (layer)
+            {
+                case CircleLayer circleLayer:
+                    return UpdateLayer(circleLayer, target as MGLCircleStyleLayer);
+
+                case FillExtrusionLayer fillExtrusionLayer:
+                    return UpdateLayer(fillExtrusionLayer, target as MGLFillExtrusionStyleLayer);
+
+                case FillLayer fillLayer:
+                    return UpdateLayer(fillLayer, target as MGLFillStyleLayer);
+
+                case HillshadeLayer hillshadeLayer:
+                    return UpdateLayer(hillshadeLayer, target as MGLHillshadeStyleLayer);
+
+                //case ForegroundLayer foregroundLayer:
+                //    return UpdateLayer(foregroundLayer, target as MGLForegroundStyleLayer);
+
+                case HeatmapLayer heatmapLayer:
+                    return UpdateLayer(heatmapLayer, target as MGLHeatmapStyleLayer);
+
+                case LineLayer lineLayer:
+                    return UpdateLayer(lineLayer, target as MGLCircleStyleLayer);
+
+                case RasterLayer rasterLayer:
+                    return UpdateLayer(rasterLayer, target as MGLRasterStyleLayer);
+
+                case SymbolLayer symbolLayer:
+                    return UpdateLayer(symbolLayer, target as MGLSymbolStyleLayer);
+            }
+
+            return null;
+        }
+
         static MGLSymbolStyleLayer ToLayer(SymbolLayer layer, MGLSource source)
         {
             var result = new MGLSymbolStyleLayer(layer.Id, source)
@@ -48,6 +83,13 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLSymbolStyleLayer UpdateLayer(SymbolLayer layer, MGLSymbolStyleLayer result)
+        {
             if (layer.IconAllowOverlap != null)
             {
                 result.IconAllowsOverlap = layer.IconAllowOverlap.ToExpression();
@@ -398,6 +440,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLRasterStyleLayer UpdateLayer(RasterLayer layer, MGLRasterStyleLayer result)
+        {
+
             if (layer.RasterBrightnessMax != null)
             {
                 result.MaximumRasterBrightness = layer.RasterBrightnessMax.ToExpression();
@@ -484,6 +534,13 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 //MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLLineStyleLayer UpdateLayer(LineLayer layer, MGLLineStyleLayer result)
+        {
             if (layer.LineBlur != null)
             {
                 result.LineBlur = layer.LineBlur.ToExpression();
@@ -561,10 +618,17 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLHillshadeStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+                //MaximumZoomLevel = layer.MaxZoom,
+                //MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLHillshadeStyleLayer UpdateLayer(HillshadeLayer layer, MGLHillshadeStyleLayer result)
+        {
             if (layer.HillshadeAccentColor != null)
             {
                 result.HillshadeAccentColor = layer.HillshadeAccentColor.ToExpression();
@@ -627,10 +691,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLHeatmapStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+                //MaximumZoomLevel = layer.MaxZoom,
+                //MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+        static MGLHeatmapStyleLayer UpdateLayer(HeatmapLayer layer, MGLHeatmapStyleLayer result)
+        {
             if (layer.HeatmapColor != null)
             {
                 result.HeatmapColor = layer.HeatmapColor.ToExpression();
@@ -707,6 +777,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLFillStyleLayer UpdateLayer(FillLayer layer, MGLFillStyleLayer result)
+        {
+
             if (layer.FillAntialiased != null)
             {
                 result.FillAntialiased = layer.FillAntialiased.ToExpression();
@@ -779,10 +857,17 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLFillExtrusionStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+                //MaximumZoomLevel = layer.MaxZoom,
+                //MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLFillExtrusionStyleLayer UpdateLayer(FillExtrusionLayer layer, MGLFillExtrusionStyleLayer result)
+        {
             if (layer.FillExtrusionBase != null)
             {
                 result.FillExtrusionBase = layer.FillExtrusionBase.ToExpression();
@@ -869,6 +954,13 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 MinimumZoomLevel = layer.MinZoom
             };
 
+            UpdateLayer(layer, result);
+
+            return result;
+        }
+
+        static MGLCircleStyleLayer UpdateLayer(CircleLayer layer, MGLCircleStyleLayer result)
+        {
             if (layer.CircleBlur != null)
             {
                 result.CircleBlur = layer.CircleBlur.ToExpression();

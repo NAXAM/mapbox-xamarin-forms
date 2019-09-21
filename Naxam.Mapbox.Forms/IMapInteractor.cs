@@ -23,6 +23,7 @@ namespace Naxam.Mapbox
         bool AddLayerBelow(Layers.Layer layer, string layerId);
         bool AddLayerAbove(Layers.Layer layer, string layerId);
         bool AddLayerAt(Layers.Layer layer, int index);
+        bool UpdateLayer(Layers.Layer layer);
         void RemoveLayer(params string[] layerIds);
     }
 
