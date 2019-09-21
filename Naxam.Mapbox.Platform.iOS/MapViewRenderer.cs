@@ -231,9 +231,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     var point = gesture.LocationInView(map);
                     var touchedCooridinate = map.ConvertPoint(point, map);
                     var position = new LatLng(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
-                    Element.DidTapOnMapCommand?.Execute(new Tuple<LatLng, Point>(
-                        position,
-                        new Point((double)point.X, (double)point.Y)));
+
+                    (LatLng, Point) commandParamters = (position, new Point(point.X, point.Y));
+
+                    if (Element.DidTapOnMapCommand?.CanExecute(commandParamters) == true)
+                    {
+                        Element.DidTapOnMapCommand.Execute(commandParamters);
+                    }
                 }
             });
             Element.PropertyChanging += OnElementPropertyChanging;
