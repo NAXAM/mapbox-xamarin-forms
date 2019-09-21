@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:nx="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Class="MapBoxQs.Views.OfflineSimpleOfflineMapPage">
+    <Grid>
+        <nx:MapView
+            x:Name="map" />
+        <ContentView
+            VerticalOptions="End"
+            BackgroundColor="#6A000000"
+            Padding="24">
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer 
+                    Tapped="TapGestureRecognizer_Tapped"
+                    />
+            </ContentView.GestureRecognizers>
+            <Label
+                HorizontalTextAlignment="Center"
+                x:Name="txtProgress"
+                TextColor="White"
+                Text="Download" />
+        </ContentView>
+    </Grid>
+</ContentPage>

@@ -58,10 +58,7 @@ namespace MapBoxQs.Views
             switch (item.Title)
             {
                 case "Default styles":
-                    page = (new StylesDefaultPage
-                    {
-                        Title = item.Title
-                    });
+                    page = (new StylesDefaultPage());
                     break;
                 case "Symbol layer icons":
                     page = (new StylesSymbolLayerIconsPage
@@ -70,21 +67,16 @@ namespace MapBoxQs.Views
                     });
                     break;
                 case "Symbol layer icon size change":
-                    page = (new StylesSymbolLayerIconSizeChangePage() {
-                        Title = item.Title
-                    });
+                    page = (new StylesSymbolLayerIconSizeChangePage() );
                     break;
                 case "Line behind moving icon":
-                    page = (new LabLineBehindMovingIconPage
-                    {
-                        Title = item.Title
-                    });
+                    page = (new LabLineBehindMovingIconPage());
+                    break;
+                case "A simple offline map":
+                    page = (new OfflineSimpleOfflineMapPage());
                     break;
                 default:
-                    page = (new MapBoxQsPage
-                    {
-                        Title = item.Title
-                    });
+                    page = (new MapBoxQsPage());
                     break;
             }
 
