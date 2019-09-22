@@ -69,6 +69,9 @@ namespace MapBoxQs.Views
                 case "Symbol layer icon size change":
                     page = (new StylesSymbolLayerIconSizeChangePage() );
                     break;
+                case "Create a line layer":
+                    page = (new StylesLineLayerPage());
+                    break;
                 case "Line behind moving icon":
                     page = (new LabLineBehindMovingIconPage());
                     break;

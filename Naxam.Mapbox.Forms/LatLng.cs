@@ -7,14 +7,19 @@ namespace Naxam.Mapbox
     {
         public static LatLng Zero = new LatLng(0, 0);
 
+        public static LatLng FromLngLat(double lng, double lat)
+        {
+            return new LatLng(lat, lng);
+        }
+
         public double Lat { get; set; }
 
         public double Long { get; set; }
 
-        public LatLng(double lat, double lon)
+        public LatLng(double lat, double lng)
         {
             Lat = lat;
-            Long = lon;
+            Long = lng;
         }
 
         public double DistanceTo(LatLng targetCoordinates)
