@@ -48,18 +48,104 @@ namespace Naxam.Controls.Forms
 
         public static readonly BindableProperty ZoomLevelProperty = BindableProperty.Create(
             nameof(ZoomLevel),
-            typeof(double),
+            typeof(double?),
             typeof(MapView),
-            10.0,
+            null,
             BindingMode.TwoWay);
-        public double ZoomLevel
+        public double? ZoomLevel
         {
-            get => (double)GetValue(ZoomLevelProperty);
+            get => (double?)GetValue(ZoomLevelProperty);
             set
             {
-                if (Math.Abs(value - ZoomLevel) > 0.01)
+                if (value.HasValue == false)
+                {
+                    SetValue(ZoomLevelProperty, null);
+                    return;
+                }
+
+                var current = ZoomLevel.HasValue ? ZoomLevel.Value : 0;
+
+                if (Math.Abs(value.Value - current) > double.Epsilon)
                 {
                     SetValue(ZoomLevelProperty, value);
+                }
+            }
+        }
+
+        public static readonly BindableProperty ZoomMinLevelProperty = BindableProperty.Create(
+            nameof(ZoomMinLevel),
+            typeof(double?),
+            typeof(MapView),
+            null,
+            BindingMode.TwoWay);
+        public double? ZoomMinLevel
+        {
+            get => (double?)GetValue(ZoomMinLevelProperty);
+            set
+            {
+                if (value.HasValue == false)
+                {
+                    SetValue(ZoomMinLevelProperty, null);
+                    return;
+                }
+
+                var current = ZoomMinLevel.HasValue ? ZoomMinLevel.Value : 0;
+
+                if (Math.Abs(value.Value - current) > double.Epsilon)
+                {
+                    SetValue(ZoomMinLevelProperty, value);
+                }
+            }
+        }
+
+        public static readonly BindableProperty UICompassMarginTopProperty = BindableProperty.Create(
+            nameof(UICompassMarginTop),
+            typeof(double?),
+            typeof(MapView),
+            null,
+            BindingMode.TwoWay);
+        public double? UICompassMarginTop
+        {
+            get => (double?)GetValue(UICompassMarginTopProperty);
+            set
+            {
+                if (value.HasValue == false)
+                {
+                    SetValue(UICompassMarginTopProperty, null);
+                    return;
+                }
+
+                var current = UICompassMarginTop.HasValue ? UICompassMarginTop.Value : 0;
+
+                if (Math.Abs(value.Value - current) > double.Epsilon)
+                {
+                    SetValue(UICompassMarginTopProperty, value);
+                }
+            }
+        }
+
+        public static readonly BindableProperty ZoomMaxLevelProperty = BindableProperty.Create(
+            nameof(ZoomMaxLevel),
+            typeof(double?),
+            typeof(MapView),
+            null,
+            BindingMode.TwoWay);
+        public double? ZoomMaxLevel
+        {
+            get => (double?)GetValue(ZoomMaxLevelProperty);
+            set
+            {
+                if (value.HasValue == false)
+                {
+                    SetValue(ZoomMaxLevelProperty, null);
+                    return;
+                }
+
+                var current = ZoomMaxLevel.HasValue ? ZoomMaxLevel.Value : 0;
+
+                if (Math.Abs(value.Value - current) > double.Epsilon)
+                {
+                    SetValue(ZoomMaxLevelProperty, value);
                 }
             }
         }

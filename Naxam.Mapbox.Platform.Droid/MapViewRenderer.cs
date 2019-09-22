@@ -91,11 +91,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         private void FocustoLocation(LatLng latLng)
         {
             if (map == null || mapReady == false) { return; }
-            CameraPosition position = new CameraPosition.Builder()
-                .Target(latLng)
-                .Zoom(Math.Abs(Element.ZoomLevel - 0) < 0.01 ? SIZE_ZOOM : Element.ZoomLevel)
-                .Build();
-            map.AnimateCamera(CameraUpdateFactory.NewCameraPosition(position), 1000);
+            var builder = new CameraPosition.Builder()
+                .Target(latLng);
+
+            if (Element.ZoomLevel.HasValue && Math.Abs(Element.ZoomLevel.Value - map.CameraPosition.Zoom) > double.Epsilon)
+            {
+                builder.Zoom(Element.ZoomLevel.Value);
+            }
+
+            map.AnimateCamera(CameraUpdateFactory.NewCameraPosition(builder.Build()), 1000);
         }
 
         protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -138,12 +142,17 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName && map != null)
             {
-                var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel);
+                if (Element.ZoomLevel.HasValue == false)
+                {
+                    return;
+                }
+
+                var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel.Value);
                 System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
-                if (dif >= 0.01 && cameraBusy == false)
+                if (dif >= double.Epsilon && cameraBusy == false)
                 {
                     System.Diagnostics.Debug.WriteLine("Updating zoom level");
-                    map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel));
+                    map.AnimateCamera(CameraUpdateFactory.ZoomTo(Element.ZoomLevel.Value));
                 }
             }
             else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
@@ -173,6 +182,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             OnMapRegionChanged();
             map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
             map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
+
+            if (Element.UICompassMarginTop.HasValue)
+            {
+                map.UiSettings.SetCompassMargins(
+                    map.UiSettings.CompassMarginLeft,
+                    (int)Context.ToPixels(Element.UICompassMarginTop.Value),
+                    map.UiSettings.CompassMarginRight,
+                    map.UiSettings.CompassMarginBottom);
+            }
+
             OnMapRegionChanged();
 
             if (Element.Center != NxLatLng.Zero)

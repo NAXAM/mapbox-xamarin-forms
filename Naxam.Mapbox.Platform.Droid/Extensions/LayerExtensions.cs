@@ -456,7 +456,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.RasterBrightnessMax != null)
             {
-                properties.Add(PropertyFactory.LineBlur(layer.RasterBrightnessMax.ToExpression()));
+                properties.Add(PropertyFactory.RasterBrightnessMax(layer.RasterBrightnessMax.ToExpression()));
             }
 
             if (layer.RasterBrightnessMaxTransition != null)
@@ -476,7 +476,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.RasterContrast != null)
             {
-                properties.Add(PropertyFactory.LineDasharray(layer.RasterContrast.ToExpression()));
+                properties.Add(PropertyFactory.RasterContrast(layer.RasterContrast.ToExpression()));
             }
 
             if (layer.RasterContrastTransition != null)
@@ -501,7 +501,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.RasterOpacity != null)
             {
-                properties.Add(PropertyFactory.LineGradient(layer.RasterOpacity.ToExpression()));
+                properties.Add(PropertyFactory.RasterOpacity(layer.RasterOpacity.ToExpression()));
             }
 
             if (layer.RasterOpacityTransition != null)

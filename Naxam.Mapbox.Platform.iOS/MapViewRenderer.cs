@@ -79,11 +79,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
             else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName)
             {
-                var isSameLevel = Math.Round(Element.ZoomLevel * 100).Equals(Math.Round(map.ZoomLevel * 100));
+                if (Element.ZoomLevel.HasValue == false) return; // TODO Set to default value
+
+                var isSameLevel = Math.Round(Element.ZoomLevel.Value * 100).Equals(Math.Round(map.ZoomLevel * 100));
 
                 if (isSameLevel) return;
 
-                map.ZoomLevel = Element.ZoomLevel;
+                map.ZoomLevel = Element.ZoomLevel.Value;
             }
             else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName)
             {
@@ -182,7 +184,28 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 RotateEnabled = Element.RotateEnabled,
                 UserTrackingMode = MGLUserTrackingMode.FollowWithHeading
             };
-            map.ZoomLevel = Element.ZoomLevel;
+            
+            if (Element.ZoomLevel.HasValue)
+            {
+                map.ZoomLevel = Element.ZoomLevel.Value;
+            }
+
+            if (Element.ZoomMinLevel.HasValue)
+            {
+                map.MinimumZoomLevel = Element.ZoomMinLevel.Value;
+            }
+
+            if (Element.ZoomMaxLevel.HasValue)
+            {
+                map.MaximumZoomLevel = Element.ZoomMaxLevel.Value;
+            }
+
+            if (Element.UICompassMarginTop.HasValue)
+            {
+                // TODO iOS UICompassMarginTop
+                //map.CompassViewMargins = new CoreGraphics.CGPoint(Element.ZoomMaxLevel.Value;
+            }
+
             UpdateMapStyle();
             UpdateCenter(false);
         }

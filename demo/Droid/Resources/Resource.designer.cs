@@ -12741,9 +12741,6 @@ namespace MapBoxQs.Droid
 			// aapt resource value: 0x7f030000
 			public const int ic_launcher = 2130903040;
 			
-			// aapt resource value: 0x7f030001
-			public const int pink_dot = 2130903041;
-			
 			static Mipmap()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

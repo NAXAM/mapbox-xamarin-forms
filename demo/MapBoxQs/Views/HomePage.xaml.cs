@@ -78,6 +78,12 @@ namespace MapBoxQs.Views
                 case "Add a WMS source":
                     page = new StylesWebMapServiceLayerPage();
                     break;
+                case "Add a new layer below labels":
+                    page = new StylesLayerBelowLabelsPage();
+                    break;
+                case "Adjust a layer's opacity":
+                    page = new StylesChangeLayerOpacityPage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

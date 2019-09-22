@@ -37,8 +37,14 @@
 	<Compile Update="MapBoxQsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+	<Compile Update="Views\StylesChangeLayerOpacityPage.xaml.cs">
+	  <DependentUpon>StylesChangeLayerOpacityPage.xaml</DependentUpon>
+	</Compile>
 	<Compile Update="Views\StylesChangeLayerColorPage.xaml.cs">
 	  <DependentUpon>StylesChangeLayerColorPage.xaml</DependentUpon>
+	</Compile>
+	<Compile Update="Views\StylesLayerBelowLabelsPage.xaml.cs">
+	  <DependentUpon>StylesLayerBelowLabelsPage.xaml</DependentUpon>
 	</Compile>
 	<Compile Update="Views\StylesWebMapServiceLayerPage.xaml.cs">
 	  <DependentUpon>StylesWebMapServiceLayerPage.xaml</DependentUpon>
