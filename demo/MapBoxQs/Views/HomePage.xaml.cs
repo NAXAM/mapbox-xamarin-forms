@@ -75,6 +75,9 @@ namespace MapBoxQs.Views
                 case "Add a vector tile source":
                     page = new StylesVectorLayerPage();
                     break;
+                case "Add a WMS source":
+                    page = new StylesWebMapServiceLayerPage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

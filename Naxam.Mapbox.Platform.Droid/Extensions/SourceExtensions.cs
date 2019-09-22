@@ -3,6 +3,7 @@ using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
 using NxGeojsonSource = Naxam.Mapbox.Sources.GeoJsonSource;
 using NxVectorSource = Naxam.Mapbox.Sources.VectorSource;
 using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
+using NxTileSet = Naxam.Mapbox.Sources.TileSet;
 using Com.Mapbox.Mapboxsdk.Style.Sources;
 using Newtonsoft.Json;
 using Com.Mapbox.Geojson;
@@ -50,13 +51,29 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                     return new GeoJsonSource(geojsonSource.Id, localUrl, geojsonSource.Options.ToOptions());
 
                 case NxRasterSource rasterSource:
-                    return new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL, rasterSource.TileSize);
+                    if (rasterSource.TileSet != null)
+                    {
+                        var tileSet = rasterSource.TileSet.Convert();
+
+                        return rasterSource.TileSize.HasValue 
+                            ? new RasterSource(rasterSource.Id, tileSet, rasterSource.TileSize.Value)
+                            : new RasterSource(rasterSource.Id, tileSet);
+                    }
+
+                    return rasterSource.TileSize.HasValue
+                            ? new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL, rasterSource.TileSize.Value)
+                            : new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL);
                 case NxVectorSource vectorSource:
                     //TODO VectorSource Add other options
                     return new VectorSource(vectorSource.Id, vectorSource.Url);
             }
 
             return null;
+        }
+
+        public static TileSet Convert(this NxTileSet tileSet)
+        {
+            return new TileSet(tileSet.TileJson, tileSet.Tiles);
         }
     }
 

@@ -7,7 +7,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
     public static class SourceExtensions
     {
-        public static MGLShapeSource ToSource(this Source source)
+        public static MGLSource ToSource(this Source source)
         {
             MGLShapeSource result = null;
 
@@ -36,6 +36,15 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 case VectorSource vectorSource:
                     //TODO VectorSource Add other options
                     return new MGLVectorTileSource(vectorSource.Id, NSUrl.FromString(vectorSource.Url));
+                case RasterSource rasterSource:
+                    if (rasterSource.TileSet != null)
+                    {
+                        // TOPDO Ensure all detail set
+                        return  new MGLRasterTileSource(rasterSource.Id, rasterSource.TileSet.Tiles, new NSDictionary<string, object>());
+                    }
+                    return rasterSource.TileSize.HasValue
+                        ? new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL), rasterSource.TileSize.Value)
+                        : new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL));
             }
 
             return result;
