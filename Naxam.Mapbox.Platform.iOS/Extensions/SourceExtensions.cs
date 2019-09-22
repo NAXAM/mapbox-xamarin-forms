@@ -14,33 +14,41 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             switch (source)
             {
                 case GeoJsonSource geojsonSource:
-                    var options = geojsonSource.Options.ToOptions();
-
-                    if (geojsonSource.Data != null)
                     {
-                        return new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), options);
-                    }
+                        var options = geojsonSource.Options.ToOptions();
 
-                    if (string.IsNullOrWhiteSpace(geojsonSource.Url))
-                    {
-                        return new MGLShapeSource()
+                        if (geojsonSource.Data != null)
                         {
-                            Identifier = geojsonSource.Id
-                        };
-                    }
+                            return new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), options);
+                        }
 
-                    var url = geojsonSource.IsLocal
-                        ? NSUrl.FromFilename(geojsonSource.Url)
-                        : NSUrl.FromString(geojsonSource.Url);
-                    return new MGLShapeSource(source.Id, url, options);
+                        if (string.IsNullOrWhiteSpace(geojsonSource.Url))
+                        {
+                            return new MGLShapeSource()
+                            {
+                                Identifier = geojsonSource.Id
+                            };
+                        }
+
+                        var url = geojsonSource.IsLocal
+                            ? NSUrl.FromFilename(geojsonSource.Url)
+                            : NSUrl.FromString(geojsonSource.Url);
+                        return new MGLShapeSource(source.Id, url, options);
+                    }
                 case VectorSource vectorSource:
                     //TODO VectorSource Add other options
                     return new MGLVectorTileSource(vectorSource.Id, NSUrl.FromString(vectorSource.Url));
                 case RasterSource rasterSource:
                     if (rasterSource.TileSet != null)
                     {
-                        // TOPDO Ensure all detail set
-                        return  new MGLRasterTileSource(rasterSource.Id, rasterSource.TileSet.Tiles, new NSDictionary<string, object>());
+                        var options = new NSMutableDictionary<NSString, NSObject>();
+                        if (rasterSource.TileSize.HasValue)
+                        {
+                            options.Add(MGLTileSourceOptions.TileSize, NSNumber.FromInt32(rasterSource.TileSize.Value));
+                        }
+
+                        // TOPDO No TileSet for iOS??
+                        return  new MGLRasterTileSource(rasterSource.Id, rasterSource.TileSet.Tiles, new NSDictionary<NSString, NSObject>(options.Keys, options.Values));
                     }
                     return rasterSource.TileSize.HasValue
                         ? new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL), rasterSource.TileSize.Value)

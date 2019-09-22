@@ -34,7 +34,7 @@
             <RowDefinition
                 Height="*" />
             <RowDefinition
-                Height="120" />
+                Height="140" />
         </Grid.RowDefinitions>
     </Grid>
 </ContentPage>

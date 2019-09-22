@@ -33,8 +33,8 @@ namespace MapBoxQs.Views
         private void HandleStyleLoaded(MapStyle obj)
         {
             var source = new RasterSource(
-                "web-map-source", 
-                new TileSet("tileset", "https://img.nj.gov/imagerywms/Natural2015?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015"), 
+                "web-map-source",
+                new TileSet("tileset", "https://img.nj.gov/imagerywms/Natural2015?bbox=%7Bbbox-epsg-3857%7D&format=image%2Fpng&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&width=256&height=256&layers=Natural2015"), 
                 256);
             map.Functions.AddSource(source);
 
