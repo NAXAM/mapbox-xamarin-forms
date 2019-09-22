@@ -37,6 +37,9 @@
 	<Compile Update="MapBoxQsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+	<Compile Update="Views\StylesChangeLayerColorPage.xaml.cs">
+	  <DependentUpon>StylesChangeLayerColorPage.xaml</DependentUpon>
+	</Compile>
 	<Compile Update="Views\StylesSymbolLayerIconsPage.xaml.cs">
 	  <DependentUpon>StylesSymbolLayerIconsPage.xaml</DependentUpon>
 	</Compile>

@@ -21,7 +21,8 @@ namespace MapBoxQs.Views
 
             Title = "Symbol layer icons";
 
-            map.Center = new LatLng(-33.213144 , - 57.225365);
+            map.Center = new LatLng(-32.557013, -56.149056);
+            map.ZoomLevel = 5.526846;
             map.MapStyle = new MapStyle("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41");
 
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);

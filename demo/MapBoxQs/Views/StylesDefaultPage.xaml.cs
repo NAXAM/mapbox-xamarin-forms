@@ -16,6 +16,8 @@ namespace MapBoxQs.Views
             Title = "Default Styles";
 
             map.Center = new LatLng(21.028511, 105.804817);
+            map.ZoomLevel = 12;
+
             map.MapStyle = MapStyle.LIGHT;
         }
 

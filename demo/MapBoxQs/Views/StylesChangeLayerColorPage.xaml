@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:nx="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
+    mc:Ignorable="d"
+    x:Class="MapBoxQs.Views.StylesChangeLayerColorPage">
+    <Grid>
+        <nx:MapView
+            x:Name="map" />
+        <StackLayout
+            Grid.Row="1">
+            <Picker
+                x:Name="picker" />
+            <Slider
+                x:Name="red"
+                Maximum="255"
+                Minimum="0"
+                Value="100" />
+            <Slider
+                x:Name="green"
+                Maximum="255"
+                Minimum="0"
+                Value="100" />
+            <Slider
+                x:Name="blue"
+                Maximum="255"
+                Minimum="0"
+                Value="100" />
+        </StackLayout>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*" />
+            <RowDefinition
+                Height="120" />
+        </Grid.RowDefinitions>
+    </Grid>
+</ContentPage>
