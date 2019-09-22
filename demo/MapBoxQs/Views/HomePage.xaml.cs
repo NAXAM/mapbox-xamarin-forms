@@ -72,6 +72,9 @@ namespace MapBoxQs.Views
                 case "Change a layer's color":
                     page = new StylesChangeLayerColorPage();
                     break;
+                case "Add a vector tile source":
+                    page = new StylesVectorLayerPage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

@@ -622,6 +622,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithFilter(layer.Filter.ToExpression());
             }
+
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
         }
 
         static HillshadeLayer ToLayer(NxHillshadeLayer layer)

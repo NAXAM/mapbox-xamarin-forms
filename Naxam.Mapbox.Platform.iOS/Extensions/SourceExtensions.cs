@@ -33,6 +33,9 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                         ? NSUrl.FromFilename(geojsonSource.Url)
                         : NSUrl.FromString(geojsonSource.Url);
                     return new MGLShapeSource(source.Id, url, options);
+                case VectorSource vectorSource:
+                    //TODO VectorSource Add other options
+                    return new MGLVectorTileSource(vectorSource.Id, NSUrl.FromString(vectorSource.Url));
             }
 
             return result;

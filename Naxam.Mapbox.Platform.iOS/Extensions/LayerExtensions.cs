@@ -611,6 +611,11 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.Predicate = layer.Filter.ToPredicate();
             }
 
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
             return result;
         }
 

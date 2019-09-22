@@ -40,6 +40,9 @@
 	<Compile Update="Views\StylesChangeLayerColorPage.xaml.cs">
 	  <DependentUpon>StylesChangeLayerColorPage.xaml</DependentUpon>
 	</Compile>
+	<Compile Update="Views\StylesVectorLayerPage.xaml.cs">
+	  <DependentUpon>StylesVectorLayerPage.xaml</DependentUpon>
+	</Compile>
 	<Compile Update="Views\StylesSymbolLayerIconsPage.xaml.cs">
 	  <DependentUpon>StylesSymbolLayerIconsPage.xaml</DependentUpon>
 	</Compile>

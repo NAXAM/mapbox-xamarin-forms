@@ -1,6 +1,7 @@
 ﻿using NxSource = Naxam.Mapbox.Sources.Source;
 using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
 using NxGeojsonSource = Naxam.Mapbox.Sources.GeoJsonSource;
+using NxVectorSource = Naxam.Mapbox.Sources.VectorSource;
 using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
 using Com.Mapbox.Mapboxsdk.Style.Sources;
 using Newtonsoft.Json;
@@ -50,6 +51,9 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
 
                 case NxRasterSource rasterSource:
                     return new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL, rasterSource.TileSize);
+                case NxVectorSource vectorSource:
+                    //TODO VectorSource Add other options
+                    return new VectorSource(vectorSource.Id, vectorSource.Url);
             }
 
             return null;

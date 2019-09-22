@@ -22,6 +22,46 @@ namespace Naxam.Mapbox.Expressions
             Arguments = null;
         }
 
+        public static implicit operator Expression(string value)
+        {
+            return new ExpressionLiteral<string>(value);
+        }
+
+        public static implicit operator Expression(double value)
+        {
+            return new ExpressionLiteral<double>(value);
+        }
+
+        public static implicit operator Expression(int value)
+        {
+            return new ExpressionLiteral<int>(value);
+        }
+
+        public static implicit operator Expression(int[] value)
+        {
+            return new ExpressionLiteral<int[]>(value);
+        }
+
+        public static implicit operator Expression(float value)
+        {
+            return new ExpressionLiteral<float>(value);
+        }
+
+        public static implicit operator Expression(float[] value)
+        {
+            return new ExpressionLiteral<float[]>(value);
+        }
+
+        public static implicit operator Expression(double[] value)
+        {
+            return new ExpressionLiteral<double[]>(value);
+        }
+
+        public static implicit operator Expression(Color value)
+        {
+            return Expression.Color(value);
+        }
+
         /**
          * Creates an expression from its @operator and varargs expressions.
          *

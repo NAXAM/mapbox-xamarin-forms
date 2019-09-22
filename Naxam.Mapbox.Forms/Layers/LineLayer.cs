@@ -24,6 +24,8 @@ namespace Naxam.Mapbox.Layers
         public Expression LineWidth { get; set; }
         public TransitionOptions LineWidthTransition { get; set; }
 
+        public string SourceLayer { get; set; }
+
         public LineLayer(string id, string sourceId) : base(id, sourceId) { }
     }
 }
