@@ -5,6 +5,7 @@ using Naxam.Mapbox;
 using GeoJSON.Net.Feature;
 using System.Linq;
 using Naxam.Mapbox.Platform.iOS.Extensions;
+using Mapbox;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
@@ -63,6 +64,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
     public partial class MapViewRenderer
     {
+        public void AnimiateCamera(LatLng center, double zoom, int durationInMillisecond)
+        {
+            var camera = MGLMapCamera.CameraLookingAtCenterCoordinateAndAltitude(center.ToCLCoordinate(), 0, 0, 0);
+            map.FlyToCamera(camera, durationInMillisecond, null);
+            map.SetZoomLevel(zoom, true);
+        }
+
         public Task<byte[]> TakeSnapshotAsync(LatLngBounds bounds = default)
         {
             var image = map.Capture(true);

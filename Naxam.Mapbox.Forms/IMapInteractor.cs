@@ -11,6 +11,7 @@ namespace Naxam.Mapbox
     public partial interface IMapFunctions
     {
         void AddStyleImage(IconImageSource source);
+        void AnimiateCamera(LatLng center, double zoom, int durationInMillisecond);
     }
 
     public partial interface IMapFunctions

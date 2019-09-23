@@ -84,6 +84,9 @@ namespace MapBoxQs.Views
                 case "Adjust a layer's opacity":
                     page = new StylesChangeLayerOpacityPage();
                     break;
+                case "Color dependent on zoom level":
+                    page = new StylesColorDependentOnRoomLevelPage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;
