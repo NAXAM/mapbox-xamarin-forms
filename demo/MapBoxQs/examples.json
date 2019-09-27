@@ -329,6 +329,13 @@
     "title": "A simple offline map"
   },
   {
+    "imageUrl": "http://i.imgur.com/dV4DgDT.png",
+    "description": "Download a offline cache DB and merge to Mapbox.",
+    "categoryId": "nav_offline",
+    "showNewIcon": false,
+    "title": "Sideload offline map"
+  },
+  {
     "imageUrl": "http://i.imgur.com/tDlcNIg.png",
     "description": "Download, view, navigate to, and delete an offline region.",
     "categoryId": "nav_offline",

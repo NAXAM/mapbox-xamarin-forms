@@ -6,6 +6,7 @@ using GeoJSON.Net.Feature;
 using System.Linq;
 using Naxam.Mapbox.Platform.iOS.Extensions;
 using Mapbox;
+using CoreAnimation;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
@@ -66,9 +67,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
     {
         public void AnimiateCamera(LatLng center, double zoom, int durationInMillisecond)
         {
-            var camera = MGLMapCamera.CameraLookingAtCenterCoordinateAndAltitude(center.ToCLCoordinate(), 0, 0, 0);
-            map.FlyToCamera(camera, durationInMillisecond, null);
-            map.SetZoomLevel(zoom, true);
+            map.ZoomLevel = zoom;
+            //var camera = MGLMapCamera.CameraLookingAtCenterCoordinateAndAltitude(center.ToCLCoordinate(), 4500, 0, 0);
+            //map.SetCamera(camera, durationInMillisecond, CAMediaTimingFunction.FromName(CAMediaTimingFunction.Linear), null);
         }
 
         public Task<byte[]> TakeSnapshotAsync(LatLngBounds bounds = default)

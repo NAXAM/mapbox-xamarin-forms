@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:nx="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MapBoxQs.Views.OfflineSideloadOfflineMapPage">
+    <Grid>
+        <nx:MapView x:Name="map" />
+        <ContentView VerticalOptions="Start"
+                     Padding="24"
+                     BackgroundColor="#6A000000">
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped2" />
+            </ContentView.GestureRecognizers>
+            <Label Text="Download and Merge"
+                   HorizontalTextAlignment="Center"
+                   x:Name="txtMerge"
+                   TextColor="White" />
+        </ContentView>
+    </Grid>
+</ContentPage>

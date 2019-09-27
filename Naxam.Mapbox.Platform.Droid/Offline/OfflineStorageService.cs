@@ -221,5 +221,40 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             region.SetDownloadState(OfflineRegion.StateInactive);
             return true;
         }
+
+        public Task<bool> Sideload(string filePath)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+
+            offlineManager.MergeOfflineRegions(filePath, new MergeOfflineRegionsCallback(tcs));
+
+            return tcs.Task;
+        }
+
+        class MergeOfflineRegionsCallback : Java.Lang.Object, OfflineManager.IMergeOfflineRegionsCallback
+        {
+            readonly WeakReference<TaskCompletionSource<bool>> tcsRef;
+
+            public MergeOfflineRegionsCallback(TaskCompletionSource<bool> tcs)
+            {
+                tcsRef = new WeakReference<TaskCompletionSource<bool>>(tcs);
+            }
+
+            public void OnError(string p0)
+            {
+                if (tcsRef.TryGetTarget(out var tcs))
+                {
+                    tcs.TrySetException(new Exception(p0));
+                }
+            }
+
+            public void OnMerge(OfflineRegion[] p0)
+            {
+                if (tcsRef.TryGetTarget(out var tcs))
+                {
+                    tcs.TrySetResult(true);
+                }
+            }
+        }
     }
 }

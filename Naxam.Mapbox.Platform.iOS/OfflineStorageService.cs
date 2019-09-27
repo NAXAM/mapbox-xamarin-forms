@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Naxam.Controls.Mapbox.Platform.iOS.Extensions;
 using System.Linq;
 using ObjCRuntime;
+using System.IO;
 
 [assembly: Xamarin.Forms.Dependency(typeof(Naxam.Controls.Mapbox.Platform.iOS.OfflineStorageService))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
@@ -31,11 +32,12 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+
             NSNotificationCenter.DefaultCenter.RemoveObserver(this);
             packsObservingToken?.Dispose();
             packsObservingToken = null;
             getPacksTask?.SetCanceled();
-            base.Dispose(disposing);
         }
 
         private void OnOfflinePackError(NSNotification notification)
@@ -285,6 +287,44 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             mbPack.Suspend();
             if (mbPack.State == MGLOfflinePackState.Inactive) return true;
             return true;
+        }
+
+        public Task<bool> Sideload(string filePath)
+        {
+            var exists = NSFileManager.DefaultManager.FileExists(filePath);
+
+            if (exists == false) {
+                return Task.FromResult(true);
+            }
+
+            var tcs = new TaskCompletionSource<bool>();
+
+            var tempPath = Path.Combine(NSFileManager.DefaultManager.GetTemporaryDirectory().AbsoluteString, Guid.NewGuid().ToString());
+
+            NSFileManager.DefaultManager.Copy(
+                NSUrl.FromString(filePath.StartsWith("file://", StringComparison.OrdinalIgnoreCase) ? filePath : "file://" + filePath),
+                NSUrl.FromString(tempPath),
+                out var err
+                );
+
+            if (err != null)
+            {
+                return Task.FromException<bool>(new Exception(err.DebugDescription));
+            }
+
+            MGLOfflineStorage.SharedOfflineStorage.AddContentsOfURL(
+                NSUrl.FromString(tempPath),
+                (NSUrl fileUrl, MGLOfflinePack[] packages, NSError error) =>
+                {
+                    if (error != null)
+                    {
+                        tcs.TrySetException(new Exception(error.UserInfo.DebugDescription));
+                        return;
+                    }
+                    tcs.TrySetResult(true);
+                });
+
+            return tcs.Task;
         }
     }
 }

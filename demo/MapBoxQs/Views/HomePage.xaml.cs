@@ -93,6 +93,9 @@ namespace MapBoxQs.Views
                 case "A simple offline map":
                     page = new OfflineSimpleOfflineMapPage();
                     break;
+                case "Sideload offline map":
+                    page = new OfflineSideloadOfflineMapPage();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;
@@ -116,7 +119,7 @@ namespace MapBoxQs.Views
 
             lstExamples.ItemsSource = words.Length == 0
                 ? examples
-                : examples.Where(x => words.Any(w => x.Title.Contains(w)));
+                : examples.Where(x => words.Any(w => x.Title.ToUpper().Contains(w.ToUpper())));
         }
 
         private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)

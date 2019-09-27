@@ -32,5 +32,7 @@ namespace Naxam.Controls.Forms
         Task<bool> RemovePack(OfflinePack pack);
         Task<bool> SuspendPack(OfflinePack pack);
         void RequestPackProgress(OfflinePack pack);
+
+        Task<bool> Sideload(string filePath);
     }
 }

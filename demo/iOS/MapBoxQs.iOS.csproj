@@ -252,6 +252,12 @@
     <PackageReference Include="GeoJSON.Net">
       <Version>1.1.73</Version>
     </PackageReference>
+    <PackageReference Include="Shiny.Net.Http">
+      <Version>1.0.0.400-beta</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Essentials">
+      <Version>1.3.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\blue_marker_view%403x.png" />

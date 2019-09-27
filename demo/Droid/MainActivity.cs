@@ -13,6 +13,7 @@ using Android.Content;
 using Android.Support.V4.Content;
 using Android.Runtime;
 using Android.Graphics;
+using MapBoxQs.Views;
 
 namespace MapBoxQs.Droid
 {
@@ -38,7 +39,15 @@ namespace MapBoxQs.Droid
 
             System.Diagnostics.Debug.WriteLine("Mapbox version: " + Com.Mapbox.Mapboxsdk.BuildConfig.MAPBOX_VERSION_STRING);
 
+            Shiny.AndroidShinyHost.Init(
+                this.Application,
+                new MyStartup()
+            );
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
             LoadApplication(new App());
+
+            //Shiny.Notifications.NotificationManager.TryProcessIntent(this.Intent);
             //SetContentView(Resource.Layout.activity_main);
             //mapView = (MapView)FindViewById(Resource.Id.mapView);
             //mapView.OnCreate(savedInstanceState);
@@ -46,28 +55,22 @@ namespace MapBoxQs.Droid
             //mapView.OffsetTopAndBottom(0);
 
         }
-        public class MapReady : Java.Lang.Object, IOnMapReadyCallback
+
+        protected override void OnNewIntent(Intent intent)
         {
-            Context _context;
-            public MapReady(Context context)
-            {
-                _context = context;
-            }
-            public void Dispose()
-            {
-                throw new NotImplementedException();
-            }
-
-            public void OnMapReady(MapboxMap mapboxMap)
-            {
-
-                mapboxMap.AddMarker(new Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions().SetPosition(new LatLng(40.416717, -3.703771)).SetTitle("spain"));
-                mapboxMap.AddMarker(new Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions().SetPosition(new LatLng(26.794531, 29.781524)).SetTitle("egypt"));
-                mapboxMap.AddMarker(new Com.Mapbox.Mapboxsdk.Annotations.MarkerOptions().SetPosition(new LatLng(50.981488, 10.384677)).SetTitle("germany"));
-                mapboxMap.InfoWindowAdapter = new InfoWindowAdapter(_context);
-                
-            }
+            base.OnNewIntent(intent);
+            //Shiny.Notifications.NotificationManager.TryProcessIntent(intent);
         }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            Shiny.AndroidShinyHost.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
         public class InfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
         {
 
