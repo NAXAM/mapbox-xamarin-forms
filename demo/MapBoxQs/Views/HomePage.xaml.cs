@@ -87,6 +87,9 @@ namespace MapBoxQs.Views
                 case "Color dependent on zoom level":
                     page = new StylesColorDependentOnRoomLevelPage();
                     break;
+                case "Change a map's language":
+                    page = new StylesLanguageSwitchPage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;
