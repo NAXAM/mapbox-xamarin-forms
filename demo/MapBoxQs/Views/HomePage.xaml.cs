@@ -99,6 +99,9 @@ namespace MapBoxQs.Views
                 case "Local style or custom raster style":
                     page = new StylesLocalStyleSource();
                     break;
+                case "Use an image source":
+                    page = new StylesImageSource();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

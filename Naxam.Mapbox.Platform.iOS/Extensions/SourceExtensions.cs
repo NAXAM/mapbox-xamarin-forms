@@ -1,7 +1,10 @@
-﻿using Foundation;
+﻿using System;
+using Foundation;
 using Mapbox;
 using Naxam.Mapbox.Sources;
 using Newtonsoft.Json;
+using UIKit;
+using Xamarin.Forms;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
@@ -53,6 +56,10 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                     return rasterSource.TileSize.HasValue
                         ? new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL), rasterSource.TileSize.Value)
                         : new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL));
+                
+                case MapboxImageSource imageSource:
+                    //TODO Other image source
+                    return new MGLImageSource(imageSource.Id, imageSource.Coordinates.ToNative(), imageSource.Source.GetImage());
             }
 
             return result;

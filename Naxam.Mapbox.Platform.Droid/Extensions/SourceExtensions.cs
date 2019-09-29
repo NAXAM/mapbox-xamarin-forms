@@ -1,12 +1,17 @@
-﻿using NxSource = Naxam.Mapbox.Sources.Source;
+﻿using System;
+using Android.Content;
+using NxSource = Naxam.Mapbox.Sources.Source;
 using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
 using NxGeojsonSource = Naxam.Mapbox.Sources.GeoJsonSource;
 using NxVectorSource = Naxam.Mapbox.Sources.VectorSource;
+using NxImageSource = Naxam.Mapbox.Sources.MapboxImageSource;
 using NxGeoJsonOptions = Naxam.Mapbox.Sources.GeoJsonOptions;
 using NxTileSet = Naxam.Mapbox.Sources.TileSet;
 using Com.Mapbox.Mapboxsdk.Style.Sources;
 using Newtonsoft.Json;
 using Com.Mapbox.Geojson;
+using Xamarin.Forms;
+using ImageSource = Com.Mapbox.Mapboxsdk.Style.Sources.ImageSource;
 
 namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
@@ -66,6 +71,8 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                 case NxVectorSource vectorSource:
                     //TODO VectorSource Add other options
                     return new VectorSource(vectorSource.Id, vectorSource.Url);
+                case NxImageSource imageSource:
+                    return new ImageSource(imageSource.Id, imageSource.Coordinates.ToNative(), imageSource.Source.GetResId());
             }
 
             return null;

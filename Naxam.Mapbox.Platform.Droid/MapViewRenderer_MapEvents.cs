@@ -60,8 +60,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         private void OnCameraIdle(object sender, EventArgs e)
         {
             cameraBusy = false;
-            currentCamera.Lat = map.CameraPosition.Target.Latitude;
-            currentCamera.Long = map.CameraPosition.Target.Longitude;
+            currentCamera = new NxLatLng(map.CameraPosition.Target.Latitude, map.CameraPosition.Target.Longitude);
             Element.ZoomLevel = map.CameraPosition.Zoom;
             Element.Center = currentCamera;
         }

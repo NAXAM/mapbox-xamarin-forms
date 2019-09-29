@@ -208,6 +208,7 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Resources\miami_beach@2x.png" />
     <BundleResource Include="Resources\naxam_copyright.png" />
     <BundleResource Include="Resources\naxam_copyright%402x.png" />
     <BundleResource Include="Resources\naxam_copyright%403x.png" />

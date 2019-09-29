@@ -3,6 +3,7 @@ using Com.Mapbox.Geojson;
 using GeoJSON.Net;
 using Naxam.Mapbox.Platform.Droid.Extensions;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 using NxSource = Naxam.Mapbox.Sources.Source;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
@@ -42,6 +43,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             return true;
         }
 
+        public bool UpdateSource(string sourceId, ImageSource imageSource)
+        {
+            var source = mapStyle.GetSource(sourceId) as Com.Mapbox.Mapboxsdk.Style.Sources.ImageSource;
+
+            if (source == null) return false;
+
+            var resId = imageSource.GetResId();
+            source.SetImage(resId);
+            
+            return true;
+        }
+        
         public void RemoveSource(params string[] sourceIds)
         {
             for (int i = 0; i < sourceIds.Length; i++)

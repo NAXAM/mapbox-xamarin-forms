@@ -462,16 +462,8 @@ namespace MapBoxQs
                 MinimumZoomLevel = 1,
                 Bounds = new LatLngBounds
                 {
-                    NorthEast = new LatLng
-                    {
-                        Lat = CenterLocation.Lat - 0.01,
-                        Long = CenterLocation.Long + 0.005
-                    },
-                    SouthWest = new LatLng
-                    {
-                        Lat = CenterLocation.Lat + 0.01,
-                        Long = CenterLocation.Long - 0.005
-                    }
+                    NorthEast = new LatLng (CenterLocation.Lat - 0.01, CenterLocation.Long + 0.005),
+                    SouthWest = new LatLng (CenterLocation.Lat + 0.01,CenterLocation.Long - 0.005)
                 }
             };
             UserDialogs.Instance.ShowLoading();
@@ -617,14 +609,8 @@ namespace MapBoxQs
 
         #region Custom locations
         LatLng[] positions = new[] {
-            new LatLng {
-                Lat = 21.0333,
-                Long = 105.8500
-            },
-              new LatLng {
-                Lat = 55.75719563,
-                Long = 8.93032908
-              }
+            new LatLng (21.0333, 105.8500),
+              new LatLng (55.75719563,  8.93032908)
          };
 
 

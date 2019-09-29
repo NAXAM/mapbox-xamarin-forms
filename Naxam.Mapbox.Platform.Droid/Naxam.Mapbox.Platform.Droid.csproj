@@ -115,6 +115,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomInfoWindowAdapter.cs" />
+    <Compile Include="Extensions\ImageSourceExtensions.cs" />
+    <Compile Include="Extensions\LatLngQuadExtensions.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="MapViewRenderer.Annotations.cs" />
     <Compile Include="MapViewRenderer.Interactor.Snapshot.cs" />

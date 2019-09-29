@@ -12,9 +12,9 @@ namespace Naxam.Mapbox
             return new LatLng(lat, lng);
         }
 
-        public double Lat { get; set; }
+        public double Lat { get; private set; }
 
-        public double Long { get; set; }
+        public double Long { get; private set; }
 
         public LatLng(double lat, double lng)
         {

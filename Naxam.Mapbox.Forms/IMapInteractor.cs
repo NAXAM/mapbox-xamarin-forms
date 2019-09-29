@@ -18,6 +18,7 @@ namespace Naxam.Mapbox
     {
         bool AddSource(params Sources.Source[] sources);
         bool UpdateSource(string sourceId, IGeoJSONObject featureCollection);
+        bool UpdateSource(string sourceId, ImageSource featureCollection);
         void RemoveSource(params string[] sourceIds);
 
         bool AddLayer(params Layers.Layer[] layers);

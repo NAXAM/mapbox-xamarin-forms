@@ -67,6 +67,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return true;
         }
 
+        public bool UpdateSource(string sourceId, ImageSource imageSource)
+        {
+            var source = mapStyle.SourceWithIdentifier(sourceId) as MGLImageSource;
+
+            if (source == null) return false;
+
+            source.Image = imageSource.GetImage();
+            
+            return true;
+        }
+
         public void RemoveSource(params string[] sourceIds)
         {
             for (int i = 0; i < sourceIds.Length; i++)
