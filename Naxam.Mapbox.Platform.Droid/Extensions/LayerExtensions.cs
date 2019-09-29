@@ -14,6 +14,7 @@ using NxBackgroundLayer = Naxam.Mapbox.Layers.BackgroundLayer;
 using NxRasterLayer = Naxam.Mapbox.Layers.RasterLayer;
 using Naxam.Mapbox.Platform.Droid.Extensions;
 using System.Collections.Generic;
+using Naxam.Mapbox.Expressions;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -111,6 +112,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         static void UpdateLayer(SymbolLayer result, NxSymbolLayer layer)
         {
             var properties = new List<PropertyValue>();
+
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+            
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
 
             if (layer.IconAllowOverlap != null)
             {
@@ -426,7 +437,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.TextWritingMode(layer.TextWritingMode.ToExpression()));
             }
 
-
             result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
@@ -453,6 +463,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         static void UpdateLayer(RasterLayer result, NxRasterLayer layer)
         {
             var properties = new List<PropertyValue>();
+
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+            
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
 
             if (layer.RasterBrightnessMax != null)
             {
@@ -551,6 +571,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             var properties = new List<PropertyValue>();
 
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+            
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
+
             if (layer.LineBlur != null)
             {
                 properties.Add(PropertyFactory.LineBlur(layer.LineBlur.ToExpression()));
@@ -648,6 +678,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             var properties = new List<PropertyValue>();
 
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+            
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
+
             if (layer.HillshadeAccentColor != null)
             {
                 properties.Add(PropertyFactory.HillshadeAccentColor(layer.HillshadeAccentColor.ToExpression()));
@@ -727,6 +767,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             var properties = new List<PropertyValue>();
 
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+            
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
+
             if (layer.HeatmapColor != null)
             {
                 properties.Add(PropertyFactory.HeatmapColor(layer.HeatmapColor.ToExpression()));
@@ -795,6 +845,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         static void UpdateLayer(FillLayer result, NxFillLayer layer)
         {
             var properties = new List<PropertyValue>();
+
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
 
             if (layer.FillAntialiased != null)
             {
@@ -886,6 +946,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             var properties = new List<PropertyValue>();
 
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
+
             if (layer.FillExtrusionBase != null)
             {
                 properties.Add(PropertyFactory.FillExtrusionBase(layer.FillExtrusionBase.ToExpression()));
@@ -958,8 +1028,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             result.SetProperties(properties.ToArray());
 
-            // TODO Add other values
-
             if (layer.Filter != null)
             {
                 result.WithFilter(layer.Filter.ToExpression());
@@ -984,6 +1052,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         static void UpdateLayer(CircleLayer result, NxCircleLayer layer)
         {
             var properties = new List<PropertyValue>();
+
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.WithSourceLayer(layer.SourceLayer);
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
+            }
 
             if (layer.CircleBlur != null)
             {

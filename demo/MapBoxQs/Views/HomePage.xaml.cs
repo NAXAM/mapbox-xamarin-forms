@@ -90,6 +90,9 @@ namespace MapBoxQs.Views
                 case "Change a map's language":
                     page = new StylesLanguageSwitchPage();
                     break;
+                case "Show and hide layers":
+                    page = new StylesShowHideLayersPage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

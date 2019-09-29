@@ -1,4 +1,5 @@
 ﻿using Mapbox;
+using Naxam.Mapbox.Expressions;
 using Naxam.Mapbox.Layers;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
@@ -90,6 +91,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLSymbolStyleLayer UpdateLayer(SymbolLayer layer, MGLSymbolStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
+
             if (layer.IconAllowOverlap != null)
             {
                 result.IconAllowsOverlap = layer.IconAllowOverlap.ToExpression();
@@ -447,6 +458,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLRasterStyleLayer UpdateLayer(RasterLayer layer, MGLRasterStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                // TODO iOS No SourceLayer for RasterStyleLayer
+//                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
 
             if (layer.RasterBrightnessMax != null)
             {
@@ -541,6 +562,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLLineStyleLayer UpdateLayer(LineLayer layer, MGLLineStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
+
             if (layer.LineBlur != null)
             {
                 result.LineBlur = layer.LineBlur.ToExpression();
@@ -611,11 +642,6 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.Predicate = layer.Filter.ToPredicate();
             }
 
-            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
-            {
-                result.SourceLayerIdentifier = layer.SourceLayer;
-            }
-
             return result;
         }
 
@@ -634,6 +660,17 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLHillshadeStyleLayer UpdateLayer(HillshadeLayer layer, MGLHillshadeStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                // TODO iOS Missing SourceLayer for HillshadeLayer
+//                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
+
             if (layer.HillshadeAccentColor != null)
             {
                 result.HillshadeAccentColor = layer.HillshadeAccentColor.ToExpression();
@@ -706,6 +743,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         }
         static MGLHeatmapStyleLayer UpdateLayer(HeatmapLayer layer, MGLHeatmapStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
+
             if (layer.HeatmapColor != null)
             {
                 result.HeatmapColor = layer.HeatmapColor.ToExpression();
@@ -789,6 +836,15 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLFillStyleLayer UpdateLayer(FillLayer layer, MGLFillStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
 
             if (layer.FillAntialiased != null)
             {
@@ -873,6 +929,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLFillExtrusionStyleLayer UpdateLayer(FillExtrusionLayer layer, MGLFillExtrusionStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
+
             if (layer.FillExtrusionBase != null)
             {
                 result.FillExtrusionBase = layer.FillExtrusionBase.ToExpression();
@@ -955,8 +1021,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLCircleStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+                //MaximumZoomLevel = layer.MaxZoom,
+                //MinimumZoomLevel = layer.MinZoom
             };
 
             UpdateLayer(layer, result);
@@ -966,6 +1032,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
         static MGLCircleStyleLayer UpdateLayer(CircleLayer layer, MGLCircleStyleLayer result)
         {
+            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
+            {
+                result.SourceLayerIdentifier = layer.SourceLayer;
+            }
+
+            if (layer.Visibility is ExpressionVisibility visibility)
+            {
+                result.Visible = (bool) visibility.GetValue();
+            }
+
             if (layer.CircleBlur != null)
             {
                 result.CircleBlur = layer.CircleBlur.ToExpression();

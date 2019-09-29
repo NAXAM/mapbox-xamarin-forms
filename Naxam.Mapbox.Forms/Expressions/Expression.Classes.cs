@@ -97,6 +97,27 @@ namespace Naxam.Mapbox.Expressions
         }
     }
 
+    public class ExpressionVisibility : ExpressionLiteral<string>
+    {
+        public static ExpressionVisibility VISIBLE = new ExpressionVisibility("visible");
+        public static ExpressionVisibility NONE = new ExpressionVisibility("none");
+        
+        public ExpressionVisibility(string @object) : base(@object)
+        {
+        }
+
+        public object GetValue()
+        {
+            switch (Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    return Value == "visible";
+            }
+
+            return Value;
+        }
+    }
+    
     /**
      * Expression interpolator type.
      * <p>

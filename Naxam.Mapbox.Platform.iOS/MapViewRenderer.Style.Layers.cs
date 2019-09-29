@@ -92,9 +92,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         MGLStyleLayer CreateLayer(Layer layer)
         {
-            if (string.IsNullOrWhiteSpace(layer.Id)
-                || false == layer.IsVisible) return null;
-
+            if (string.IsNullOrWhiteSpace(layer.Id)) return null;
 
             var styleLayer = layer as StyleLayer;
 

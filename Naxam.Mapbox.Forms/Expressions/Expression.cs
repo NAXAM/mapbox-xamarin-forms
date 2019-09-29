@@ -96,6 +96,11 @@ namespace Naxam.Mapbox.Expressions
             return new ExpressionLiteral<T>(obj);
         }
 
+        public static Expression Visibility(bool visible)
+        {
+            return visible ? ExpressionVisibility.VISIBLE : ExpressionVisibility.NONE;
+        }
+        
         /**
          * Create a literal array expression
          *

@@ -145,6 +145,7 @@
     <Compile Include="MapViewRenderer.Interactor.QueryFeatures.cs" />
     <Compile Include="Extensions\SourceExtensions.cs" />
     <Compile Include="Extensions\ExpressionExtensions.cs" />
+    <Compile Include="Extensions\CameraPositionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
