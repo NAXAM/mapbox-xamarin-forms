@@ -262,5 +262,8 @@
   <ItemGroup>
     <BundleResource Include="Resources\blue_marker_view%403x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\local_style_file.json" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

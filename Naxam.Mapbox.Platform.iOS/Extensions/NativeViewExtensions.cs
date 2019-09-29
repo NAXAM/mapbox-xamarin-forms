@@ -43,7 +43,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 ? dts.SelectTemplate(bindingContext, rootView)
                 : dt.CreateContent();
 
-            View view = null;
+            View view;
 
             switch (content)
             {
@@ -131,8 +131,6 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 IVisualElementRenderer renderer;
                 if (_rendererRef != null && _rendererRef.TryGetTarget(out renderer) && renderer.Element != null)
                 {
-                    var platform = renderer.Element.Platform as Platform;
-
                     // TODO DisposeModelAndChildrenRenderers
                     //if (platform != null)
                     //platform.DisposeModelAndChildrenRenderers(renderer.Element);

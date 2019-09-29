@@ -93,6 +93,12 @@ namespace MapBoxQs.Views
                 case "Show and hide layers":
                     page = new StylesShowHideLayersPage();
                     break;
+                case "Mapbox Studio style":
+                    page = new StylesMapboxStudio();
+                    break;
+                case "Local style or custom raster style":
+                    page = new StylesLocalStyleSource();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

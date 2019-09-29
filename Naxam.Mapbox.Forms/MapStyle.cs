@@ -70,18 +70,7 @@ namespace Naxam.Controls.Forms
 
         public double[] Center { get; set; }
 
-        public string UrlString
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Id) && !string.IsNullOrEmpty(Owner))
-                {
-
-                    return "mapbox://styles/" + Owner + "/" + Id;
-                }
-                return null;
-            }
-        }
+        public string UrlString { get; private set; }
 
         public MapStyle()
         {
@@ -93,11 +82,18 @@ namespace Naxam.Controls.Forms
             Name = name;
             Center = center;
             Owner = owner;
+            
+            UrlString = "mapbox://styles/" + Owner + "/" + Id;
         }
 
         public MapStyle(string urlString)
         {
-            UpdateIdAndOwner(urlString);
+            if (urlString.StartsWith("mapbox://"))
+            {
+                UpdateIdAndOwner(urlString);
+            }
+
+            UrlString = urlString;
         }
 
         public void SetUrl(string urlString)
@@ -141,5 +137,10 @@ namespace Naxam.Controls.Forms
         //    get => _OriginalLayers;
         //    set => SetProperty(ref _OriginalLayers, value);
         //}
+
+        public static implicit operator MapStyle(string url)
+        {
+            return new MapStyle(url);
+        }
     }
 }

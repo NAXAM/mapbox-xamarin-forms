@@ -215,6 +215,7 @@
     <AndroidResource Include="Resources\layout\activity_main.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\local_style_file.json" />
     <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />
     <AndroidAsset Include="Assets\ports.geojson" />
     <AndroidAsset Include="Assets\us_west_coast.geojson" />

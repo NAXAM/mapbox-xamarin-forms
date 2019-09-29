@@ -6,9 +6,11 @@ using UIKit;
 using Xamarin.Forms.Platform.iOS;
 
 [assembly: Xamarin.Forms.ExportRenderer(typeof(MapView), typeof(MapViewRenderer))]
+
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
-    public partial class MapViewRenderer : ViewRenderer<MapView, MGLMapView>, IMGLMapViewDelegate, IUIGestureRecognizerDelegate
+    public partial class MapViewRenderer : ViewRenderer<MapView, MGLMapView>, IMGLMapViewDelegate,
+        IUIGestureRecognizerDelegate
     {
         protected virtual void UpdateMapStyle()
         {
@@ -20,7 +22,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
             if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
             {
-                map.StyleURL = new NSUrl(Element.MapStyle.UrlString);
+                var url = Element.MapStyle.UrlString.StartsWith("asset://")
+                    ? NSUrl.FromFilename(Element.MapStyle.UrlString.Replace("asset://", string.Empty))
+                    : NSUrl.FromString(Element.MapStyle.UrlString);
+
+                map.StyleURL = url;
             }
         }
 
@@ -39,19 +45,19 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             else
             {
                 if (Element.MapStyle.UrlString == null
-                || Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
+                    || Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
                 {
                     Element.MapStyle.SetUrl(mapView.StyleURL.AbsoluteString);
                     Element.MapStyle.Name = style.Name;
                 }
+
                 newStyle = Element.MapStyle;
             }
-            
+
             newStyle.Name = style.Name;
             mapStyle = style;
             Element.Functions = this;
             Element.DidFinishLoadingStyleCommand?.Execute(newStyle);
         }
     }
-
 }
