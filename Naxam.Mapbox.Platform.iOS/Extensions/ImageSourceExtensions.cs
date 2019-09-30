@@ -1,6 +1,6 @@
-using System;
 using UIKit;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
@@ -8,19 +8,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
     {
         public static UIImage GetImage(this ImageSource source)
         {
-            UIImage localImage = null;
-
-            if (source is FileImageSource fileImageSource)
-            {
-                localImage = UIImage.FromBundle(fileImageSource.File);
-            }
-
-            if (localImage == null)
-            {
-                throw new InvalidOperationException("No resource for name: " + source);
-            }
-
-            return localImage;
+            return new FileImageSourceHandler()
+                .LoadImageAsync(source).Result;
         }
     }
 }

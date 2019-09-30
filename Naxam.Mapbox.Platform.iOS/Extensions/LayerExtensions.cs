@@ -80,8 +80,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLSymbolStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+//                MaximumZoomLevel = layer.MaxZoom,
+//                MinimumZoomLevel = layer.MinZoom
             };
 
             UpdateLayer(layer, result);
@@ -447,8 +447,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLRasterStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+//                MaximumZoomLevel = layer.MaxZoom,
+//                MinimumZoomLevel = layer.MinZoom
             };
 
             UpdateLayer(layer, result);
@@ -825,8 +825,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             var result = new MGLFillStyleLayer(layer.Id, source)
             {
-                MaximumZoomLevel = layer.MaxZoom,
-                MinimumZoomLevel = layer.MinZoom
+//                MaximumZoomLevel = layer.MaxZoom,
+//                MinimumZoomLevel = layer.MinZoom
             };
 
             UpdateLayer(layer, result);

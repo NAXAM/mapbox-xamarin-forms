@@ -28,6 +28,7 @@ namespace MapBoxQs.Views
             lineString = LoadLine();
 
             map.MapStyle = MapStyle.LIGHT;
+            map.ZoomLevel = 13;
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);
         }
 
@@ -89,6 +90,8 @@ namespace MapBoxQs.Views
                     new Feature(new GeoJSON.Net.Geometry.Point(position), null)
                 );
 
+                await Task.Delay(100);
+                
                 var lineFeature = new Feature(new GeoJSON.Net.Geometry.LineString(lineString.Coordinates.Take(i+1)), null);
                 trip.Features.Add(lineFeature);
                 map.Functions.UpdateSource(lineSourceId, trip);

@@ -10,6 +10,7 @@ using Java.Lang;
 using Naxam.Controls.Forms;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Annotations;
+using Naxam.Mapbox.Platform.Droid.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using NxAnnotation = Naxam.Mapbox.Annotations.Annotation;
@@ -177,23 +178,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var cachedImage = mapStyle.GetImage(iconImageSource.Id);
                     if (cachedImage != null) break;
 
-                    var resName = fileImageSource.File.Split('.').First();
-                    var resId = Context.Resources.GetIdentifier(resName, "drawable", Context.PackageName);
-                    if (resId == 0)
+                    var resId = fileImageSource.GetResId();
+                    var drawable = Context.Resources.GetDrawable(resId, Context.Theme);
+                    var bitmap = BitmapUtils.GetBitmapFromDrawable(drawable);
+
+                    if (bitmap == null)
                     {
-#if DEBUG
-                        System.Diagnostics.Debug.WriteLine("Resource not found: " + fileImageSource.File);
-#endif
+                        drawable?.Dispose();
                         break;
                     }
-                    var drawable = Context.Resources.GetDrawable(
-                        resId,
-                        Context.Theme);
-                    var bitmap = BitmapUtils.GetBitmapFromDrawable(
-                        drawable
-                        );
-
-                    if (bitmap == null) break;
 
                     mapStyle.AddImage(iconImageSource.Id, bitmap, iconImageSource.IsTemplate);
 

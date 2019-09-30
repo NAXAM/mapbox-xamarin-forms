@@ -24,13 +24,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     var cachedImage = mapStyle.ImageForName(iconImageSource.Id);
                     if (cachedImage != null) break;
 
-                    var image = UIImage.FromBundle(fileImageSource.File);
+                    var image = fileImageSource.GetImage();
 
                     if (image == null)
                     {
-#if DEBUG
-                        System.Diagnostics.Debug.WriteLine("Resource not found: " + fileImageSource.File);
-#endif
                         break;
                     }
 
