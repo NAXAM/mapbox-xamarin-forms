@@ -50,12 +50,27 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                             options.Add(MGLTileSourceOptions.TileSize, NSNumber.FromInt32(rasterSource.TileSize.Value));
                         }
 
-                        // TOPDO No TileSet for iOS??
+                        // TODO No TileSet for iOS??
                         return  new MGLRasterTileSource(rasterSource.Id, rasterSource.TileSet.Tiles, new NSDictionary<NSString, NSObject>(options.Keys, options.Values));
                     }
                     return rasterSource.TileSize.HasValue
                         ? new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL), rasterSource.TileSize.Value)
                         : new MGLRasterTileSource(rasterSource.Id, NSUrl.FromString(rasterSource.ConfigurationURL));
+                case RasterDemSource rasterDemSource:
+                    if (rasterDemSource.TileSet != null)
+                    {
+                        var options = new NSMutableDictionary<NSString, NSObject>();
+                        if (rasterDemSource.TileSize.HasValue)
+                        {
+                            options.Add(MGLTileSourceOptions.TileSize, NSNumber.FromInt32(rasterDemSource.TileSize.Value));
+                        }
+
+                        // TODO No TileSet for iOS??
+                        return  new MGLRasterDEMSource(rasterDemSource.Id, rasterDemSource.TileSet.Tiles, new NSDictionary<NSString, NSObject>(options.Keys, options.Values));
+                    }
+                    return rasterDemSource.TileSize.HasValue
+                        ? new MGLRasterDEMSource(rasterDemSource.Id, NSUrl.FromString(rasterDemSource.Url), rasterDemSource.TileSize.Value)
+                        : new MGLRasterDEMSource(rasterDemSource.Id, NSUrl.FromString(rasterDemSource.Url));
                 
                 case MapboxImageSource imageSource:
                     //TODO Other image source

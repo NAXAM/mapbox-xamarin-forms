@@ -9,10 +9,10 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
         {
             return new MGLCoordinateQuad
             {
-                topLeft =  quad.TopLeft.ToCLCoordinate(),
-                topRight =  quad.TopRight.ToCLCoordinate(),
-                bottomRight =  quad.BottomRight.ToCLCoordinate(),
-                bottomLeft =  quad.BottomLeft.ToCLCoordinate(),
+                TopLeft =  quad.TopLeft.ToCLCoordinate(),
+                TopRight =  quad.TopRight.ToCLCoordinate(),
+                BottomRight =  quad.BottomRight.ToCLCoordinate(),
+                BottomLeft =  quad.BottomLeft.ToCLCoordinate(),
             };
         }
     }

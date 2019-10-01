@@ -2,6 +2,7 @@
 using Android.Content;
 using NxSource = Naxam.Mapbox.Sources.Source;
 using NxRasterSource = Naxam.Mapbox.Sources.RasterSource;
+using NxRasterDemSource = Naxam.Mapbox.Sources.RasterDemSource;
 using NxGeojsonSource = Naxam.Mapbox.Sources.GeoJsonSource;
 using NxVectorSource = Naxam.Mapbox.Sources.VectorSource;
 using NxImageSource = Naxam.Mapbox.Sources.MapboxImageSource;
@@ -58,7 +59,7 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                 case NxRasterSource rasterSource:
                     if (rasterSource.TileSet != null)
                     {
-                        var tileSet = rasterSource.TileSet.Convert();
+                        var tileSet = rasterSource.TileSet.ToNative();
 
                         return rasterSource.TileSize.HasValue 
                             ? new RasterSource(rasterSource.Id, tileSet, rasterSource.TileSize.Value)
@@ -68,6 +69,19 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                     return rasterSource.TileSize.HasValue
                             ? new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL, rasterSource.TileSize.Value)
                             : new RasterSource(rasterSource.Id, rasterSource.ConfigurationURL);
+                case NxRasterDemSource rasterDemSource:
+                    if (rasterDemSource.TileSet != null)
+                    {
+                        var tileSet = rasterDemSource.TileSet.ToNative();
+
+                        return rasterDemSource.TileSize.HasValue 
+                            ? new RasterDemSource(rasterDemSource.Id, tileSet, rasterDemSource.TileSize.Value)
+                            : new RasterDemSource(rasterDemSource.Id, tileSet);
+                    }
+
+                    return rasterDemSource.TileSize.HasValue
+                        ? new RasterDemSource(rasterDemSource.Id, rasterDemSource.Url, rasterDemSource.TileSize.Value)
+                        : new RasterDemSource(rasterDemSource.Id, rasterDemSource.Url);
                 case NxVectorSource vectorSource:
                     //TODO VectorSource Add other options
                     return new VectorSource(vectorSource.Id, vectorSource.Url);
@@ -78,7 +92,7 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
             return null;
         }
 
-        public static TileSet Convert(this NxTileSet tileSet)
+        public static TileSet ToNative(this NxTileSet tileSet)
         {
             return new TileSet(tileSet.TileJson, tileSet.Tiles);
         }

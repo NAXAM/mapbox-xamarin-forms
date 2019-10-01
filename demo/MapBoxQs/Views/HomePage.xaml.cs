@@ -102,6 +102,12 @@ namespace MapBoxQs.Views
                 case "Use an image source":
                     page = new StylesImageSource();
                     break;
+                case "Show time lapse":
+                    page = new StylesShowTimeLapse();
+                    break;
+                case "Hillshading":
+                    page = new StylesHillshading();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;
