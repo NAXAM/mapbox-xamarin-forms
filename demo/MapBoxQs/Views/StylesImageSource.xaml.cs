@@ -26,7 +26,6 @@ namespace MapBoxQs.Views
             map.MapStyle = MapStyle.DARK;
             map.ZoomLevel = 12;
 
-            // TODO iOS not showing image yet
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);
         }
 

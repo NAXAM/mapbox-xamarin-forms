@@ -12,6 +12,7 @@ using Android.Widget;
 using AViews = Android.Views;
 using APlatform = Xamarin.Forms.Platform.Android.Platform;
 using Xamarin.Forms;
+using Application = Android.App.Application;
 
 namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
@@ -20,8 +21,7 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
         public static AViews.View ToAndroid(this Xamarin.Forms.View view)
         {
             if (APlatform.GetRenderer(view) == null)
-                //TODO Replace deprecated CreateRenderer(...)
-                APlatform.SetRenderer(view, APlatform.CreateRenderer(view));
+                APlatform.SetRenderer(view, APlatform.CreateRendererWithContext(view, Application.Context));
             var vRenderer = APlatform.GetRenderer(view);
             var viewGroup = vRenderer.View;
             vRenderer.Tracker.UpdateLayout();

@@ -70,55 +70,5 @@ namespace MapBoxQs.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
-        public class InfoWindowAdapter : Java.Lang.Object, IInfoWindowAdapter
-        {
-
-            public void Dispose()
-            {
-                throw new NotImplementedException();
-            }
-            Context _context;
-            public InfoWindowAdapter(Context c)
-            {
-                _context = c;
-            }
-            public View GetInfoWindow(Marker marker)
-            {
-                LinearLayout parent = new LinearLayout(_context);
-                parent.LayoutParameters = (new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent));
-                parent.Orientation = Orientation.Vertical;
-                parent.SetBackgroundColor(Color.Red);
-                TextView txtTittle = new TextView(_context);
-                ImageView countryFlagImage = new ImageView(_context);
-                switch (marker.Title)
-                {
-                    case "spain":
-                        txtTittle.SetText(marker.Title, TextView.BufferType.Normal);
-                        countryFlagImage.SetImageDrawable(ContextCompat.GetDrawable(
-                          _context, Resource.Drawable.icon));
-                        break;
-                    case "egypt":
-                        txtTittle.SetText(marker.Title, TextView.BufferType.Normal);
-                        countryFlagImage.SetImageDrawable(ContextCompat.GetDrawable(
-                           _context, Resource.Drawable.icon));
-                        break;
-                    default:
-                        txtTittle.SetText(marker.Title, TextView.BufferType.Normal);
-                        countryFlagImage.SetImageDrawable(ContextCompat.GetDrawable(
-                         _context, Resource.Drawable.icon));
-                        break;
-                }
-                countryFlagImage.LayoutParameters = (new Android.Views.ViewGroup.LayoutParams(150, 100));
-                txtTittle.LayoutParameters = (new Android.Views.ViewGroup.LayoutParams(150, 100));
-
-                parent.AddView(countryFlagImage);
-                parent.AddView(txtTittle);
-
-                return parent;
-            }
-        }
     }
-
-
 }

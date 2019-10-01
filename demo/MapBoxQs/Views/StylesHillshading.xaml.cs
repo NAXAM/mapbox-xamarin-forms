@@ -19,7 +19,6 @@ namespace MapBoxQs.Views
             map.MapStyle = MapStyle.OUTDOORS;
             map.ZoomLevel = 7.10806931333;
 
-            // TODO iOS not showing image yet
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);
         }
 
