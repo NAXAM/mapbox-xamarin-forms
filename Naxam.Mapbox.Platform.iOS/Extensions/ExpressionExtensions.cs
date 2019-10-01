@@ -7,7 +7,7 @@ using UIKit;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
-    public static class ExpressionExtesions
+    public static class ExpressionExtensions
     {
         public static NSExpression ToExpression(this Expressions.Expression expression)
         {
@@ -432,7 +432,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                         }
                     case "format":
                         {
-                            var attributedExpressions = new NSMutableArray();
+                            var attributedExpressions = new List<NSExpression>();
 
                             for (int i = 0; i < arguments.Count; i += 2)
                             {
@@ -451,10 +451,10 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
                                 var attributedExpression = new MGLAttributedExpression(expression, attrs);
 
-                                attributedExpressions.Add(attributedExpression);
+                                attributedExpressions.Add(NSExpression.FromConstant(attributedExpression));
                             }
 
-                            return NSExpression.FromFunction("mgl_attributed", NSArray.FromArray<NSExpression>((NSArray)attributedExpressions.Copy()));
+                            return NSExpression.FromFunction("mgl_attributed:", attributedExpressions.ToArray());
                         }
                     case "coalesce":
                         {

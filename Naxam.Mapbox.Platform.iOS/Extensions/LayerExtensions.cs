@@ -4,7 +4,35 @@ using Naxam.Mapbox.Layers;
 
 namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
-    public static class LayerExtensions
+    partial class LayerExtensions
+    {
+        public static StyleLayer ToForms(this MGLStyleLayer layer)
+        {
+            switch (layer)
+            {
+                case MGLSymbolStyleLayer symbolLayer:
+                    return new SymbolLayer(layer.Identifier, symbolLayer.SourceIdentifier);
+                case MGLRasterStyleLayer rasterLayer:
+                    return new RasterLayer(layer.Identifier, rasterLayer.SourceIdentifier);
+                case MGLFillStyleLayer fillLayer:
+                    return new FillLayer(layer.Identifier, fillLayer.SourceIdentifier);
+                case MGLFillExtrusionStyleLayer fillExtrusionLayer:
+                    return new FillExtrusionLayer(layer.Identifier, fillExtrusionLayer.SourceIdentifier);
+                case MGLHillshadeStyleLayer hillshadeLayer:
+                    return new HillshadeLayer(layer.Identifier, hillshadeLayer.SourceIdentifier);
+                case MGLCircleStyleLayer circleLayer:
+                    return new CircleLayer(layer.Identifier, circleLayer.SourceIdentifier);
+                case MGLHeatmapStyleLayer heatmapLayer:
+                    return new HeatmapLayer(layer.Identifier, heatmapLayer.SourceIdentifier);
+                case MGLLineStyleLayer lineLayer:
+                    return new LineLayer(layer.Identifier, lineLayer.SourceIdentifier);
+            }
+
+            return null;
+        }
+    }
+
+    public static partial class LayerExtensions
     {
         public static MGLStyleLayer ToLayer(this Layer layer, MGLSource source)
         {
@@ -741,6 +769,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             return result;
         }
+
         static MGLHeatmapStyleLayer UpdateLayer(HeatmapLayer layer, MGLHeatmapStyleLayer result)
         {
             if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)

@@ -9,6 +9,7 @@ using NxForegroundLayer = Naxam.Mapbox.Layers.ForegroundLayer;
 using NxHeatmapLayer = Naxam.Mapbox.Layers.HeatmapLayer;
 using NxHillshadeLayer = Naxam.Mapbox.Layers.HillshadeLayer;
 using NxSymbolLayer = Naxam.Mapbox.Layers.SymbolLayer;
+using NxStyleLayer = Naxam.Mapbox.Layers.StyleLayer;
 using NxLineLayer = Naxam.Mapbox.Layers.LineLayer;
 using NxBackgroundLayer = Naxam.Mapbox.Layers.BackgroundLayer;
 using NxRasterLayer = Naxam.Mapbox.Layers.RasterLayer;
@@ -18,33 +19,61 @@ using Naxam.Mapbox.Expressions;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-    public static class LayerExtensions
+    partial class LayerExtensions
     {
-        public static Layer ToLayer(this NxLayer layer)
+        public static NxStyleLayer ToForms(this Layer layer)
+        {
+            switch (layer)
+            {
+                case SymbolLayer symbolLayer:
+                    return new NxSymbolLayer(layer.Id, symbolLayer.SourceId);
+                case RasterLayer rasterLayer:
+                    return new NxRasterLayer(layer.Id, rasterLayer.SourceId);
+                case FillLayer fillLayer:
+                    return new NxFillLayer(layer.Id, fillLayer.SourceId);
+                case FillExtrusionLayer fillExtrusionLayer:
+                    return new NxFillExtrusionLayer(layer.Id, fillExtrusionLayer.SourceId);
+                case HillshadeLayer hillshadeLayer:
+                    return new NxHillshadeLayer(layer.Id, hillshadeLayer.SourceId);
+                case CircleLayer circleLayer:
+                    return new NxCircleLayer(layer.Id, circleLayer.SourceId);
+                case HeatmapLayer heatmapLayer:
+                    return new NxHeatmapLayer(layer.Id, heatmapLayer.SourceId);
+                case LineLayer lineLayer:
+                    return new NxLineLayer(layer.Id, lineLayer.SourceId);
+            }
+            
+            return null;
+        }
+    }
+    
+    public static partial class LayerExtensions
+    {
+        public static Layer ToNative(this NxLayer layer)
         {
             switch (layer)
             {
                 case NxCircleLayer circleLayer:
-                    return ToLayer(circleLayer);
+                    return ToNative(circleLayer);
                 case NxFillExtrusionLayer fillExtrusionLayer:
-                    return ToLayer(fillExtrusionLayer);
+                    return ToNative(fillExtrusionLayer);
                 case NxFillLayer fillLayer:
-                    return ToLayer(fillLayer);
+                    return ToNative(fillLayer);
                 case NxHillshadeLayer hillshadeLayer:
-                    return ToLayer(hillshadeLayer);
+                    return ToNative(hillshadeLayer);
                 case NxForegroundLayer foregroundLayer:
                     // TODO Android - No ForegroundLayer
                     return null;
                 case NxHeatmapLayer heatmapLayer:
-                    return ToLayer(heatmapLayer);
+                    return ToNative(heatmapLayer);
                 case NxLineLayer lineLayer:
-                    return ToLayer(lineLayer);
+                    return ToNative(lineLayer);
 
                 case NxRasterLayer rasterLayer:
-                    return ToLayer(rasterLayer);
+                    return ToNative(rasterLayer);
 
                 case NxSymbolLayer symbolLayer:
-                    return ToLayer(symbolLayer);
+                    return ToNative(symbolLayer);
                     //case NxBackgroundLayer backgroundLayer:
                     //    result = backgroundLayer.ToNative();
                     //    break;
@@ -94,7 +123,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        static SymbolLayer ToLayer(NxSymbolLayer layer)
+        static SymbolLayer ToNative(NxSymbolLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -445,7 +474,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        static RasterLayer ToLayer(NxRasterLayer layer)
+        static RasterLayer ToNative(NxRasterLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -552,7 +581,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             //}
         }
 
-        static LineLayer ToLayer(NxLineLayer layer)
+        static LineLayer ToNative(NxLineLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -659,7 +688,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        static HillshadeLayer ToLayer(NxHillshadeLayer layer)
+        static HillshadeLayer ToNative(NxHillshadeLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -748,7 +777,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             //}
         }
 
-        static HeatmapLayer ToLayer(NxHeatmapLayer layer)
+        static HeatmapLayer ToNative(NxHeatmapLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -827,7 +856,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        static FillLayer ToLayer(NxFillLayer layer)
+        static FillLayer ToNative(NxFillLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -927,7 +956,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        static FillExtrusionLayer ToLayer(NxFillExtrusionLayer layer)
+        static FillExtrusionLayer ToNative(NxFillExtrusionLayer layer)
         {
             if (layer == null) { return null; }
 
@@ -1034,7 +1063,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
         }
 
-        static CircleLayer ToLayer(NxCircleLayer layer)
+        static CircleLayer ToNative(NxCircleLayer layer)
         {
             if (layer == null) { return null; }
 

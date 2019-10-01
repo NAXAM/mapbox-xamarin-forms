@@ -2,6 +2,7 @@
 using GeoJSON.Net;
 using GeoJSON.Net.Feature;
 using Naxam.Mapbox.Annotations;
+using Naxam.Mapbox.Layers;
 using Xamarin.Forms;
 using NFeature = GeoJSON.Net.Feature.Feature;
 
@@ -27,6 +28,8 @@ namespace Naxam.Mapbox
         bool AddLayerAt(Layers.Layer layer, int index);
         bool UpdateLayer(Layers.Layer layer);
         void RemoveLayer(params string[] layerIds);
+
+        StyleLayer[] GetLayers();
     }
 
     public partial interface IMapFunctions

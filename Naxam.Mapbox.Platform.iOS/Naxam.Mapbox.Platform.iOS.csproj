@@ -114,7 +114,7 @@
     <Compile Include="MapViewRenderer.Style.Layers.cs" />
     <Compile Include="Extensions\SourceExtensions.cs" />
     <Compile Include="MapViewRenderer.Style.Sources.cs" />
-    <Compile Include="Extensions\ExpressionExtesions.cs" />
+    <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\LayerExtensions.cs" />
     <Compile Include="Extensions\GeoJsonOptionsExtensions.cs" />
   </ItemGroup>

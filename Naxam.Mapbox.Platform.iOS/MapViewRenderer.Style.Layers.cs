@@ -6,6 +6,7 @@ using Naxam.Mapbox.Platform.iOS.Extensions;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
+    
     public partial class MapViewRenderer : IMapFunctions
     {
         public void RemoveLayer(params string[] layerIds)
@@ -103,6 +104,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             if (source == null) return null;
 
             return layer.ToLayer(source);
+        }
+
+        public StyleLayer[] GetLayers()
+        {
+            return mapStyle.Layers.Select(x => x.ToForms()).Where(x => x != null).ToArray();
         }
     }
 }

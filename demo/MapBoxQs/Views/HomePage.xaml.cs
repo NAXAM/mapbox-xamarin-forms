@@ -108,6 +108,9 @@ namespace MapBoxQs.Views
                 case "Hillshading":
                     page = new StylesHillshading();
                     break;
+                case "Multiple text formats":
+                    page = new StylesTextFieldMultipleFormats();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

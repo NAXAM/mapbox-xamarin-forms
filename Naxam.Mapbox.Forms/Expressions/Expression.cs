@@ -93,6 +93,11 @@ namespace Naxam.Mapbox.Expressions
          */
         public static Expression Literal<T>(T obj)
         {
+            if (obj is string == false && obj is IEnumerable)
+            {
+                return new Expression("literal", new ExpressionLiteral<T>(obj));
+            }
+
             return new ExpressionLiteral<T>(obj);
         }
 
@@ -3315,7 +3320,7 @@ namespace Naxam.Mapbox.Expressions
 
                 if (formatEntry.Options?.Length > 0)
                 {
-                    foreach (FormatOption option in formatEntry.Options)
+                    foreach (var option in formatEntry.Options)
                     {
                         map.Add(option.Type, option.Value);
                     }

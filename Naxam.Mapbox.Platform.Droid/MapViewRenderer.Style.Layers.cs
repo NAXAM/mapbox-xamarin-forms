@@ -1,4 +1,5 @@
-﻿using Naxam.Mapbox.Layers;
+﻿using System.Linq;
+using Naxam.Mapbox.Layers;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -30,7 +31,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 if (source == null) continue;
 
-                var layer = layers[i].ToLayer();
+                var layer = layers[i].ToNative();
 
                 mapStyle.AddLayer(layer);
             }
@@ -40,14 +41,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public bool AddLayerBelow(Layer layer, string layerId)
         {
-            map.Style.AddLayerBelow(layer.ToLayer(), layerId);
+            map.Style.AddLayerBelow(layer.ToNative(), layerId);
 
             return true;
         }
 
         public bool AddLayerAbove(Layer layer, string layerId)
         {
-            map.Style.AddLayerAbove(layer.ToLayer(), layerId);
+            map.Style.AddLayerAbove(layer.ToNative(), layerId);
 
             return true;
         }
@@ -65,9 +66,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         public bool AddLayerAt(Layer layer, int index)
         {
-            map.Style.AddLayerAt(layer.ToLayer(), index);
+            map.Style.AddLayerAt(layer.ToNative(), index);
 
             return true;
+        }
+
+        public StyleLayer[] GetLayers()
+        {
+            return map.Style.Layers.Select(x => x.ToForms()).Where(x => x != null).ToArray();
         }
     }
 }
