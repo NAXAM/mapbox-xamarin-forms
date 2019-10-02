@@ -12,6 +12,7 @@
   <ItemGroup>
     <EmbeddedResource Include="examples.json" />
     <EmbeddedResource Include="sample_route_trip.geojson" />
+    <None Remove="no_bg_style.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -28,7 +28,7 @@ namespace MapBoxQs.Views
             map.ZoomLevel = 9.5;
             map.ZoomMinLevel = 7;
             map.ZoomMaxLevel = 13;
-            map.UICompassMarginTop = 75;
+            map.CompassMargin = new Thickness(4, 75, 4, 4);
 
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);
         }

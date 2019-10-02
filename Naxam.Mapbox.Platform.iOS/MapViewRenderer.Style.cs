@@ -1,3 +1,4 @@
+using System;
 using Foundation;
 using Mapbox;
 using Naxam.Controls.Forms;
@@ -20,13 +21,39 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 return;
             }
 
-            if (Element.MapStyle != null && !string.IsNullOrEmpty(Element.MapStyle.UrlString))
+            if (!string.IsNullOrEmpty(Element.MapStyle.UrlString)
+                && !string.Equals(
+                    Element.MapStyle.UrlString,
+                    map.StyleURL.AbsoluteString, StringComparison.OrdinalIgnoreCase))
             {
-                var url = Element.MapStyle.UrlString.StartsWith("asset://")
-                    ? NSUrl.FromFilename(Element.MapStyle.UrlString.Replace("asset://", string.Empty))
-                    : NSUrl.FromString(Element.MapStyle.UrlString);
+                NSUrl url;
+
+                if (Element.MapStyle.UrlString.StartsWith("asset://"))
+                {
+                    var resourceName = Element.MapStyle.UrlString.Replace("asset://", string.Empty);
+//                    var dotIndex = resourceName.LastIndexOf('.');
+//                    var name = resourceName;
+//                    var ext = string.Empty;
+//
+//                    if (dotIndex >= 0)
+//                    {
+//                        name = resourceName.Substring(0, dotIndex);
+//                        ext = resourceName.Substring(dotIndex + 1);
+//                    }
+//
+//                    url = NSBundle.MainBundle.GetUrlForResource(name, ext);
+                    url = NSUrl.FromFilename(resourceName);
+                }
+                else
+                {
+                    url = NSUrl.FromString(Element.MapStyle.UrlString);
+                }
 
                 map.StyleURL = url;
+            }
+            else if (!string.IsNullOrWhiteSpace(Element.MapStyle.Json))
+            {
+                // TODO iOS - Not allow to load from JSON
             }
         }
 
@@ -35,29 +62,15 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         [Export("mapView:didFinishLoadingStyle:"),]
         public void DidFinishLoadingStyle(MGLMapView mapView, MGLStyle style)
         {
-            MapStyle newStyle;
-            if (Element.MapStyle == null)
-            {
-                newStyle = new MapStyle(mapView.StyleURL.AbsoluteString);
-                newStyle.Name = style.Name;
-                Element.MapStyle = newStyle;
-            }
-            else
-            {
-                if (Element.MapStyle.UrlString == null
-                    || Element.MapStyle.UrlString != mapView.StyleURL.AbsoluteString)
-                {
-                    Element.MapStyle.SetUrl(mapView.StyleURL.AbsoluteString);
-                    Element.MapStyle.Name = style.Name;
-                }
+            var emapStyle = Element.MapStyle ?? new MapStyle();
+            emapStyle.UrlString = mapView.StyleURL.AbsoluteString;
+            emapStyle.Name = style.Name;
+            Element.MapStyle = emapStyle;
 
-                newStyle = Element.MapStyle;
-            }
-
-            newStyle.Name = style.Name;
             mapStyle = style;
             Element.Functions = this;
-            Element.DidFinishLoadingStyleCommand?.Execute(newStyle);
+
+            Element.DidFinishLoadingStyleCommand?.Execute(emapStyle);
         }
     }
 }

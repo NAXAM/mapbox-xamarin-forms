@@ -67,31 +67,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
     {
         public void AnimiateCamera(CameraPosition cameraPosition, int durationInMillisecond)
         {
-            MGLMapCamera camera = new MGLMapCamera();
-
-            if (cameraPosition.Bearing.HasValue)
-            {
-                camera.Heading = cameraPosition.Bearing.Value;
-            }
-
-            if (cameraPosition.Target.HasValue)
-            {
-                camera.CenterCoordinate = cameraPosition.Target.Value.ToCLCoordinate();
-            }
-
-            if (cameraPosition.Tilt.HasValue)
-            {
-                camera.Pitch = (nfloat)cameraPosition.Tilt.Value;
-            }
-
-            if (cameraPosition.Zoom.HasValue)
-            {
-                camera.Altitude = cameraPosition.Zoom.Value;
-            }
-
             // TODO Find an equivalent method of AnimateCamera on Android
             map.SetCamera(
-                 camera,
+                 cameraPosition.ToNative(),
                  durationInMillisecond,
                  null
                  );

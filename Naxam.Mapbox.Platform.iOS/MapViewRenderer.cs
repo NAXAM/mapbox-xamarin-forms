@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using Mapbox;
@@ -14,6 +15,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 using ObjCRuntime;
 using Naxam.Mapbox;
+using Naxam.Mapbox.Platform.iOS.Extensions;
 
 [assembly: ExportRenderer(typeof(MapView), typeof(MapViewRenderer))]
 namespace Naxam.Controls.Mapbox.Platform.iOS
@@ -179,11 +181,35 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         {
             map = new MGLMapView(Bounds)
             {
-                ShowsUserLocation = Element.ShowUserLocation,
-                PitchEnabled = Element.PitchEnabled,
-                RotateEnabled = Element.RotateEnabled,
-                UserTrackingMode = MGLUserTrackingMode.FollowWithHeading
+//                ShowsUserLocation = Element.ShowUserLocation,
+//                PitchEnabled = Element.PitchEnabled,
+//                RotateEnabled = Element.RotateEnabled,
+//                UserTrackingMode = MGLUserTrackingMode.FollowWithHeading,
+                
             };
+
+            map.AttributionButtonMargins = Element.AttributionMargin.ToPoint();
+            map.AttributionButtonPosition = Element.AttributionGravity.ToOrnamentPosition();
+            
+            map.CompassViewMargins = Element.CompassMargin.ToPoint();
+            map.compassViewPosition = Element.CompassGravity.ToOrnamentPosition();
+            
+            map.Camera = Element.Camera.ToNative();
+            
+            map.LogoViewMargins = Element.LogoMargin.ToPoint();
+            map.LogoViewPosition = Element.LogoGravity.ToOrnamentPosition();
+
+            map.PitchEnabled = Element.PitchEnabled;
+            map.PrefetchesTiles = Element.TilePrefetchEnabled;
+            map.RotateEnabled = Element.RotateEnabled;
+            map.ScrollEnabled = Element.ScrollEnabled;
+            map.ShowsUserLocation = Element.ShowUserLocation;
+            
+            // TODO Set Scale
+//            map.ShowsScale = Element.ShowScale;
+            
+            map.ZoomEnabled = Element.ZoomEnabled;
+            map.UserTrackingMode = MGLUserTrackingMode.FollowWithHeading;
             
             if (Element.ZoomLevel.HasValue)
             {
@@ -198,12 +224,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             if (Element.ZoomMaxLevel.HasValue)
             {
                 map.MaximumZoomLevel = Element.ZoomMaxLevel.Value;
-            }
-
-            if (Element.UICompassMarginTop.HasValue)
-            {
-                // TODO iOS UICompassMarginTop
-                //map.CompassViewMargins = new CoreGraphics.CGPoint(Element.ZoomMaxLevel.Value;
             }
 
             UpdateMapStyle();

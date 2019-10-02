@@ -16,8 +16,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
     {
         protected MapboxMap map;
         protected MapViewFragment fragment;
-        private const int SIZE_ZOOM = 13;
-
         NxLatLng currentCamera;
         bool mapReady;
 
@@ -44,7 +42,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (Control == null)
             {
-                var activity = (AppCompatActivity)Context;
+                var activity = (AppCompatActivity) Context;
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
@@ -52,7 +50,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                 SetNativeControl(view);
 
-                fragment = new MapViewFragment();
+                fragment = MapViewFragment.Create(Element, Context);
 
                 activity.SupportFragmentManager
                     .BeginTransaction()
@@ -73,7 +71,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 if (fragment.StateSaved)
                 {
-                    var activity = (AppCompatActivity)Context;
+                    var activity = (AppCompatActivity) Context;
                     var fm = activity.SupportFragmentManager;
 
                     fm.BeginTransaction()
@@ -90,11 +88,16 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         private void FocustoLocation(LatLng latLng)
         {
-            if (map == null || mapReady == false) { return; }
+            if (map == null || mapReady == false)
+            {
+                return;
+            }
+
             var builder = new CameraPosition.Builder()
                 .Target(latLng);
 
-            if (Element.ZoomLevel.HasValue && Math.Abs(Element.ZoomLevel.Value - map.CameraPosition.Zoom) > double.Epsilon)
+            if (Element.ZoomLevel.HasValue &&
+                Math.Abs(Element.ZoomLevel.Value - map.CameraPosition.Zoom) > double.Epsilon)
             {
                 builder.Zoom(Element.ZoomLevel.Value);
             }
@@ -102,7 +105,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.AnimateCamera(CameraUpdateFactory.NewCameraPosition(builder.Build()), 1000);
         }
 
-        protected override void OnElementPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected override void OnElementPropertyChanged(object sender,
+            System.ComponentModel.PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
 
@@ -148,7 +152,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 }
 
                 var dif = Math.Abs(map.CameraPosition.Zoom - Element.ZoomLevel.Value);
-                System.Diagnostics.Debug.WriteLine($"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
+                System.Diagnostics.Debug.WriteLine(
+                    $"Current zoom: {map.CameraPosition.Zoom} - New zoom: {Element.ZoomLevel}");
                 if (dif >= double.Epsilon && cameraBusy == false)
                 {
                     System.Diagnostics.Debug.WriteLine("Updating zoom level");
@@ -157,7 +162,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             }
             else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
             {
-
+            }
+            else if (e.PropertyName == MapView.RenderTextureModeProperty.PropertyName)
+            {
+                // TODO Set RenderTextureModeProperty
+            }
+            else if (e.PropertyName == MapView.RenderTextureTranslucentSurfaceProperty.PropertyName)
+            {
+                // TODO Set RenderTextureTranslucentSurfaceProperty
             }
         }
 
@@ -179,30 +191,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             map = mapBox;
             mapReady = true;
-            OnMapRegionChanged();
-            map.UiSettings.RotateGesturesEnabled = Element.RotateEnabled;
-            map.UiSettings.TiltGesturesEnabled = Element.PitchEnabled;
-
-            if (Element.UICompassMarginTop.HasValue)
-            {
-                map.UiSettings.SetCompassMargins(
-                    map.UiSettings.CompassMarginLeft,
-                    (int)Context.ToPixels(Element.UICompassMarginTop.Value),
-                    map.UiSettings.CompassMarginRight,
-                    map.UiSettings.CompassMarginBottom);
-            }
-
-            OnMapRegionChanged();
-
-            if (Element.Center != NxLatLng.Zero)
-            {
-                FocustoLocation(new LatLng(Element.Center.Lat, Element.Center.Long));
-            }
-            //else
-            //{
-            //    FocustoLocation(new LatLng(21.0278, 105.8342));
-            //}
-
+            
             AddMapEvents();
 
             if (Element.MapStyle == null)
@@ -212,6 +201,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             else
             {
                 UpdateMapStyle();
+            }
+
+            if (Element.ZoomLevel.HasValue)
+            {
+                FocustoLocation(Element.Center.ToLatLng());
             }
         }
     }

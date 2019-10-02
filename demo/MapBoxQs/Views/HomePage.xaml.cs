@@ -111,6 +111,9 @@ namespace MapBoxQs.Views
                 case "Multiple text formats":
                     page = new StylesTextFieldMultipleFormats();
                     break;
+                case "Transparent render surface":
+                    page = new StylesTransparentRenderSurface();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

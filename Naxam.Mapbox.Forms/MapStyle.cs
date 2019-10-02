@@ -70,11 +70,11 @@ namespace Naxam.Controls.Forms
 
         public double[] Center { get; set; }
 
-        public string UrlString { get; private set; }
+        public string UrlString { get; set; }
 
-        public MapStyle()
-        {
-        }
+        public string Json { get; set; }
+
+        public MapStyle() {}
 
         public MapStyle(string id, string name, double[] center = null, string owner = null)
         {
@@ -96,11 +96,6 @@ namespace Naxam.Controls.Forms
             UrlString = urlString;
         }
 
-        public void SetUrl(string urlString)
-        {
-            UpdateIdAndOwner(urlString);
-        }
-
         void UpdateIdAndOwner(string urlString)
         {
             if (!string.IsNullOrEmpty(urlString))
@@ -116,27 +111,6 @@ namespace Naxam.Controls.Forms
                 }
             }
         }
-
-        //IEnumerable<Source> _CustomSources;
-        //public IEnumerable<Source> CustomSources
-        //{
-        //    get => _CustomSources;
-        //    set => SetProperty(ref _CustomSources, value);
-        //}
-
-        //IEnumerable<Layer> _CustomLayers;
-        //public IEnumerable<Layer> CustomLayers
-        //{
-        //    get => _CustomLayers;
-        //    set => SetProperty(ref _CustomLayers, value);
-        //}
-
-        //IEnumerable<Layer> _OriginalLayers;
-        //public IEnumerable<Layer> OriginalLayers
-        //{
-        //    get => _OriginalLayers;
-        //    set => SetProperty(ref _OriginalLayers, value);
-        //}
 
         public static implicit operator MapStyle(string url)
         {
