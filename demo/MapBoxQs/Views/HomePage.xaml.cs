@@ -117,6 +117,9 @@ namespace MapBoxQs.Views
                 case "Click to add photo":
                     page = new StylesClickToAddImage();
                     break;
+                case "Text anchor position":
+                    page = new StylesRotatingTextAnchorPosition();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

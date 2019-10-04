@@ -52,6 +52,16 @@ namespace Naxam.Mapbox.Expressions
             return new ExpressionLiteral<float[]>(value);
         }
 
+        public static implicit operator Expression(bool value)
+        {
+            return new ExpressionLiteral<bool>(value);
+        }
+
+        public static implicit operator Expression(bool[] value)
+        {
+            return new ExpressionLiteral<bool[]>(value);
+        }
+
         public static implicit operator Expression(double[] value)
         {
             return new ExpressionLiteral<double[]>(value);
