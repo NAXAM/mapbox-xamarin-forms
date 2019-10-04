@@ -31,17 +31,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 if (Element.MapStyle.UrlString.StartsWith("asset://"))
                 {
                     var resourceName = Element.MapStyle.UrlString.Replace("asset://", string.Empty);
-//                    var dotIndex = resourceName.LastIndexOf('.');
-//                    var name = resourceName;
-//                    var ext = string.Empty;
-//
-//                    if (dotIndex >= 0)
-//                    {
-//                        name = resourceName.Substring(0, dotIndex);
-//                        ext = resourceName.Substring(dotIndex + 1);
-//                    }
-//
-//                    url = NSBundle.MainBundle.GetUrlForResource(name, ext);
                     url = NSUrl.FromFilename(resourceName);
                 }
                 else
@@ -53,7 +42,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             }
             else if (!string.IsNullOrWhiteSpace(Element.MapStyle.Json))
             {
-                // TODO iOS - Not allow to load from JSON
+                // TODO iOS - Not support loading from JSON
             }
         }
 

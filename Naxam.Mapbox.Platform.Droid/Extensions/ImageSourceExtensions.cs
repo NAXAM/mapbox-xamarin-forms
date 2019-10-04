@@ -1,29 +1,21 @@
 using System;
+using Android.Content;
+using Android.Graphics;
+using Com.Mapbox.Mapboxsdk.Utils;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.Android;
 
 namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
     public static class ImageSourceExtensions
     {
-        public static int GetResId(this ImageSource source)
+        public static Bitmap GetBitmap(this ImageSource source, Context context)
         {
-            var resId = 0;
-            if (source is FileImageSource fileImageSource)
-            {
-                var name = fileImageSource.File.Split('.')[0];
-                resId = Android.App.Application.Context.Resources.GetIdentifier(
-                    name,
-                    "drawable",
-                    Android.App.Application.Context.PackageName
-                );
-            }
+            var handler =  Xamarin.Forms.Internals.Registrar.Registered
+                .GetHandlerForObject<IImageSourceHandler>(source);
 
-            if (resId == 0)
-            {
-                throw new InvalidOperationException("No resource with name: " + source);
-            }
-
-            return resId;
+            return handler?
+                .LoadImageAsync(source, context).Result;
         }
     }
 }

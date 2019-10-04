@@ -16,7 +16,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             { 
                 if (string.IsNullOrWhiteSpace(sources[i].Id)) continue;
 
-                mapStyle.AddSource(sources[i].ToSource());
+                mapStyle.AddSource(sources[i].ToSource(Context));
             }
 
             return true;
@@ -49,8 +49,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (source == null) return false;
 
-            var resId = imageSource.GetResId();
-            source.SetImage(resId);
+            // TODO Cache image
+            source.SetImage(imageSource.GetBitmap(Context));
             
             return true;
         }

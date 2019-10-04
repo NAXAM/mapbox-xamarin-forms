@@ -171,27 +171,12 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             if (iconImageSource?.Source == null) return;
 
-            switch (iconImageSource.Source)
-            {
-                // TODO: Android = Handle other type of ImageSoure
-                case FileImageSource fileImageSource:
-                    var cachedImage = mapStyle.GetImage(iconImageSource.Id);
-                    if (cachedImage != null) break;
+            var cachedImage = mapStyle.GetImage(iconImageSource.Id);
+            if (cachedImage != null) return;
 
-                    var resId = fileImageSource.GetResId();
-                    var drawable = Context.Resources.GetDrawable(resId, Context.Theme);
-                    var bitmap = BitmapUtils.GetBitmapFromDrawable(drawable);
+            var bitmap = iconImageSource.Source.GetBitmap(Context);
 
-                    if (bitmap == null)
-                    {
-                        drawable?.Dispose();
-                        break;
-                    }
-
-                    mapStyle.AddImage(iconImageSource.Id, bitmap, iconImageSource.IsTemplate);
-
-                    break;
-            }
+            mapStyle.AddImage(iconImageSource.Id, bitmap, iconImageSource.IsTemplate);
         }
     }
 }

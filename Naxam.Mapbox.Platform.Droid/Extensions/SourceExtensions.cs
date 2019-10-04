@@ -18,7 +18,7 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
     public static class SourceExtensions
     {
-        public static Source ToSource(this NxSource source)
+        public static Source ToSource(this NxSource source, Context context)
         {
             switch (source)
             {
@@ -86,7 +86,7 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                     //TODO VectorSource Add other options
                     return new VectorSource(vectorSource.Id, vectorSource.Url);
                 case NxImageSource imageSource:
-                    return new ImageSource(imageSource.Id, imageSource.Coordinates.ToNative(), imageSource.Source.GetResId());
+                    return new ImageSource(imageSource.Id, imageSource.Coordinates.ToNative(), imageSource.Source.GetBitmap(context));
             }
 
             return null;

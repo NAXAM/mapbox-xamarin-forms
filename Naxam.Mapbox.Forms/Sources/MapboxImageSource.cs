@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Naxam.Mapbox.Sources
 {
     public class MapboxImageSource : Source

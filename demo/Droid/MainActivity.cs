@@ -14,7 +14,9 @@ using Android.Support.V4.Content;
 using Android.Runtime;
 using Android.Graphics;
 using MapBoxQs.Views;
-
+using Plugin.CurrentActivity;
+[assembly: UsesFeature("android.hardware.camera", Required = true)]
+[assembly: UsesFeature("android.hardware.camera.autofocus", Required = true)]
 namespace MapBoxQs.Droid
 {
     [Activity(Label = "MapBoxQs.Droid", Icon = "@mipmap/ic_launcher", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -44,7 +46,7 @@ namespace MapBoxQs.Droid
                 new MyStartup()
             );
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             LoadApplication(new App());
 
             //Shiny.Notifications.NotificationManager.TryProcessIntent(this.Intent);
@@ -67,7 +69,9 @@ namespace MapBoxQs.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             Shiny.AndroidShinyHost.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
+            
+            Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

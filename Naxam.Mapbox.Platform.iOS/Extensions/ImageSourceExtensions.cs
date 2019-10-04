@@ -8,7 +8,10 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
     {
         public static UIImage GetImage(this ImageSource source)
         {
-            return new FileImageSourceHandler()
+            var handler =  Xamarin.Forms.Internals.Registrar.Registered
+                .GetHandlerForObject<IImageSourceHandler>(source);
+
+            return handler?
                 .LoadImageAsync(source).Result;
         }
     }

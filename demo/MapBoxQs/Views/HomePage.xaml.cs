@@ -114,6 +114,9 @@ namespace MapBoxQs.Views
                 case "Transparent render surface":
                     page = new StylesTransparentRenderSurface();
                     break;
+                case "Click to add photo":
+                    page = new StylesClickToAddImage();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

@@ -16,29 +16,23 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public void AddStyleImage(IconImageSource iconImageSource)
         {
             if (iconImageSource.Source == null) return;
+            
+            var cachedImage = mapStyle.ImageForName(iconImageSource.Id);
+            if (cachedImage != null) return;
+            
+            var image = iconImageSource.Source.GetImage();
 
-            switch (iconImageSource.Source)
+            if (image == null)
             {
-                // TODO: iOS - Handle other image sources
-                case FileImageSource fileImageSource:
-                    var cachedImage = mapStyle.ImageForName(iconImageSource.Id);
-                    if (cachedImage != null) break;
-
-                    var image = fileImageSource.GetImage();
-
-                    if (image == null)
-                    {
-                        break;
-                    }
-
-                    if (iconImageSource.IsTemplate)
-                    {
-                        image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
-                    }
-
-                    mapStyle.SetImage(image, iconImageSource.Id);
-                    break;
+                return;
             }
+
+            if (iconImageSource.IsTemplate)
+            {
+                image = image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate);
+            }
+
+            mapStyle.SetImage(image, iconImageSource.Id);
         }
 
         public bool AddSource(params Source[] sources)
