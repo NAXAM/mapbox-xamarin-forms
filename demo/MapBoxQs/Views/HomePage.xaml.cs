@@ -123,6 +123,9 @@ namespace MapBoxQs.Views
                 case "Opacity fade":
                     page = new StylesSatelliteOpacityOnZoom();
                     break;
+                case "Adjust text labels":
+                    page = new StylesTextFieldFormatting();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

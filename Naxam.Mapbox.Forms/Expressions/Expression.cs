@@ -27,6 +27,11 @@ namespace Naxam.Mapbox.Expressions
             return new ExpressionLiteral<string>(value);
         }
 
+        public static implicit operator Expression(string[] value)
+        {
+            return new ExpressionLiteral<string[]>(value);
+        }
+
         public static implicit operator Expression(double value)
         {
             return new ExpressionLiteral<double>(value);
