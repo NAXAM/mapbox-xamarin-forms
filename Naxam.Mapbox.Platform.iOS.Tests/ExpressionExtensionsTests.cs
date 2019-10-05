@@ -13,12 +13,11 @@ namespace Naxam.Mapbox.Platform.iOS.Tests
         public void ToExpressionTest()
         {
             var shared = Expression.Interpolate(
-                        Expression.Exponential(1.0),
-                        Expression.Get("mag"),
-                        Expression.CreateStop(2.0f, Expression.Color(Color.Red)),
-                        Expression.CreateStop(4.5f, Expression.Color(Color.Green)),
-                        Expression.CreateStop(7.0f, Expression.Color(Color.Blue))
-                    );
+                Expression.Linear(), 
+                Expression.Zoom(),
+                Expression.CreateStop(15, 0),
+                Expression.CreateStop(18, 1)
+            );
 
             var actual = shared.ToExpression();
         }

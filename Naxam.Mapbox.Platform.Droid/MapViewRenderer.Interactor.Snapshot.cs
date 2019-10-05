@@ -13,7 +13,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer : Naxam.Mapbox.IMapFunctions
     {
-        public void AnimiateCamera(NxCameraPosition cameraPosition, int durationInMillisecond)
+        public void AnimateCamera(NxCameraPosition cameraPosition, int durationInMillisecond)
         {
             var camera = CameraUpdateFactory.NewCameraPosition(cameraPosition.ToNative());
             map.AnimateCamera(camera, durationInMillisecond);

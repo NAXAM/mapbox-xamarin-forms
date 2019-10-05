@@ -45,3 +45,8 @@ Thumbs.db
 
 xam_mapbox_sdk_ios/
 .vs/
+
+#Rider
+build.props
+adb.props
+aapt2.version

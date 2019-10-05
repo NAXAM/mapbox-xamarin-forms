@@ -120,6 +120,9 @@ namespace MapBoxQs.Views
                 case "Text anchor position":
                     page = new StylesRotatingTextAnchorPosition();
                     break;
+                case "Opacity fade":
+                    page = new StylesSatelliteOpacityOnZoom();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

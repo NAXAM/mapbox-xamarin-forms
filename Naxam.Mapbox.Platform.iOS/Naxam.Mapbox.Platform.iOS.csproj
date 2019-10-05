@@ -118,6 +118,7 @@
     <Compile Include="Extensions\ExpressionExtensions.cs" />
     <Compile Include="Extensions\LayerExtensions.cs" />
     <Compile Include="Extensions\GeoJsonOptionsExtensions.cs" />
+    <Compile Include="XObjC.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

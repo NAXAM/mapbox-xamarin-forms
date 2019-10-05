@@ -181,40 +181,26 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         {
             map = new MGLMapView(Bounds)
             {
-//                ShowsUserLocation = Element.ShowUserLocation,
-//                PitchEnabled = Element.PitchEnabled,
-//                RotateEnabled = Element.RotateEnabled,
-//                UserTrackingMode = MGLUserTrackingMode.FollowWithHeading,
-                
+                AttributionButtonMargins = Element.AttributionMargin.ToPoint(),
+                AttributionButtonPosition = Element.AttributionGravity.ToOrnamentPosition(),
+                CompassViewMargins = Element.CompassMargin.ToPoint(),
+                compassViewPosition = Element.CompassGravity.ToOrnamentPosition(),
+                LogoViewMargins = Element.LogoMargin.ToPoint(),
+                LogoViewPosition = Element.LogoGravity.ToOrnamentPosition(),
+                PitchEnabled = Element.PitchEnabled,
+                PrefetchesTiles = Element.TilePrefetchEnabled,
+                RotateEnabled = Element.RotateEnabled,
+                ScrollEnabled = Element.ScrollEnabled,
+                ShowsUserLocation = Element.ShowUserLocation,
+                ZoomEnabled = Element.ZoomEnabled,
+                UserTrackingMode = MGLUserTrackingMode.FollowWithHeading,
+                ZoomLevel =  Element.ZoomLevel ?? 0,
+                CenterCoordinate =  Element.Center.ToCLCoordinate(),
             };
 
-            map.AttributionButtonMargins = Element.AttributionMargin.ToPoint();
-            map.AttributionButtonPosition = Element.AttributionGravity.ToOrnamentPosition();
-            
-            map.CompassViewMargins = Element.CompassMargin.ToPoint();
-            map.compassViewPosition = Element.CompassGravity.ToOrnamentPosition();
-            
-            map.Camera = Element.Camera.ToNative();
-            
-            map.LogoViewMargins = Element.LogoMargin.ToPoint();
-            map.LogoViewPosition = Element.LogoGravity.ToOrnamentPosition();
 
-            map.PitchEnabled = Element.PitchEnabled;
-            map.PrefetchesTiles = Element.TilePrefetchEnabled;
-            map.RotateEnabled = Element.RotateEnabled;
-            map.ScrollEnabled = Element.ScrollEnabled;
-            map.ShowsUserLocation = Element.ShowUserLocation;
-            
             // TODO Set Scale
 //            map.ShowsScale = Element.ShowScale;
-            
-            map.ZoomEnabled = Element.ZoomEnabled;
-            map.UserTrackingMode = MGLUserTrackingMode.FollowWithHeading;
-            
-            if (Element.ZoomLevel.HasValue)
-            {
-                map.ZoomLevel = Element.ZoomLevel.Value;
-            }
 
             if (Element.ZoomMinLevel.HasValue)
             {
@@ -226,8 +212,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 map.MaximumZoomLevel = Element.ZoomMaxLevel.Value;
             }
 
+            map.Camera = Element.Camera.ToNative(GetSize());
+            
             UpdateMapStyle();
-            UpdateCenter(false);
         }
 
         void UpdateRegion()
@@ -309,16 +296,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         [Export("mapViewRegionIsChanging:"),]
         protected virtual void RegionIsChanging(MGLMapView mapView)
         {
-            Element.Center = new LatLng(mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
+            // TODO Element.Center = new LatLng(mapView.CenterCoordinate.Latitude, mapView.CenterCoordinate.Longitude);
         }
 
         [Export("mapView:regionDidChangeAnimated:"),]
         protected virtual void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
         {
-            Element.ZoomLevel = mapView.ZoomLevel;
-            Element.Pitch = mapView.Camera.Pitch;
-            Element.RotatedDegree = mapView.Camera.Heading;
-            Element?.RegionDidChangeCommand?.Execute(animated);
+            // TODO Set back to Forms
+//            Element.ZoomLevel = mapView.ZoomLevel;
+//            Element.Pitch = mapView.Camera.Pitch;
+//            Element.RotatedDegree = mapView.Camera.Heading;
+//            Element?.RegionDidChangeCommand?.Execute(animated);
         }
 
         #endregion

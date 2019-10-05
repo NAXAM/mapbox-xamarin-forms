@@ -7,6 +7,8 @@ using System.Linq;
 using Naxam.Mapbox.Platform.iOS.Extensions;
 using Mapbox;
 using CoreAnimation;
+using CoreGraphics;
+using UIKit;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
@@ -65,13 +67,30 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
     public partial class MapViewRenderer
     {
-        public void AnimiateCamera(CameraPosition cameraPosition, int durationInMillisecond)
+        CGSize GetSize()
+        {
+            var size = map.Bounds.Size;
+            if (size == CGSize.Empty)
+            {
+                size = Bounds.Size;
+            }
+
+            if (size == CGSize.Empty)
+            {
+                size = UIScreen.MainScreen.Bounds.Size;
+            }
+
+            return size;
+        }
+        
+        public void AnimateCamera(CameraPosition cameraPosition, int durationInMillisecond)
         {
             // TODO Find an equivalent method of AnimateCamera on Android
+            
             map.SetCamera(
-                 cameraPosition.ToNative(),
-                 durationInMillisecond,
-                 null
+                 cameraPosition.ToNative(GetSize()),
+                 durationInMillisecond / 1000.0,
+                 CAMediaTimingFunction.FromName(CAMediaTimingFunction.EaseInEaseOut)
                  );
         }
 

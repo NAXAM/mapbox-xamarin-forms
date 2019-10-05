@@ -9,32 +9,30 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 {
     public static class MapboxOptionsExtensions
     {
-        public static MGLMapCamera ToNative(this CameraPosition cameraPosition)
+        public static MGLMapCamera ToNative(this CameraPosition cameraPosition, CGSize size)
         {
-            var camera = new MGLMapCamera();
-
-            if (cameraPosition.Bearing.HasValue)
-            {
-                camera.Heading = cameraPosition.Bearing.Value;
-            }
-
-            if (cameraPosition.Target.HasValue)
-            {
-                camera.CenterCoordinate = cameraPosition.Target.Value.ToCLCoordinate();
-            }
-
-            if (cameraPosition.Tilt.HasValue)
-            {
-                camera.Pitch = (nfloat)cameraPosition.Tilt.Value;
-            }
-
-            // TODO iOS Convert Zoom to Altitude
-//            if (cameraPosition.Zoom.HasValue)
-//            {
-//                camera.Altitude = cameraPosition.Zoom.Value;
-//            }
+            var heading = cameraPosition.Bearing ?? 0;
+            var centerCoordinate = cameraPosition.Target ?? LatLng.Zero;
+            var pitch = (nfloat)(cameraPosition.Tilt ?? 0);
+            var altitude = 0.0;
             
-            return camera;
+            // TODO iOS Convert Zoom to Altitude
+            if (cameraPosition.Zoom.HasValue)
+            {
+                var result = MapboxIndependentFunction.MGLAltitudeForZoomLevel(
+                    cameraPosition.Zoom.Value, 
+                    (nfloat)(cameraPosition.Tilt ?? 0), 
+                    cameraPosition.Target?.Lat ?? 0, 
+                    size);
+                altitude = result;
+            }
+            
+            return MGLMapCamera.CameraLookingAtCenterCoordinateAndAltitude(
+                centerCoordinate.ToCLCoordinate(),
+                altitude,
+                pitch,
+                heading
+                );
         }
         
         public static CGPoint ToPoint(this Thickness thickness)

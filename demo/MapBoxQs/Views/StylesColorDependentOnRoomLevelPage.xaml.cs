@@ -45,7 +45,7 @@ namespace MapBoxQs.Views
 
             map.Functions.UpdateLayer(layer);
 
-            map.Functions.AnimiateCamera(new CameraPosition(map.Center, 12, null, null), 12000);
+            map.Functions.AnimateCamera(new CameraPosition(map.Center, 12, null, null), 12000);
         }
     }
 }
