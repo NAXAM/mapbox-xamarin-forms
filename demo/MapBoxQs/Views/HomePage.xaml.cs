@@ -135,6 +135,9 @@ namespace MapBoxQs.Views
                 case "Display 3D building height based on vector data":
                     page = new ExtrusionPopulationDensityExtrusion();
                     break;
+                case "Use GeoJSON data to set extrusion height":
+                    page = new ExtrusionMarathon();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

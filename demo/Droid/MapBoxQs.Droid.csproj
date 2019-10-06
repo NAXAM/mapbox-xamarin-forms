@@ -253,6 +253,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\local_style_file.json" />
+    <AndroidAsset Include="Assets\marathon_route.geojson" />
     <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />
     <AndroidAsset Include="Assets\poi_places.geojson" />
     <AndroidAsset Include="Assets\ports.geojson" />
