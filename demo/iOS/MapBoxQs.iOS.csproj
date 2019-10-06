@@ -213,6 +213,7 @@
     <BundleResource Include="Resources\naxam_copyright%402x.png" />
     <BundleResource Include="Resources\naxam_copyright%403x.png" />
     <BundleResource Include="Resources\materialdesignicons-webfont.ttf" />
+    <BundleResource Include="Resources\poi_places.geojson" />
     <BundleResource Include="Resources\ports.geojson" />
     <BundleResource Include="Resources\us_west_coast.geojson" />
     <BundleResource Include="Resources\ic_cross%403x.png" />

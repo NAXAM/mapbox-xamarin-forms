@@ -129,6 +129,9 @@ namespace MapBoxQs.Views
                 case "Style with missing icon":
                     page = new StylesMissingIcon();
                     break;
+                case "Variable label placement":
+                    page = new StylesVariableLabelPlacement();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

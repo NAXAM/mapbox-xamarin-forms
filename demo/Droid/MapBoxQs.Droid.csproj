@@ -254,6 +254,7 @@
   <ItemGroup>
     <AndroidAsset Include="Assets\local_style_file.json" />
     <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />
+    <AndroidAsset Include="Assets\poi_places.geojson" />
     <AndroidAsset Include="Assets\ports.geojson" />
     <AndroidAsset Include="Assets\us_west_coast.geojson" />
   </ItemGroup>

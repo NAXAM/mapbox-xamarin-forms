@@ -34,7 +34,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                         }
 
                         var url = geojsonSource.IsLocal
-                            ? NSUrl.FromFilename(geojsonSource.Url)
+                            ? NSUrl.FromFilename(geojsonSource.Url.Replace("asset://",string.Empty))
                             : NSUrl.FromString(geojsonSource.Url);
                         return new MGLShapeSource(source.Id, url, options);
                     }
