@@ -195,10 +195,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 ZoomEnabled = Element.ZoomEnabled,
                 UserTrackingMode = MGLUserTrackingMode.FollowWithHeading,
                 ZoomLevel =  Element.ZoomLevel ?? 0,
-                CenterCoordinate =  Element.Center.ToCLCoordinate(),
+                CenterCoordinate =  Element.Center.ToCLCoordinate(),                
             };
-
-
+            
             // TODO Set Scale
 //            map.ShowsScale = Element.ShowScale;
 

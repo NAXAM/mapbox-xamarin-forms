@@ -65,6 +65,9 @@
 	  <DependentUpon>StylesDefaultPage.xaml</DependentUpon>
 	</Compile>
 	<Compile Remove="Views\StylesStylesMissingIcon.xaml.cs" />
+	<Compile Update="Views\StylesPopulationDensityExtrusion.xaml.cs">
+	  <DependentUpon>ExtrusionPopulationDensityExtrusion.xaml</DependentUpon>
+	</Compile>
   </ItemGroup>
 
   <ItemGroup>

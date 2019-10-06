@@ -132,6 +132,9 @@ namespace MapBoxQs.Views
                 case "Variable label placement":
                     page = new StylesVariableLabelPlacement();
                     break;
+                case "Display 3D building height based on vector data":
+                    page = new ExtrusionPopulationDensityExtrusion();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

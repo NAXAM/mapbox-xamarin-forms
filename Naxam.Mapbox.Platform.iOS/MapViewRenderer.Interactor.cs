@@ -85,10 +85,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         
         public void AnimateCamera(CameraPosition cameraPosition, int durationInMillisecond)
         {
-            // TODO Find an equivalent method of AnimateCamera on Android
-            
             map.SetCamera(
-                 cameraPosition.ToNative(GetSize()),
+                cameraPosition.ToNative(GetSize()),
                  durationInMillisecond / 1000.0,
                  CAMediaTimingFunction.FromName(CAMediaTimingFunction.EaseInEaseOut)
                  );
