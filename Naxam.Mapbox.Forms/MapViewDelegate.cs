@@ -6,6 +6,20 @@ namespace Naxam.Controls.Forms
 {
     public partial class MapView
     {
+        public static readonly BindableProperty StyleImageMissingCommandProperty = BindableProperty.Create(
+            nameof(StyleImageMissingCommand),
+            typeof(ICommand),
+            typeof(MapView),
+            default(ICommand),
+            BindingMode.OneWay
+        );
+
+        public ICommand StyleImageMissingCommand
+        {
+            get => (ICommand) GetValue(StyleImageMissingCommandProperty);
+            set => SetValue(StyleImageMissingCommandProperty, value);
+        }
+        
         public static readonly BindableProperty DidFinishLoadingStyleCommandProperty = BindableProperty.Create(
                     nameof(DidFinishLoadingStyleCommand),
                     typeof(ICommand),

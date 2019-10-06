@@ -294,5 +294,27 @@
   <ItemGroup>
     <BundleResource Include="Resources\no_bg_style.json" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\antony@3x.png">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </BundleResource>
+    <BundleResource Include="Resources\carlos@3x.png">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </BundleResource>
+    <BundleResource Include="Resources\luciana@3x.png">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </BundleResource>
+    <BundleResource Include="Resources\maria@3x.png">
+      <SubType>Designer</SubType>
+      <Generator>
+      </Generator>
+    </BundleResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

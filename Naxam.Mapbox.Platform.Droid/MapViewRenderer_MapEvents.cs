@@ -3,14 +3,15 @@ using System.Linq;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
+using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 using NxLatLng = Naxam.Mapbox.LatLng;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
-
     public partial class MapViewRenderer : MapboxMap.IOnMapClickListener
     {
         bool cameraBusy;
+
         protected virtual void AddMapEvents()
         {
             //map.MarkerClick += MarkerClicked;
@@ -21,6 +22,15 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             map.CameraMoveStarted += Map_CameraMoveStarted;
             map.CameraMoveCancel += Map_CameraMoveCancel;
             map.CameraMove += Map_CameraMove;
+            fragment.MapView.StyleImageMissing += MapViewOnStyleImageMissing;
+        }
+
+        void MapViewOnStyleImageMissing(object sender, MapView.StyleImageMissingEventArgs e)
+        {
+            if (Element?.StyleImageMissingCommand?.CanExecute(e.P0) == true)
+            {
+                Element.StyleImageMissingCommand.Execute(e.P0);
+            }
         }
 
         protected virtual void RemoveMapEvents()
@@ -34,6 +44,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.CameraMoveStarted -= Map_CameraMoveStarted;
                 map.CameraMoveCancel -= Map_CameraMoveCancel;
                 map.CameraMove -= Map_CameraMove;
+            }
+
+            if (fragment?.MapView != null)
+            {
+                fragment.MapView.StyleImageMissing -= MapViewOnStyleImageMissing;
             }
         }
 
@@ -57,6 +72,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (map?.SelectedMarkers.Count > 0)
                 map.DeselectMarkers();
         }
+
         private void OnCameraIdle(object sender, EventArgs e)
         {
             cameraBusy = false;

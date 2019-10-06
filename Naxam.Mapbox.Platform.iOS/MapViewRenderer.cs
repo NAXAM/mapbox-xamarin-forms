@@ -212,8 +212,6 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 map.MaximumZoomLevel = Element.ZoomMaxLevel.Value;
             }
 
-            map.Camera = Element.Camera.ToNative(GetSize());
-            
             UpdateMapStyle();
         }
 
@@ -308,7 +306,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 //            Element.RotatedDegree = mapView.Camera.Heading;
 //            Element?.RegionDidChangeCommand?.Execute(animated);
         }
-
+        
         #endregion
 
         #region UIGestureRecognizerDelegate

@@ -126,6 +126,9 @@ namespace MapBoxQs.Views
                 case "Adjust text labels":
                     page = new StylesTextFieldFormatting();
                     break;
+                case "Style with missing icon":
+                    page = new StylesMissingIcon();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

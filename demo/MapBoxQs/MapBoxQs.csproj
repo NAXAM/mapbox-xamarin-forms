@@ -13,6 +13,7 @@
     <EmbeddedResource Include="examples.json" />
     <EmbeddedResource Include="sample_route_trip.geojson" />
     <None Remove="no_bg_style.json" />
+    <EmbeddedResource Remove="Views\StylesStylesMissingIcon.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +64,7 @@
 	<Compile Update="Views\StylesDefaultPage.xaml.cs">
 	  <DependentUpon>StylesDefaultPage.xaml</DependentUpon>
 	</Compile>
+	<Compile Remove="Views\StylesStylesMissingIcon.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
