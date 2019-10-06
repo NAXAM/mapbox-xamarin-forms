@@ -1,5 +1,9 @@
 ﻿using System.Linq;
+using Com.Mapbox.Mapboxsdk.Style.Light;
+using Com.Mapbox.Mapboxsdk.Utils;
 using Naxam.Mapbox.Layers;
+using Xamarin.Forms.Platform.Android;
+using Light = Naxam.Mapbox.Light;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
@@ -74,6 +78,48 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public StyleLayer[] GetLayers()
         {
             return map.Style.Layers.Select(x => x.ToForms()).Where(x => x != null).ToArray();
+        }
+        
+        public void UpdateLight(Light light)
+        {
+            var native = mapStyle.Light;
+            if (!string.IsNullOrWhiteSpace(light.Anchor))
+            {
+                native.Anchor = light.Anchor;
+            }
+
+            if (light.Color != null)
+            {
+                native.Color = ColorUtils.ColorToRgbaString(light.Color.Value.ToAndroid());
+            }
+
+            if (light.ColorTransition != null)
+            {
+                native.ColorTransition = light.ColorTransition.ToNative();
+            }
+
+            if (light.Intensity.HasValue)
+            {
+                native.Intensity = light.Intensity.Value;
+            }
+
+            if (light.IntensityTransition != null)
+            {
+                native.IntensityTransition = light.IntensityTransition.ToNative();
+            }
+
+            if (light.Position.HasValue)
+            {
+                native.Position = new Position(
+                    light.Position.Value.Radial, 
+                    light.Position.Value.Azimuthal, 
+                    light.Position.Value.Polar);
+            }
+
+            if (light.PositionTransition != null)
+            {
+                native.PositionTransition = light.PositionTransition.ToNative();
+            }
         }
     }
 }

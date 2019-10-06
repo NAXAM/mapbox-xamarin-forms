@@ -138,6 +138,9 @@ namespace MapBoxQs.Views
                 case "Use GeoJSON data to set extrusion height":
                     page = new ExtrusionMarathon();
                     break;
+                case "Adjust light location and color":
+                    page = new ExtrusionAdjust();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
                     break;

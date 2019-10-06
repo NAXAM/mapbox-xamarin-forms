@@ -41,7 +41,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             {
                 if (string.IsNullOrWhiteSpace(sources[i].Id)) continue;
 
-                map.Style.AddSource(sources[i].ToSource());
+                var src = sources[i].ToSource();
+                map.Style.AddSource(src);
             }
 
             return true;

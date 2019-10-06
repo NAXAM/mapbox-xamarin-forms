@@ -22,15 +22,13 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
                         if (geojsonSource.Data != null)
                         {
-                            return new MGLShapeSource(source.Id, geojsonSource.Data.ToShape(), options);
+                            var shape = geojsonSource.Data.ToShape();
+                            return new MGLShapeSource(source.Id, shape, options);
                         }
 
                         if (string.IsNullOrWhiteSpace(geojsonSource.Url))
                         {
-                            return new MGLShapeSource()
-                            {
-                                Identifier = geojsonSource.Id
-                            };
+                            return new MGLComputedShapeSource(geojsonSource.Id, options);
                         }
 
                         var url = geojsonSource.IsLocal

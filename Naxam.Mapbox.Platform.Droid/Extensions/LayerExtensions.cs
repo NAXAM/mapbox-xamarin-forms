@@ -154,323 +154,323 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.IconAllowOverlap != null)
             {
-                properties.Add(PropertyFactory.IconAllowOverlap(layer.IconAllowOverlap.ToExpression()));
+                properties.Add(PropertyFactory.IconAllowOverlap(layer.IconAllowOverlap.ToNative()));
             }
 
             if (layer.IconAnchor != null)
             {
-                properties.Add(PropertyFactory.IconAnchor(layer.IconAnchor.ToExpression()));
+                properties.Add(PropertyFactory.IconAnchor(layer.IconAnchor.ToNative()));
             }
 
             if (layer.IconColor != null)
             {
-                properties.Add(PropertyFactory.IconColor(layer.IconColor.ToExpression()));
+                properties.Add(PropertyFactory.IconColor(layer.IconColor.ToNative()));
             }
 
             if (layer.IconColorTransition != null)
             {
-                result.IconColorTransition = layer.IconColorTransition.ToTransition();
+                result.IconColorTransition = layer.IconColorTransition.ToNative();
             }
 
             if (layer.IconHaloBlur != null)
             {
-                properties.Add(PropertyFactory.IconHaloBlur(layer.IconHaloBlur.ToExpression()));
+                properties.Add(PropertyFactory.IconHaloBlur(layer.IconHaloBlur.ToNative()));
             }
 
             if (layer.IconHaloBlurTransition != null)
             {
-                result.IconHaloBlurTransition = layer.IconHaloBlurTransition.ToTransition();
+                result.IconHaloBlurTransition = layer.IconHaloBlurTransition.ToNative();
             }
 
             if (layer.IconHaloColor != null)
             {
-                properties.Add(PropertyFactory.IconHaloColor(layer.IconHaloColor.ToExpression()));
+                properties.Add(PropertyFactory.IconHaloColor(layer.IconHaloColor.ToNative()));
             }
 
             if (layer.IconHaloColorTransition != null)
             {
-                result.IconHaloColorTransition = layer.IconHaloColorTransition.ToTransition();
+                result.IconHaloColorTransition = layer.IconHaloColorTransition.ToNative();
             }
 
             if (layer.IconHaloWidth != null)
             {
-                properties.Add(PropertyFactory.LineDasharray(layer.IconHaloWidth.ToExpression()));
+                properties.Add(PropertyFactory.LineDasharray(layer.IconHaloWidth.ToNative()));
             }
 
             if (layer.IconHaloWidthTransition != null)
             {
-                result.IconHaloWidthTransition = layer.IconHaloWidthTransition.ToTransition();
+                result.IconHaloWidthTransition = layer.IconHaloWidthTransition.ToNative();
             }
 
             if (layer.IconIgnorePlacement != null)
             {
-                properties.Add(PropertyFactory.IconIgnorePlacement(layer.IconIgnorePlacement.ToExpression()));
+                properties.Add(PropertyFactory.IconIgnorePlacement(layer.IconIgnorePlacement.ToNative()));
             }
 
             if (layer.IconImage != null)
             {
-                properties.Add(PropertyFactory.IconImage(layer.IconImage.ToExpression()));
+                properties.Add(PropertyFactory.IconImage(layer.IconImage.ToNative()));
             }
 
             if (layer.IconKeepUpright != null)
             {
-                properties.Add(PropertyFactory.IconKeepUpright(layer.IconKeepUpright.ToExpression()));
+                properties.Add(PropertyFactory.IconKeepUpright(layer.IconKeepUpright.ToNative()));
             }
 
             if (layer.IconOffset != null)
             {
-                properties.Add(PropertyFactory.IconOffset(layer.IconOffset.ToExpression()));
+                properties.Add(PropertyFactory.IconOffset(layer.IconOffset.ToNative()));
             }
 
             if (layer.IconOpacity != null)
             {
-                properties.Add(PropertyFactory.IconOpacity(layer.IconOpacity.ToExpression()));
+                properties.Add(PropertyFactory.IconOpacity(layer.IconOpacity.ToNative()));
             }
 
             if (layer.IconOpacityTransition != null)
             {
-                result.IconOpacityTransition = layer.IconOpacityTransition.ToTransition();
+                result.IconOpacityTransition = layer.IconOpacityTransition.ToNative();
             }
 
             if (layer.IconOptional != null)
             {
-                properties.Add(PropertyFactory.IconOptional(layer.IconOptional.ToExpression()));
+                properties.Add(PropertyFactory.IconOptional(layer.IconOptional.ToNative()));
             }
 
             if (layer.IconPadding != null)
             {
-                properties.Add(PropertyFactory.IconPadding(layer.IconPadding.ToExpression()));
+                properties.Add(PropertyFactory.IconPadding(layer.IconPadding.ToNative()));
             }
 
             if (layer.IconPitchAlignment != null)
             {
-                properties.Add(PropertyFactory.IconPitchAlignment(layer.IconPitchAlignment.ToExpression()));
+                properties.Add(PropertyFactory.IconPitchAlignment(layer.IconPitchAlignment.ToNative()));
             }
 
             if (layer.IconRotate != null)
             {
-                properties.Add(PropertyFactory.IconRotate(layer.IconRotate.ToExpression()));
+                properties.Add(PropertyFactory.IconRotate(layer.IconRotate.ToNative()));
             }
 
             if (layer.IconRotationAlignment != null)
             {
-                properties.Add(PropertyFactory.IconRotationAlignment(layer.IconRotationAlignment.ToExpression()));
+                properties.Add(PropertyFactory.IconRotationAlignment(layer.IconRotationAlignment.ToNative()));
             }
 
             if (layer.IconSize != null)
             {
-                properties.Add(PropertyFactory.IconSize(layer.IconSize.ToExpression()));
+                properties.Add(PropertyFactory.IconSize(layer.IconSize.ToNative()));
             }
 
             if (layer.IconTextFit != null)
             {
-                properties.Add(PropertyFactory.IconTextFit(layer.IconTextFit.ToExpression()));
+                properties.Add(PropertyFactory.IconTextFit(layer.IconTextFit.ToNative()));
             }
 
             if (layer.IconTextFitPadding != null)
             {
-                properties.Add(PropertyFactory.IconTextFitPadding(layer.IconTextFitPadding.ToExpression()));
+                properties.Add(PropertyFactory.IconTextFitPadding(layer.IconTextFitPadding.ToNative()));
             }
 
             if (layer.IconTranslate != null)
             {
-                properties.Add(PropertyFactory.IconTranslate(layer.IconTranslate.ToExpression()));
+                properties.Add(PropertyFactory.IconTranslate(layer.IconTranslate.ToNative()));
             }
 
             if (layer.IconTranslateAnchor != null)
             {
-                properties.Add(PropertyFactory.IconTranslateAnchor(layer.IconTranslateAnchor.ToExpression()));
+                properties.Add(PropertyFactory.IconTranslateAnchor(layer.IconTranslateAnchor.ToNative()));
             }
 
             if (layer.IconTranslateTransition != null)
             {
-                result.IconTranslateTransition = layer.IconTranslateTransition.ToTransition();
+                result.IconTranslateTransition = layer.IconTranslateTransition.ToNative();
             }
             if (layer.SymbolAvoidEdges != null)
             {
-                properties.Add(PropertyFactory.SymbolAvoidEdges(layer.SymbolAvoidEdges.ToExpression()));
+                properties.Add(PropertyFactory.SymbolAvoidEdges(layer.SymbolAvoidEdges.ToNative()));
             }
 
             if (layer.SymbolPlacement != null)
             {
-                properties.Add(PropertyFactory.SymbolPlacement(layer.SymbolPlacement.ToExpression()));
+                properties.Add(PropertyFactory.SymbolPlacement(layer.SymbolPlacement.ToNative()));
             }
 
             if (layer.SymbolSortKey != null)
             {
-                properties.Add(PropertyFactory.SymbolSortKey(layer.SymbolSortKey.ToExpression()));
+                properties.Add(PropertyFactory.SymbolSortKey(layer.SymbolSortKey.ToNative()));
             }
 
             if (layer.SymbolSpacing != null)
             {
-                properties.Add(PropertyFactory.SymbolSpacing(layer.SymbolSpacing.ToExpression()));
+                properties.Add(PropertyFactory.SymbolSpacing(layer.SymbolSpacing.ToNative()));
             }
 
             if (layer.SymbolZOrder != null)
             {
-                properties.Add(PropertyFactory.SymbolZOrder(layer.SymbolZOrder.ToExpression()));
+                properties.Add(PropertyFactory.SymbolZOrder(layer.SymbolZOrder.ToNative()));
             }
 
             if (layer.TextAllowOverlap != null)
             {
-                properties.Add(PropertyFactory.TextAllowOverlap(layer.TextAllowOverlap.ToExpression()));
+                properties.Add(PropertyFactory.TextAllowOverlap(layer.TextAllowOverlap.ToNative()));
             }
 
             if (layer.TextAnchor != null)
             {
-                properties.Add(PropertyFactory.TextAnchor(layer.TextAnchor.ToExpression()));
+                properties.Add(PropertyFactory.TextAnchor(layer.TextAnchor.ToNative()));
             }
 
             if (layer.TextColor != null)
             {
-                properties.Add(PropertyFactory.TextColor(layer.TextColor.ToExpression()));
+                properties.Add(PropertyFactory.TextColor(layer.TextColor.ToNative()));
             }
 
             if (layer.TextColorTransition != null)
             {
-                result.TextColorTransition = layer.TextColorTransition.ToTransition();
+                result.TextColorTransition = layer.TextColorTransition.ToNative();
             }
 
             if (layer.TextField != null)
             {
-                properties.Add(PropertyFactory.TextField(layer.TextField.ToExpression()));
+                properties.Add(PropertyFactory.TextField(layer.TextField.ToNative()));
             }
 
             if (layer.TextFont != null)
             {
-                properties.Add(PropertyFactory.TextFont(layer.TextFont.ToExpression()));
+                properties.Add(PropertyFactory.TextFont(layer.TextFont.ToNative()));
             }
 
             if (layer.TextHaloColor != null)
             {
-                properties.Add(PropertyFactory.TextHaloColor(layer.TextHaloColor.ToExpression()));
+                properties.Add(PropertyFactory.TextHaloColor(layer.TextHaloColor.ToNative()));
             }
 
             if (layer.TextHaloColorTransition != null)
             {
-                result.TextHaloColorTransition = layer.TextHaloColorTransition.ToTransition();
+                result.TextHaloColorTransition = layer.TextHaloColorTransition.ToNative();
             }
 
             if (layer.TextIgnorePlacement != null)
             {
-                properties.Add(PropertyFactory.TextIgnorePlacement(layer.TextIgnorePlacement.ToExpression()));
+                properties.Add(PropertyFactory.TextIgnorePlacement(layer.TextIgnorePlacement.ToNative()));
             }
 
             if (layer.TextJustify != null)
             {
-                properties.Add(PropertyFactory.TextJustify(layer.TextJustify.ToExpression()));
+                properties.Add(PropertyFactory.TextJustify(layer.TextJustify.ToNative()));
             }
 
             if (layer.TextKeepUpright != null)
             {
-                properties.Add(PropertyFactory.TextKeepUpright(layer.TextKeepUpright.ToExpression()));
+                properties.Add(PropertyFactory.TextKeepUpright(layer.TextKeepUpright.ToNative()));
             }
 
             if (layer.TextLetterSpacing != null)
             {
-                properties.Add(PropertyFactory.TextLetterSpacing(layer.TextLetterSpacing.ToExpression()));
+                properties.Add(PropertyFactory.TextLetterSpacing(layer.TextLetterSpacing.ToNative()));
             }
 
             if (layer.TextLineHeight != null)
             {
-                properties.Add(PropertyFactory.TextLineHeight(layer.TextLineHeight.ToExpression()));
+                properties.Add(PropertyFactory.TextLineHeight(layer.TextLineHeight.ToNative()));
             }
 
             if (layer.TextMaxAngle != null)
             {
-                properties.Add(PropertyFactory.TextMaxAngle(layer.TextMaxAngle.ToExpression()));
+                properties.Add(PropertyFactory.TextMaxAngle(layer.TextMaxAngle.ToNative()));
             }
 
             if (layer.TextMaxWidth != null)
             {
-                properties.Add(PropertyFactory.TextMaxWidth(layer.TextMaxWidth.ToExpression()));
+                properties.Add(PropertyFactory.TextMaxWidth(layer.TextMaxWidth.ToNative()));
             }
 
             if (layer.TextOffset != null)
             {
-                properties.Add(PropertyFactory.TextOffset(layer.TextOffset.ToExpression()));
+                properties.Add(PropertyFactory.TextOffset(layer.TextOffset.ToNative()));
             }
 
             if (layer.TextOpacity != null)
             {
-                properties.Add(PropertyFactory.TextOpacity(layer.TextOpacity.ToExpression()));
+                properties.Add(PropertyFactory.TextOpacity(layer.TextOpacity.ToNative()));
             }
 
             if (layer.TextOpacityTransition != null)
             {
-                result.TextOpacityTransition = layer.TextOpacityTransition.ToTransition();
+                result.TextOpacityTransition = layer.TextOpacityTransition.ToNative();
             }
 
             if (layer.TextOptional != null)
             {
-                properties.Add(PropertyFactory.TextOptional(layer.TextOptional.ToExpression()));
+                properties.Add(PropertyFactory.TextOptional(layer.TextOptional.ToNative()));
             }
 
             if (layer.TextPadding != null)
             {
-                properties.Add(PropertyFactory.TextPadding(layer.TextPadding.ToExpression()));
+                properties.Add(PropertyFactory.TextPadding(layer.TextPadding.ToNative()));
             }
 
             if (layer.TextPitchAlignment != null)
             {
-                properties.Add(PropertyFactory.TextPitchAlignment(layer.TextPitchAlignment.ToExpression()));
+                properties.Add(PropertyFactory.TextPitchAlignment(layer.TextPitchAlignment.ToNative()));
             }
 
             if (layer.TextRadialOffset != null)
             {
-                properties.Add(PropertyFactory.TextRadialOffset(layer.TextRadialOffset.ToExpression()));
+                properties.Add(PropertyFactory.TextRadialOffset(layer.TextRadialOffset.ToNative()));
             }
 
             if (layer.TextRotate != null)
             {
-                properties.Add(PropertyFactory.TextRotate(layer.TextRotate.ToExpression()));
+                properties.Add(PropertyFactory.TextRotate(layer.TextRotate.ToNative()));
             }
 
             if (layer.TextRotationAlignment != null)
             {
-                properties.Add(PropertyFactory.TextRotationAlignment(layer.TextRotationAlignment.ToExpression()));
+                properties.Add(PropertyFactory.TextRotationAlignment(layer.TextRotationAlignment.ToNative()));
             }
 
             if (layer.TextSize != null)
             {
-                properties.Add(PropertyFactory.TextSize(layer.TextSize.ToExpression()));
+                properties.Add(PropertyFactory.TextSize(layer.TextSize.ToNative()));
             }
 
             if (layer.TextTransform != null)
             {
-                properties.Add(PropertyFactory.TextTransform(layer.TextTransform.ToExpression()));
+                properties.Add(PropertyFactory.TextTransform(layer.TextTransform.ToNative()));
             }
 
             if (layer.TextTranslate != null)
             {
-                properties.Add(PropertyFactory.TextTranslate(layer.TextTranslate.ToExpression()));
+                properties.Add(PropertyFactory.TextTranslate(layer.TextTranslate.ToNative()));
             }
 
             if (layer.TextTranslateAnchor != null)
             {
-                properties.Add(PropertyFactory.TextTranslateAnchor(layer.TextTranslateAnchor.ToExpression()));
+                properties.Add(PropertyFactory.TextTranslateAnchor(layer.TextTranslateAnchor.ToNative()));
             }
 
             if (layer.TextTranslateTransition != null)
             {
-                result.TextTranslateTransition = layer.TextTranslateTransition.ToTransition();
+                result.TextTranslateTransition = layer.TextTranslateTransition.ToNative();
             }
 
             if (layer.TextVariableAnchor != null)
             {
-                properties.Add(PropertyFactory.TextVariableAnchor(layer.TextVariableAnchor.ToExpression()));
+                properties.Add(PropertyFactory.TextVariableAnchor(layer.TextVariableAnchor.ToNative()));
             }
 
             if (layer.TextWritingMode != null)
             {
-                properties.Add(PropertyFactory.TextWritingMode(layer.TextWritingMode.ToExpression()));
+                properties.Add(PropertyFactory.TextWritingMode(layer.TextWritingMode.ToNative()));
             }
 
             result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
             {
-                result.WithFilter(layer.Filter.ToExpression());
+                result.WithFilter(layer.Filter.ToNative());
             }
         }
 
@@ -505,72 +505,72 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.RasterBrightnessMax != null)
             {
-                properties.Add(PropertyFactory.RasterBrightnessMax(layer.RasterBrightnessMax.ToExpression()));
+                properties.Add(PropertyFactory.RasterBrightnessMax(layer.RasterBrightnessMax.ToNative()));
             }
 
             if (layer.RasterBrightnessMaxTransition != null)
             {
-                result.RasterBrightnessMaxTransition = layer.RasterBrightnessMaxTransition.ToTransition();
+                result.RasterBrightnessMaxTransition = layer.RasterBrightnessMaxTransition.ToNative();
             }
 
             if (layer.RasterBrightnessMin != null)
             {
-                properties.Add(PropertyFactory.RasterBrightnessMin(layer.RasterBrightnessMin.ToExpression()));
+                properties.Add(PropertyFactory.RasterBrightnessMin(layer.RasterBrightnessMin.ToNative()));
             }
 
             if (layer.RasterBrightnessMinTransition != null)
             {
-                result.RasterBrightnessMinTransition = layer.RasterBrightnessMinTransition.ToTransition();
+                result.RasterBrightnessMinTransition = layer.RasterBrightnessMinTransition.ToNative();
             }
 
             if (layer.RasterContrast != null)
             {
-                properties.Add(PropertyFactory.RasterContrast(layer.RasterContrast.ToExpression()));
+                properties.Add(PropertyFactory.RasterContrast(layer.RasterContrast.ToNative()));
             }
 
             if (layer.RasterContrastTransition != null)
             {
-                result.RasterContrastTransition = layer.RasterContrastTransition.ToTransition();
+                result.RasterContrastTransition = layer.RasterContrastTransition.ToNative();
             }
 
             if (layer.RasterFadeDuration != null)
             {
-                properties.Add(PropertyFactory.RasterFadeDuration(layer.RasterFadeDuration.ToExpression()));
+                properties.Add(PropertyFactory.RasterFadeDuration(layer.RasterFadeDuration.ToNative()));
             }
 
             if (layer.RasterHueRotate != null)
             {
-                properties.Add(PropertyFactory.RasterHueRotate(layer.RasterHueRotate.ToExpression()));
+                properties.Add(PropertyFactory.RasterHueRotate(layer.RasterHueRotate.ToNative()));
             }
 
             if (layer.RasterHueRotateTransition != null)
             {
-                result.RasterHueRotateTransition = layer.RasterHueRotateTransition.ToTransition();
+                result.RasterHueRotateTransition = layer.RasterHueRotateTransition.ToNative();
             }
 
             if (layer.RasterOpacity != null)
             {
-                properties.Add(PropertyFactory.RasterOpacity(layer.RasterOpacity.ToExpression()));
+                properties.Add(PropertyFactory.RasterOpacity(layer.RasterOpacity.ToNative()));
             }
 
             if (layer.RasterOpacityTransition != null)
             {
-                result.RasterOpacityTransition = layer.RasterOpacityTransition.ToTransition();
+                result.RasterOpacityTransition = layer.RasterOpacityTransition.ToNative();
             }
 
             if (layer.RasterResampling != null)
             {
-                properties.Add(PropertyFactory.RasterResampling(layer.RasterResampling.ToExpression()));
+                properties.Add(PropertyFactory.RasterResampling(layer.RasterResampling.ToNative()));
             }
 
             if (layer.RasterSaturation != null)
             {
-                properties.Add(PropertyFactory.RasterSaturation(layer.RasterSaturation.ToExpression()));
+                properties.Add(PropertyFactory.RasterSaturation(layer.RasterSaturation.ToNative()));
             }
 
             if (layer.RasterSaturationTransition != null)
             {
-                result.RasterSaturationTransition = layer.RasterSaturationTransition.ToTransition();
+                result.RasterSaturationTransition = layer.RasterSaturationTransition.ToNative();
             }
 
             result.SetProperties(properties.ToArray());
@@ -612,74 +612,74 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.LineBlur != null)
             {
-                properties.Add(PropertyFactory.LineBlur(layer.LineBlur.ToExpression()));
+                properties.Add(PropertyFactory.LineBlur(layer.LineBlur.ToNative()));
             }
 
             if (layer.LineBlurTransition != null)
             {
-                result.LineBlurTransition = layer.LineBlurTransition.ToTransition();
+                result.LineBlurTransition = layer.LineBlurTransition.ToNative();
             }
 
             if (layer.LineCap != null)
             {
-                properties.Add(PropertyFactory.LineCap(layer.LineCap.ToExpression()));
+                properties.Add(PropertyFactory.LineCap(layer.LineCap.ToNative()));
             }
 
             if (layer.LineColor != null)
             {
-                properties.Add(PropertyFactory.LineColor(layer.LineColor.ToExpression()));
+                properties.Add(PropertyFactory.LineColor(layer.LineColor.ToNative()));
             }
 
             if (layer.LineColorTransition != null)
             {
-                result.LineColorTransition = layer.LineColorTransition.ToTransition();
+                result.LineColorTransition = layer.LineColorTransition.ToNative();
             }
 
             if (layer.LineDasharray != null)
             {
-                properties.Add(PropertyFactory.LineDasharray(layer.LineDasharray.ToExpression()));
+                properties.Add(PropertyFactory.LineDasharray(layer.LineDasharray.ToNative()));
             }
 
             if (layer.LineDasharrayTransition != null)
             {
-                result.LineDasharrayTransition = layer.LineDasharrayTransition.ToTransition();
+                result.LineDasharrayTransition = layer.LineDasharrayTransition.ToNative();
             }
 
             if (layer.LineGapWidth != null)
             {
-                properties.Add(PropertyFactory.LineGapWidth(layer.LineGapWidth.ToExpression()));
+                properties.Add(PropertyFactory.LineGapWidth(layer.LineGapWidth.ToNative()));
             }
 
             if (layer.LineGapWidthTransition != null)
             {
-                result.LineGapWidthTransition = layer.LineGapWidthTransition.ToTransition();
+                result.LineGapWidthTransition = layer.LineGapWidthTransition.ToNative();
             }
 
             if (layer.LineGradient != null)
             {
-                properties.Add(PropertyFactory.LineGradient(layer.LineGradient.ToExpression()));
+                properties.Add(PropertyFactory.LineGradient(layer.LineGradient.ToNative()));
             }
 
             if (layer.LineJoin != null)
             {
-                properties.Add(PropertyFactory.LineJoin(layer.LineJoin.ToExpression()));
+                properties.Add(PropertyFactory.LineJoin(layer.LineJoin.ToNative()));
             }
 
             if (layer.LineWidth != null)
             {
-                properties.Add(PropertyFactory.LineWidth(layer.LineWidth.ToExpression()));
+                properties.Add(PropertyFactory.LineWidth(layer.LineWidth.ToNative()));
             }
 
             if (layer.LineWidthTransition != null)
             {
-                result.LineWidthTransition = layer.LineWidthTransition.ToTransition();
+                result.LineWidthTransition = layer.LineWidthTransition.ToNative();
             }
 
             result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
             {
-                result.WithFilter(layer.Filter.ToExpression());
+                result.WithFilter(layer.Filter.ToNative());
             }
 
             if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
@@ -719,52 +719,52 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.HillshadeAccentColor != null)
             {
-                properties.Add(PropertyFactory.HillshadeAccentColor(layer.HillshadeAccentColor.ToExpression()));
+                properties.Add(PropertyFactory.HillshadeAccentColor(layer.HillshadeAccentColor.ToNative()));
             }
 
             if (layer.HillshadeAccentColorTransition != null)
             {
-                result.HillshadeAccentColorTransition = layer.HillshadeAccentColorTransition.ToTransition();
+                result.HillshadeAccentColorTransition = layer.HillshadeAccentColorTransition.ToNative();
             }
 
             if (layer.HillshadeExaggeration != null)
             {
-                properties.Add(PropertyFactory.HillshadeExaggeration(layer.HillshadeExaggeration.ToExpression()));
+                properties.Add(PropertyFactory.HillshadeExaggeration(layer.HillshadeExaggeration.ToNative()));
             }
 
             if (layer.HillshadeExaggerationTransition != null)
             {
-                result.HillshadeExaggerationTransition = layer.HillshadeExaggerationTransition.ToTransition();
+                result.HillshadeExaggerationTransition = layer.HillshadeExaggerationTransition.ToNative();
             }
 
             if (layer.HillshadeHighlightColor != null)
             {
-                properties.Add(PropertyFactory.HillshadeHighlightColor(layer.HillshadeHighlightColor.ToExpression()));
+                properties.Add(PropertyFactory.HillshadeHighlightColor(layer.HillshadeHighlightColor.ToNative()));
             }
 
             if (layer.HillshadeHighlightColorTransition != null)
             {
-                result.HillshadeHighlightColorTransition = layer.HillshadeHighlightColorTransition.ToTransition();
+                result.HillshadeHighlightColorTransition = layer.HillshadeHighlightColorTransition.ToNative();
             }
 
             if (layer.HillshadeIlluminationAnchor != null)
             {
-                properties.Add(PropertyFactory.HillshadeIlluminationAnchor(layer.HillshadeIlluminationAnchor.ToExpression()));
+                properties.Add(PropertyFactory.HillshadeIlluminationAnchor(layer.HillshadeIlluminationAnchor.ToNative()));
             }
 
             if (layer.HillshadeIlluminationDirection != null)
             {
-                properties.Add(PropertyFactory.HillshadeIlluminationDirection(layer.HillshadeIlluminationDirection.ToExpression()));
+                properties.Add(PropertyFactory.HillshadeIlluminationDirection(layer.HillshadeIlluminationDirection.ToNative()));
             }
 
             if (layer.HillshadeShadowColor != null)
             {
-                properties.Add(PropertyFactory.HillshadeShadowColor(layer.HillshadeShadowColor.ToExpression()));
+                properties.Add(PropertyFactory.HillshadeShadowColor(layer.HillshadeShadowColor.ToNative()));
             }
 
             if (layer.HillshadeShadowColorTransition != null)
             {
-                result.HillshadeShadowColorTransition = layer.HillshadeShadowColorTransition.ToTransition();
+                result.HillshadeShadowColorTransition = layer.HillshadeShadowColorTransition.ToNative();
             }
 
             result.SetProperties(properties.ToArray());
@@ -808,42 +808,42 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.HeatmapColor != null)
             {
-                properties.Add(PropertyFactory.HeatmapColor(layer.HeatmapColor.ToExpression()));
+                properties.Add(PropertyFactory.HeatmapColor(layer.HeatmapColor.ToNative()));
             }
 
             if (layer.HeatmapIntensity != null)
             {
-                properties.Add(PropertyFactory.HeatmapIntensity(layer.HeatmapIntensity.ToExpression()));
+                properties.Add(PropertyFactory.HeatmapIntensity(layer.HeatmapIntensity.ToNative()));
             }
 
             if (layer.HeatmapIntensityTransition != null)
             {
-                result.HeatmapIntensityTransition = layer.HeatmapIntensityTransition.ToTransition();
+                result.HeatmapIntensityTransition = layer.HeatmapIntensityTransition.ToNative();
             }
 
             if (layer.HeatmapOpacity != null)
             {
-                properties.Add(PropertyFactory.HeatmapOpacity(layer.HeatmapOpacity.ToExpression()));
+                properties.Add(PropertyFactory.HeatmapOpacity(layer.HeatmapOpacity.ToNative()));
             }
 
             if (layer.HeatmapOpacityTransition != null)
             {
-                result.HeatmapOpacityTransition = layer.HeatmapOpacityTransition.ToTransition();
+                result.HeatmapOpacityTransition = layer.HeatmapOpacityTransition.ToNative();
             }
 
             if (layer.HeatmapRadius != null)
             {
-                properties.Add(PropertyFactory.HeatmapRadius(layer.HeatmapRadius.ToExpression()));
+                properties.Add(PropertyFactory.HeatmapRadius(layer.HeatmapRadius.ToNative()));
             }
 
             if (layer.HeatmapRadiusTransition != null)
             {
-                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToTransition();
+                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToNative();
             }
 
             if (layer.HeatmapWeight != null)
             {
-                properties.Add(PropertyFactory.HeatmapWeight(layer.HeatmapWeight.ToExpression()));
+                properties.Add(PropertyFactory.HeatmapWeight(layer.HeatmapWeight.ToNative()));
             }
 
             result.SetProperties(properties.ToArray());
@@ -852,7 +852,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.Filter != null)
             {
-                result.WithFilter(layer.Filter.ToExpression());
+                result.WithFilter(layer.Filter.ToNative());
             }
         }
 
@@ -887,63 +887,63 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.FillAntialiased != null)
             {
-                properties.Add(PropertyFactory.FillAntialias(layer.FillAntialiased.ToExpression()));
+                properties.Add(PropertyFactory.FillAntialias(layer.FillAntialiased.ToNative()));
             }
 
             if (layer.FillColor != null)
             {
-                properties.Add(PropertyFactory.FillColor(layer.FillColor.ToExpression()));
+                properties.Add(PropertyFactory.FillColor(layer.FillColor.ToNative()));
             }
 
             if (layer.FillColorTransition != null)
             {
-                result.FillColorTransition = layer.FillColorTransition.ToTransition();
+                result.FillColorTransition = layer.FillColorTransition.ToNative();
             }
 
             if (layer.FillOpacity != null)
             {
-                properties.Add(PropertyFactory.FillOpacity(layer.FillOpacity.ToExpression()));
+                properties.Add(PropertyFactory.FillOpacity(layer.FillOpacity.ToNative()));
             }
 
             if (layer.FillOpacityTransition != null)
             {
-                result.FillOpacityTransition = layer.FillOpacityTransition.ToTransition();
+                result.FillOpacityTransition = layer.FillOpacityTransition.ToNative();
             }
 
 
             if (layer.FillOutlineColor != null)
             {
-                properties.Add(PropertyFactory.FillOutlineColor(layer.FillOutlineColor.ToExpression()));
+                properties.Add(PropertyFactory.FillOutlineColor(layer.FillOutlineColor.ToNative()));
             }
 
             if (layer.FillOutlineColorTransition != null)
             {
-                result.FillOutlineColorTransition = layer.FillOutlineColorTransition.ToTransition();
+                result.FillOutlineColorTransition = layer.FillOutlineColorTransition.ToNative();
             }
 
             if (layer.FillPattern != null)
             {
-                properties.Add(PropertyFactory.FillPattern(layer.FillPattern.ToExpression()));
+                properties.Add(PropertyFactory.FillPattern(layer.FillPattern.ToNative()));
             }
 
             if (layer.FillPatternTransition != null)
             {
-                result.FillPatternTransition = layer.FillPatternTransition.ToTransition();
+                result.FillPatternTransition = layer.FillPatternTransition.ToNative();
             }
 
             if (layer.FillTranslate != null)
             {
-                properties.Add(PropertyFactory.FillTranslate(layer.FillTranslate.ToExpression()));
+                properties.Add(PropertyFactory.FillTranslate(layer.FillTranslate.ToNative()));
             }
 
             if (layer.FillTranslateTransition != null)
             {
-                result.FillTranslateTransition = layer.FillTranslateTransition.ToTransition();
+                result.FillTranslateTransition = layer.FillTranslateTransition.ToNative();
             }
 
             if (layer.FillTranslateAnchor != null)
             {
-                properties.Add(PropertyFactory.FillTranslateAnchor(layer.FillTranslateAnchor.ToExpression()));
+                properties.Add(PropertyFactory.FillTranslateAnchor(layer.FillTranslateAnchor.ToNative()));
             }
 
             result.SetProperties(properties.ToArray());
@@ -952,7 +952,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.Filter != null)
             {
-                result.WithFilter(layer.Filter.ToExpression());
+                result.WithFilter(layer.Filter.ToNative());
             }
         }
 
@@ -987,79 +987,79 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.FillExtrusionBase != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionBase(layer.FillExtrusionBase.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionBase(layer.FillExtrusionBase.ToNative()));
             }
 
             if (layer.FillExtrusionBaseTransition != null)
             {
-                result.FillExtrusionBaseTransition = layer.FillExtrusionBaseTransition.ToTransition();
+                result.FillExtrusionBaseTransition = layer.FillExtrusionBaseTransition.ToNative();
             }
 
             if (layer.FillExtrusionColor != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionColor(layer.FillExtrusionColor.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionColor(layer.FillExtrusionColor.ToNative()));
             }
 
             if (layer.FillExtrusionColorTransition != null)
             {
-                result.FillExtrusionColorTransition = layer.FillExtrusionColorTransition.ToTransition();
+                result.FillExtrusionColorTransition = layer.FillExtrusionColorTransition.ToNative();
             }
 
             if (layer.FillExtrusionOpacity != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionOpacity(layer.FillExtrusionOpacity.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionOpacity(layer.FillExtrusionOpacity.ToNative()));
             }
 
             if (layer.FillExtrusionOpacityTransition != null)
             {
-                result.FillExtrusionOpacityTransition = layer.FillExtrusionOpacityTransition.ToTransition();
+                result.FillExtrusionOpacityTransition = layer.FillExtrusionOpacityTransition.ToNative();
             }
 
             if (layer.FillExtrusionHasVerticalGradient != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionVerticalGradient(layer.FillExtrusionHasVerticalGradient.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionVerticalGradient(layer.FillExtrusionHasVerticalGradient.ToNative()));
             }
 
             if (layer.FillExtrusionHeight != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionHeight(layer.FillExtrusionHeight.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionHeight(layer.FillExtrusionHeight.ToNative()));
             }
 
             if (layer.FillExtrusionHeightTransition != null)
             {
-                result.FillExtrusionHeightTransition = layer.FillExtrusionHeightTransition.ToTransition();
+                result.FillExtrusionHeightTransition = layer.FillExtrusionHeightTransition.ToNative();
             }
 
             if (layer.FillExtrusionPattern != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionPattern(layer.FillExtrusionPattern.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionPattern(layer.FillExtrusionPattern.ToNative()));
             }
 
             if (layer.FillExtrusionPatternTransition != null)
             {
-                result.FillExtrusionPatternTransition = layer.FillExtrusionPatternTransition.ToTransition();
+                result.FillExtrusionPatternTransition = layer.FillExtrusionPatternTransition.ToNative();
             }
 
             if (layer.FillExtrusionTranslate != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionTranslate(layer.FillExtrusionTranslate.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionTranslate(layer.FillExtrusionTranslate.ToNative()));
             }
 
             if (layer.FillExtrusionTranslateTransition != null)
             {
-                result.FillExtrusionTranslateTransition = layer.FillExtrusionTranslateTransition.ToTransition();
+                result.FillExtrusionTranslateTransition = layer.FillExtrusionTranslateTransition.ToNative();
             }
 
             if (layer.FillExtrusionTranslateAnchor != null)
             {
-                properties.Add(PropertyFactory.FillExtrusionTranslateAnchor(layer.FillExtrusionTranslateAnchor.ToExpression()));
+                properties.Add(PropertyFactory.FillExtrusionTranslateAnchor(layer.FillExtrusionTranslateAnchor.ToNative()));
             }
 
             result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
             {
-                result.WithFilter(layer.Filter.ToExpression());
+                result.WithFilter(layer.Filter.ToNative());
             }
         }
 
@@ -1094,97 +1094,97 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.CircleBlur != null)
             {
-                properties.Add(PropertyFactory.CircleBlur(layer.CircleBlur.ToExpression()));
+                properties.Add(PropertyFactory.CircleBlur(layer.CircleBlur.ToNative()));
             }
 
             if (layer.CircleBlurTransition != null)
             {
-                result.CircleBlurTransition = layer.CircleBlurTransition.ToTransition();
+                result.CircleBlurTransition = layer.CircleBlurTransition.ToNative();
             }
 
             if (layer.CircleColor != null)
             {
-                properties.Add(PropertyFactory.CircleColor(layer.CircleColor.ToExpression()));
+                properties.Add(PropertyFactory.CircleColor(layer.CircleColor.ToNative()));
             }
 
             if (layer.CircleColorTransition != null)
             {
-                result.CircleColorTransition = layer.CircleColorTransition.ToTransition();
+                result.CircleColorTransition = layer.CircleColorTransition.ToNative();
             }
 
             if (layer.CircleOpacity != null)
             {
-                properties.Add(PropertyFactory.CircleOpacity(layer.CircleOpacity.ToExpression()));
+                properties.Add(PropertyFactory.CircleOpacity(layer.CircleOpacity.ToNative()));
             }
 
             if (layer.CircleOpacityTransition != null)
             {
-                result.CircleOpacityTransition = layer.CircleOpacityTransition.ToTransition();
+                result.CircleOpacityTransition = layer.CircleOpacityTransition.ToNative();
             }
 
             if (layer.CirclePitchAlignment != null)
             {
-                properties.Add(PropertyFactory.CirclePitchAlignment(layer.CirclePitchAlignment.ToExpression()));
+                properties.Add(PropertyFactory.CirclePitchAlignment(layer.CirclePitchAlignment.ToNative()));
             }
 
             if (layer.CirclePitchScale != null)
             {
-                properties.Add(PropertyFactory.CirclePitchScale(layer.CirclePitchScale.ToExpression()));
+                properties.Add(PropertyFactory.CirclePitchScale(layer.CirclePitchScale.ToNative()));
             }
 
             if (layer.CircleRadius != null)
             {
-                properties.Add(PropertyFactory.CircleRadius(layer.CircleRadius.ToExpression()));
+                properties.Add(PropertyFactory.CircleRadius(layer.CircleRadius.ToNative()));
             }
 
             if (layer.CircleRadiusTransition != null)
             {
-                result.CircleRadiusTransition = layer.CircleRadiusTransition.ToTransition();
+                result.CircleRadiusTransition = layer.CircleRadiusTransition.ToNative();
             }
 
             if (layer.CircleStrokeColor != null)
             {
-                properties.Add(PropertyFactory.CircleStrokeColor(layer.CircleStrokeColor.ToExpression()));
+                properties.Add(PropertyFactory.CircleStrokeColor(layer.CircleStrokeColor.ToNative()));
             }
 
             if (layer.CircleStrokeColorTransition != null)
             {
-                result.CircleStrokeColorTransition = layer.CircleStrokeColorTransition.ToTransition();
+                result.CircleStrokeColorTransition = layer.CircleStrokeColorTransition.ToNative();
             }
 
             if (layer.CircleStrokeOpacity != null)
             {
-                properties.Add(PropertyFactory.CircleStrokeOpacity(layer.CircleStrokeOpacity.ToExpression()));
+                properties.Add(PropertyFactory.CircleStrokeOpacity(layer.CircleStrokeOpacity.ToNative()));
             }
 
             if (layer.CircleStrokeOpacityTransition != null)
             {
-                result.CircleStrokeOpacityTransition = layer.CircleStrokeOpacityTransition.ToTransition();
+                result.CircleStrokeOpacityTransition = layer.CircleStrokeOpacityTransition.ToNative();
             }
 
             if (layer.CircleStrokeWidth != null)
             {
-                properties.Add(PropertyFactory.CircleStrokeWidth(layer.CircleStrokeWidth.ToExpression()));
+                properties.Add(PropertyFactory.CircleStrokeWidth(layer.CircleStrokeWidth.ToNative()));
             }
 
             if (layer.CircleStrokeWidthTransition != null)
             {
-                result.CircleStrokeWidthTransition = layer.CircleStrokeWidthTransition.ToTransition();
+                result.CircleStrokeWidthTransition = layer.CircleStrokeWidthTransition.ToNative();
             }
 
             if (layer.CircleTranslate != null)
             {
-                properties.Add(PropertyFactory.CircleTranslate(layer.CircleTranslate.ToExpression()));
+                properties.Add(PropertyFactory.CircleTranslate(layer.CircleTranslate.ToNative()));
             }
 
             if (layer.CircleTranslateTransition != null)
             {
-                result.CircleTranslateTransition = layer.CircleTranslateTransition.ToTransition();
+                result.CircleTranslateTransition = layer.CircleTranslateTransition.ToNative();
             }
 
             if (layer.CircleTranslateAnchor != null)
             {
-                properties.Add(PropertyFactory.CircleTranslateAnchor(layer.CircleTranslateAnchor.ToExpression()));
+                properties.Add(PropertyFactory.CircleTranslateAnchor(layer.CircleTranslateAnchor.ToNative()));
             }
 
             result.SetProperties(properties.ToArray());
@@ -1193,11 +1193,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (layer.Filter != null)
             {
-                result.WithFilter(layer.Filter.ToExpression());
+                result.WithFilter(layer.Filter.ToNative());
             }
         }
 
-        static TransitionOptions ToTransition(this Naxam.Mapbox.TransitionOptions options)
+        public static TransitionOptions ToNative(this Naxam.Mapbox.TransitionOptions options)
         {
             return new TransitionOptions(
                     options.Delay,

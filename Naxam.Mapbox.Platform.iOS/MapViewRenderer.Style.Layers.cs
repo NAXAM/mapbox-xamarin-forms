@@ -1,8 +1,10 @@
 using System.Linq;
+using Foundation;
 using Mapbox;
 using Naxam.Mapbox;
 using Naxam.Mapbox.Layers;
 using Naxam.Mapbox.Platform.iOS.Extensions;
+using Xamarin.Forms.Platform.iOS;
 
 namespace Naxam.Controls.Mapbox.Platform.iOS
 {
@@ -109,6 +111,53 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         public StyleLayer[] GetLayers()
         {
             return mapStyle.Layers.Select(x => x.ToForms()).Where(x => x != null).ToArray();
+        }
+        
+        public void UpdateLight(Light light)
+        {
+            var native = mapStyle.Light;
+            if (!string.IsNullOrWhiteSpace(light.Anchor))
+            {
+                native.Anchor = NSExpression.FromConstant(new NSString(light.Anchor));
+            }
+
+            if (light.Color != null)
+            {
+                native.Color = NSExpression.FromConstant(light.Color.Value.ToUIColor());
+            }
+
+            if (light.ColorTransition != null)
+            {
+                native.ColorTransition = light.ColorTransition.ToNative();
+            }
+
+            if (light.Intensity.HasValue)
+            {
+                native.Intensity = NSExpression.FromConstant(NSNumber.FromFloat(light.Intensity.Value));
+            }
+
+            if (light.IntensityTransition != null)
+            {
+                native.IntensityTransition = light.IntensityTransition.ToNative();
+            }
+
+            if (light.Position.HasValue)
+            {
+                var position = NSValue_MGLAdditions.ValueWithMGLSphericalPosition(null, new MGLSphericalPosition
+                {
+                    radial = light.Position.Value.Radial,
+                    azimuthal = light.Position.Value.Azimuthal,
+                    polar = light.Position.Value.Polar
+                });
+                native.Position = NSExpression.FromConstant(position);
+            }
+
+            if (light.PositionTransition != null)
+            {
+                native.PositionTransition = light.PositionTransition.ToNative();
+            }
+
+            mapStyle.Light = native;
         }
     }
 }

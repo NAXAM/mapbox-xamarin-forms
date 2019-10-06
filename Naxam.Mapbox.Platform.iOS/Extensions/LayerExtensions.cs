@@ -146,7 +146,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.IconColorTransition != null)
             {
-                result.IconColorTransition = layer.IconColorTransition.ToTransition();
+                result.IconColorTransition = layer.IconColorTransition.ToNative();
             }
 
             if (layer.IconHaloBlur != null)
@@ -156,7 +156,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.IconHaloBlurTransition != null)
             {
-                result.IconHaloBlurTransition = layer.IconHaloBlurTransition.ToTransition();
+                result.IconHaloBlurTransition = layer.IconHaloBlurTransition.ToNative();
             }
 
             if (layer.IconHaloColor != null)
@@ -166,7 +166,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.IconHaloColorTransition != null)
             {
-                result.IconHaloColorTransition = layer.IconHaloColorTransition.ToTransition();
+                result.IconHaloColorTransition = layer.IconHaloColorTransition.ToNative();
             }
 
             if (layer.IconHaloWidth != null)
@@ -176,7 +176,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.IconHaloWidthTransition != null)
             {
-                result.IconHaloWidthTransition = layer.IconHaloWidthTransition.ToTransition();
+                result.IconHaloWidthTransition = layer.IconHaloWidthTransition.ToNative();
             }
 
             if (layer.IconIgnorePlacement != null)
@@ -207,7 +207,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.IconOpacityTransition != null)
             {
-                result.IconOpacityTransition = layer.IconOpacityTransition.ToTransition();
+                result.IconOpacityTransition = layer.IconOpacityTransition.ToNative();
             }
 
             if (layer.IconOptional != null)
@@ -253,7 +253,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.IconTranslateTransition != null)
             {
-                result.IconTranslationTransition = layer.IconTranslateTransition.ToTransition();
+                result.IconTranslationTransition = layer.IconTranslateTransition.ToNative();
             }
 
             if (layer.SymbolAvoidEdges != null)
@@ -299,7 +299,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.TextColorTransition != null)
             {
-                result.TextColorTransition = layer.TextColorTransition.ToTransition();
+                result.TextColorTransition = layer.TextColorTransition.ToNative();
             }
 
             if (layer.TextField != null)
@@ -319,7 +319,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.TextHaloBlurTransition != null)
             {
-                result.TextHaloBlurTransition = layer.TextHaloBlurTransition.ToTransition();
+                result.TextHaloBlurTransition = layer.TextHaloBlurTransition.ToNative();
             }
 
             if (layer.TextHaloColor != null)
@@ -329,7 +329,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.TextHaloColorTransition != null)
             {
-                result.TextHaloColorTransition = layer.TextHaloColorTransition.ToTransition();
+                result.TextHaloColorTransition = layer.TextHaloColorTransition.ToNative();
             }
 
             if (layer.TextHaloWidth != null)
@@ -339,7 +339,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.TextHaloWidthTransition != null)
             {
-                result.TextHaloWidthTransition = layer.TextHaloWidthTransition.ToTransition();
+                result.TextHaloWidthTransition = layer.TextHaloWidthTransition.ToNative();
             }
 
             if (layer.TextIgnorePlacement != null)
@@ -390,7 +390,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.TextOpacityTransition != null)
             {
-                result.TextOpacityTransition = layer.TextOpacityTransition.ToTransition();
+                result.TextOpacityTransition = layer.TextOpacityTransition.ToNative();
             }
 
             if (layer.TextOptional != null)
@@ -445,7 +445,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.TextTranslateTransition != null)
             {
-                result.TextTranslationTransition = layer.TextTranslateTransition.ToTransition();
+                result.TextTranslationTransition = layer.TextTranslateTransition.ToNative();
             }
 
             if (layer.TextVariableAnchor != null)
@@ -504,7 +504,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.RasterBrightnessMaxTransition != null)
             {
-                result.MaximumRasterBrightnessTransition = layer.RasterBrightnessMaxTransition.ToTransition();
+                result.MaximumRasterBrightnessTransition = layer.RasterBrightnessMaxTransition.ToNative();
             }
 
             if (layer.RasterBrightnessMin != null)
@@ -514,7 +514,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.RasterBrightnessMinTransition != null)
             {
-                result.MinimumRasterBrightnessTransition = layer.RasterBrightnessMinTransition.ToTransition();
+                result.MinimumRasterBrightnessTransition = layer.RasterBrightnessMinTransition.ToNative();
             }
 
             if (layer.RasterContrast != null)
@@ -524,7 +524,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.RasterContrastTransition != null)
             {
-                result.RasterContrastTransition = layer.RasterContrastTransition.ToTransition();
+                result.RasterContrastTransition = layer.RasterContrastTransition.ToNative();
             }
 
             if (layer.RasterFadeDuration != null)
@@ -539,7 +539,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.RasterHueRotateTransition != null)
             {
-                result.RasterHueRotationTransition = layer.RasterHueRotateTransition.ToTransition();
+                result.RasterHueRotationTransition = layer.RasterHueRotateTransition.ToNative();
             }
 
             if (layer.RasterOpacity != null)
@@ -549,7 +549,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.RasterOpacityTransition != null)
             {
-                result.RasterOpacityTransition = layer.RasterOpacityTransition.ToTransition();
+                result.RasterOpacityTransition = layer.RasterOpacityTransition.ToNative();
             }
 
             if (layer.RasterResampling != null)
@@ -564,7 +564,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.RasterSaturationTransition != null)
             {
-                result.RasterSaturationTransition = layer.RasterSaturationTransition.ToTransition();
+                result.RasterSaturationTransition = layer.RasterSaturationTransition.ToNative();
             }
 
             //if (layer.Filter != null)
@@ -607,7 +607,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.LineBlurTransition != null)
             {
-                result.LineBlurTransition = layer.LineBlurTransition.ToTransition();
+                result.LineBlurTransition = layer.LineBlurTransition.ToNative();
             }
 
             if (layer.LineCap != null)
@@ -622,7 +622,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.LineColorTransition != null)
             {
-                result.LineColorTransition = layer.LineColorTransition.ToTransition();
+                result.LineColorTransition = layer.LineColorTransition.ToNative();
             }
 
             if (layer.LineDasharray != null)
@@ -632,7 +632,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.LineDasharrayTransition != null)
             {
-                result.LineDashPatternTransition = layer.LineDasharrayTransition.ToTransition();
+                result.LineDashPatternTransition = layer.LineDasharrayTransition.ToNative();
             }
 
             if (layer.LineGapWidth != null)
@@ -642,7 +642,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.LineGapWidthTransition != null)
             {
-                result.LineGapWidthTransition = layer.LineGapWidthTransition.ToTransition();
+                result.LineGapWidthTransition = layer.LineGapWidthTransition.ToNative();
             }
 
             if (layer.LineGradient != null)
@@ -662,7 +662,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.LineWidthTransition != null)
             {
-                result.LineWidthTransition = layer.LineWidthTransition.ToTransition();
+                result.LineWidthTransition = layer.LineWidthTransition.ToNative();
             }
 
             if (layer.Filter != null)
@@ -706,7 +706,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HillshadeAccentColorTransition != null)
             {
-                result.HillshadeAccentColorTransition = layer.HillshadeAccentColorTransition.ToTransition();
+                result.HillshadeAccentColorTransition = layer.HillshadeAccentColorTransition.ToNative();
             }
 
             if (layer.HillshadeExaggeration != null)
@@ -716,7 +716,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HillshadeExaggerationTransition != null)
             {
-                result.HillshadeExaggerationTransition = layer.HillshadeExaggerationTransition.ToTransition();
+                result.HillshadeExaggerationTransition = layer.HillshadeExaggerationTransition.ToNative();
             }
 
             if (layer.HillshadeHighlightColor != null)
@@ -726,7 +726,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HillshadeHighlightColorTransition != null)
             {
-                result.HillshadeHighlightColorTransition = layer.HillshadeHighlightColorTransition.ToTransition();
+                result.HillshadeHighlightColorTransition = layer.HillshadeHighlightColorTransition.ToNative();
             }
 
             if (layer.HillshadeIlluminationAnchor != null)
@@ -746,7 +746,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HillshadeShadowColorTransition != null)
             {
-                result.HillshadeShadowColorTransition = layer.HillshadeShadowColorTransition.ToTransition();
+                result.HillshadeShadowColorTransition = layer.HillshadeShadowColorTransition.ToNative();
             }
 
             //if (layer.Filter != null)
@@ -800,7 +800,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HeatmapIntensityTransition != null)
             {
-                result.HeatmapIntensityTransition = layer.HeatmapIntensityTransition.ToTransition();
+                result.HeatmapIntensityTransition = layer.HeatmapIntensityTransition.ToNative();
             }
 
             if (layer.HeatmapOpacity != null)
@@ -810,7 +810,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HeatmapOpacityTransition != null)
             {
-                result.HeatmapOpacityTransition = layer.HeatmapOpacityTransition.ToTransition();
+                result.HeatmapOpacityTransition = layer.HeatmapOpacityTransition.ToNative();
             }
 
             if (layer.HeatmapRadius != null)
@@ -825,7 +825,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.HeatmapRadiusTransition != null)
             {
-                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToTransition();
+                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToNative();
             }
 
             if (layer.Filter != null)
@@ -887,7 +887,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillColorTransition != null)
             {
-                result.FillColorTransition = layer.FillColorTransition.ToTransition();
+                result.FillColorTransition = layer.FillColorTransition.ToNative();
             }
 
             if (layer.FillOpacity != null)
@@ -897,7 +897,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillOpacityTransition != null)
             {
-                result.FillOpacityTransition = layer.FillOpacityTransition.ToTransition();
+                result.FillOpacityTransition = layer.FillOpacityTransition.ToNative();
             }
 
             if (layer.FillOutlineColor != null)
@@ -907,7 +907,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillOutlineColorTransition != null)
             {
-                result.FillOutlineColorTransition = layer.FillOutlineColorTransition.ToTransition();
+                result.FillOutlineColorTransition = layer.FillOutlineColorTransition.ToNative();
             }
 
             if (layer.FillPattern != null)
@@ -917,7 +917,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillPatternTransition != null)
             {
-                result.FillPatternTransition = layer.FillPatternTransition.ToTransition();
+                result.FillPatternTransition = layer.FillPatternTransition.ToNative();
             }
 
             if (layer.FillTranslate != null)
@@ -927,7 +927,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillTranslateTransition != null)
             {
-                result.FillTranslationTransition = layer.FillTranslateTransition.ToTransition();
+                result.FillTranslationTransition = layer.FillTranslateTransition.ToNative();
             }
 
             if (layer.FillTranslateAnchor != null)
@@ -975,7 +975,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillExtrusionBaseTransition != null)
             {
-                result.FillExtrusionBaseTransition = layer.FillExtrusionBaseTransition.ToTransition();
+                result.FillExtrusionBaseTransition = layer.FillExtrusionBaseTransition.ToNative();
             }
 
             if (layer.FillExtrusionColor != null)
@@ -985,7 +985,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillExtrusionColorTransition != null)
             {
-                result.FillExtrusionColorTransition = layer.FillExtrusionColorTransition.ToTransition();
+                result.FillExtrusionColorTransition = layer.FillExtrusionColorTransition.ToNative();
             }
 
             if (layer.FillExtrusionOpacity != null)
@@ -995,7 +995,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillExtrusionOpacityTransition != null)
             {
-                result.FillExtrusionOpacityTransition = layer.FillExtrusionOpacityTransition.ToTransition();
+                result.FillExtrusionOpacityTransition = layer.FillExtrusionOpacityTransition.ToNative();
             }
 
             if (layer.FillExtrusionHasVerticalGradient != null)
@@ -1010,7 +1010,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillExtrusionHeightTransition != null)
             {
-                result.FillExtrusionHeightTransition = layer.FillExtrusionHeightTransition.ToTransition();
+                result.FillExtrusionHeightTransition = layer.FillExtrusionHeightTransition.ToNative();
             }
 
             if (layer.FillExtrusionPattern != null)
@@ -1020,7 +1020,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillExtrusionPatternTransition != null)
             {
-                result.FillExtrusionPatternTransition = layer.FillExtrusionPatternTransition.ToTransition();
+                result.FillExtrusionPatternTransition = layer.FillExtrusionPatternTransition.ToNative();
             }
 
             if (layer.FillExtrusionTranslate != null)
@@ -1030,7 +1030,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.FillExtrusionTranslateTransition != null)
             {
-                result.FillExtrusionTranslationTransition = layer.FillExtrusionTranslateTransition.ToTransition();
+                result.FillExtrusionTranslationTransition = layer.FillExtrusionTranslateTransition.ToNative();
             }
 
             if (layer.FillExtrusionTranslateAnchor != null)
@@ -1078,7 +1078,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleBlurTransition != null)
             {
-                result.CircleBlurTransition = layer.CircleBlurTransition.ToTransition();
+                result.CircleBlurTransition = layer.CircleBlurTransition.ToNative();
             }
 
             if (layer.CircleColor != null)
@@ -1088,7 +1088,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleColorTransition != null)
             {
-                result.CircleColorTransition = layer.CircleColorTransition.ToTransition();
+                result.CircleColorTransition = layer.CircleColorTransition.ToNative();
             }
 
             if (layer.CircleOpacity != null)
@@ -1098,7 +1098,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleOpacityTransition != null)
             {
-                result.CircleOpacityTransition = layer.CircleOpacityTransition.ToTransition();
+                result.CircleOpacityTransition = layer.CircleOpacityTransition.ToNative();
             }
 
             if (layer.CirclePitchAlignment != null)
@@ -1119,7 +1119,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleRadiusTransition != null)
             {
-                result.CircleRadiusTransition = layer.CircleRadiusTransition.ToTransition();
+                result.CircleRadiusTransition = layer.CircleRadiusTransition.ToNative();
             }
 
             if (layer.CircleStrokeColor != null)
@@ -1129,7 +1129,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleStrokeColorTransition != null)
             {
-                result.CircleStrokeColorTransition = layer.CircleStrokeColorTransition.ToTransition();
+                result.CircleStrokeColorTransition = layer.CircleStrokeColorTransition.ToNative();
             }
 
             if (layer.CircleStrokeOpacity != null)
@@ -1139,7 +1139,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleStrokeOpacityTransition != null)
             {
-                result.CircleStrokeOpacityTransition = layer.CircleStrokeOpacityTransition.ToTransition();
+                result.CircleStrokeOpacityTransition = layer.CircleStrokeOpacityTransition.ToNative();
             }
 
             if (layer.CircleStrokeWidth != null)
@@ -1149,7 +1149,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleStrokeWidthTransition != null)
             {
-                result.CircleStrokeWidthTransition = layer.CircleStrokeWidthTransition.ToTransition();
+                result.CircleStrokeWidthTransition = layer.CircleStrokeWidthTransition.ToNative();
             }
 
             if (layer.CircleTranslate != null)
@@ -1159,7 +1159,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
 
             if (layer.CircleTranslateTransition != null)
             {
-                result.CircleTranslationTransition = layer.CircleTranslateTransition.ToTransition();
+                result.CircleTranslationTransition = layer.CircleTranslateTransition.ToNative();
             }
 
             if (layer.CircleTranslateAnchor != null)
@@ -1175,7 +1175,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             return result;
         }
 
-        static MGLTransition ToTransition(this TransitionOptions options)
+        public static MGLTransition ToNative(this TransitionOptions options)
         {
             return new MGLTransition
             {

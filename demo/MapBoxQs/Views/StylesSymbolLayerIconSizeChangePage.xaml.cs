@@ -23,6 +23,8 @@ namespace MapBoxQs.Views
             InitializeComponent();
 
             map.MapStyle = MapStyle.DARK;
+            map.Center = new LatLng(42.353517, -71.078625);
+            map.ZoomLevel = 12;
 
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyeLoaded);
             map.DidTapOnMapCommand = new Command<(LatLng, Point)>(HandleMapTapped);

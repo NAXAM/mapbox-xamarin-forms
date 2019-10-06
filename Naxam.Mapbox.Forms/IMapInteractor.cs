@@ -43,5 +43,6 @@ namespace Naxam.Mapbox
         NFeature[] QueryFeatures(Point position, params string[] layers);
         NFeature[] QueryFeatures(Point position, float radius, params string[] layers);
         NFeature[] QueryFeatures(Rectangle rectangle, params string[] layers);
+        void UpdateLight(Light light);
     }
 }

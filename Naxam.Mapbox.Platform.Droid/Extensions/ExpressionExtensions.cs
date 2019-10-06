@@ -9,7 +9,7 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
 {
     public static class ExpressionExtensions
     {
-        public static Expression ToExpression(this NxExpressions.Expression expression)
+        public static Expression ToNative(this NxExpressions.Expression expression)
         {
             var json = JsonConvert.SerializeObject(expression.ToArray());
             System.Diagnostics.Debug.WriteLine(json);
