@@ -197,6 +197,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 ZoomLevel =  Element.ZoomLevel ?? 0,
                 CenterCoordinate =  Element.Center.ToCLCoordinate(),                
             };
+
+            map.Camera = Element.Camera.ToNative(GetSize());
             
             // TODO Set Scale
 //            map.ShowsScale = Element.ShowScale;

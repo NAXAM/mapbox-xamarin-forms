@@ -85,11 +85,19 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         
         public void AnimateCamera(CameraPosition cameraPosition, int durationInMillisecond)
         {
-            map.SetCamera(
-                cameraPosition.ToNative(GetSize()),
-                 durationInMillisecond / 1000.0,
-                 CAMediaTimingFunction.FromName(CAMediaTimingFunction.EaseInEaseOut)
-                 );
+            System.Diagnostics.Debug.WriteLine("Current Alt: " + map.Camera.Altitude);
+            var camera = cameraPosition.ToNative(GetSize());
+            System.Diagnostics.Debug.WriteLine("New Alt: " + camera.Altitude);
+            Task.Delay(200) // TODO Should not have this delay
+                .ContinueWith(t =>
+                {
+                    map.SetCamera(
+                        camera,
+                        durationInMillisecond / 1000.0,
+                        CAMediaTimingFunction.FromName(CAMediaTimingFunction.EaseInEaseOut)
+                    );
+                })
+                .ConfigureAwait(true);
         }
 
         public Task<byte[]> TakeSnapshotAsync(LatLngBounds bounds = default)
