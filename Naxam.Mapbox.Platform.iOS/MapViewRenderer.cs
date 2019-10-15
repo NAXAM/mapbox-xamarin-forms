@@ -45,6 +45,8 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     SetupUserInterface();
                     SetupEventHandlers();
                     SetNativeControl(map);
+                    
+                    map.Camera = Element.Camera.ToNative(GetSize());
 
                     if (e.NewElement.Annotations != null)
                     {
@@ -194,20 +196,9 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 ShowsUserLocation = Element.ShowUserLocation,
                 ZoomEnabled = Element.ZoomEnabled,
                 UserTrackingMode = MGLUserTrackingMode.FollowWithHeading,
-//                ZoomLevel =  Element.ZoomLevel ?? 0,
-//                CenterCoordinate =  Element.Center.ToCLCoordinate(),                
+                ZoomLevel =  Element.ZoomLevel ?? 0,
+                CenterCoordinate =  Element.Center.ToCLCoordinate(),                
             };
-
-            // TODO this logic isn't always working
-            if (Element.Pitch > 0 || Element.Heading > 0)
-            {
-                map.Camera = Element.Camera.ToNative(GetSize());
-            }
-            else
-            {
-                map.ZoomLevel = Element.ZoomLevel ?? 0;
-                map.CenterCoordinate = Element.Center.ToCLCoordinate();
-            }
             
             // TODO Set Scale
 //            map.ShowsScale = Element.ShowScale;

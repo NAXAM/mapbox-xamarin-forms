@@ -15,6 +15,20 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 {
     public partial class MapViewRenderer
     {
+        public void UpdateAnnotation(Annotation annotation)
+        {
+            var native = map.Annotations.FirstOrDefault(x => x.Handle.ToInt64().ToString() == annotation.Id);
+            if (native == null) return;
+            
+            switch (annotation)
+            {
+                case SymbolAnnotation symbolAnnotation:
+                    var nativeSymbol = (MGLPointAnnotation) native;
+                    //TODO force refresh UI
+                    break;
+            }
+        }
+
         void AddAnnotation(Annotation annotation)
         {
             var shape = ShapeFromAnnotation(annotation);

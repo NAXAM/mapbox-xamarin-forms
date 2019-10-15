@@ -252,6 +252,7 @@
     <AndroidResource Include="Resources\layout\activity_main.xml" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\indoor-3d-map.geojson" />
     <AndroidAsset Include="Assets\local_style_file.json" />
     <AndroidAsset Include="Assets\marathon_route.geojson" />
     <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />

@@ -85,10 +85,10 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     case SymbolAnnotation symbolAnnotation:
                         {
                             if (symbolManager == null) continue;
-                            Java.Lang.Object symbol = null;
+                            Object symbol = null;
                             try
                             {
-                                symbol = new Java.Lang.Object(
+                                symbol = new Object(
                                     symbolAnnotation.NativeHandle,
                                     Android.Runtime.JniHandleOwnership.DoNotTransfer
                                     );
@@ -137,7 +137,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
                             var symbolOptions = symbolAnnotation.ToSymbolOptions();
                             var symbol = Android.Runtime.Extensions.JavaCast<Symbol>(symbolManager.Create(symbolOptions));
+                            symbolOptions?.Dispose();
                             symbolAnnotation.Id = symbol.Id.ToString();
+                            symbol?.Dispose();
                         }
                         break;
                     case CircleAnnotation circleAnnotation:
@@ -167,6 +169,30 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
     public partial class MapViewRenderer : IMapFunctions
     {
+        public void UpdateAnnotation(NxAnnotation annotation)
+        {
+            switch (annotation) {
+                case SymbolAnnotation symbolAnnotation:
+                    if (symbolManager == null) return;
+
+                    var symbolId = long.Parse(symbolAnnotation.Id);
+
+                    var rawObject = symbolManager.Annotations.Get(symbolId);
+                    if (rawObject == null) return;
+
+                    var symbol = Android.Runtime.Extensions.JavaCast<Symbol>(rawObject);
+                    if (symbol == null) return;
+                    symbol.Update(symbolAnnotation);
+                    symbolManager.Update(symbol);
+
+                    symbol?.Dispose();
+                    rawObject?.Dispose();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void AddStyleImage(IconImageSource iconImageSource)
         {
             if (iconImageSource?.Source == null) return;

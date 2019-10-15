@@ -141,8 +141,26 @@ namespace MapBoxQs.Views
                 case "Adjust light location and color":
                     page = new ExtrusionAdjust();
                     break;
+                case "Extrude polygons for 3D indoor mapping":
+                    page = new ExtrusionIndoor3DMap();
+                    break;
+                case "Rotate and tilt with 3D buildings": // TODO Create Buildings plugin first
+                    page = new ExtrusionIndoor3DMap();
+                    break;
+                case "Display real-time traffic": // TODO Create Traffic plugin first
+                    page = new ExtrusionIndoor3DMap();
+                    break;
+                case "Display buildings in": // TODO Create Buildings plugin first
+                    page = new ExtrusionIndoor3DMap();
+                    break;
+                case "Location search": // TODO Create Places plugin first
+                    page = new ExtrusionIndoor3DMap();
+                    break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
+                    break;
+                case "Symbol annotation listener":
+                    page = new PluginsSymbolListener();
                     break;
                 case "A simple offline map":
                     page = new OfflineSimpleOfflineMapPage();

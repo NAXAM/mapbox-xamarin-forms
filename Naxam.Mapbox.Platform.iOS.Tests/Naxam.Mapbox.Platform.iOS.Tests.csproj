@@ -103,9 +103,6 @@
     <PackageReference Include="xunit.core">
       <Version>2.4.1</Version>
     </PackageReference>
-    <PackageReference Include="xunit.execution.dotnet">
-      <Version>2.4.1</Version>
-    </PackageReference>
     <PackageReference Include="Xamarin.Forms">
       <Version>4.2.0.778463</Version>
     </PackageReference>

@@ -47,6 +47,8 @@ namespace MapBoxQs.Views
             };
 
             map.Functions.AddLayer(fillExtrusionLayer);
+            
+            map.Functions.AnimateCamera(map.Camera, 1000);
         }
 
         private bool isInitPosition;
