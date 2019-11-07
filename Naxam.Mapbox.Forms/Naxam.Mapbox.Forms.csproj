@@ -10,6 +10,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
+    <Folder Include="Plugins\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Expressions\Expression.Classes.cs" />

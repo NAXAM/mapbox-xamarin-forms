@@ -8,6 +8,10 @@ using NFeature = GeoJSON.Net.Feature.Feature;
 
 namespace Naxam.Mapbox
 {
+    public partial interface IMapFunctions
+    {
+        void ShowBuilding(BuildingInfo buildingInfo);
+    }
 
     public partial interface IMapFunctions
     {

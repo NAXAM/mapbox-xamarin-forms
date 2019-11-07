@@ -145,22 +145,28 @@ namespace MapBoxQs.Views
                     page = new ExtrusionIndoor3DMap();
                     break;
                 case "Rotate and tilt with 3D buildings": // TODO Create Buildings plugin first
-                    page = new ExtrusionIndoor3DMap();
+                    page = new ExtrusionRotation();
                     break;
                 case "Display real-time traffic": // TODO Create Traffic plugin first
-                    page = new ExtrusionIndoor3DMap();
+                    page = new MapBoxQsPage();
                     break;
                 case "Display buildings in": // TODO Create Buildings plugin first
-                    page = new ExtrusionIndoor3DMap();
+                    page = new MapBoxQsPage();
                     break;
                 case "Location search": // TODO Create Places plugin first
-                    page = new ExtrusionIndoor3DMap();
-                    break;
-                case "Line behind moving icon":
-                    page = new LabLineBehindMovingIconPage();
+                    page = new MapBoxQsPage();
                     break;
                 case "Symbol annotation listener":
                     page = new PluginsSymbolListener();
+                    break;
+                case "Change map text to device language":
+                    page = new MapBoxQsPage();// TODO Create Localization plugin first
+                    break;
+                case "Place picker":
+                    page = new MapBoxQsPage();// TODO Create Places plugin first
+                    break;
+                case "Line behind moving icon":
+                    page = new LabLineBehindMovingIconPage();
                     break;
                 case "A simple offline map":
                     page = new OfflineSimpleOfflineMapPage();

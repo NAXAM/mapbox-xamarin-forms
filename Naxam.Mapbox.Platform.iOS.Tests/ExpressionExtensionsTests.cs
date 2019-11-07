@@ -19,7 +19,7 @@ namespace Naxam.Mapbox.Platform.iOS.Tests
                 Expression.CreateStop(18, 1)
             );
 
-            var actual = shared.ToExpression();
+            var actual = shared.ToNative();
         }
     }
 }
