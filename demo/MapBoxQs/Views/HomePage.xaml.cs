@@ -182,6 +182,9 @@ namespace MapBoxQs.Views
                 case "Styling heatmaps":
                     page = new DdsMultipleHeatmapStyling();
                     break;
+                case "Display water depth":
+                    page = new DdsBathymetry();
+                    break;
                 case "Draw a polygon":
                     page = new DdsDrawPolygon();
                     break;

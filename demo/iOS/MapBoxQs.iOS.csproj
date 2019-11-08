@@ -226,6 +226,7 @@
     <BundleResource Include="Resources\red_marker%402x.png" />
     <BundleResource Include="Resources\pink_dot%403x.png" />
     <BundleResource Include="Resources\la_heatmap_styling_points.geojson" />
+    <BundleResource Include="Resources\bathymetry-data.geojson" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.Support">

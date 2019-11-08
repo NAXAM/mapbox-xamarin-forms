@@ -260,6 +260,7 @@
     <AndroidAsset Include="Assets\ports.geojson" />
     <AndroidAsset Include="Assets\us_west_coast.geojson" />
     <AndroidAsset Include="Assets\la_heatmap_styling_points.geojson" />
+    <AndroidAsset Include="Assets\bathymetry-data.geojson" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\blue_marker_view.png" />
