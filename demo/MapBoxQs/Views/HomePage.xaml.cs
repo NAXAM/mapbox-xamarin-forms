@@ -34,12 +34,9 @@ namespace MapBoxQs.Views
 
         private ExampleItemModel[] CreateExamples()
         {
-            using (var stream = GetType().Assembly.GetManifestResourceStream("MapBoxQs.examples.json"))
-            {
-                using (var streamReader = new StreamReader(stream))
-                {
-                    using (var jsonReader = new JsonTextReader(streamReader))
-                    {
+            using (var stream = GetType().Assembly.GetManifestResourceStream("MapBoxQs.examples.json")) {
+                using (var streamReader = new StreamReader(stream)) {
+                    using (var jsonReader = new JsonTextReader(streamReader)) {
                         var serializer = new JsonSerializer();
 
                         return serializer.Deserialize<ExampleItemModel[]>(jsonReader);
@@ -55,8 +52,7 @@ namespace MapBoxQs.Views
         void ExecuteViewMapCommand(ExampleItemModel item)
         {
             Xamarin.Forms.Page page = null;
-            switch (item.Title)
-            {
+            switch (item.Title) {
                 case "Default styles":
                     page = new StylesDefaultPage();
                     break;
@@ -64,7 +60,7 @@ namespace MapBoxQs.Views
                     page = new StylesSymbolLayerIconsPage();
                     break;
                 case "Symbol layer icon size change":
-                    page = new StylesSymbolLayerIconSizeChangePage() ;
+                    page = new StylesSymbolLayerIconSizeChangePage();
                     break;
                 case "Create a line layer":
                     page = new StylesLineLayerPage();
@@ -144,7 +140,7 @@ namespace MapBoxQs.Views
                 case "Extrude polygons for 3D indoor mapping":
                     page = new ExtrusionIndoor3DMap();
                     break;
-                case "Rotate and tilt with 3D buildings": 
+                case "Rotate and tilt with 3D buildings":
                     page = new ExtrusionRotation();
                     break;
                 case "Display real-time traffic":
@@ -174,6 +170,9 @@ namespace MapBoxQs.Views
                 case "Sideload offline map":
                     page = new OfflineSideloadOfflineMapPage();
                     break;
+                case "Draw a GeoJSON line":
+                    page = new DdsDrawGeojsonLine();
+                    break;
                 case "Draw a polygon":
                     page = new DdsDrawPolygon();
                     break;
@@ -185,8 +184,7 @@ namespace MapBoxQs.Views
                     break;
             }
 
-            if (page != null)
-            {
+            if (page != null) {
                 page.Title = item.Title;
 
                 Navigation.PushAsync(page);
@@ -208,8 +206,7 @@ namespace MapBoxQs.Views
 
         private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (e.NewTextValue == string.Empty)
-            {
+            if (e.NewTextValue == string.Empty) {
                 ExecuteSearchCommand(string.Empty);
             }
         }

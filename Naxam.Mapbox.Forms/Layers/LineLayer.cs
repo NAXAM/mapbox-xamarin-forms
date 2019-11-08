@@ -21,6 +21,9 @@ namespace Naxam.Mapbox.Layers
         public Expression LineGradient { get; set; }
         public Expression LineJoin { get; set; }
 
+        public Expression LineOpacity { get; set; }
+        public TransitionOptions LineOpacityTransition { get; set; }
+
         public Expression LineWidth { get; set; }
         public TransitionOptions LineWidthTransition { get; set; }
 

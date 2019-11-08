@@ -554,6 +554,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.LineJoin = layer.LineJoin.ToNative();
             }
 
+            if (layer.LineOpacity != null) {
+                result.LineOpacity = layer.LineOpacity.ToNative();
+            }
+
+            if (layer.LineOpacityTransition != null) {
+                result.LineOpacityTransition = layer.LineOpacityTransition.ToNative();
+            }
+
             if (layer.LineWidth != null) {
                 result.LineWidth = layer.LineWidth.ToNative();
             }

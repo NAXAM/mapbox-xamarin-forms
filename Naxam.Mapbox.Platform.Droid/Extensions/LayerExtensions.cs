@@ -665,6 +665,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.LineJoin(layer.LineJoin.ToNative()));
             }
 
+            if (layer.LineOpacity != null) {
+                properties.Add(PropertyFactory.LineOpacity(layer.LineOpacity.ToNative()));
+            }
+
+            if (layer.LineOpacityTransition != null) {
+                result.LineOpacityTransition = layer.LineOpacityTransition.ToNative();
+            }
+
             if (layer.LineWidth != null)
             {
                 properties.Add(PropertyFactory.LineWidth(layer.LineWidth.ToNative()));
