@@ -173,6 +173,9 @@ namespace MapBoxQs.Views
                 case "Draw a GeoJSON line":
                     page = new DdsDrawGeojsonLine();
                     break;
+                case "Draw a polygon with holes":
+                    page = new DdsPolygonHoles();
+                    break;
                 case "Draw a polygon":
                     page = new DdsDrawPolygon();
                     break;
