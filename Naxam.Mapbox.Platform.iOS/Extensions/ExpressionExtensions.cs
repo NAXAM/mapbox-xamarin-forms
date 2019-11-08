@@ -389,7 +389,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                     case "match": {
                             var optionsArray = new NSMutableArray();
 
-                            for (int i = 0; i < arguments.Count; i += 2) {
+                            for (int i = 0; i < arguments.Count; i++) {
                                 NSExpression option = ToExpression(arguments[i]);
 
                                 if (i > 0 && i < arguments.Count - 1 && !(i % 2 == 0) && arguments[i] is NSArray sub) {

@@ -120,6 +120,7 @@
     <Compile Include="Extensions\GeoJsonOptionsExtensions.cs" />
     <Compile Include="XObjC.cs" />
     <Compile Include="MapViewRenderer.Building.cs" />
+    <Compile Include="MapViewRenderer.Traffic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

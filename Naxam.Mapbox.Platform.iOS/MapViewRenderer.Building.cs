@@ -1,14 +1,6 @@
-using System;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 using Naxam.Mapbox;
-using GeoJSON.Net.Feature;
-using System.Linq;
 using Naxam.Mapbox.Platform.iOS.Extensions;
 using Mapbox;
-using CoreAnimation;
-using CoreGraphics;
-using UIKit;
 using Foundation;
 using Xamarin.Forms.Platform.iOS;
 using Naxam.Mapbox.Expressions;
@@ -43,14 +35,17 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             layer.Visible = buildingInfo.IsVisible;
 
             // Insert the fill extrusion layer below a POI label layer. If you aren’t sure what the layer is called, you can view the style in Mapbox Studio or iterate over the style’s layers property, printing out each layer’s identifier.
-            var symbolLayer = mapStyle.LayerWithIdentifier(buildingInfo.AboveLayerId);
+            if (!string.IsNullOrWhiteSpace(buildingInfo.AboveLayerId)) {
+                var symbolLayer = mapStyle.LayerWithIdentifier(buildingInfo.AboveLayerId);
 
-            if (symbolLayer != null) {
-                mapStyle.InsertLayerBelow(layer, symbolLayer);
+                if (symbolLayer != null) {
+                    mapStyle.InsertLayerBelow(layer, symbolLayer);
+
+                    return;
+                }
             }
-            else {
-                mapStyle.AddLayer(layer);
-            }
+
+            mapStyle.AddLayer(layer);
         }
     }
 }

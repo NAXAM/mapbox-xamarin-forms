@@ -27,12 +27,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 altitude = result;
             }
             
-            return MGLMapCamera.CameraLookingAtCenterCoordinateAndAltitude(
+            var camera = MGLMapCamera.CameraLookingAtCenterCoordinateAndAltitude(
                 centerCoordinate.ToCLCoordinate(),
                 altitude,
                 pitch,
                 heading
                 );
+
+            return camera;
         }
         
         public static CGPoint ToPoint(this Thickness thickness)

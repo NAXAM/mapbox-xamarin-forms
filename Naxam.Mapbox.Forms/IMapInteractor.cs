@@ -11,6 +11,7 @@ namespace Naxam.Mapbox
     public partial interface IMapFunctions
     {
         void ShowBuilding(BuildingInfo buildingInfo);
+        void ShowTraffic(bool visible);
     }
 
     public partial interface IMapFunctions

@@ -27,42 +27,36 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected override void OnElementChanged(ElementChangedEventArgs<MapView> e)
         {
             base.OnElementChanged(e);
-            if (e.OldElement != null)
-            {
+            if (e.OldElement != null) {
                 e.OldElement.Functions = null;
-                if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection)
-                {
+                if (e.OldElement.Annotations is INotifyCollectionChanged notifyCollection) {
                     notifyCollection.CollectionChanged -= OnAnnotationsCollectionChanged;
                 }
             }
 
             if (e.NewElement == null) return;
 
-            try
-            {
-                if (Control == null)
-                {
+            try {
+                if (Control == null) {
                     SetupUserInterface();
                     SetupEventHandlers();
                     SetNativeControl(map);
-                    
-                    map.Camera = Element.Camera.ToNative(GetSize());
 
-                    if (e.NewElement.Annotations != null)
-                    {
+                    //TODO Need to set w
+                    //map.Camera = Element.Camera.ToNative(GetSize());
+
+                    if (e.NewElement.Annotations != null) {
                         AddAnnotations(e.NewElement.Annotations.ToArray());
                     }
 
                     map.WeakDelegate = this;
 
-                    if (e.NewElement.Annotations is INotifyCollectionChanged notifyCollection)
-                    {
+                    if (e.NewElement.Annotations is INotifyCollectionChanged notifyCollection) {
                         notifyCollection.CollectionChanged += OnAnnotationsCollectionChanged;
                     }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Debug.WriteLine($"ERROR: {ex.Message}");
             }
         }
@@ -73,16 +67,13 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
             if (map == null || Element == null) return;
 
-            if (e.PropertyName == MapView.VisibleBoundsProperty.PropertyName)
-            {
+            if (e.PropertyName == MapView.VisibleBoundsProperty.PropertyName) {
                 UpdateRegion();
             }
-            else if (e.PropertyName == MapView.CenterProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.CenterProperty.PropertyName) {
                 UpdateCenter();
             }
-            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.ZoomLevelProperty.PropertyName) {
                 if (Element.ZoomLevel.HasValue == false) return; // TODO Set to default value
 
                 var isSameLevel = Math.Round(Element.ZoomLevel.Value * 100).Equals(Math.Round(map.ZoomLevel * 100));
@@ -91,38 +82,32 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
                 map.ZoomLevel = Element.ZoomLevel.Value;
             }
-            else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.PitchEnabledProperty.PropertyName) {
                 if (map.PitchEnabled == Element.PitchEnabled) return;
 
                 map.PitchEnabled = Element.PitchEnabled;
             }
-            else if (e.PropertyName == MapView.ScrollEnabledProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.ScrollEnabledProperty.PropertyName) {
                 if (map.ScrollEnabled == Element.ScrollEnabled) return;
 
                 map.ScrollEnabled = Element.ScrollEnabled;
             }
-            else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.RotateEnabledProperty.PropertyName) {
                 if (map.RotateEnabled == Element.RotateEnabled) return;
 
                 map.RotateEnabled = Element.RotateEnabled;
             }
-            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.AnnotationsProperty.PropertyName) {
                 if (Element.Annotations == null || Element.Annotations.Count() == 0) return;
 
                 AddAnnotations(Element.Annotations.ToArray());
 
-                if (Element.Annotations is INotifyCollectionChanged observable)
-                {
+                if (Element.Annotations is INotifyCollectionChanged observable) {
                     observable.CollectionChanged -= OnAnnotationsCollectionChanged;
                     observable.CollectionChanged += OnAnnotationsCollectionChanged;
                 }
             }
-            else if (e.PropertyName == MapView.MapStyleProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.MapStyleProperty.PropertyName) {
                 var shouldNotUpdate = string.IsNullOrWhiteSpace(Element.MapStyle?.UrlString)
                      || string.Equals(Element.MapStyle.UrlString, map.StyleURL?.AbsoluteString);
 
@@ -130,8 +115,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
                 UpdateMapStyle();
             }
-            else if (e.PropertyName == MapView.PitchProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.PitchProperty.PropertyName) {
                 var shouldNotUpdate = Math.Abs(Element.Pitch - map.Camera.Pitch) < 0.05;
 
                 if (shouldNotUpdate) return;
@@ -144,8 +128,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                     currentCamera.Heading);
                 map.SetCamera(newCamera, true);
             }
-            else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.RotatedDegreeProperty.PropertyName) {
                 var shouldNotUpdate = Math.Abs(Element.RotatedDegree - map.Camera.Heading) < 0.05;
 
                 if (shouldNotUpdate) return;
@@ -158,8 +141,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                                     (nfloat)Element.RotatedDegree);
                 map.SetCamera(newCamera, true);
             }
-            else if (e.PropertyName == MapView.ShowUserLocationProperty.PropertyName)
-            {
+            else if (e.PropertyName == MapView.ShowUserLocationProperty.PropertyName) {
                 map.ShowsUserLocation = Element.ShowUserLocation;
             }
         }
@@ -167,13 +149,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected void OnElementPropertyChanging(object sender, Xamarin.Forms.PropertyChangingEventArgs e)
         {
             if (Element == null) return;
-            if (e.PropertyName == MapView.AnnotationsProperty.PropertyName)
-            {
+            if (e.PropertyName == MapView.AnnotationsProperty.PropertyName) {
                 if (Element.Annotations == null || Element.Annotations.Count() == 0) return;
 
                 RemoveAllAnnotations();
-                if (Element.Annotations is INotifyCollectionChanged observable)
-                {
+                if (Element.Annotations is INotifyCollectionChanged observable) {
                     observable.CollectionChanged -= OnAnnotationsCollectionChanged;
                 }
             }
@@ -196,20 +176,18 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                 ShowsUserLocation = Element.ShowUserLocation,
                 ZoomEnabled = Element.ZoomEnabled,
                 UserTrackingMode = MGLUserTrackingMode.FollowWithHeading,
-                ZoomLevel =  Element.ZoomLevel ?? 0,
-                CenterCoordinate =  Element.Center.ToCLCoordinate(),                
+                ZoomLevel = Element.ZoomLevel ?? 0,
+                CenterCoordinate = Element.Center.ToCLCoordinate(),
             };
-            
-            // TODO Set Scale
-//            map.ShowsScale = Element.ShowScale;
 
-            if (Element.ZoomMinLevel.HasValue)
-            {
+            // TODO Set Scale
+            //            map.ShowsScale = Element.ShowScale;
+
+            if (Element.ZoomMinLevel.HasValue) {
                 map.MinimumZoomLevel = Element.ZoomMinLevel.Value;
             }
 
-            if (Element.ZoomMaxLevel.HasValue)
-            {
+            if (Element.ZoomMaxLevel.HasValue) {
                 map.MaximumZoomLevel = Element.ZoomMaxLevel.Value;
             }
 
@@ -218,12 +196,11 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         void UpdateRegion()
         {
-            if (false == Element?.VisibleBounds.IsEmpty())
-            {
+            if (false == Element?.VisibleBounds.IsEmpty()) {
                 var ne = new CLLocationCoordinate2D(Element.VisibleBounds.NorthEast.Lat, Element.VisibleBounds.NorthEast.Long);
                 var sw = new CLLocationCoordinate2D(Element.VisibleBounds.SouthWest.Lat, Element.VisibleBounds.SouthWest.Long);
                 var bounds = new MGLCoordinateBounds() { ne = ne, sw = sw };
-                map.SetVisibleCoordinateBounds(bounds, true, null );
+                map.SetVisibleCoordinateBounds(bounds, true, null);
             }
         }
 
@@ -235,12 +212,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
             if (center == Element.Center) return;
 
-            if (false == animated)
-            {
+            if (false == animated) {
                 map.CenterCoordinate = Element.Center.ToCLCoordinate();
             }
-            else
-            {
+            else {
                 map.SetCenterCoordinate(new CLLocationCoordinate2D(Element.Center.Lat, Element.Center.Long), true);
             }
         }
@@ -255,16 +230,14 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             tapGest.AddTarget((NSObject obj) =>
             {
                 var gesture = obj as UITapGestureRecognizer;
-                if (gesture.State == UIGestureRecognizerState.Ended)
-                {
+                if (gesture.State == UIGestureRecognizerState.Ended) {
                     var point = gesture.LocationInView(map);
                     var touchedCooridinate = map.ConvertPoint(point, map);
                     var position = new LatLng(touchedCooridinate.Latitude, touchedCooridinate.Longitude);
 
                     (LatLng, Point) commandParamters = (position, new Point(point.X, point.Y));
 
-                    if (Element.DidTapOnMapCommand?.CanExecute(commandParamters) == true)
-                    {
+                    if (Element.DidTapOnMapCommand?.CanExecute(commandParamters) == true) {
                         Element.DidTapOnMapCommand.Execute(commandParamters);
                     }
                 }
@@ -283,8 +256,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         [Export("mapView:didUpdateUserLocation:")]
         public void MapViewDidUpdateUserLocation(MGLMapView mapView, MGLUserLocation userLocation)
         {
-            if (userLocation?.Location?.Coordinate != null)
-            {
+            if (userLocation?.Location?.Coordinate != null) {
                 Element.UserLocation = new LatLng(
                     userLocation.Location.Coordinate.Latitude,
                     userLocation.Location.Coordinate.Longitude
@@ -302,12 +274,12 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected virtual void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
         {
             // TODO Set back to Forms
-//            Element.ZoomLevel = mapView.ZoomLevel;
-//            Element.Pitch = mapView.Camera.Pitch;
-//            Element.RotatedDegree = mapView.Camera.Heading;
-//            Element?.RegionDidChangeCommand?.Execute(animated);
+            //            Element.ZoomLevel = mapView.ZoomLevel;
+            //            Element.Pitch = mapView.Camera.Pitch;
+            //            Element.RotatedDegree = mapView.Camera.Heading;
+            //            Element?.RegionDidChangeCommand?.Execute(animated);
         }
-        
+
         #endregion
 
         #region UIGestureRecognizerDelegate
@@ -349,8 +321,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         public static string TrimCustomId(this string str)
         {
-            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase))
-            {
+            if (str.StartsWith(CustomPrefix, StringComparison.OrdinalIgnoreCase)) {
                 return str.Substring(CustomPrefix.Length);
             }
             return str;

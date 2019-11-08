@@ -62,6 +62,8 @@ namespace MapBoxQs.Views
                     Expression.CreateStop(1450000, 20000f)))
             };
             map.Functions.AddLayerBelow(fillExtrusionLayer, "airport-label");
+
+            map.Functions.AnimateCamera(new CameraPosition(map.Center, map.ZoomLevel, map.Pitch, 0), 1000);
         }
     }
 }

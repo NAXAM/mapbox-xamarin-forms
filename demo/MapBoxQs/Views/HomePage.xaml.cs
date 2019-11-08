@@ -144,11 +144,11 @@ namespace MapBoxQs.Views
                 case "Extrude polygons for 3D indoor mapping":
                     page = new ExtrusionIndoor3DMap();
                     break;
-                case "Rotate and tilt with 3D buildings": // TODO Create Buildings plugin first
+                case "Rotate and tilt with 3D buildings": 
                     page = new ExtrusionRotation();
                     break;
-                case "Display real-time traffic": // TODO Create Traffic plugin first
-                    page = new MapBoxQsPage();
+                case "Display real-time traffic":
+                    page = new PluginTraffic();
                     break;
                 case "Display buildings in": // TODO Create Buildings plugin first
                     page = new MapBoxQsPage();
