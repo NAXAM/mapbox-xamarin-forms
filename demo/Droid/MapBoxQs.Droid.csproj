@@ -222,7 +222,7 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\ic_cross.xml">
+    <AndroidResource Include="Resources\drawable\ic_cross_x.xml">
       <SubType>
       </SubType>
       <Generator>
@@ -247,6 +247,10 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\xml\file_paths.xml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_cross.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml" />

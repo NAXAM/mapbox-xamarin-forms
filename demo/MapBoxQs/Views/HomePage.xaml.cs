@@ -185,6 +185,9 @@ namespace MapBoxQs.Views
                 case "Display water depth":
                     page = new DdsBathymetry();
                     break;
+                case "CircleLayer clusters":
+                    page = new DdsCircleLayerClustering();
+                    break;
                 case "Draw a polygon":
                     page = new DdsDrawPolygon();
                     break;
