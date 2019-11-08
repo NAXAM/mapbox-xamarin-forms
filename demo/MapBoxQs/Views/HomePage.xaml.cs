@@ -155,15 +155,15 @@ namespace MapBoxQs.Views
                     break;
                 case "Location search":
                     page = new PluginPlaces();
-                    break;
+                    break;// TODO Location search
                 case "Symbol annotation listener":
                     page = new PluginSymbolListener();
                     break;
                 case "Change map text to device language":
-                    page = new PluginLocalization();
+                    page = new PluginLocalization();// TODO Change map text to device language
                     break;
                 case "Place picker":
-                    page = new MapBoxQsPage();// TODO Create Places plugin first
+                    page = new MapBoxQsPage();// TODO Place picker
                     break;
                 case "Line behind moving icon":
                     page = new LabLineBehindMovingIconPage();
@@ -173,6 +173,9 @@ namespace MapBoxQs.Views
                     break;
                 case "Sideload offline map":
                     page = new OfflineSideloadOfflineMapPage();
+                    break;
+                case "Draw a polygon":
+                    page = new DdsDrawPolygon();
                     break;
                 case "Style circles categorically":
                     page = new DdsStyleCirclesCategorically();
