@@ -179,6 +179,9 @@ namespace MapBoxQs.Views
                 case "Show heatmap data":
                     page = new DdsHeatmap();
                     break;
+                case "Styling heatmaps":
+                    page = new DdsMultipleHeatmapStyling();
+                    break;
                 case "Draw a polygon":
                     page = new DdsDrawPolygon();
                     break;
