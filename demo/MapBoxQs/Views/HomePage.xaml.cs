@@ -176,6 +176,9 @@ namespace MapBoxQs.Views
                 case "Draw a polygon with holes":
                     page = new DdsPolygonHoles();
                     break;
+                case "Show heatmap data":
+                    page = new DdsHeatmap();
+                    break;
                 case "Draw a polygon":
                     page = new DdsDrawPolygon();
                     break;
