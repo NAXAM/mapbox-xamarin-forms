@@ -69,6 +69,20 @@
 	  <DependentUpon>ExtrusionPopulationDensityExtrusion.xaml</DependentUpon>
 	</Compile>
 	<Compile Remove="Views\ExtrusionRotation %28copy%29.xaml.cs" />
+	<Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PluginSymbolListener.xaml.cs">
+	  <DependentUpon>PluginSymbolListener.xaml</DependentUpon>
+	</Compile>
+	<Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PluginTraffic.xaml.cs">
+	  <DependentUpon>PluginTraffic.xaml</DependentUpon>
+	</Compile>
+	<Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PluginBuilding.xaml.cs">
+	  <DependentUpon>PluginBuilding.xaml</DependentUpon>
+	</Compile>
+	<Compile Remove="Views\PluginBuilding %28copy%29.xaml.cs" />
+	<Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PluginBuilding %28copy%29.xaml.cs">
+	  <DependentUpon>PluginBuilding.xaml</DependentUpon>
+	  <SubType>Code</SubType>
+	</Compile>
   </ItemGroup>
 
   <ItemGroup>
