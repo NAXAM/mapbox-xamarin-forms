@@ -150,14 +150,14 @@ namespace MapBoxQs.Views
                 case "Display real-time traffic":
                     page = new PluginTraffic();
                     break;
-                case "Display buildings in": // TODO Create Buildings plugin first
-                    page = new MapBoxQsPage();
+                case "Display buildings in 3D":
+                    page = new PluginBuilding();
                     break;
                 case "Location search": // TODO Create Places plugin first
                     page = new MapBoxQsPage();
                     break;
                 case "Symbol annotation listener":
-                    page = new PluginsSymbolListener();
+                    page = new PluginSymbolListener();
                     break;
                 case "Change map text to device language":
                     page = new MapBoxQsPage();// TODO Create Localization plugin first

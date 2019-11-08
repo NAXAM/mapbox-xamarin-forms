@@ -9,13 +9,13 @@ using Xamarin.Forms.Xaml;
 namespace MapBoxQs.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PluginsSymbolListener : ContentPage
+    public partial class PluginSymbolListener : ContentPage
     {
         const string MAKI_ICON_CAFE = "cafe-15";
         const string MAKI_ICON_HARBOR = "harbor-15";
         const string MAKI_ICON_AIRPORT = "airport-15";
             
-        public PluginsSymbolListener()
+        public PluginSymbolListener()
         {
             InitializeComponent();
 

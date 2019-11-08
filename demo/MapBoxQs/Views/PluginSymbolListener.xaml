@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:nx="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
     mc:Ignorable="d"
-    x:Class="MapBoxQs.Views.PluginsSymbolListener">
+    x:Class="MapBoxQs.Views.PluginSymbolListener">
     <nx:MapView
         x:Name="map" />
 </ContentPage>

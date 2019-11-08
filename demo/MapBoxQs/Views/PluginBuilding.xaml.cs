@@ -10,16 +10,17 @@ using Xamarin.Forms.Xaml;
 namespace MapBoxQs.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ExtrusionRotation : ContentPage
+    public partial class PluginBuilding : ContentPage
     {
-        public ExtrusionRotation()
+        public PluginBuilding()
         {
             InitializeComponent();
 
-            map.Center = new LatLng(40.706, -74.011);
-            map.MapStyle = MapStyle.DARK;
+            map.Center = new LatLng(41.87827, -87.62877);
+            map.MapStyle = MapStyle.STREETS;
             map.ZoomLevel = 16;
-            map.Pitch = 45;
+            map.Pitch = 60;
+            map.RotatedDegree = 300;
 
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);
         }
@@ -27,13 +28,11 @@ namespace MapBoxQs.Views
         private void HandleStyleLoaded(MapStyle obj)
         {
             map.Functions.ShowBuilding(new BuildingInfo() {
-                Color = Color.LightGray,
-                Opacity = 0.6f,
                 MinZoomLevel = 15,
                 IsVisible = true
             });
 
-            map.Functions.AnimateCamera(new CameraPosition(map.Center, map.ZoomLevel, map.Pitch, 0), 1000);
+            map.Functions.AnimateCamera(new CameraPosition(map.Center, map.ZoomLevel, map.Pitch, map.RotatedDegree), 1000);
         }
     }
 }

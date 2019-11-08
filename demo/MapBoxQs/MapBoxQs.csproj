@@ -68,6 +68,7 @@
 	<Compile Update="Views\StylesPopulationDensityExtrusion.xaml.cs">
 	  <DependentUpon>ExtrusionPopulationDensityExtrusion.xaml</DependentUpon>
 	</Compile>
+	<Compile Remove="Views\ExtrusionRotation %28copy%29.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
