@@ -188,11 +188,14 @@ namespace MapBoxQs.Views
                 case "CircleLayer clusters":
                     page = new DdsCircleLayerClustering();
                     break;
-                case "Draw a polygon":
-                    page = new DdsDrawPolygon();
+                case "SymbolLayer clustering":
+                    page = new DdsSymbolLayerClustering();
                     break;
                 case "Style circles categorically":
                     page = new DdsStyleCirclesCategorically();
+                    break;
+                case "Draw a polygon":
+                    page = new DdsDrawPolygon();
                     break;
                 default:
                     page = new MapBoxQsPage();
