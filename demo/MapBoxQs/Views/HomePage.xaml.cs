@@ -203,6 +203,9 @@ namespace MapBoxQs.Views
                 case "Style lines using an identity property function":
                     page = new DdsStyleLineIdentityProperty();
                     break;
+                case "Line gradient":
+                    page = new DdsLineGradient();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;
