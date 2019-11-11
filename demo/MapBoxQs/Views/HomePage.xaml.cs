@@ -170,6 +170,9 @@ namespace MapBoxQs.Views
                 case "Sideload offline map":
                     page = new OfflineSideloadOfflineMapPage();
                     break;
+                case "Draw a polygon":
+                    page = new DdsDrawPolygon();
+                    break;
                 case "Draw a GeoJSON line":
                     page = new DdsDrawGeojsonLine();
                     break;
@@ -194,8 +197,8 @@ namespace MapBoxQs.Views
                 case "Style circles categorically":
                     page = new DdsStyleCirclesCategorically();
                     break;
-                case "Draw a polygon":
-                    page = new DdsDrawPolygon();
+                case "Update a choropleth layer by zoom level":
+                    page = new DdsChoroplethZoomChange();
                     break;
                 default:
                     page = new MapBoxQsPage();

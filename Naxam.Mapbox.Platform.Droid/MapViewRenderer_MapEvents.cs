@@ -3,6 +3,7 @@ using System.Linq;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
 using Naxam.Controls.Forms;
+using Naxam.Mapbox;
 using MapView = Com.Mapbox.Mapboxsdk.Maps.MapView;
 using NxLatLng = Naxam.Mapbox.LatLng;
 
@@ -27,16 +28,14 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void MapViewOnStyleImageMissing(object sender, MapView.StyleImageMissingEventArgs e)
         {
-            if (Element?.StyleImageMissingCommand?.CanExecute(e.P0) == true)
-            {
+            if (Element?.StyleImageMissingCommand?.CanExecute(e.P0) == true) {
                 Element.StyleImageMissingCommand.Execute(e.P0);
             }
         }
 
         protected virtual void RemoveMapEvents()
         {
-            if (map != null)
-            {
+            if (map != null) {
                 map.MarkerClick -= MarkerClicked;
                 map.InfoWindowClick -= InfoWindowClick;
                 map.RemoveOnMapClickListener(this);
@@ -46,8 +45,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 map.CameraMove -= Map_CameraMove;
             }
 
-            if (fragment?.MapView != null)
-            {
+            if (fragment?.MapView != null) {
                 fragment.MapView.StyleImageMissing -= MapViewOnStyleImageMissing;
             }
         }
@@ -55,6 +53,18 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         private void Map_CameraMove(object sender, EventArgs e)
         {
             cameraBusy = true;
+
+            var cameraMovedCommand = Element?.CameraMovedCommand;
+
+            if (cameraMovedCommand?.CanExecute(null) == true) {
+                var native = map.CameraPosition;
+                var camera = new CameraPosition(
+                    native.Target.ToLatLng(),
+                    native.Zoom,
+                    native.Tilt,
+                    native.Bearing);
+                cameraMovedCommand.Execute(camera);
+            }
         }
 
         private void Map_CameraMoveCancel(object sender, EventArgs e)
@@ -85,8 +95,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         {
             fragment?.ToggleInfoWindow(map, args.P0);
 
-            if (Element?.Annotations?.Count() > 0)
-            {
+            if (Element?.Annotations?.Count() > 0) {
                 var fm = Element.Annotations.FirstOrDefault(d => d.Id == args.P0.Id.ToString());
                 if (fm == null)
                     return;
@@ -96,21 +105,19 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
         void InfoWindowClick(object s, MapboxMap.InfoWindowClickEventArgs e)
         {
-            if (e.P0 != null)
-            {
+            if (e.P0 != null) {
                 Element.DidTapOnCalloutViewCommand?.Execute(e.P0.Id.ToString());
             }
         }
 
-        public bool OnMapClick(LatLng p0)
+        public bool OnMapClick(Com.Mapbox.Mapboxsdk.Geometry.LatLng p0)
         {
             var point = map.Projection.ToScreenLocation(p0);
             var xfPoint = new Xamarin.Forms.Point(point.X, point.Y);
             var xfPosition = new NxLatLng(p0.Latitude, p0.Longitude);
             (NxLatLng, Xamarin.Forms.Point) commandParamters = (xfPosition, xfPoint);
 
-            if (Element.DidTapOnMapCommand?.CanExecute(commandParamters) == true)
-            {
+            if (Element.DidTapOnMapCommand?.CanExecute(commandParamters) == true) {
                 Element.DidTapOnMapCommand.Execute(commandParamters);
             }
 

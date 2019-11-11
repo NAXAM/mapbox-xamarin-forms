@@ -319,7 +319,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                             var stops = new NSMutableDictionary();
                             for (int i = 0; i < stopExpressions.Count; i++) {
                                 var keyExpression = stopExpressions[i++];
-                                var valueExpression = ToExpression(ToExpression(stopExpressions[i]));
+                                var valueExpression = ToExpression(stopExpressions[i]);
 
                                 if (miniumExpression == null) {
                                     miniumExpression = valueExpression;

@@ -32,5 +32,16 @@ namespace Naxam.Controls.Forms
             set => SetValue(CanShowCalloutCheckerProperty, value);
         }
 
+        public static readonly BindableProperty CameraMovedCommandProperty = BindableProperty.Create(
+            nameof(CameraMovedCommand),
+            typeof(ICommand),
+            typeof(MapView),
+            default(ICommand),
+            BindingMode.OneWay);
+        public ICommand CameraMovedCommand
+        {
+            get => (ICommand)GetValue(CameraMovedCommandProperty);
+            set => SetValue(CameraMovedCommandProperty, value);
+        }
     }
 }

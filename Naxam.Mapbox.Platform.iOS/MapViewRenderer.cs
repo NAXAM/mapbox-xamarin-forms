@@ -278,6 +278,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             //            Element.Pitch = mapView.Camera.Pitch;
             //            Element.RotatedDegree = mapView.Camera.Heading;
             //            Element?.RegionDidChangeCommand?.Execute(animated);
+            var cameraMovedCommand = Element?.CameraMovedCommand;
+
+            if (cameraMovedCommand?.CanExecute(null) == true) {
+                var camera = new CameraPosition(
+                    map.CenterCoordinate.ToLatLng(),
+                    map.ZoomLevel,
+                    map.Camera.Pitch,
+                    map.Camera.Heading);
+                cameraMovedCommand.Execute(camera);
+            }
         }
 
         #endregion
