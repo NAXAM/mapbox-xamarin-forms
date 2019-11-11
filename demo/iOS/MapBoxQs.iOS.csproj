@@ -229,6 +229,7 @@
     <BundleResource Include="Resources\bathymetry-data.geojson" />
     <BundleResource Include="Resources\single_quake_icon%403x.png" />
     <BundleResource Include="Resources\earthquake_triangle%403x.png" />
+    <BundleResource Include="Resources\golden_gate_lines.geojson" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.Support">

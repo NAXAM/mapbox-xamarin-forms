@@ -200,6 +200,9 @@ namespace MapBoxQs.Views
                 case "Update a choropleth layer by zoom level":
                     page = new DdsChoroplethZoomChange();
                     break;
+                case "Style lines using an identity property function":
+                    page = new DdsStyleLineIdentityProperty();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;

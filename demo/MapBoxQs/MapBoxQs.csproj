@@ -85,6 +85,7 @@
 	  <DependentUpon>PluginBuilding.xaml</DependentUpon>
 	  <SubType>Code</SubType>
 	</Compile>
+	<Compile Remove="Views\DdsChoroplethZoomChange %28copy%29.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
