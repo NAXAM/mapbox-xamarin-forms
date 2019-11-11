@@ -209,6 +209,9 @@ namespace MapBoxQs.Views
                 case "Create hotspots from points":
                     page = new DdsCreateHotspots();
                     break;
+                case "Join local JSON data with vector tile geometries":
+                    page = new DdsChoroplethJsonVectorMix();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;

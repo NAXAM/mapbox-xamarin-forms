@@ -8,6 +8,7 @@
     <None Remove="examples.json" />
     <None Remove="sample_route_trip.geojson" />
     <None Remove="geojson\example.geojson" />
+    <None Remove="geojson\state_unemployment_info.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
     <None Remove="no_bg_style.json" />
     <EmbeddedResource Remove="Views\StylesStylesMissingIcon.xaml" />
     <EmbeddedResource Include="geojson\example.geojson" />
+    <EmbeddedResource Include="geojson\state_unemployment_info.json" />
   </ItemGroup>
 
   <ItemGroup>
