@@ -212,6 +212,12 @@ namespace MapBoxQs.Views
                 case "Join local JSON data with vector tile geometries":
                     page = new DdsChoroplethJsonVectorMix();
                     break;
+                case "Draw multiple geometries":
+                    page = new DdsMultipleGeometries();
+                    break;
+                //case "Symbol layer info window:
+                //    page = new DdsInfoWindowSymbol();
+                //    break;
                 default:
                     page = new MapBoxQsPage();
                     break;

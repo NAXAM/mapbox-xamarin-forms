@@ -230,6 +230,7 @@
     <BundleResource Include="Resources\single_quake_icon%403x.png" />
     <BundleResource Include="Resources\earthquake_triangle%403x.png" />
     <BundleResource Include="Resources\golden_gate_lines.geojson" />
+    <BundleResource Include="Resources\fake_norway_campsites.geojson" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Acr.Support">

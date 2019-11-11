@@ -274,6 +274,7 @@
     <AndroidAsset Include="Assets\la_heatmap_styling_points.geojson" />
     <AndroidAsset Include="Assets\bathymetry-data.geojson" />
     <AndroidAsset Include="Assets\golden_gate_lines.geojson" />
+    <AndroidAsset Include="Assets\fake_norway_campsites.geojson" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\blue_marker_view.png" />
