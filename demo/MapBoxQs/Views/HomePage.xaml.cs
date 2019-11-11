@@ -206,6 +206,9 @@ namespace MapBoxQs.Views
                 case "Line gradient":
                     page = new DdsLineGradient();
                     break;
+                case "Create hotspots from points":
+                    page = new DdsCreateHotspots();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;

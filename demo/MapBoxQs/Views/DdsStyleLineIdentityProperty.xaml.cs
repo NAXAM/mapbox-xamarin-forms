@@ -21,7 +21,7 @@ namespace MapBoxQs.Views
             InitializeComponent();
 
             map.Center = new LatLng(37.82882682974591, -122.48383155304096);
-            map.MapStyle = MapStyle.LIGHT;
+            map.MapStyle = MapStyle.STREETS;
             map.ZoomLevel = 15.3;
 
             map.DidFinishLoadingStyleCommand = new Command<MapStyle>(HandleStyleLoaded);
