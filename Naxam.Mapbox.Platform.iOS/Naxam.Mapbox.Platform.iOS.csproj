@@ -95,6 +95,7 @@
     <Compile Include="Extensions\ImageSourceExtensions.cs" />
     <Compile Include="Extensions\LatLngQuadExtensions.cs" />
     <Compile Include="Extensions\MapboxOptionsExtensions.cs" />
+    <Compile Include="MapViewRenderer.CurrentView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapViewRenderer.cs" />
     <Compile Include="Extensions\MGLShapeExtensions.cs" />
