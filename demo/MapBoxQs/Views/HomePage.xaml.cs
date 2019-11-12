@@ -215,9 +215,12 @@ namespace MapBoxQs.Views
                 case "Draw multiple geometries":
                     page = new DdsMultipleGeometries();
                     break;
-                //case "Symbol layer info window:
-                //    page = new DdsInfoWindowSymbol();
-                //    break;
+                //case "Symbol layer info window": TODO
+                //   page = new DdsInfoWindowSymbol();
+                //   break;
+                case "Data time lapse":
+                    page = new DdsAddRainFallStyle();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;

@@ -88,6 +88,7 @@
 	  <SubType>Code</SubType>
 	</Compile>
 	<Compile Remove="Views\DdsChoroplethZoomChange %28copy%29.xaml.cs" />
+	<Compile Remove="Views\DdsChoroplethJsonVectorMix %28copy%29.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
