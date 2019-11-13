@@ -39,6 +39,11 @@ namespace Naxam.Mapbox
 
     public partial interface IMapFunctions
     {
+        LatLngBounds GetVisibleBounds();
+    }
+
+    public partial interface IMapFunctions
+    {
         Task<byte[]> TakeSnapshotAsync(LatLngBounds bounds = default);
 
         NFeature[] QueryFeatures(LatLng latLng, params string[] layers);

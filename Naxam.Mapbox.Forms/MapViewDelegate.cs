@@ -104,5 +104,18 @@ namespace Naxam.Controls.Forms
             get => (ICommand)GetValue(DidTapOnMarkerCommandProperty);
             set => SetValue(DidTapOnMarkerCommandProperty, value);
         }
+
+        public static BindableProperty DidBoundariesChangedCommandProperty = BindableProperty.Create(
+           nameof(DidBoundariesChangedCommand),
+           typeof(ICommand),
+           typeof(MapView),
+           default(ICommand),
+           BindingMode.TwoWay
+           );
+        public ICommand DidBoundariesChangedCommand
+        {
+            get => (ICommand)GetValue(DidBoundariesChangedCommandProperty);
+            set => SetValue(DidBoundariesChangedCommandProperty, value);
+        }
     }
 }

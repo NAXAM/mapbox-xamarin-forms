@@ -288,8 +288,16 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
                     map.Camera.Heading);
                 cameraMovedCommand.Execute(camera);
             }
-        }
 
+            var nxBounds = new LatLngBounds()
+            {
+                NorthEast = new LatLng(mapView.VisibleCoordinateBounds.ne.Latitude, mapView.VisibleCoordinateBounds.ne.Longitude),
+                SouthWest = new LatLng(mapView.VisibleCoordinateBounds.sw.Latitude, mapView.VisibleCoordinateBounds.sw.Longitude)
+            };
+
+            Element.DidBoundariesChangedCommand?.Execute(nxBounds);
+        }
+        
         #endregion
 
         #region UIGestureRecognizerDelegate

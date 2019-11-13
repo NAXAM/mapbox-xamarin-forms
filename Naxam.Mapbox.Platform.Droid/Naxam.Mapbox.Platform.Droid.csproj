@@ -134,6 +134,7 @@
     <Compile Include="Extensions\MapboxOptionsExtensions.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="MapViewRenderer.Annotations.cs" />
+    <Compile Include="MapViewRenderer.CurrentView.cs" />
     <Compile Include="MapViewRenderer.Interactor.Snapshot.cs" />
     <Compile Include="MapViewRenderer.Style.Layers.cs" />
     <Compile Include="MapViewRenderer.Style.Sources.cs" />

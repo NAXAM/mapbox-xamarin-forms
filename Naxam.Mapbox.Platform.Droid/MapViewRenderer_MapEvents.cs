@@ -88,7 +88,22 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             cameraBusy = false;
             currentCamera = new NxLatLng(map.CameraPosition.Target.Latitude, map.CameraPosition.Target.Longitude);
             Element.ZoomLevel = map.CameraPosition.Zoom;
-            Element.Center = currentCamera;
+
+            if (!Element.Center.Equals(currentCamera))
+            {
+                Element.Center = currentCamera;
+                var region = map.Projection.GetVisibleRegion(true);
+                double northEastLat = region.LatLngBounds.NorthEast.Latitude;
+                double northEastLng = region.LatLngBounds.NorthEast.Longitude;
+                double southWestLat = region.LatLngBounds.SouthWest.Latitude;
+                double southWestLng = region.LatLngBounds.SouthWest.Longitude;
+                var bounds = new Naxam.Mapbox.LatLngBounds()
+                {
+                    NorthEast = new NxLatLng(northEastLat, northEastLng),
+                    SouthWest = new NxLatLng(southWestLat, southWestLng)
+                };
+                Element.DidBoundariesChangedCommand?.Execute(bounds);
+            }
         }
 
         void MarkerClicked(object o, MapboxMap.MarkerClickEventArgs args)
