@@ -38,7 +38,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return positions.Select(x => x.ToCLCoordinate()).ToArray();
         }
 
-        public static MGLCoordinateBounds ToCLRegion(this LatLngBounds pos)
+        public static MGLCoordinateBounds ToNative(this LatLngBounds pos)
         {
             return new MGLCoordinateBounds {
                 ne = pos.NorthEast.ToCLCoordinate(),

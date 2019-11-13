@@ -3,7 +3,7 @@
     <metadata>
         <!-- Required elements-->
         <id>Naxam.Mapbox.Forms</id>
-       <version>1.0.8.3</version>
+       <version>1.0.8.4</version>
         <authors>NAXAM</authors>
         <owners>NAXAM COMPANY LIMITED</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,8 +11,9 @@
         <description>Mapbox for Xamarin.Forms</description>
         <releaseNotes>
         - Upgrade to Mapbox v8 (Android), v5 (iOS).
-        - Add event handler for symbol click.
-        - Support Mapbox Expression
+        - Several bug fixes for Mapbox Epxression conversion from shared objects
+        - Allow to move camera to a bounds
+        - Alllow to get current visible bounds
         </releaseNotes>
         <copyright>Copyright (c) 2018 NAXAM</copyright>
         <license type="expression">Apache-2.0</license>
@@ -26,10 +27,12 @@
             </group>
             <group targetFramework="MonoAndroid10">
                 <dependency id="Newtonsoft.Json" version="12.0.2" />
-                <dependency id="Naxam.Mapbox.Droid" version="8.3.0.3" />
+                <dependency id="Naxam.Mapbox.Droid" version="8.4.0" />
                 <dependency id="Naxam.MapboxAnnotation.Droid" version="0.7.0.2" />
                 <dependency id="Naxam.MapboxGestures.Droid" version="0.5.1.1" />
                 <dependency id="Naxam.MapboxAccounts.Droid" version="0.2.0" />
+                <dependency id="Naxam.MapboxBuilding.Droid" version="0.6.0" />
+                <dependency id="Naxam.MapboxTraffic.Droid" version="0.9.0" />
             </group>
             <group targetFramework="Xamarin.iOS10">
                 <dependency id="Naxam.Mapbox.iOS" version="5.4.0" />

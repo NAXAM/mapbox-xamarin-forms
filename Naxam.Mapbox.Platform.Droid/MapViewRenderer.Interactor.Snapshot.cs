@@ -8,15 +8,29 @@ using Sdk = Com.Mapbox.Mapboxsdk;
 using NxCameraPosition = Naxam.Mapbox.CameraPosition;
 using NxLatLngBounds = Naxam.Mapbox.LatLngBounds;
 using Naxam.Mapbox.Platform.Droid.Extensions;
+using Naxam.Mapbox;
+using Xamarin.Forms.Platform.Android;
 
 namespace Naxam.Controls.Mapbox.Platform.Droid
 {
     public partial class MapViewRenderer : Naxam.Mapbox.IMapFunctions
     {
-        public void AnimateCamera(NxCameraPosition cameraPosition, int durationInMillisecond)
+        public void AnimateCamera(Naxam.Mapbox.ICameraUpdate camera, int durationInMillisecond)
         {
-            var camera = CameraUpdateFactory.NewCameraPosition(cameraPosition.ToNative());
-            map.AnimateCamera(camera, durationInMillisecond);
+            var cameraUpdate = camera switch
+            {
+                NxCameraPosition cp => CameraUpdateFactory.NewCameraPosition(cp.ToNative()),
+                CameraBounds cb => CameraUpdateFactory.NewLatLngBounds(
+                    cb.Bounds.ToLatLngBounds(),
+                    cb.Bearing ?? 0, cb.Tilt ?? 0,
+                    (int)Context.ToPixels(cb.Padding.Left), (int)Context.ToPixels(cb.Padding.Top),
+                    (int)Context.ToPixels(cb.Padding.Right), (int)Context.ToPixels(cb.Padding.Bottom)),
+                _ => null
+            };
+
+            if (cameraUpdate == null) return;
+
+            map.AnimateCamera(cameraUpdate, durationInMillisecond);
         }
 
         public Task<byte[]> TakeSnapshotAsync(NxLatLngBounds bounds = default)
@@ -44,8 +58,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             public void OnStyleLoaded(Sdk.Maps.Style style)
             {
-                if (rendererReference.TryGetTarget(out var renderer))
-                {
+                if (rendererReference.TryGetTarget(out var renderer)) {
                     var options = new MapSnapshotter.Options(
                         renderer.Control.MeasuredWidth,
                         renderer.Control.MeasuredHeight
@@ -55,8 +68,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                     var mapSnapshotter = new MapSnapshotter(renderer.Context, options);
                     mapSnapshotter.Start(new GetStyleSnapshotReadyCallback(tcs));
                 }
-                else
-                {
+                else {
                     tcs.TrySetCanceled();
                 }
             }
@@ -73,8 +85,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             public void OnSnapshotReady(MapSnapshot p0)
             {
-                using (var stream = new MemoryStream())
-                {
+                using (var stream = new MemoryStream()) {
                     p0.Bitmap.Compress(Bitmap.CompressFormat.Png, 100, stream);
                     tcs.TrySetResult(stream.ToArray());
                 }

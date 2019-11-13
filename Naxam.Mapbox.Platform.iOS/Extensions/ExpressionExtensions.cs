@@ -147,14 +147,16 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                     case "to-number":
                     case "number": {
                             var operand = ToExpression(arguments[0]);
-
                             if (arguments.Count == 1) {
+                                if (arguments[0] is NSNumber number) {
+                                    return NSExpression.FromFormat("%@", new NSObject[] { arguments[0] });
+                                }
                                 return NSExpression.FromFormat("CAST(%@, 'NSNumber')", new NSObject[] { operand });
+                            } else {
+                                var innerArguments = SubArray(arguments, 1);
+                                return NSExpression.FromFunction(operand, "mgl_numberWithFallbackValues",
+                                    ToSubexpressions(innerArguments).ToArray());
                             }
-
-                            var innerArguments = SubArray(arguments, 1);
-                            return NSExpression.FromFunction(operand, "mgl_numberWithFallbackValues",
-                                ToSubexpressions(innerArguments).ToArray());
                         }
                     case "to-string":
                     case "string": {

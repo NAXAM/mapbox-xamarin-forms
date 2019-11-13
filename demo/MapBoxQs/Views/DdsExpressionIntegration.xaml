@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:nx="clr-namespace:Naxam.Controls.Forms;assembly=Naxam.Mapbox.Forms"
+    mc:Ignorable="d"
+    x:Class="MapBoxQs.Views.DdsExpressionIntegration">
+    <Grid>
+        <nx:MapView
+            x:Name="map" />
+        <Picker
+            BackgroundColor="#0A000000"
+            Margin="16"
+            VerticalOptions="Start"
+            x:Name="statesPicker"
+            SelectedIndexChanged="HandleStateSelected"
+            />
+        <ContentView
+            VerticalOptions="End"
+            HorizontalOptions="Fill"
+            BackgroundColor="#A0000000"
+            Padding="16,24">
+            <Label
+                HorizontalTextAlignment="Center"
+                TextColor="White"
+                x:Name="unitsText" />
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer
+                    Tapped="HandleTap"
+                    />
+            </ContentView.GestureRecognizers>
+        </ContentView>
+    </Grid>
+</ContentPage>

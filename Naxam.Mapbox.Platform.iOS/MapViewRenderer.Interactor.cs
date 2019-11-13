@@ -83,11 +83,15 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
             return size;
         }
         
-        public void AnimateCamera(CameraPosition cameraPosition, int durationInMillisecond)
+        public void AnimateCamera(ICameraUpdate cameraPosition, int durationInMillisecond)
         {
-            System.Diagnostics.Debug.WriteLine("Current Alt: " + map.Camera.Altitude);
-            var camera = cameraPosition.ToNative(GetSize());
-            System.Diagnostics.Debug.WriteLine("New Alt: " + camera.Altitude);
+            MGLMapCamera camera = cameraPosition switch
+            {
+                CameraPosition cp => cp.ToNative(GetSize()),
+                CameraBounds cb => cb.ToNative(map),
+                _ => null
+            };
+
             Task.Delay(200) // TODO Should not have this delay
                 .ContinueWith(t =>
                 {

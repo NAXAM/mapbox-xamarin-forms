@@ -1,8 +1,11 @@
 using System;
+using Xamarin.Forms;
 
 namespace Naxam.Mapbox
 {
-    public struct CameraPosition : IEquatable<CameraPosition>
+    public interface ICameraUpdate { }
+
+    public struct CameraPosition : ICameraUpdate, IEquatable<CameraPosition>
     {
         public static CameraPosition Default = new CameraPosition(LatLng.Zero, 0, 0, 0);
 
@@ -26,8 +29,7 @@ namespace Naxam.Mapbox
 
         public override bool Equals(object obj)
         {
-            if (obj is CameraPosition other)
-            {
+            if (obj is CameraPosition other) {
                 return Equals(other);
             }
 
@@ -50,6 +52,29 @@ namespace Naxam.Mapbox
         public static bool operator !=(CameraPosition left, CameraPosition right)
         {
             return false == left.Equals(right);
+        }
+    }
+
+    public struct CameraBounds : ICameraUpdate
+    {
+        public LatLngBounds Bounds { get; private set; }
+
+        public Thickness Padding { get; private set; }
+
+        public double? Bearing { get; private set; }
+
+        public double? Tilt { get; private set; }
+
+        public CameraBounds(
+            LatLngBounds bounds,
+            Thickness padding,
+            double? bearing = null,
+            double? tilt = null)
+        {
+            Bounds = bounds;
+            Padding = padding;
+            Bearing = bearing;
+            Tilt = tilt;
         }
     }
 }

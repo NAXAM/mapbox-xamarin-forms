@@ -121,6 +121,7 @@
     <Compile Include="XObjC.cs" />
     <Compile Include="MapViewRenderer.Building.cs" />
     <Compile Include="MapViewRenderer.Traffic.cs" />
+    <Compile Include="Extensions\ThicknessExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Naxam.Mapbox.Forms\Naxam.Mapbox.Forms.csproj">

@@ -221,6 +221,9 @@ namespace MapBoxQs.Views
                 case "Data time lapse":
                     page = new DdsAddRainFallStyle();
                     break;
+                case "Multiple expressions":
+                    page = new DdsExpressionIntegration();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;
