@@ -42,7 +42,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
 
             if (Control == null)
             {
-                var activity = (AppCompatActivity) Context;
+                var activity = (AppCompatActivity) Context.GetActivity();
                 var view = new Android.Widget.FrameLayout(activity)
                 {
                     Id = GenerateViewId()
