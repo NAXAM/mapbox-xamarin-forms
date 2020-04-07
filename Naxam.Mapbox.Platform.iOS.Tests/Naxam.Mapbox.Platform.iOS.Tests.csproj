@@ -104,13 +104,13 @@
       <Version>2.4.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.2.0.778463</Version>
+      <Version>4.5.0.530</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="GeoJSON.Net">
-      <Version>1.1.73</Version>
+      <Version>1.2.15</Version>
     </PackageReference>
     <PackageReference Include="Naxam.Mapbox.iOS">
       <Version>5.4.0</Version>

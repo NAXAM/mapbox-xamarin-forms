@@ -11,8 +11,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="3.6.0.709228" />
-    <PackageReference Include="GeoJSON.Net" Version="1.1.73" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.530" />
+    <PackageReference Include="GeoJSON.Net" Version="1.2.15" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />

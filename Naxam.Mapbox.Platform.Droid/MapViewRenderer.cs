@@ -1,6 +1,6 @@
 using System;
 using Android.Content;
-using Android.Support.V7.App;
+using AndroidX.AppCompat.App;
 using Com.Mapbox.Mapboxsdk.Camera;
 using Com.Mapbox.Mapboxsdk.Geometry;
 using Com.Mapbox.Mapboxsdk.Maps;
