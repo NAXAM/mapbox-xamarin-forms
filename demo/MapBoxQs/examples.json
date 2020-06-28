@@ -831,5 +831,12 @@
     "categoryId": "nav_styles",
     "showNewIcon": false,
     "title": "Button interaction styling"
+  },
+  {
+    "imageUrl": "https://i.imgur.com/QNWPu4h.png",
+    "description": "Implement Pin Icon Rotation and Alignment.",
+    "categoryId": "nav_dds",
+    "showNewIcon": false,
+    "title": "Icon Rotation and Alignment"
   }
 ]

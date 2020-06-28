@@ -1,5 +1,4 @@
 ﻿using Xamarin.Forms.Platform.Android;
-
 using Com.Mapbox.Mapboxsdk.Style.Layers;
 using NxLayer = Naxam.Mapbox.Layers.Layer;
 using NxCircleLayer = Naxam.Mapbox.Layers.CircleLayer;
@@ -42,11 +41,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 case LineLayer lineLayer:
                     return new NxLineLayer(layer.Id, lineLayer.SourceId);
             }
-            
+
             return null;
         }
     }
-    
+
     public static partial class LayerExtensions
     {
         public static Layer ToNative(this NxLayer layer)
@@ -146,7 +145,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithSourceLayer(layer.SourceLayer);
             }
-            
+
             if (layer.Visibility is ExpressionVisibility visibility)
             {
                 properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
@@ -286,6 +285,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.IconTranslateTransition = layer.IconTranslateTransition.ToNative();
             }
+
             if (layer.SymbolAvoidEdges != null)
             {
                 properties.Add(PropertyFactory.SymbolAvoidEdges(layer.SymbolAvoidEdges.ToNative()));
@@ -349,6 +349,26 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (layer.TextHaloColorTransition != null)
             {
                 result.TextHaloColorTransition = layer.TextHaloColorTransition.ToNative();
+            }
+
+            if (layer.TextHaloBlur != null)
+            {
+                properties.Add(PropertyFactory.TextHaloBlur(layer.TextHaloBlur.ToNative()));
+            }
+
+            if (layer.TextHaloBlurTransition != null)
+            {
+                //properties.Add(PropertyFactory.TextHaloBlurTransition(layer.TextHaloBlurTransition.ToNative()));
+            }
+
+            if (layer.TextHaloWidth != null)
+            {
+                properties.Add(PropertyFactory.TextHaloWidth(layer.TextHaloWidth.ToNative()));
+            }
+
+            if (layer.TextHaloWidthTransition != null)
+            {
+                //properties.Add(PropertyFactory.TextHaloWidthTransition(layer.TextHaloWidthTransition.ToNative()));
             }
 
             if (layer.TextIgnorePlacement != null)
@@ -497,7 +517,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithSourceLayer(layer.SourceLayer);
             }
-            
+
             if (layer.Visibility is ExpressionVisibility visibility)
             {
                 properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
@@ -604,7 +624,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithSourceLayer(layer.SourceLayer);
             }
-            
+
             if (layer.Visibility is ExpressionVisibility visibility)
             {
                 properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
@@ -665,11 +685,13 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.LineJoin(layer.LineJoin.ToNative()));
             }
 
-            if (layer.LineOpacity != null) {
+            if (layer.LineOpacity != null)
+            {
                 properties.Add(PropertyFactory.LineOpacity(layer.LineOpacity.ToNative()));
             }
 
-            if (layer.LineOpacityTransition != null) {
+            if (layer.LineOpacityTransition != null)
+            {
                 result.LineOpacityTransition = layer.LineOpacityTransition.ToNative();
             }
 
@@ -688,11 +710,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (layer.Filter != null)
             {
                 result.WithFilter(layer.Filter.ToNative());
-            }
-
-            if (string.IsNullOrWhiteSpace(layer.SourceLayer) == false)
-            {
-                result.WithSourceLayer(layer.SourceLayer);
             }
         }
 
@@ -719,7 +736,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithSourceLayer(layer.SourceLayer);
             }
-            
+
             if (layer.Visibility is ExpressionVisibility visibility)
             {
                 properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
@@ -808,7 +825,7 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             {
                 result.WithSourceLayer(layer.SourceLayer);
             }
-            
+
             if (layer.Visibility is ExpressionVisibility visibility)
             {
                 properties.Add(PropertyFactory.Visibility((string)visibility.GetValue()));
@@ -817,6 +834,11 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
             if (layer.HeatmapColor != null)
             {
                 properties.Add(PropertyFactory.HeatmapColor(layer.HeatmapColor.ToNative()));
+            }
+
+            if (layer.HeatmapColorTransition != null)
+            {
+                //properties.Add(PropertyFactory.HeatmapColorTransition(layer.HeatmapColorTransition.ToNative()));
             }
 
             if (layer.HeatmapIntensity != null)
@@ -854,9 +876,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.HeatmapWeight(layer.HeatmapWeight.ToNative()));
             }
 
-            result.SetProperties(properties.ToArray());
-
             // TODO Add other values
+
+            result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
             {
@@ -918,7 +940,6 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 result.FillOpacityTransition = layer.FillOpacityTransition.ToNative();
             }
 
-
             if (layer.FillOutlineColor != null)
             {
                 properties.Add(PropertyFactory.FillOutlineColor(layer.FillOutlineColor.ToNative()));
@@ -954,9 +975,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.FillTranslateAnchor(layer.FillTranslateAnchor.ToNative()));
             }
 
-            result.SetProperties(properties.ToArray());
-
             // TODO Add other values
+
+            result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
             {
@@ -1195,9 +1216,9 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
                 properties.Add(PropertyFactory.CircleTranslateAnchor(layer.CircleTranslateAnchor.ToNative()));
             }
 
-            result.SetProperties(properties.ToArray());
-
             // TODO Add other values
+
+            result.SetProperties(properties.ToArray());
 
             if (layer.Filter != null)
             {

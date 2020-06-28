@@ -10,6 +10,8 @@
     <None Remove="geojson\example.geojson" />
     <None Remove="geojson\state_unemployment_info.json" />
     <None Remove="geojson\weather_data_per_state_before2006.geojson" />
+    <None Remove="geojson\us_west_coast.geojson" />
+    <None Remove="geojson\icon_rotate_and_alignment.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +22,8 @@
     <EmbeddedResource Include="geojson\example.geojson" />
     <EmbeddedResource Include="geojson\state_unemployment_info.json" />
     <EmbeddedResource Include="geojson\weather_data_per_state_before2006.geojson" />
+    <EmbeddedResource Include="geojson\us_west_coast.geojson" />
+    <EmbeddedResource Include="geojson\icon_rotate_and_alignment.json" />
   </ItemGroup>
 
   <ItemGroup>
