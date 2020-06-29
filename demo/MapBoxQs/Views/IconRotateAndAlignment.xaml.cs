@@ -38,12 +38,9 @@ namespace MapBoxQs.Views
 
         private void HandleStyleLoaded(MapStyle obj)
         {
-            using (var stream = GetType().Assembly.GetManifestResourceStream(GEOJSON_FILE))
-            {
-                using (var textReader = new StreamReader(stream))
-                {
-                    using (var jsonReader = new JsonTextReader(textReader))
-                    {
+            using (var stream = GetType().Assembly.GetManifestResourceStream(GEOJSON_FILE)) {
+                using (var textReader = new StreamReader(stream)) {
+                    using (var jsonReader = new JsonTextReader(textReader)) {
                         var serializer = new JsonSerializer();
                         var data = serializer.Deserialize<FeatureCollection>(jsonReader);
 
