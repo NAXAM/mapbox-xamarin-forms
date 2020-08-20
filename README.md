@@ -35,12 +35,15 @@ Android
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.INTERNET" />
 ```
-iOS
+
+iOS (info.plist)
 ```
 <key>NSLocationAlwaysUsageDescription</key>
 <string>This app needs to use your location</string>
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>This app needs to use your location</string>
+<key>MGLMapboxAccessToken</key>
+<string>YOUR_MAPBOX_ACCESS_TOKEN</string>
 ```
 
 ### Your XAML
@@ -78,7 +81,31 @@ map.DidFinishLoadingStyleCommand = new Command<MapStyle>((obj) =>
 map.ZoomLevel = Device.RuntimePlatform == Device.Android ? 4 : 10;
 ```
 
-> Detail documentation is coming soon.
+> Detailed documentation is coming soon.
+
+### Using Vector Tiles (WMTS)
+
+For example, using a GeoServer WMTS url, and having a workspace named "Ski" and a layer named "planet_osm_line".
+
+After `DidFinishLoadingStyle` :
+
+```c#
+var TILESET_URL = "http://localhost:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=Ski:planet_osm_line&STYLE=&TILEMATRIX=EPSG:900913:{z}&TILEMATRIXSET=EPSG:900913&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}";
+
+var myTiles = new TileSet("1.0.0", TILESET_URL);
+VectorSource vectorSource = new VectorSource("vector-source", myTiles);
+map.Functions.AddSource(vectorSource);
+
+var myLayer = new LineLayer("tile-data", "vector-source")
+{
+    LineColor = Expression.Color(Color.FromHex("#F13C6E")),
+    LineWidth = Expression.Literal(4.0f),
+    LineCap = Expression.Literal("round"),
+    LineJoin = Expression.Literal("round"),
+    SourceLayer = "planet_osm_line"
+};
+map.Functions.AddLayer(myLayer);
+```
 
 ## License
 

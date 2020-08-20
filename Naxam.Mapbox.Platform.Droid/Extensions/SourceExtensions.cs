@@ -84,7 +84,8 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                         : new RasterDemSource(rasterDemSource.Id, rasterDemSource.Url);
                 case NxVectorSource vectorSource:
                     //TODO VectorSource Add other options
-                    return new VectorSource(vectorSource.Id, vectorSource.Url);
+                    var tileSet = vectorSource.TileSet.ToNative();
+                    return new VectorSource(vectorSource.Id, tileSet);
                 case NxImageSource imageSource:
                     return new ImageSource(imageSource.Id, imageSource.Coordinates.ToNative(), imageSource.Source.GetBitmap(context));
             }

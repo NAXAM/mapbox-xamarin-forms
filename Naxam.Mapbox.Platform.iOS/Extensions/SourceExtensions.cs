@@ -38,7 +38,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                     }
                 case VectorSource vectorSource:
                     //TODO VectorSource Add other options
-                    return new MGLVectorTileSource(vectorSource.Id, NSUrl.FromString(vectorSource.Url));
+                    return new MGLVectorTileSource(vectorSource.Id, vectorSource.TileSet.Tiles, null);
                 case RasterSource rasterSource:
                     if (rasterSource.TileSet != null)
                     {
