@@ -28,8 +28,11 @@
     public class TileSet
     {
         public string TileJson { get; set; }
-
         public string[] Tiles { get; set; }
+
+        // TODO add other options
+        public float MinZoom { get; set; } = 0f;
+        public float MaxZoom { get; set; } = 0f;
 
         public TileSet(string tileJson, params string[] tiles)
         {

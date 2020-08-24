@@ -99,8 +99,14 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
 
         public static TileSet ToNative(this NxTileSet tileSet)
         {
-            return new TileSet(tileSet.TileJson, tileSet.Tiles);
+            // TODO add other options
+            return new TileSet(tileSet.TileJson, tileSet.Tiles)
+            {
+                MinZoom = tileSet.MinZoom,
+                MaxZoom = tileSet.MaxZoom
+            };
         }
+
     }
 
     public static class GeoJsonOptionsExtensions
