@@ -92,8 +92,18 @@ After `DidFinishLoadingStyle` :
 ```c#
 var TILESET_URL = "http://localhost:8080/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=Ski:planet_osm_line&STYLE=&TILEMATRIX=EPSG:900913:{z}&TILEMATRIXSET=EPSG:900913&FORMAT=application/vnd.mapbox-vector-tile&TILECOL={x}&TILEROW={y}";
 
-var myTiles = new TileSet("1.0.0", TILESET_URL);
-VectorSource vectorSource = new VectorSource("vector-source", myTiles);
+var skiTiles = new TileSet("1.0.0", SOURCE_URL)
+{
+    MinZoom = 12f,
+    MaxZoom = 22f
+};
+
+var tileSourceOptions = new TileSourceOptions();
+tileSourceOptions.MinimumZoomLevel = 12;
+tileSourceOptions.MaximumZoomLevel = 22;
+
+VectorSource vectorSource = new VectorSource("vector-source", skiTiles, tileSourceOptions);
+
 map.Functions.AddSource(vectorSource);
 
 var myLayer = new LineLayer("tile-data", "vector-source")
