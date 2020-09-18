@@ -33,10 +33,10 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
 
         public Feature[] QueryFeatures(LatLngBounds bounds, params string[] layers)
         {
-            var ne = bounds.NorthEast.ToCLCoordinate();
-            var sw = bounds.SouthWest.ToCLCoordinate();
-            var tl = map.ConvertCoordinate(ne, null);
-            var rb = map.ConvertCoordinate(sw, null);
+            var nw = bounds.NorthWest.ToCLCoordinate();
+            var se = bounds.SouthEast.ToCLCoordinate();
+            var tl = map.ConvertCoordinate(nw, null);
+            var rb = map.ConvertCoordinate(se, null);
             var rect = tl.ToRect(rb);
             var features = map.VisibleFeaturesInRect(rect, layers);
             return features.Select(f => f.ToFeature(true)).ToArray();
