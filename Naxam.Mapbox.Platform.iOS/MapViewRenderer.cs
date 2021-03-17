@@ -274,7 +274,7 @@ namespace Naxam.Controls.Mapbox.Platform.iOS
         protected virtual void RegionDidChangeAnimated(MGLMapView mapView, bool animated)
         {
             // TODO Set back to Forms
-            //            Element.ZoomLevel = mapView.ZoomLevel;
+            Element.ZoomLevel = mapView.ZoomLevel;
             //            Element.Pitch = mapView.Camera.Pitch;
             //            Element.RotatedDegree = mapView.Camera.Heading;
             //            Element?.RegionDidChangeCommand?.Execute(animated);
