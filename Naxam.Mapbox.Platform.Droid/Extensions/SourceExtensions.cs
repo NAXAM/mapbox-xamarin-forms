@@ -83,7 +83,12 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
                         ? new RasterDemSource(rasterDemSource.Id, rasterDemSource.Url, rasterDemSource.TileSize.Value)
                         : new RasterDemSource(rasterDemSource.Id, rasterDemSource.Url);
                 case NxVectorSource vectorSource:
-                    //TODO VectorSource Add other options
+                    if (vectorSource.TileSet != null)
+                    {
+                        var tileSet = vectorSource.TileSet.ToNative();
+                        return new VectorSource(vectorSource.Id, tileSet);
+                    }
+
                     return new VectorSource(vectorSource.Id, vectorSource.Url);
                 case NxImageSource imageSource:
                     return new ImageSource(imageSource.Id, imageSource.Coordinates.ToNative(), imageSource.Source.GetBitmap(context));
@@ -94,8 +99,14 @@ namespace Naxam.Mapbox.Platform.Droid.Extensions
 
         public static TileSet ToNative(this NxTileSet tileSet)
         {
-            return new TileSet(tileSet.TileJson, tileSet.Tiles);
+            // TODO add other options
+            return new TileSet(tileSet.TileJson, tileSet.Tiles)
+            {
+                MinZoom = tileSet.MinZoom,
+                MaxZoom = tileSet.MaxZoom
+            };
         }
+
     }
 
     public static class GeoJsonOptionsExtensions
