@@ -35,8 +35,8 @@ namespace Naxam.Controls.Mapbox.Platform.Droid
         public NFeature[] QueryFeatures(LatLngBounds bounds, params string[] layers)
         {
             var mpbounds = bounds.ToLatLngBounds();
-            var tl = map.Projection.ToScreenLocation(mpbounds.NorthEast);
-            var br = map.Projection.ToScreenLocation(mpbounds.NorthEast);
+            var tl = map.Projection.ToScreenLocation(mpbounds.NorthWest);
+            var br = map.Projection.ToScreenLocation(mpbounds.SouthEast);
             var region = tl.ToRectF(br);
             var features = map.QueryRenderedFeatures(region, layers);
 
