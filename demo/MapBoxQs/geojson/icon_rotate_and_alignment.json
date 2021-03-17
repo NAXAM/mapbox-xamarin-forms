@@ -1,0 +1,122 @@
+﻿{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.893268,
+          10.310543
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 45
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.892549,
+          10.310279
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 90
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.892485,
+          10.309604
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 135
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.892925,
+          10.309245
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 180
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.893654,
+          10.309393
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 225
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.891959,
+          10.309002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 270
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.894867,
+          10.310153
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 315
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.892764,
+          10.310923
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "icon_rotate": 360
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          123.893504,
+          10.308633
+        ]
+      }
+    }
+  ]
+}

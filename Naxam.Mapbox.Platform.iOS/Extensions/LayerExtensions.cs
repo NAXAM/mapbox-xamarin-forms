@@ -201,6 +201,14 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.IconPitchAlignment = layer.IconPitchAlignment.ToNative();
             }
 
+            if (layer.IconRotate != null) {
+                result.IconRotation = layer.IconRotate.ToNative();
+            }
+
+            if (layer.IconRotationAlignment != null) {
+                result.IconRotationAlignment = layer.IconRotationAlignment.ToNative();
+            }
+
             if (layer.IconSize != null) {
                 // TODO iOS - Need to check if IconSize is IconScale
                 result.IconScale = layer.IconSize.ToNative();
@@ -271,20 +279,20 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.TextFontNames = layer.TextFont.ToNative();
             }
 
-            if (layer.TextHaloBlur != null) {
-                result.TextHaloBlur = layer.TextHaloBlur.ToNative();
-            }
-
-            if (layer.TextHaloBlurTransition != null) {
-                result.TextHaloBlurTransition = layer.TextHaloBlurTransition.ToNative();
-            }
-
             if (layer.TextHaloColor != null) {
                 result.TextHaloColor = layer.TextHaloColor.ToNative();
             }
 
             if (layer.TextHaloColorTransition != null) {
                 result.TextHaloColorTransition = layer.TextHaloColorTransition.ToNative();
+            }
+
+            if (layer.TextHaloBlur != null) {
+                result.TextHaloBlur = layer.TextHaloBlur.ToNative();
+            }
+
+            if (layer.TextHaloBlurTransition != null) {
+                result.TextHaloBlurTransition = layer.TextHaloBlurTransition.ToNative();
             }
 
             if (layer.TextHaloWidth != null) {
@@ -384,10 +392,6 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.TextVariableAnchor = layer.TextVariableAnchor.ToNative();
             }
 
-            if (layer.TextVariableAnchor != null) {
-                result.TextVariableAnchor = layer.TextVariableAnchor.ToNative();
-            }
-
             if (layer.TextWritingMode != null) {
                 result.TextWritingModes = layer.TextWritingMode.ToNative();
             }
@@ -479,8 +483,7 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.RasterSaturationTransition = layer.RasterSaturationTransition.ToNative();
             }
 
-            //if (layer.Filter != null)
-            //{
+            //if (layer.Filter != null) {
             //    result.Predicate = layer.Filter.ToPredicate();
             //}
 
@@ -641,8 +644,9 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.HillshadeShadowColorTransition = layer.HillshadeShadowColorTransition.ToNative();
             }
 
-            //if (layer.Filter != null)
-            //{
+            // TODO Add other values
+
+            //if (layer.Filter != null) {
             //    result.Predicate = layer.Filter.ToPredicate();
             //}
 
@@ -701,13 +705,15 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.HeatmapRadius = layer.HeatmapRadius.ToNative();
             }
 
+            if (layer.HeatmapRadiusTransition != null) {
+                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToNative();
+            }
+
             if (layer.HeatmapWeight != null) {
                 result.HeatmapWeight = layer.HeatmapWeight.ToNative();
             }
 
-            if (layer.HeatmapRadiusTransition != null) {
-                result.HeatmapRadiusTransition = layer.HeatmapRadiusTransition.ToNative();
-            }
+            // TODO Add other values
 
             if (layer.Filter != null) {
                 result.Predicate = layer.Filter.ToPredicate();
@@ -800,6 +806,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             if (layer.FillTranslateAnchor != null) {
                 result.FillTranslationAnchor = layer.FillTranslateAnchor.ToNative();
             }
+
+            // TODO Add other values
 
             if (layer.Filter != null) {
                 result.Predicate = layer.Filter.ToPredicate();
@@ -945,10 +953,9 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
                 result.CirclePitchAlignment = layer.CirclePitchAlignment.ToNative();
             }
 
-            //if (circleLayer.CirclePitchScale != null)
-            //{
+            //if (layer.CirclePitchScale != null) {
             //    // WARN Not available to iOS yet
-            //    layer.CirclePitchScale = circleLayer.CirclePitchScale.ToExpression();
+            //    result.CirclePitchScale = layer.CirclePitchScale.ToNative();
             //}
 
             if (layer.CircleRadius != null) {
@@ -994,6 +1001,8 @@ namespace Naxam.Mapbox.Platform.iOS.Extensions
             if (layer.CircleTranslateAnchor != null) {
                 result.CircleTranslationAnchor = layer.CircleTranslateAnchor.ToNative();
             }
+
+            // TODO Add other values
 
             if (layer.Filter != null) {
                 result.Predicate = layer.Filter.ToPredicate();

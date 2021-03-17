@@ -224,6 +224,9 @@ namespace MapBoxQs.Views
                 case "Multiple expressions":
                     page = new DdsExpressionIntegration();
                     break;
+                case "Icon Rotation and Alignment":
+                    page = new IconRotateAndAlignment();
+                    break;
                 default:
                     page = new MapBoxQsPage();
                     break;
